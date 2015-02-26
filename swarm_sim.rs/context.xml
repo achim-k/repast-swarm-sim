@@ -2,4 +2,5 @@
   	<projection type="continuous space" id="space"/>
   	<projection type="value layer" id="explored_area"/>
   	<projection type="network" id="comm_network"/>
+  	<projection type="geography" id="geography" />
 </context>
