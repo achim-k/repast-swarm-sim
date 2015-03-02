@@ -90,6 +90,13 @@ public class SwarmContextBuilder implements ContextBuilder<Agent> {
 		geography.move(agent, agent.getGeometry());
 		//context.remove(agent);
 		context.add(new ControllerAgent(context, commNet, geography));
+		
+		/* dummy pheromone */
+		Pheromone p = new Pheromone(agents[0].getGeometry());
+		context.add(p);
+		geography.move(p, p.getGeometry());
+		
+		
 
 		// TODO GIS: use an example of ShapefileLoader
 		

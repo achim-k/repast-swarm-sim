@@ -52,6 +52,10 @@ public class Robot implements Agent {
 	public void run() {
 		System.out.println(getName());
 		randomWalk();
+		/* Create Pheromone */
+//		Pheromone p = new Pheromone(this.getGeometry());
+//		context.add(p);
+//		geography.move(p, p.getGeometry());
 
 		// System.out.println(location);
 		double moveX = RandomHelper.nextDoubleFromTo(-1, 1);

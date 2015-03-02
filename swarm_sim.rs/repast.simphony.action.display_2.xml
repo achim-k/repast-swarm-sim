@@ -11,6 +11,10 @@
       <string>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;sld:UserStyle xmlns=&quot;http://www.opengis.net/sld&quot; xmlns:sld=&quot;http://www.opengis.net/sld&quot; xmlns:ogc=&quot;http://www.opengis.net/ogc&quot; xmlns:gml=&quot;http://www.opengis.net/gml&quot;&gt;&lt;sld:Name&gt;Default Styler&lt;/sld:Name&gt;&lt;sld:FeatureTypeStyle&gt;&lt;sld:Name&gt;name&lt;/sld:Name&gt;&lt;sld:Rule&gt;&lt;sld:PolygonSymbolizer&gt;&lt;sld:Fill&gt;&lt;sld:CssParameter name=&quot;fill&quot;&gt;#00FF00&lt;/sld:CssParameter&gt;&lt;/sld:Fill&gt;&lt;sld:Stroke/&gt;&lt;/sld:PolygonSymbolizer&gt;&lt;/sld:Rule&gt;&lt;/sld:FeatureTypeStyle&gt;&lt;/sld:UserStyle&gt;</string>
     </entry>
     <entry>
+      <string>swarm_sim.Pheromone</string>
+      <string>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;sld:UserStyle xmlns=&quot;http://www.opengis.net/sld&quot; xmlns:sld=&quot;http://www.opengis.net/sld&quot; xmlns:ogc=&quot;http://www.opengis.net/ogc&quot; xmlns:gml=&quot;http://www.opengis.net/gml&quot;&gt;&lt;sld:Name&gt;Default Styler&lt;/sld:Name&gt;&lt;sld:Title&gt;swarm_sim.Pheromone.FeatureType&lt;/sld:Title&gt;&lt;sld:FeatureTypeStyle&gt;&lt;sld:Name&gt;name&lt;/sld:Name&gt;&lt;sld:Title&gt;swarm_sim.Pheromone.FeatureType&lt;/sld:Title&gt;&lt;sld:FeatureTypeName&gt;swarm_sim.Pheromone.FeatureType&lt;/sld:FeatureTypeName&gt;&lt;sld:Rule&gt;&lt;sld:Title&gt; &lt;/sld:Title&gt;&lt;sld:PointSymbolizer&gt;&lt;sld:Graphic&gt;&lt;sld:Mark&gt;&lt;sld:Fill&gt;&lt;sld:CssParameter name=&quot;fill&quot;&gt;#FF6800&lt;/sld:CssParameter&gt;&lt;/sld:Fill&gt;&lt;sld:Stroke/&gt;&lt;/sld:Mark&gt;&lt;sld:Size&gt;5&lt;/sld:Size&gt;&lt;/sld:Graphic&gt;&lt;/sld:PointSymbolizer&gt;&lt;/sld:Rule&gt;&lt;/sld:FeatureTypeStyle&gt;&lt;/sld:UserStyle&gt;</string>
+    </entry>
+    <entry>
       <string>swarm_sim.Agent</string>
       <string>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;sld:UserStyle xmlns=&quot;http://www.opengis.net/sld&quot; xmlns:sld=&quot;http://www.opengis.net/sld&quot; xmlns:ogc=&quot;http://www.opengis.net/ogc&quot; xmlns:gml=&quot;http://www.opengis.net/gml&quot;&gt;&lt;sld:Name&gt;Default Styler&lt;/sld:Name&gt;&lt;sld:FeatureTypeStyle&gt;&lt;sld:Name&gt;name&lt;/sld:Name&gt;&lt;sld:Rule&gt;&lt;sld:PolygonSymbolizer&gt;&lt;sld:Fill&gt;&lt;sld:CssParameter name=&quot;fill&quot;&gt;#00FF00&lt;/sld:CssParameter&gt;&lt;/sld:Fill&gt;&lt;sld:Stroke/&gt;&lt;/sld:PolygonSymbolizer&gt;&lt;/sld:Rule&gt;&lt;/sld:FeatureTypeStyle&gt;&lt;/sld:UserStyle&gt;</string>
     </entry>
@@ -29,6 +33,10 @@
     <entry>
       <string>swarm_sim.ZoneAgent</string>
       <string>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;sld:UserStyle xmlns=&quot;http://www.opengis.net/sld&quot; xmlns:sld=&quot;http://www.opengis.net/sld&quot; xmlns:ogc=&quot;http://www.opengis.net/ogc&quot; xmlns:gml=&quot;http://www.opengis.net/gml&quot;&gt;&lt;sld:Name&gt;Default Styler&lt;/sld:Name&gt;&lt;sld:Title&gt;swarm_sim.ZoneAgent.FeatureType&lt;/sld:Title&gt;&lt;sld:FeatureTypeStyle&gt;&lt;sld:Name&gt;name&lt;/sld:Name&gt;&lt;sld:Title&gt;swarm_sim.ZoneAgent.FeatureType&lt;/sld:Title&gt;&lt;sld:FeatureTypeName&gt;swarm_sim.ZoneAgent.FeatureType&lt;/sld:FeatureTypeName&gt;&lt;sld:Rule&gt;&lt;sld:Title&gt; &lt;/sld:Title&gt;&lt;sld:PolygonSymbolizer&gt;&lt;sld:Fill&gt;&lt;sld:CssParameter name=&quot;fill&quot;&gt;#0047FF&lt;/sld:CssParameter&gt;&lt;/sld:Fill&gt;&lt;sld:Stroke&gt;&lt;sld:CssParameter name=&quot;stroke-width&quot;&gt;5.0&lt;/sld:CssParameter&gt;&lt;/sld:Stroke&gt;&lt;/sld:PolygonSymbolizer&gt;&lt;/sld:Rule&gt;&lt;/sld:FeatureTypeStyle&gt;&lt;/sld:UserStyle&gt;</string>
+    </entry>
+    <entry>
+      <string>swarm_sim.ControllerAgent</string>
+      <string>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;sld:UserStyle xmlns=&quot;http://www.opengis.net/sld&quot; xmlns:sld=&quot;http://www.opengis.net/sld&quot; xmlns:ogc=&quot;http://www.opengis.net/ogc&quot; xmlns:gml=&quot;http://www.opengis.net/gml&quot;&gt;&lt;sld:Name&gt;Default Styler&lt;/sld:Name&gt;&lt;sld:FeatureTypeStyle&gt;&lt;sld:Name&gt;name&lt;/sld:Name&gt;&lt;sld:Rule&gt;&lt;sld:PointSymbolizer&gt;&lt;sld:Graphic&gt;&lt;sld:Mark&gt;&lt;sld:Fill&gt;&lt;sld:CssParameter name=&quot;fill&quot;&gt;#0000FF&lt;/sld:CssParameter&gt;&lt;/sld:Fill&gt;&lt;sld:Stroke/&gt;&lt;/sld:Mark&gt;&lt;sld:Size&gt;10.0&lt;/sld:Size&gt;&lt;/sld:Graphic&gt;&lt;/sld:PointSymbolizer&gt;&lt;/sld:Rule&gt;&lt;/sld:FeatureTypeStyle&gt;&lt;/sld:UserStyle&gt;</string>
     </entry>
     <entry>
       <string>swarm_sim.CommNetEdgeCreator</string>
@@ -50,17 +58,21 @@
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>-1291806054</hashCode>
+    <hashCode>1706395889</hashCode>
   </schedParams>
   <layoutInterval>0</layoutInterval>
   <layerOrder>
     <entry>
       <string>swarm_sim.SwarmContextBuilder</string>
-      <int>8</int>
+      <int>1</int>
     </entry>
     <entry>
       <string>swarm_sim.CommNet</string>
-      <int>7</int>
+      <int>0</int>
+    </entry>
+    <entry>
+      <string>swarm_sim.Pheromone</string>
+      <int>2</int>
     </entry>
     <entry>
       <string>swarm_sim.Agent</string>
@@ -68,27 +80,31 @@
     </entry>
     <entry>
       <string>swarm_sim.CommNetEdge</string>
-      <int>1</int>
-    </entry>
-    <entry>
-      <string>swarm_sim.ExploredAreaStyle</string>
-      <int>5</int>
-    </entry>
-    <entry>
-      <string>swarm_sim.RobotStyle</string>
       <int>4</int>
     </entry>
     <entry>
-      <string>swarm_sim.ZoneAgent</string>
-      <int>2</int>
-    </entry>
-    <entry>
-      <string>swarm_sim.CommNetEdgeCreator</string>
+      <string>swarm_sim.ExploredAreaStyle</string>
       <int>6</int>
     </entry>
     <entry>
+      <string>swarm_sim.RobotStyle</string>
+      <int>5</int>
+    </entry>
+    <entry>
+      <string>swarm_sim.ZoneAgent</string>
+      <int>7</int>
+    </entry>
+    <entry>
+      <string>swarm_sim.ControllerAgent</string>
+      <int>8</int>
+    </entry>
+    <entry>
+      <string>swarm_sim.CommNetEdgeCreator</string>
+      <int>9</int>
+    </entry>
+    <entry>
       <string>swarm_sim.Robot</string>
-      <int>0</int>
+      <int>10</int>
     </entry>
   </layerOrder>
   <projections>
