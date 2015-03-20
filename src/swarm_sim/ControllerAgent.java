@@ -9,6 +9,8 @@ import repast.simphony.engine.schedule.ScheduledMethod;
 import repast.simphony.query.space.gis.GeographyWithin;
 import repast.simphony.space.gis.Geography;
 import repast.simphony.util.collections.IndexedIterable;
+import repast.simphony.space.graph.ShortestPath;
+import swarm_sim.Agent.AgentType;
 
 import com.vividsolutions.jts.geom.Geometry;
 
@@ -37,7 +39,7 @@ public class ControllerAgent implements Agent {
 	/**
 	 * Main controller
 	 */
-	@ScheduledMethod(start = 1, interval = 1, priority = ScheduleParameters.FIRST_PRIORITY)
+	
 	public void run() {
 		System.out.println(getName());
 		/* delete network edges */
@@ -55,28 +57,30 @@ public class ControllerAgent implements Agent {
 			GeographyWithin<Agent> inCommRangeQuery = new GeographyWithin<Agent>(
 					geography, COMM_RANGE, robot);
 
-			for (Agent agentInRange : inCommRangeQuery.query()) {
-				if (agentInRange.getClass() != Robot.class)
-					continue;
-				if (!commNet.isAdjacent(robot, agentInRange)) {
-					CommNetEdge<Agent> e = new CommNetEdge<>(robot,
-							agentInRange, false, 0);
-					if (!touchesObjects(e, context.getObjects(ZoneAgent.class))) {
-						commNet.addEdge(e);
-						context.add(e);
-						geography.move(e, e.getGeometry());
-					}
-				}
-			}
+//			for (Agent agentInRange : inCommRangeQuery.query()) {
+//				if (agentInRange.getClass() != Robot.class)
+//					continue;
+//				if (!commNet.isAdjacent(robot, agentInRange)) {
+//					CommNetEdge<Agent> e = new CommNetEdge<>(robot,
+//							agentInRange, false, 0);
+//					if (!touchesObjects(e, context.getObjects(ZoneAgent.class))) {
+//						commNet.addEdge(e);
+//						context.add(e);
+//						geography.move(e, e.getGeometry());
+//					}
+//				}
+//			}
 		}
+		ShortestPath<Agent> a = new ShortestPath<>(commNet);
+		
 	}
 	
 	public static Boolean touchesObjects(Agent agent, IndexedIterable<Agent> objects) {
-		for (Agent a : objects) {
-			if (!agent.getGeometry().disjoint(a.getGeometry())) {
-				return true;
-			}
-		}
+//		for (Agent a : objects) {
+//			if (!agent.getGeometry().disjoint(a.getGeometry())) {
+//				return true;
+//			}
+//		}
 		return false;
 	}
 
@@ -86,10 +90,11 @@ public class ControllerAgent implements Agent {
 		return "ControllerAgent (THE BOSS)";
 	}
 
+	
 	@Override
-	public Geometry getGeometry() {
+	public AgentType getAgentType() {
 		// TODO Auto-generated method stub
-		return null;
+		return Agent.AgentType.ControllerAgent;
 	}
 
 }

@@ -20,22 +20,23 @@ public class CommNetEdge<Object> extends RepastEdge<Agent> implements Agent {
 	public CommNetEdge(Agent source, Agent target, Boolean isDirected, double weight) {
 		super(source, target, isDirected, weight);
 		
-		GeometryFactory fac = new GeometryFactory(); 
-		Coordinate ar[] = new Coordinate[]{source.getGeometry().getCoordinate(), target.getGeometry().getCoordinate()};
-		this.geom = fac.createLineString(ar);
+//		GeometryFactory fac = new GeometryFactory(); 
+//		Coordinate ar[] = new Coordinate[]{source.getGeometry().getCoordinate(), target.getGeometry().getCoordinate()};
+//		this.geom = fac.createLineString(ar);
 	}
 	
 	public String getName() {
 		return("Source: "+this.source.getName()+"Target:"+this.target.getName());
 	}
 
-	@Override
-	public Geometry getGeometry() {
-		// TODO Auto-generated method stub
-		return geom;
-	}
-	
+
 	public double getLinkDistance() {
 		return geom.getLength();
+	}
+	
+	@Override
+	public AgentType getAgentType() {
+		// TODO Auto-generated method stub
+		return AgentType.SwarmAgent;
 	}
 }

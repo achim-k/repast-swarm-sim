@@ -23,6 +23,7 @@ import repast.simphony.valueLayer.ContinuousValueLayer;
 import repast.simphony.query.space.continuous.ContinuousWithin;
 import repast.simphony.query.space.gis.GeographyWithin;
 import repast.simphony.query.space.gis.IntersectsQuery;
+import swarm_sim.Agent.AgentType;
 
 public class Robot implements Agent {
 	private Context<Agent> context;
@@ -50,8 +51,8 @@ public class Robot implements Agent {
 
 	@ScheduledMethod(start = 1, interval = 1)
 	public void run() {
-		System.out.println(getName());
-		randomWalk();
+//		System.out.println(getName());
+//		randomWalk();
 		/* Create Pheromone */
 //		Pheromone p = new Pheromone(this.getGeometry());
 //		context.add(p);
@@ -76,11 +77,11 @@ public class Robot implements Agent {
 				.getProjection("geography");
 
 		//
-		do {
-			geography.moveByDisplacement(this,
-					RandomHelper.nextDoubleFromTo(-0.005, 0.005),
-					RandomHelper.nextDoubleFromTo(-0.005, 0.005));
-		} while (ControllerAgent.touchesObjects(this, context.getObjects(ZoneAgent.class)));
+//		do {
+//			geography.moveByDisplacement(this,
+//					RandomHelper.nextDoubleFromTo(-0.005, 0.005),
+//					RandomHelper.nextDoubleFromTo(-0.005, 0.005));
+//		} while (ControllerAgent.touchesObjects(this, context.getObjects(ZoneAgent.class)));
 	}
 
 	public String getName() {
@@ -95,9 +96,10 @@ public class Robot implements Agent {
 		return count;
 	}
 
+	
 	@Override
-	public Geometry getGeometry() {
+	public AgentType getAgentType() {
 		// TODO Auto-generated method stub
-		return this.geography.getGeometry(this);
+		return Agent.AgentType.SwarmAgent;
 	}
 }

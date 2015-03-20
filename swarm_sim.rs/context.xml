@@ -1,6 +1,11 @@
-<context id="swarm_sim" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://repast.org/scenario/context">
-  	<projection type="continuous space" id="space"/>
-  	<projection type="value layer" id="explored_area"/>
-  	<projection type="network" id="comm_network"/>
-  	<projection type="geography" id="geography" />
+<context id="root" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://repast.org/scenario/context">
+  	<projection type="continuous space" id="space_continuous"/>
+  	<projection type="network" id="network_comm"/>
+  	<projection type="value layer" id="layer_explored"/>
+	<!-- <context id="swarm_sim" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://repast.org/scenario/context">
+	  	<projection type="continuous space" id="space_continuous"/>
+	  	<projection type="value layer" id="explored_area"/>
+	  	<projection type="network" id="comm_network"/>
+	  	<projection type="geography" id="geography" />
+	</context> -->
 </context>

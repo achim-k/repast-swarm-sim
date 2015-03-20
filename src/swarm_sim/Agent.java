@@ -1,10 +1,18 @@
 package swarm_sim;
 
-import repast.simphony.util.collections.IndexedIterable;
-
-import com.vividsolutions.jts.geom.Geometry;
-
 public interface Agent {
+	
+	public enum AgentType {
+		SwarmAgent,
+		Pheromone,
+		ControllerAgent,
+		
+		
+		
+		/* Blackbox agents */
+		BB_RandomExplorer,
+	}
+	
 	String getName();
-	Geometry getGeometry();
+	AgentType getAgentType();
 }

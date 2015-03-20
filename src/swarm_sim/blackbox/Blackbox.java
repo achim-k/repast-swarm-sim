@@ -1,21 +1,21 @@
-package swarm_sim;
+package swarm_sim.blackbox;
 
 import com.vividsolutions.jts.geom.Geometry;
 
-public class Pheromone implements Agent {
+import swarm_sim.Agent;
 
-	
-	public Pheromone() {
-	}
-	
+public class Blackbox implements Agent {
+
 	@Override
 	public String getName() {
-		return "Pheromone agent";
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	@Override
 	public AgentType getAgentType() {
 		// TODO Auto-generated method stub
-		return AgentType.Pheromone;
+		return null;
 	}
+
 }

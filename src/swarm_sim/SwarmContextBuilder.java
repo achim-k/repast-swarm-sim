@@ -3,6 +3,7 @@ package swarm_sim;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ import repast.simphony.space.continuous.RandomCartesianAdder;
 import repast.simphony.space.gis.Geography;
 import repast.simphony.space.gis.GeographyParameters;
 import repast.simphony.valueLayer.ContinuousValueLayer;
+import swarm_sim.neural.ActorCritic;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
@@ -39,24 +41,24 @@ public class SwarmContextBuilder implements ContextBuilder<Agent> {
 		context.setId("swarm_sim");
 		
 		/* Create geography space */
-		GeographyParameters geoParams = new GeographyParameters();
-		Geography geography = GeographyFactoryFinder.createGeographyFactory(null)
-				.createGeography("geography", context, geoParams);
+//		GeographyParameters geoParams = new GeographyParameters();
+//		Geography geography = GeographyFactoryFinder.createGeographyFactory(null)
+//				.createGeography("geography", context, geoParams);
 
 		/* Create continuous space */
 		ContinuousSpaceFactory spaceFactory = ContinuousSpaceFactoryFinder
 				.createContinuousSpaceFactory(null);
 		ContinuousSpace<Agent> space = spaceFactory.createContinuousSpace(
-				"space", context, new RandomCartesianAdder<Agent>(),
-				new repast.simphony.space.continuous.WrapAroundBorders(), 50,
+				"space_continuous", context, new RandomCartesianAdder<Agent>(),
+				new repast.simphony.space.continuous.StickyBorders(), 50,
 				50);
 
 		/* Create communication network */
 //		NetworkBuilder<Object> netBuilder = new NetworkBuilder<Object>("asdf", context, false);
 //		netBuilder.buildNetwork();
 
-		CommNet commNet = new CommNet("comm_network", context);
-		context.addProjection(commNet);
+//		CommNet commNet = new CommNet("comm_network", context);
+//		context.addProjection(commNet);
 		
 		
 		/* Value layer for painting? */
@@ -68,40 +70,55 @@ public class SwarmContextBuilder implements ContextBuilder<Agent> {
 		
 
 		/* add the agents to the context */	
-		int agentCount = 10;
-		Agent agents[] = new Agent[10];
-		GeometryFactory fac = new GeometryFactory();
+		int agentCount = 1;
+//		Agent agents[] = new Agent[10];
+//		GeometryFactory fac = new GeometryFactory();
 
+		PrintWriter writer = null;
+		try {
+			writer = new PrintWriter("the-file-name.txt", "UTF-8");
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		ActorCritic ac = new ActorCritic(0.4, 1, 0);
+		ac.loadSomNeuronsFromFile("data/som.txt", ",");
 		// Generate some points
 		for (int i = 0; i < agentCount; i++) {
-			Robot agent = new Robot(context, space, exploredArea, geography);
+			SwarmAgent agent = new SwarmAgent(context, writer, ac);
 			context.add(agent);
 
-			Coordinate coord = new Coordinate(-87.9 + 0.3* Math.random(), 41.8 + 0.3 * Math.random());
-			Point geom = fac.createPoint(coord);
-			
-			geography.move(agent, geom);
-			agents[i] = agent;
+//			Coordinate coord = new Coordinate(-87.9 + 0.3* Math.random(), 41.8 + 0.3 * Math.random());
+//			Point geom = fac.createPoint(coord);
+//			
+//			geography.move(agent, geom);
+//			agents[i] = agent;
+		}
+		
+		
+		int pheromoneCount = 31;
+		for (int i = 0; i < pheromoneCount; i++) {
+			context.add(new Pheromone());
 		}
 		
 		/* Add dummy edge to context here, otherwise it won't work in the robot class */
-		Agent agent = new CommNetEdge<>(agents[0], agents[1], false, 0);
-		context.add(agent);
-		geography.move(agent, agent.getGeometry());
-		//context.remove(agent);
-		context.add(new ControllerAgent(context, commNet, geography));
-		
-		/* dummy pheromone */
-		Pheromone p = new Pheromone(agents[0].getGeometry());
-		context.add(p);
-		geography.move(p, p.getGeometry());
-		
+//		Agent agent = new CommNetEdge<>(agents[0], agents[1], false, 0);
+//		context.add(agent);
+//		geography.move(agent, agent.getGeometry());
+//		//context.remove(agent);
+//		context.add(new ControllerAgent(context, commNet, geography));
+//		
+//		/* dummy pheromone */
+//		Pheromone p = new Pheromone(agents[0].getGeometry());
+//		context.add(p);
+//		geography.move(p, p.getGeometry());
+//		
 		
 
 		// TODO GIS: use an example of ShapefileLoader
 		
 		// Load Features from shapefiles
-		loadFeatures( "data/Zones2.shp", context, geography);
+//		loadFeatures( "data/Zones2.shp", context, geography);
 //		loadFeatures( "data/Agents2.shp", context, geography);
 //		loadFeatures( "data/WaterLines.shp", context, geography);
 
@@ -161,7 +178,7 @@ public class SwarmContextBuilder implements ContextBuilder<Agent> {
 				String name = (String)feature.getAttribute("name");
 				double taxRate = (double)feature.getAttribute("Tax_Rate");
 
-				agent = new ZoneAgent(name,taxRate);
+//				agent = new ZoneAgent(name,taxRate);
 
 //				// Create a BufferZoneAgent around the zone, just for visualization
 //				Geometry buffer = GeometryUtils.generateBuffer(geography, geom, zoneDistance);
