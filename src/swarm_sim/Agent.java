@@ -7,10 +7,12 @@ public interface Agent {
 		Pheromone,
 		ControllerAgent,
 		
-		
+		Scenario,
+		Base,
 		
 		/* Blackbox agents */
-		BB_RandomExplorer,
+		Blackbox,
+		BB_RandomExplorerNoComm,
 	}
 	
 	String getName();

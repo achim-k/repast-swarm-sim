@@ -1,15 +1,13 @@
-package swarm_sim.blackbox;
+package swarm_sim;
 
-import swarm_sim.Agent;
-
-public class Blackbox implements Agent {
+public class BaseAgent implements Agent {
 
 	@Override
 	public String getName() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	@Override
 	public AgentType getAgentType() {
 		// TODO Auto-generated method stub

@@ -18,13 +18,6 @@
 						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
 									
 		/>
-				<parameter name="blackbox_agent" displayName="Blackbox Agent" type="java.lang.String" 
-						defaultValue="BB_RandomExplorerNoComm" 
-						isReadOnly="false" 
-						converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter"
-									values="BB_RandomExplorerNoComm BB_RandomExplorerWithComm "
-						
-		/>
 				<parameter name="perception_scope" displayName="Perception scope [m]" type="int" 
 						defaultValue="3" 
 						isReadOnly="false" 

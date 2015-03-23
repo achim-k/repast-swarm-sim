@@ -3,7 +3,11 @@
   <type>2D</type>
   <styles>
     <entry>
-      <string>swarm_sim.blackbox.RandomExplorer</string>
+      <string>swarm_sim.BaseAgent</string>
+      <string>repast.simphony.visualization.editedStyle.EditedStyle2D</string>
+    </entry>
+    <entry>
+      <string>swarm_sim.blackbox.BB_RandomExplorerNoComm</string>
       <string>repast.simphony.visualization.editedStyle.EditedStyle2D</string>
     </entry>
     <entry>
@@ -13,7 +17,11 @@
   </styles>
   <editedStyles>
     <entry>
-      <string>swarm_sim.blackbox.RandomExplorer</string>
+      <string>swarm_sim.BaseAgent</string>
+      <string>swarm_sim.BaseAgent.style_1.xml</string>
+    </entry>
+    <entry>
+      <string>swarm_sim.blackbox.BB_RandomExplorerNoComm</string>
       <string>swarm_sim.blackbox.RandomExplorer.style_2.xml</string>
     </entry>
     <entry>
@@ -41,19 +49,23 @@
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>-1563662790</hashCode>
+    <hashCode>240202810</hashCode>
   </schedParams>
   <layoutClassName>foo.bar.baz</layoutClassName>
   <layoutProjection>space_continuous</layoutProjection>
   <layoutInterval>0</layoutInterval>
   <layerOrder>
     <entry>
-      <string>swarm_sim.blackbox.RandomExplorer</string>
+      <string>swarm_sim.BaseAgent</string>
       <int>0</int>
     </entry>
     <entry>
-      <string>swarm_sim.blackbox.Blackbox</string>
+      <string>swarm_sim.blackbox.RandomExplorer</string>
       <int>1</int>
+    </entry>
+    <entry>
+      <string>swarm_sim.blackbox.Blackbox</string>
+      <int>2</int>
     </entry>
   </layerOrder>
   <projections>
