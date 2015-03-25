@@ -2,25 +2,20 @@ package swarm_sim;
 
 import repast.simphony.context.Context;
 import repast.simphony.context.space.graph.ContextJungNetwork;
+import repast.simphony.space.graph.RepastEdge;
 import repast.simphony.space.graph.UndirectedJungNetwork;
 
-public class CommNet<Agent> extends ContextJungNetwork<Agent> {
+public class CommNet<T> extends ContextJungNetwork<T> {
 
-	public CommNet(String name, Context<Agent> context) {
-		super(new UndirectedJungNetwork<Agent>(name), context);
+	public CommNet(String name, Context<T> context) {
+		super(new UndirectedJungNetwork<T>(name), context);
+		
 	}
 	
-	/**
-	 * Checks if a and b are connected with an edge
-	 * @param a
-	 * @param b
-	 * @return
-	 */
-	public Boolean areConnected(Agent a, Agent b) { 
-		for (Agent agent : this.getAdjacent(a)) {
-			if(agent.equals(b))
-				return true;
+	public void updateEdges(Iterable<RepastEdge<T>> edges) {
+		this.removeAll();
+		for (RepastEdge<T> edge : edges) {
+			this.addEdge(edge);
 		}
-		return false;
 	}
 }

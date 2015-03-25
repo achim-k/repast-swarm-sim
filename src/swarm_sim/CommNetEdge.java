@@ -1,42 +1,47 @@
 package swarm_sim;
 
-import javax.measure.unit.SI;
-
-import org.apache.poi.hssf.record.chart.AxisUsedRecord;
-
-import repast.simphony.space.gis.GeometryUtils;
+import repast.simphony.space.continuous.ContinuousSpace;
 import repast.simphony.space.graph.RepastEdge;
-import repast.simphony.util.collections.IndexedIterable;
-
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
 
 
-public class CommNetEdge<Object> extends RepastEdge<Agent> implements Agent {
+public class CommNetEdge<T> extends RepastEdge<T> {
 	
-	private Geometry geom; // the shape (line) of the edge
+	private int checkTickCount = 0;
+	private boolean isActive = false;
 	
-	public CommNetEdge(Agent source, Agent target, Boolean isDirected, double weight) {
-		super(source, target, isDirected, weight);
+	public CommNetEdge(T source, T target, ContinuousSpace<T> space, double commScope, double agentSpeed) {
+		super(source, target, false);
+		checkIfActive(space, commScope, agentSpeed);
+	}
+	
+	public boolean isActive(ContinuousSpace<T> space, double commScope, double agentSpeed) {
+		checkTickCount--;
+//		if(checkTickCount <= 0) {
+			checkIfActive(space, commScope, agentSpeed);
+//		}
 		
-//		GeometryFactory fac = new GeometryFactory(); 
-//		Coordinate ar[] = new Coordinate[]{source.getGeometry().getCoordinate(), target.getGeometry().getCoordinate()};
-//		this.geom = fac.createLineString(ar);
+		double distance = space.getDistance(space.getLocation(source), space.getLocation(target));
+		System.out.println("commScope: " + commScope + " distance: " + distance+ " isActive: " + isActive);
+		if(distance > commScope && isActive == true) {
+			System.err.println("ohoh.... zu groß aber active");
+		}
+		if(distance <= commScope && isActive == false) {
+			System.err.println("ohoh.... zu klein aber not active");
+		}
+		return isActive;
 	}
 	
-	public String getName() {
-		return("Source: "+this.source.getName()+"Target:"+this.target.getName());
-	}
-
-
-	public double getLinkDistance() {
-		return geom.getLength();
+	private void checkIfActive(ContinuousSpace<T> space, double commScope, double agentSpeed) {
+		double distance = space.getDistance(space.getLocation(source), space.getLocation(target));
+		if(distance <= commScope)
+			isActive = true;
+		else
+			isActive = false;
+		
+		/* set number of ticks when edge distance needs to be checked again */
+		double delta = Math.abs(commScope - distance);
+		checkTickCount = (int)(delta/(2*agentSpeed));
 	}
 	
-	@Override
-	public AgentType getAgentType() {
-		// TODO Auto-generated method stub
-		return AgentType.SwarmAgent;
-	}
+
 }

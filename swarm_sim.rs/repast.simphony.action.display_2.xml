@@ -4,11 +4,15 @@
   <styles>
     <entry>
       <string>swarm_sim.BaseAgent</string>
-      <string>repast.simphony.visualization.editedStyle.EditedStyle2D</string>
+      <string>swarm_sim.AgentStyle</string>
+    </entry>
+    <entry>
+      <string>swarm_sim.blackbox.BB_RandomExplorerWithComm</string>
+      <string>swarm_sim.AgentStyle</string>
     </entry>
     <entry>
       <string>swarm_sim.blackbox.BB_RandomExplorerNoComm</string>
-      <string>repast.simphony.visualization.editedStyle.EditedStyle2D</string>
+      <string>swarm_sim.AgentStyle</string>
     </entry>
     <entry>
       <string>swarm_sim.blackbox.Blackbox</string>
@@ -18,11 +22,15 @@
   <editedStyles>
     <entry>
       <string>swarm_sim.BaseAgent</string>
-      <string>swarm_sim.BaseAgent.style_1.xml</string>
+      <null/>
+    </entry>
+    <entry>
+      <string>swarm_sim.blackbox.BB_RandomExplorerWithComm</string>
+      <null/>
     </entry>
     <entry>
       <string>swarm_sim.blackbox.BB_RandomExplorerNoComm</string>
-      <string>swarm_sim.blackbox.RandomExplorer.style_2.xml</string>
+      <null/>
     </entry>
     <entry>
       <string>swarm_sim.blackbox.Blackbox</string>
@@ -32,24 +40,24 @@
   <netStyles>
     <entry>
       <string>network_comm</string>
-      <string>repast.simphony.visualizationOGL2D.DefaultEdgeStyleOGL2D</string>
+      <string>repast.simphony.visualization.editedStyle.EditedEdgeStyle2D</string>
     </entry>
   </netStyles>
   <editedNetStyles>
     <entry>
       <string>network_comm</string>
-      <null/>
+      <string>network_comm.style_0.xml</string>
     </entry>
   </editedNetStyles>
   <frequency>ON_MOVE</frequency>
   <schedParams>
     <start>1.0</start>
-    <interval>1.0</interval>
+    <interval>5.0</interval>
     <priority>-Infinity</priority>
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>240202810</hashCode>
+    <hashCode>471215229</hashCode>
   </schedParams>
   <layoutClassName>foo.bar.baz</layoutClassName>
   <layoutProjection>space_continuous</layoutProjection>
@@ -57,15 +65,19 @@
   <layerOrder>
     <entry>
       <string>swarm_sim.BaseAgent</string>
-      <int>0</int>
-    </entry>
-    <entry>
-      <string>swarm_sim.blackbox.RandomExplorer</string>
       <int>1</int>
     </entry>
     <entry>
-      <string>swarm_sim.blackbox.Blackbox</string>
+      <string>swarm_sim.blackbox.BB_RandomExplorerWithComm</string>
       <int>2</int>
+    </entry>
+    <entry>
+      <string>swarm_sim.blackbox.BB_RandomExplorerNoComm</string>
+      <int>3</int>
+    </entry>
+    <entry>
+      <string>swarm_sim.blackbox.Blackbox</string>
+      <int>0</int>
     </entry>
   </layerOrder>
   <projections>
@@ -124,8 +136,7 @@
     <blue>255</blue>
     <alpha>255</alpha>
   </backgroundColor>
-  <valueLayerStyleName>repast.simphony.visualization.editedStyle.EditedValueLayerStyle2D</valueLayerStyleName>
-  <valueLayerEditedStyleName>layer_explored.style_2.xml</valueLayerEditedStyleName>
+  <valueLayerStyleName>swarm_sim.ExploredAreaStyle</valueLayerStyleName>
   <valueLayers>
     <string>layer_explored</string>
   </valueLayers>

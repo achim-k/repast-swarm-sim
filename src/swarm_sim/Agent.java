@@ -12,9 +12,8 @@ public interface Agent {
 		
 		/* Blackbox agents */
 		Blackbox,
-		BB_RandomExplorerNoComm,
+		BB_RandomExplorerNoComm, BB_RandomExplorerWithComm,
 	}
 	
-	String getName();
 	AgentType getAgentType();
 }

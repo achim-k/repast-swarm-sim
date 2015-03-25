@@ -1,18 +1,9 @@
 package swarm_sim;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import repast.simphony.context.Context;
-import repast.simphony.engine.schedule.ScheduleParameters;
-import repast.simphony.engine.schedule.ScheduledMethod;
-import repast.simphony.query.space.gis.GeographyWithin;
-import repast.simphony.space.gis.Geography;
-import repast.simphony.util.collections.IndexedIterable;
-import repast.simphony.space.graph.ShortestPath;
-import swarm_sim.Agent.AgentType;
-
-import com.vividsolutions.jts.geom.Geometry;
+import repast.simphony.engine.environment.RunEnvironment;
+import repast.simphony.space.continuous.ContinuousSpace;
+import swarm_sim.Scenario.AgentDistancePairs;
 
 public class ControllerAgent implements Agent {
 
@@ -20,81 +11,77 @@ public class ControllerAgent implements Agent {
 
 	private Context<Agent> context;
 	private CommNet<Agent> commNet;
-	private Geography<Agent> geography;
+	private ContinuousSpace<Agent> spaceContinuous;
 
-	/**
-	 * Constructor
-	 * 
-	 * @param contex
-	 * @param commNet
-	 * @param geography
-	 */
-	public ControllerAgent(Context<Agent> context, CommNet<Agent> commNet,
-			Geography<Agent> geography) {
+	private Scenario scenario;
+
+	public ControllerAgent(Context<Agent> context, Scenario scenario) {
 		this.context = context;
-		this.commNet = commNet;
-		this.geography = geography;
+		this.commNet = context.getProjection(CommNet.class, "network_comm");
+		this.spaceContinuous = (ContinuousSpace<Agent>) context.getProjection(
+				ContinuousSpace.class, "space_continuous");
+		this.scenario = scenario;
 	}
 
-	/**
-	 * Main controller
-	 */
-	
-	public void run() {
-		System.out.println(getName());
-		/* delete network edges */
-		commNet.removeEdges();
-		List<Agent> edgesInContext = new ArrayList<>();
-		for (Agent a : context.getObjects(CommNetEdge.class)) {
-			edgesInContext.add(a);
-		}
-		for (Agent a : edgesInContext) {
-			context.remove(a);
-		}
-		/* span network */
-		for (Agent robot : context.getObjects(Robot.class)) {
-			/* Set query for Agents which are in Range */
-			GeographyWithin<Agent> inCommRangeQuery = new GeographyWithin<Agent>(
-					geography, COMM_RANGE, robot);
+	public void step() {
+		if (scenario.agentDistancePairs.size() == 0)
+			scenario.init();
 
-//			for (Agent agentInRange : inCommRangeQuery.query()) {
-//				if (agentInRange.getClass() != Robot.class)
-//					continue;
-//				if (!commNet.isAdjacent(robot, agentInRange)) {
-//					CommNetEdge<Agent> e = new CommNetEdge<>(robot,
-//							agentInRange, false, 0);
-//					if (!touchesObjects(e, context.getObjects(ZoneAgent.class))) {
-//						commNet.addEdge(e);
-//						context.add(e);
-//						geography.move(e, e.getGeometry());
-//					}
+		int tick = (int) RunEnvironment.getInstance().getCurrentSchedule()
+				.getTickCount();
+		
+		commNet.removeEdges();
+		for (AgentDistancePairs agentPair : scenario.agentDistancePairs) {
+			boolean toBeChecked = (tick - agentPair.lastTimeChecked) * 2
+					* scenario.agentMovementSpeed >= Math
+					.abs(agentPair.distance - scenario.commScope);
+//			toBeChecked = true;
+			if (toBeChecked) {
+				agentPair.distance = spaceContinuous.getDistance(
+						spaceContinuous.getLocation(agentPair.source),
+						spaceContinuous.getLocation(agentPair.target));
+				agentPair.lastTimeChecked = tick;
+			}
+
+			if (agentPair.distance <= scenario.commScope)
+				commNet.addEdge(agentPair.source, agentPair.target);
+		}
+
+//		commNet.removeEdges();
+//		for (int i = 0; i < scenario.networkAgents.size(); i++) {
+//			Agent source = scenario.networkAgents.get(i);
+//			for (int j = i + 1; j < scenario.networkAgents.size(); j++) {
+//				Agent target = scenario.networkAgents.get(j);
+//
+//				double dist = spaceContinuous.getDistance(
+//						spaceContinuous.getLocation(source),
+//						spaceContinuous.getLocation(target));
+//				if (dist <= scenario.commScope) {
+//					commNet.addEdge(source, target);
 //				}
 //			}
-		}
-		ShortestPath<Agent> a = new ShortestPath<>(commNet);
-		
-	}
-	
-	public static Boolean touchesObjects(Agent agent, IndexedIterable<Agent> objects) {
-//		for (Agent a : objects) {
-//			if (!agent.getGeometry().disjoint(a.getGeometry())) {
-//				return true;
-//			}
 //		}
-		return false;
+
+		/* Update communication network */
+		// System.out.println(this.getName());
+		// List<RepastEdge> edges =
+		// scenario.agentNet.getActiveEdges(spaceContinuous,
+		// scenario.commScope, scenario.agentMovementSpeed);
+		// commNet.removeEdges();
+		// System.out.println("Total edges: " + commNet.getDegree());
+		// int i =0;
+		// for (RepastEdge<Agent> edge : edges) {
+		// CommNetEdge<Agent> e = (CommNetEdge<Agent>)edge;
+		// commNet.addEdge(edge);
+		// i++;
+		// }
+		// System.out.println(i +" edges added");
+		// System.out.println("Total edges: " + commNet.getDegree());
 	}
 
-	@Override
-	public String getName() {
-		// TODO Auto-generated method stub
-		return "ControllerAgent (THE BOSS)";
-	}
-
-	
 	@Override
 	public AgentType getAgentType() {
 		// TODO Auto-generated method stub
 		return Agent.AgentType.ControllerAgent;
 	}
-
 }

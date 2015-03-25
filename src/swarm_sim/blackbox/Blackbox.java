@@ -5,15 +5,7 @@ import swarm_sim.Agent;
 public class Blackbox implements Agent {
 
 	@Override
-	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	@Override
 	public AgentType getAgentType() {
-		// TODO Auto-generated method stub
-		return null;
+		return AgentType.Blackbox;
 	}
-
 }

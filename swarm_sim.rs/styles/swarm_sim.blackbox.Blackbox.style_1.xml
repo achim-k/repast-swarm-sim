@@ -18,8 +18,8 @@
   </labelColor>
   <color>
     <float>1.0</float>
-    <float>0.05882353</float>
     <float>0.0</float>
+    <float>0.05882353</float>
   </color>
   <colorMax>
     <float>10.0</float>

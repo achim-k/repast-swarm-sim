@@ -142,10 +142,6 @@ public class SwarmAgent implements Agent {
 		return this.currentLocation;
 	}
 	
-	@Override
-	public String getName() {
-		return name;
-	}
 
 	@Override
 	public AgentType getAgentType() {

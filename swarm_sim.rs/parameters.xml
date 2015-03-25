@@ -13,13 +13,13 @@
 									
 		/>
 				<parameter name="communication_scope" displayName="Communication scope [m]" type="int" 
-						defaultValue="30" 
+						defaultValue="20" 
 						isReadOnly="false" 
 						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
 									
 		/>
 				<parameter name="blackbox_agent" displayName="Blackbox Agent" type="java.lang.String" 
-						defaultValue="BB_RandomExplorerNoComm" 
+						defaultValue="BB_RandomExplorerWithComm" 
 						isReadOnly="false" 
 						converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter"
 									values="BB_RandomExplorerNoComm BB_RandomExplorerWithComm "

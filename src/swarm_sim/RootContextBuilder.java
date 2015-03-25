@@ -1,5 +1,7 @@
 package swarm_sim;
 
+import com.jidesoft.plaf.windows.TMSchema.Control;
+
 import repast.simphony.context.Context;
 import repast.simphony.context.ContextFactoryFinder;
 import repast.simphony.context.space.continuous.ContinuousSpaceFactory;
@@ -37,7 +39,7 @@ public class RootContextBuilder implements ContextBuilder<Agent> {
 		/* get parameters */
 		RunEnvironment runEnv = RunEnvironment.getInstance();
 		Parameters params = runEnv.getParameters();
-		Scenario scenario = BlackboxScenario.getInstance();
+		Scenario scenario = Scenario.getInstance();
 
 		scenario.agentCount = params.getInteger("agent_count");
 		scenario.perceptionScope = params.getInteger("perception_scope");
@@ -56,17 +58,18 @@ public class RootContextBuilder implements ContextBuilder<Agent> {
 				new repast.simphony.space.continuous.BouncyBorders(),
 				spaceWidth, spaceWidth);
 		
-		
-		/* Create communication network (directed=false) */
-		NetworkBuilder<Agent> comm_net = new NetworkBuilder<Agent>(
-				"network_comm", context, false);
-		comm_net.buildNetwork();
+		/* Create agent network (holds all edges between all agents) */
+		scenario.agentNet = new AgentNet();
+		scenario.networkAgents.clear();
+		/* Create comm network (holds only edges of agents which are within communication range */
+		CommNet<Agent> commNet = new CommNet<>("network_comm", context);
+		context.addProjection(commNet);
 
 		/* Value layer to track explored area, default: 0.0 */
 		AdvancedGridValueLayer exploredArea = new AdvancedGridValueLayer(
 				"layer_explored", 0.0, false, spaceWidth, spaceHeight);
 		context.addValueLayer(exploredArea);
-
+		
 		/* Add scenario context */
 		context.addSubContext(new BlackboxContext(context, "content_blackbox"));
 
@@ -76,6 +79,20 @@ public class RootContextBuilder implements ContextBuilder<Agent> {
 				ScheduleParameters.FIRST_PRIORITY);
 		schedule.schedule(scheduleParams, scenario, "init");
 		context.add(scenario);
+		
+		/* add controller agent */
+		scheduleParams = ScheduleParameters.createRepeating(1, 1, ScheduleParameters.FIRST_PRIORITY);
+		ControllerAgent controller = new ControllerAgent(context, scenario);
+		schedule.schedule(scheduleParams, controller, "step");
+		context.add(controller);
+		
+		/* spawn base */
+		scheduleParams = ScheduleParameters.createRepeating(1, 1, ScheduleParameters.LAST_PRIORITY);
+		BaseAgent base = new BaseAgent();
+		schedule.schedule(scheduleParams, base, "step");
+		context.add(base);
+		scenario.baseAgent = base;		
+		scenario.networkAgents.add(base);
 
 		return context;
 	}

@@ -5,7 +5,7 @@ import swarm_sim.Agent.AgentType;
 import swarm_sim.BaseAgent;
 import swarm_sim.Scenario;
 
-public class BlackboxScenario extends Scenario {
+public class BlackboxScenario {
 	
 	private static BlackboxScenario instance = null;
 	
