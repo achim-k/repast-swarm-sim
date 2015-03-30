@@ -1,3 +1,6 @@
+
+
+
 package swarm_sim.blackbox;
 
 import java.awt.Color;
@@ -18,12 +21,14 @@ import swarm_sim.DisplayAgent;
  * @author achim
  * 
  */
-public class BB_RandomExplorerNoComm extends DefaultBlackboxAgent implements
+public class BB_Random extends DefaultBlackboxAgent implements
 		Agent, DisplayAgent {
 
 	private static int agentNo = 1;
+	
+	
 
-	public BB_RandomExplorerNoComm(Context<Agent> context,
+	public BB_Random(Context<Agent> context,
 			Context<Agent> rootContext) {
 		super(context, rootContext);
 		agentNo++;
@@ -33,9 +38,7 @@ public class BB_RandomExplorerNoComm extends DefaultBlackboxAgent implements
 
 		move();
 		if (scanEnv()) {
-			if (prevState != agentState.blackbox_found)
-				RunEnvironment.getInstance().pauseRun();
-
+			bbScenario.blackboxFound();
 			state = agentState.blackbox_found;
 		}
 		prevState = state;
@@ -46,9 +49,14 @@ public class BB_RandomExplorerNoComm extends DefaultBlackboxAgent implements
 
 		if (state == agentState.exploring) {
 			/* Explore environment randomly */
-			double moveX = RandomHelper.nextDoubleFromTo(-speed, speed);
-			double moveY = RandomHelper.nextDoubleFromTo(-speed, speed);
-			currentLocation = space.moveByDisplacement(this, moveX, moveY);
+			if(consecutiveMoveCount >= scenario.randomConsecutiveMoves) {
+				directionAngle = RandomHelper.nextDoubleFromTo(-Math.PI, Math.PI);
+				currentLocation = space.moveByVector(this, speed, directionAngle, 0);
+				consecutiveMoveCount = 1;
+			} else {
+				currentLocation = space.moveByVector(this, speed, directionAngle, 0);
+				consecutiveMoveCount++;
+			}
 		} else if (state == agentState.blackbox_found) {
 			/* Go back to base */
 			NdPoint baseLocation = space.getLocation(scenario.baseAgent);
@@ -75,7 +83,6 @@ public class BB_RandomExplorerNoComm extends DefaultBlackboxAgent implements
 	private boolean scanEnv() {
 		NdPoint baseLocation = space.getLocation(bbScenario.blackboxAgent);
 		if (space.getDistance(currentLocation, baseLocation) <= scenario.perceptionScope) {
-			bbScenario.blackboxFound = true;
 			System.out.println("bb found");
 			return true; /* Blackbox found */
 		}
@@ -89,21 +96,7 @@ public class BB_RandomExplorerNoComm extends DefaultBlackboxAgent implements
 
 	@Override
 	public AgentType getAgentType() {
-		return AgentType.BB_RandomExplorerNoComm;
+		return AgentType.BB_Random;
 	}
-
-	@Override
-	public Color getColor() {
-		Color retColor = Color.BLUE;
-		switch (state) {
-		case blackbox_found:
-			retColor = Color.YELLOW;
-			break;
-		default:
-			retColor = Color.BLUE;
-			break;
-		}
-		return retColor;
-	}
-
 }
+

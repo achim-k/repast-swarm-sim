@@ -11,8 +11,8 @@ import repast.simphony.util.ContextUtils;
 public class Scenario implements Agent {
 
 	public int agentCount;
-	public int perceptionScope;
-	public int commScope;
+	public double perceptionScope;
+	public double commScope;
 	public double agentMovementSpeed = 1.0;
 	public BaseAgent baseAgent;
 	public AgentNet agentNet;
@@ -24,6 +24,7 @@ public class Scenario implements Agent {
 	public int exploredAreaCount = 0;
 	public int redundantExploredAreaCount = 0;
 	public int messagesSent = 0;
+	public int randomConsecutiveMoves = 1;
 
 	
 	private static Scenario instance = null;

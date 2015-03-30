@@ -1,5 +1,6 @@
 package swarm_sim;
 
+import repast.simphony.space.continuous.NdPoint;
 import repast.simphony.space.grid.GridPoint;
 import repast.simphony.valueLayer.GridFunction;
 import repast.simphony.valueLayer.GridValueLayer;
@@ -21,8 +22,8 @@ public class AdvancedGridValueLayer extends GridValueLayer {
 	 * @param origin
 	 * @param radius
 	 */
-	public void forEachRadial(GridFunction function, GridPoint origin,
-			int radius) {
+	public void forEachRadial(GridFunction function, NdPoint origin,
+			double radius) {
 		int dimsSize = dims.size();
 
 		if (dimsSize != 2)
@@ -33,12 +34,12 @@ public class AdvancedGridValueLayer extends GridValueLayer {
 		int[] maxs = new int[dimsSize];
 
 		for (int i = 0; i < dimsSize; i++) {
-			int min = origin.getCoord(i) - radius;
+			int min = (int)(origin.getCoord(i) - radius);
 			if (min < dims.getOrigin(i))
 				min = (int) dims.getOrigin(i);
 			mins[i] = min;
 
-			int max = origin.getCoord(i) + radius;
+			int max = (int)(origin.getCoord(i) + radius);
 			if (max >= dims.getOrigin(i) + dims.getDimension(i))
 				max = (int) (dims.getOrigin(i) + dims.getDimension(i)) - 1;
 			maxs[i] = max;

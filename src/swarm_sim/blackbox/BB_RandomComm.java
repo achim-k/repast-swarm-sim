@@ -1,14 +1,11 @@
 package swarm_sim.blackbox;
 
-import java.awt.Color;
-
 import repast.simphony.context.Context;
 import repast.simphony.engine.environment.RunEnvironment;
 import repast.simphony.random.RandomHelper;
 import repast.simphony.space.SpatialMath;
 import repast.simphony.space.continuous.NdPoint;
 import swarm_sim.Agent;
-import swarm_sim.CommNet;
 import swarm_sim.DisplayAgent;
 import swarm_sim.communication.Message;
 import swarm_sim.communication.MsgBlackboxFound;
@@ -22,12 +19,12 @@ import swarm_sim.communication.NetworkAgent;
  * @author achim
  * 
  */
-public class BB_RandomExplorerWithComm extends DefaultBlackboxAgent implements
+public class BB_RandomComm extends DefaultBlackboxAgent implements
 		Agent, DisplayAgent {
 
 	private static int agentNo = 1;
 
-	public BB_RandomExplorerWithComm(Context<Agent> context,
+	public BB_RandomComm(Context<Agent> context,
 			Context<Agent> rootContext) {
 		super(context, rootContext);
 		agentNo++;
@@ -37,9 +34,7 @@ public class BB_RandomExplorerWithComm extends DefaultBlackboxAgent implements
 		processMessageQueue();
 		move();
 		if (scanEnv()) {
-			if (prevState != agentState.blackbox_found)
-				RunEnvironment.getInstance().pauseRun();
-
+			bbScenario.blackboxFound();
 			state = agentState.blackbox_found;
 		}
 		if (state == agentState.blackbox_found) {
@@ -74,10 +69,14 @@ public class BB_RandomExplorerWithComm extends DefaultBlackboxAgent implements
 
 		if (state == agentState.exploring) {
 			/* Explore environment randomly */
-			double moveX = RandomHelper.nextDoubleFromTo(-speed, speed);
-			double moveY = RandomHelper.nextDoubleFromTo(-speed, speed);
-			currentLocation = space.moveByDisplacement(this, moveX,
-					moveY);
+			if(consecutiveMoveCount >= scenario.randomConsecutiveMoves) {
+				directionAngle = RandomHelper.nextDoubleFromTo(-Math.PI, Math.PI);
+				currentLocation = space.moveByVector(this, speed, directionAngle, 0);
+				consecutiveMoveCount = 1;
+			} else {
+				currentLocation = space.moveByVector(this, speed, directionAngle, 0);
+				consecutiveMoveCount++;
+			}
 		} else if (state == agentState.blackbox_found) {
 			/* Go back to base */
 			NdPoint baseLocation = space
@@ -106,7 +105,6 @@ public class BB_RandomExplorerWithComm extends DefaultBlackboxAgent implements
 		NdPoint baseLocation = space
 				.getLocation(bbScenario.blackboxAgent);
 		if (space.getDistance(currentLocation, baseLocation) <= scenario.perceptionScope) {
-			bbScenario.blackboxFound = true;
 			System.out.println("bb found");
 			return true; /* Blackbox found */
 		}
@@ -121,21 +119,7 @@ public class BB_RandomExplorerWithComm extends DefaultBlackboxAgent implements
 
 	@Override
 	public AgentType getAgentType() {
-		return AgentType.BB_RandomExplorerWithComm;
-	}
-
-	@Override
-	public Color getColor() {
-		Color retColor = Color.BLUE;
-		switch (state) {
-		case blackbox_found:
-			retColor = Color.YELLOW;
-			break;
-		default:
-			retColor = Color.BLUE;
-			break;
-		}
-		return retColor;
+		return AgentType.BB_RandomComm;
 	}
 
 }

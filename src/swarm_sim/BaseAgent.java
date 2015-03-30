@@ -12,6 +12,8 @@ import swarm_sim.communication.NetworkAgent;
 
 public class BaseAgent extends DefaultNetworkAgent implements Agent, DisplayAgent {
 
+	private agentState state = agentState.exploring;
+	
 	private void processMessageQueue() {
 		Message msg = popMessage();
 		while (msg != null) {
@@ -20,6 +22,7 @@ public class BaseAgent extends DefaultNetworkAgent implements Agent, DisplayAgen
 				break;
 			case Blackbox_found:
 				/* Base got to know where BB is, end simulation */
+				state = agentState.blackbox_found;
 				RunEnvironment.getInstance().endRun();
 				System.out.println("Base got aware of BB-Location, end of Simulation");
 			default:
@@ -47,8 +50,13 @@ public class BaseAgent extends DefaultNetworkAgent implements Agent, DisplayAgen
 
 	@Override
 	public Color getColor() {
-		// TODO Auto-generated method stub
-		return Color.GREEN;
+		switch (state) {
+		case blackbox_found:
+			return Color.RED;
+		default:
+			return Color.GREEN;
+		}
+		
 	}
 	
 	public VSpatial getShape(ShapeFactory2D shapeFactory) {

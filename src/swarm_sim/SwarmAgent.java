@@ -80,8 +80,8 @@ public class SwarmAgent implements Agent {
 
 	public List<ScanData> scanEnvironment() {
 		List<ScanData> scanData = new ArrayList<ScanData>();
-		ScanData otherAgents = new ScanData(8);
-		ScanData pheromoneScan = new ScanData(8);
+		ScanData otherAgents = new ScanData(8, 1, 0.5);
+		ScanData pheromoneScan = new ScanData(8, 1, 0.5);
 		
 		ContinuousWithin<Agent> withinPerceptionScope = new ContinuousWithin<Agent>(context, this, perceptionScope);
 		for(Agent agent : withinPerceptionScope.query()){

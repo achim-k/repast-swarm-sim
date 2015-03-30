@@ -1,5 +1,6 @@
 package swarm_sim.blackbox;
 
+import repast.simphony.engine.environment.RunEnvironment;
 import repast.simphony.space.continuous.NdPoint;
 import swarm_sim.Agent.AgentType;
 import swarm_sim.BaseAgent;
@@ -11,6 +12,7 @@ public class BlackboxScenario {
 	
 	public NdPoint baseLocation;
 	public boolean blackboxFound = false;
+	public boolean pauseOnBBfound = false;
 
 	public Blackbox blackboxAgent;
 	
@@ -27,5 +29,14 @@ public class BlackboxScenario {
 		return instance;
 	}
 	
+	public void blackboxFound() {
+		if(pauseOnBBfound && !blackboxFound) {
+			RunEnvironment.getInstance().pauseRun();
+		}
+		blackboxFound = true;
+	}
 	
+	public void reset() {
+		blackboxFound = false;
+	}
 }

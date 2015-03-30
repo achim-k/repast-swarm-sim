@@ -7,7 +7,23 @@
       <string>swarm_sim.AgentStyle</string>
     </entry>
     <entry>
+      <string>swarm_sim.Pheromone</string>
+      <string>repast.simphony.visualization.editedStyle.EditedStyle2D</string>
+    </entry>
+    <entry>
       <string>swarm_sim.blackbox.BB_RandomExplorerWithComm</string>
+      <string>swarm_sim.AgentStyle</string>
+    </entry>
+    <entry>
+      <string>swarm_sim.blackbox.BB_PheromoneExplorerNoComm</string>
+      <string>swarm_sim.AgentStyle</string>
+    </entry>
+    <entry>
+      <string>swarm_sim.blackbox.BB_RandomPointExplorerNoComm</string>
+      <string>swarm_sim.AgentStyle</string>
+    </entry>
+    <entry>
+      <string>swarm_sim.blackbox.BB_AgentAvoiderComm</string>
       <string>swarm_sim.AgentStyle</string>
     </entry>
     <entry>
@@ -25,7 +41,23 @@
       <null/>
     </entry>
     <entry>
+      <string>swarm_sim.Pheromone</string>
+      <string>swarm_sim.Pheromone.style_0.xml</string>
+    </entry>
+    <entry>
       <string>swarm_sim.blackbox.BB_RandomExplorerWithComm</string>
+      <null/>
+    </entry>
+    <entry>
+      <string>swarm_sim.blackbox.BB_PheromoneExplorerNoComm</string>
+      <null/>
+    </entry>
+    <entry>
+      <string>swarm_sim.blackbox.BB_RandomPointExplorerNoComm</string>
+      <null/>
+    </entry>
+    <entry>
+      <string>swarm_sim.blackbox.BB_AgentAvoiderComm</string>
       <null/>
     </entry>
     <entry>
@@ -65,19 +97,35 @@
   <layerOrder>
     <entry>
       <string>swarm_sim.BaseAgent</string>
-      <int>1</int>
+      <int>7</int>
+    </entry>
+    <entry>
+      <string>swarm_sim.Pheromone</string>
+      <int>0</int>
     </entry>
     <entry>
       <string>swarm_sim.blackbox.BB_RandomExplorerWithComm</string>
+      <int>4</int>
+    </entry>
+    <entry>
+      <string>swarm_sim.blackbox.BB_PheromoneExplorerNoComm</string>
       <int>2</int>
     </entry>
     <entry>
-      <string>swarm_sim.blackbox.BB_RandomExplorerNoComm</string>
+      <string>swarm_sim.blackbox.BB_RandomPointExplorerNoComm</string>
       <int>3</int>
     </entry>
     <entry>
+      <string>swarm_sim.blackbox.BB_AgentAvoiderComm</string>
+      <int>1</int>
+    </entry>
+    <entry>
+      <string>swarm_sim.blackbox.BB_RandomExplorerNoComm</string>
+      <int>5</int>
+    </entry>
+    <entry>
       <string>swarm_sim.blackbox.Blackbox</string>
-      <int>0</int>
+      <int>6</int>
     </entry>
   </layerOrder>
   <projections>

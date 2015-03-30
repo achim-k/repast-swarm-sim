@@ -1,6 +1,7 @@
 package swarm_sim;
 
 import repast.simphony.context.Context;
+import repast.simphony.random.RandomHelper;
 import repast.simphony.space.continuous.ContinuousSpace;
 import repast.simphony.space.continuous.NdPoint;
 import repast.simphony.space.graph.Network;
@@ -11,13 +12,16 @@ import saf.v3d.scene.VSpatial;
 import swarm_sim.communication.DefaultNetworkAgent;
 
 public class DefaultAgent extends DefaultNetworkAgent implements Agent {
-	
+
 	protected Context<Agent> context;
 	protected Network<Agent> commNet;
 	protected ContinuousSpace<Agent> space;
 	protected AdvancedGridValueLayer exploredArea;
 	protected Scenario scenario;
 	public NdPoint currentLocation;
+	
+	protected int consecutiveMoveCount = 1;
+	protected double directionAngle = RandomHelper.nextDoubleFromTo(-Math.PI, Math.PI);
 	
 	@SuppressWarnings("unchecked")
 	public DefaultAgent(Context<Agent> context, Context<Agent> rootContext) {
@@ -30,10 +34,10 @@ public class DefaultAgent extends DefaultNetworkAgent implements Agent {
 	
 	protected void updateExploredLayer() {
 		NdPoint location = space.getLocation(this);
-		int x = (int) location.getX();
-		int y = (int) location.getY();
-		GridPoint origin = new GridPoint(x, y);
-		exploredArea.forEachRadial(new setAreaAsExplored(), origin, scenario.perceptionScope);
+//		int x = (int) location.getX();
+//		int y = (int) location.getY();
+//		GridPoint origin = new GridPoint(x, y);
+		exploredArea.forEachRadial(new setAreaAsExplored(), location, scenario.perceptionScope);
 	}
 
 	@Override

@@ -1,5 +1,10 @@
 package swarm_sim;
 
+import java.awt.BorderLayout;
+
+import javax.swing.JButton;
+import javax.swing.JPanel;
+
 import com.jidesoft.plaf.windows.TMSchema.Control;
 
 import repast.simphony.context.Context;
@@ -15,6 +20,7 @@ import repast.simphony.engine.schedule.ScheduleParameters;
 import repast.simphony.parameter.Parameters;
 import repast.simphony.space.SpatialMath;
 import repast.simphony.space.continuous.RandomCartesianAdder;
+import repast.simphony.ui.RSApplication;
 import repast.simphony.valueLayer.GridValueLayer;
 import swarm_sim.blackbox.Blackbox;
 import swarm_sim.blackbox.BlackboxContext;
@@ -42,8 +48,10 @@ public class RootContextBuilder implements ContextBuilder<Agent> {
 		Scenario scenario = Scenario.getInstance();
 
 		scenario.agentCount = params.getInteger("agent_count");
-		scenario.perceptionScope = params.getInteger("perception_scope");
-		scenario.commScope = params.getInteger("communication_scope");
+		scenario.perceptionScope = params.getDouble("perception_scope");
+		scenario.commScope = params.getDouble("communication_scope");
+		scenario.randomConsecutiveMoves = params.getInteger("random_consecutive_move");
+
 
 		/* Create continuous space */
 		ContinuousSpaceFactory spaceFactory = ContinuousSpaceFactoryFinder
@@ -93,6 +101,11 @@ public class RootContextBuilder implements ContextBuilder<Agent> {
 		context.add(base);
 		scenario.baseAgent = base;		
 		scenario.networkAgents.add(base);
+		
+		JPanel panel = new JPanel();
+		JButton OKButton = new JButton("OK");
+		panel.add(OKButton,BorderLayout.CENTER);
+		RSApplication.getRSApplicationInstance().addCustomUserPanel(panel);
 
 		return context;
 	}

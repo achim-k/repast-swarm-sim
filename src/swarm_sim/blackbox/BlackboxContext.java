@@ -10,6 +10,8 @@ import repast.simphony.space.continuous.ContinuousSpace;
 import swarm_sim.Agent;
 import swarm_sim.Agent.AgentType;
 import swarm_sim.BaseAgent;
+import swarm_sim.ScanData;
+import swarm_sim.ScanData;
 import swarm_sim.Scenario;
 
 public class BlackboxContext extends DefaultContext<Agent> {
@@ -27,15 +29,23 @@ public class BlackboxContext extends DefaultContext<Agent> {
 
 		Scenario scenario = Scenario.getInstance();
 		BlackboxScenario bbScenario = BlackboxScenario.getInstance();
+		bbScenario.reset();
 		this.spaceContinuous = (ContinuousSpace<Agent>) parentContext.getProjection(ContinuousSpace.class, "space_continuous");
 		
 		String bb_agent = params.getString("blackbox_agent");
+		bbScenario.pauseOnBBfound = params.getBoolean("pauseOnBBfound");
 		
-		if(bb_agent.equalsIgnoreCase("BB_RandomExplorerNoComm"))
-			bbScenario.agentType = AgentType.BB_RandomExplorerNoComm;
-		else if(bb_agent.equalsIgnoreCase("BB_RandomExplorerWithComm"))
-			bbScenario.agentType = AgentType.BB_RandomExplorerWithComm;
-
+		if(bb_agent.equalsIgnoreCase("BB_Random"))
+			bbScenario.agentType = AgentType.BB_Random;
+		else if(bb_agent.equalsIgnoreCase("BB_RandomComm"))
+			bbScenario.agentType = AgentType.BB_RandomComm;
+		else if(bb_agent.equalsIgnoreCase("BB_PheromoneAvoider"))
+			bbScenario.agentType = AgentType.BB_PheromoneAvoider;
+		else if(bb_agent.equalsIgnoreCase("BB_RandomPoint"))
+			bbScenario.agentType = AgentType.BB_RandomPoint;
+		else if(bb_agent.equalsIgnoreCase("BB_AgentAvoiderComm"))
+			bbScenario.agentType = AgentType.BB_AgentAvoiderComm;
+			
 		/* spawn blackbox */
 		Blackbox bb = new Blackbox();
 		this.add(bb);
@@ -45,13 +55,21 @@ public class BlackboxContext extends DefaultContext<Agent> {
 		for (int i = 0; i < scenario.agentCount; i++) {
 			Agent agent = null;
 			switch (bbScenario.agentType) {
-			case BB_RandomExplorerNoComm:
-				agent = new BB_RandomExplorerNoComm(this, parentContext);
+			case BB_RandomPoint:
+				agent = new BB_RandomPoint(this, parentContext);
 				break;
-			case BB_RandomExplorerWithComm:
-				agent = new BB_RandomExplorerWithComm(this, parentContext);
+			case BB_Random:
+				agent = new BB_Random(this, parentContext);
+				break;
+			case BB_RandomComm:
+				agent = new BB_RandomComm(this, parentContext);
 				scenario.networkAgents.add(agent);
 				break;
+			case BB_PheromoneAvoider:
+				agent = new BB_PheromoneAvoider(this, parentContext);
+			case BB_AgentAvoiderComm:
+				agent = new BB_AgentAvoiderComm(this, parentContext);
+				scenario.networkAgents.add(agent);
 			default:
 				break;
 			}
@@ -59,6 +77,12 @@ public class BlackboxContext extends DefaultContext<Agent> {
 			schedule.schedule(scheduleParams, agent, "step");
 			this.add(agent);
 		}
+		
+		ScanData s = new ScanData(8, 1, 1);
+		s.addData(0.4, 0.2);
+		System.out.println(s.getPrintable("a"));
+		s.normalize();
+		System.out.println(s.getPrintable("a"));
 		
 		System.out.println("BlackBoxContext loaded!");
 	}

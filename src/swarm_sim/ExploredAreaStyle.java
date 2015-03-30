@@ -39,8 +39,8 @@ public class ExploredAreaStyle implements ValueLayerStyleOGL {
 		deltaRed = defaultRed + deltaRed > 255 ? 255 : defaultRed + deltaRed;
 		deltaGreen = defaultGreen + deltaGreen > 255 ? 255 : defaultGreen + deltaGreen; 
 		deltaBlue = defaultBlue + deltaBlue > 255 ? 255 : defaultBlue + deltaBlue;
-		
-		return new Color(deltaRed, deltaGreen, deltaBlue);
+
+		return new Color(deltaRed, deltaGreen, deltaBlue, 255);
 	}
 
 	@Override

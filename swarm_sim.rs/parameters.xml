@@ -6,29 +6,41 @@
 						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
 									
 		/>
+				<parameter name="random_consecutive_move" displayName="random_consecutive_move" type="int" 
+						defaultValue="1" 
+						isReadOnly="false" 
+						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
+									
+		/>
 				<parameter name="randomSeed" displayName="Default Random Seed" type="int" 
 						defaultValue="__NULL__"
 						isReadOnly="false" 
 						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
 									
 		/>
-				<parameter name="communication_scope" displayName="Communication scope [m]" type="int" 
-						defaultValue="20" 
+				<parameter name="pauseOnBBfound" displayName="pauseOnBBfound" type="boolean" 
+						defaultValue="false" 
 						isReadOnly="false" 
-						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
+						converter="repast.simphony.parameter.StringConverterFactory$BooleanConverter"
+									
+		/>
+				<parameter name="communication_scope" displayName="Communication scope [m]" type="double" 
+						defaultValue="20.0" 
+						isReadOnly="false" 
+						converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter"
 									
 		/>
 				<parameter name="blackbox_agent" displayName="Blackbox Agent" type="java.lang.String" 
-						defaultValue="BB_RandomExplorerWithComm" 
+						defaultValue="BB_AgentAvoiderComm" 
 						isReadOnly="false" 
 						converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter"
-									values="BB_RandomExplorerNoComm BB_RandomExplorerWithComm "
+									values="BB_Random BB_RandomComm BB_PheromoneAvoider BB_RandomPoint BB_AgentAvoiderComm"
 						
 		/>
-				<parameter name="perception_scope" displayName="Perception scope [m]" type="int" 
-						defaultValue="3" 
+				<parameter name="perception_scope" displayName="Perception scope [m]" type="double" 
+						defaultValue="1" 
 						isReadOnly="false" 
-						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
+						converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter"
 									
 		/>
 		</parameters>
