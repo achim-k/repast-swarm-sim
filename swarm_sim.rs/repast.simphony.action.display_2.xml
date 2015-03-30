@@ -11,15 +11,11 @@
       <string>repast.simphony.visualization.editedStyle.EditedStyle2D</string>
     </entry>
     <entry>
-      <string>swarm_sim.blackbox.BB_RandomExplorerWithComm</string>
+      <string>swarm_sim.blackbox.BB_Random</string>
       <string>swarm_sim.AgentStyle</string>
     </entry>
     <entry>
-      <string>swarm_sim.blackbox.BB_PheromoneExplorerNoComm</string>
-      <string>swarm_sim.AgentStyle</string>
-    </entry>
-    <entry>
-      <string>swarm_sim.blackbox.BB_RandomPointExplorerNoComm</string>
+      <string>swarm_sim.blackbox.BB_PheromoneAvoider</string>
       <string>swarm_sim.AgentStyle</string>
     </entry>
     <entry>
@@ -27,12 +23,16 @@
       <string>swarm_sim.AgentStyle</string>
     </entry>
     <entry>
-      <string>swarm_sim.blackbox.BB_RandomExplorerNoComm</string>
+      <string>swarm_sim.blackbox.BB_RandomPoint</string>
       <string>swarm_sim.AgentStyle</string>
     </entry>
     <entry>
       <string>swarm_sim.blackbox.Blackbox</string>
       <string>repast.simphony.visualization.editedStyle.EditedStyle2D</string>
+    </entry>
+    <entry>
+      <string>swarm_sim.blackbox.BB_RandomComm</string>
+      <string>swarm_sim.AgentStyle</string>
     </entry>
   </styles>
   <editedStyles>
@@ -45,15 +45,11 @@
       <string>swarm_sim.Pheromone.style_0.xml</string>
     </entry>
     <entry>
-      <string>swarm_sim.blackbox.BB_RandomExplorerWithComm</string>
+      <string>swarm_sim.blackbox.BB_Random</string>
       <null/>
     </entry>
     <entry>
-      <string>swarm_sim.blackbox.BB_PheromoneExplorerNoComm</string>
-      <null/>
-    </entry>
-    <entry>
-      <string>swarm_sim.blackbox.BB_RandomPointExplorerNoComm</string>
+      <string>swarm_sim.blackbox.BB_PheromoneAvoider</string>
       <null/>
     </entry>
     <entry>
@@ -61,12 +57,16 @@
       <null/>
     </entry>
     <entry>
-      <string>swarm_sim.blackbox.BB_RandomExplorerNoComm</string>
+      <string>swarm_sim.blackbox.BB_RandomPoint</string>
       <null/>
     </entry>
     <entry>
       <string>swarm_sim.blackbox.Blackbox</string>
       <string>swarm_sim.blackbox.Blackbox.style_3.xml</string>
+    </entry>
+    <entry>
+      <string>swarm_sim.blackbox.BB_RandomComm</string>
+      <null/>
     </entry>
   </editedStyles>
   <netStyles>
@@ -104,28 +104,28 @@
       <int>0</int>
     </entry>
     <entry>
-      <string>swarm_sim.blackbox.BB_RandomExplorerWithComm</string>
-      <int>4</int>
-    </entry>
-    <entry>
-      <string>swarm_sim.blackbox.BB_PheromoneExplorerNoComm</string>
-      <int>2</int>
-    </entry>
-    <entry>
-      <string>swarm_sim.blackbox.BB_RandomPointExplorerNoComm</string>
+      <string>swarm_sim.blackbox.BB_Random</string>
       <int>3</int>
     </entry>
     <entry>
-      <string>swarm_sim.blackbox.BB_AgentAvoiderComm</string>
-      <int>1</int>
+      <string>swarm_sim.blackbox.BB_PheromoneAvoider</string>
+      <int>4</int>
     </entry>
     <entry>
-      <string>swarm_sim.blackbox.BB_RandomExplorerNoComm</string>
+      <string>swarm_sim.blackbox.BB_AgentAvoiderComm</string>
       <int>5</int>
+    </entry>
+    <entry>
+      <string>swarm_sim.blackbox.BB_RandomPoint</string>
+      <int>1</int>
     </entry>
     <entry>
       <string>swarm_sim.blackbox.Blackbox</string>
       <int>6</int>
+    </entry>
+    <entry>
+      <string>swarm_sim.blackbox.BB_RandomComm</string>
+      <int>2</int>
     </entry>
   </layerOrder>
   <projections>

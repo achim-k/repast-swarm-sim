@@ -78,12 +78,6 @@ public class BlackboxContext extends DefaultContext<Agent> {
 			this.add(agent);
 		}
 		
-		ScanData s = new ScanData(8, 1, 1);
-		s.addData(0.4, 0.2);
-		System.out.println(s.getPrintable("a"));
-		s.normalize();
-		System.out.println(s.getPrintable("a"));
-		
 		System.out.println("BlackBoxContext loaded!");
 	}
 }

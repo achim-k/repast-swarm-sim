@@ -1,0 +1,44 @@
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  SIGSEGV (0xb) at pc=0x00007f0188cb66f4, pid=14012, tid=139644282853120
+#
+# JRE version: OpenJDK Runtime Environment (7.0_75-b13) (build 1.7.0_75-b13)
+# Java VM: OpenJDK 64-Bit Server VM (24.75-b04 mixed mode linux-amd64 compressed oops)
+# Derivative: IcedTea 2.5.4
+# Distribution: Ubuntu 14.04 LTS, package 7u75-2.5.4-1~trusty1
+# Problematic frame:
+# V  [libjvm.so+0x5456f4]  GCTimer::register_gc_phase_end(Ticks const&)+0x24
+#
+# Failed to write core dump. Core dumps have been disabled. To enable core dumping, try "ulimit -c unlimited" before starting Java again
+#
+# If you would like to submit a bug report, please include
+# instructions on how to reproduce the bug and visit:
+#   http://icedtea.classpath.org/bugzilla
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x00007f0180078800):  VMThread [stack: 0x00007f0177cfd000,0x00007f0177dfe000] [id=14025]
+
+siginfo:si_signo=SIGSEGV: si_errno=0, si_code=1 (SEGV_MAPERR), si_addr=0x0000000000000018
+
+Registers:
+RAX=0x0000000000000001, RBX=0x00007f01895592e0, RCX=0x0000000000000000, RDX=0x0000000000000005
+RSP=0x00007f0177dfc650, RBP=0x00007f0177dfc690, RSI=0x00007f0177dfc6a0, RDI=0x00007f01895592e0
+R8 =0x0000000000000000, R9 =0x0000000000000001, R10=0x000000005515735f, R11=0x000000000094101c
+R12=0x00007f0177dfc6a0, R13=0x00007f018002a980, R14=0x00007f018001b150, R15=0x00007f0177dfc8d0
+RIP=0x00007f0188cb66f4, EFLAGS=0x0000000000010202, CSGSFS=0x0000000000000033, ERR=0x0000000000000004
+  TRAPNO=0x000000000000000e
+
+Top of Stack: (sp=0x00007f0177dfc650)
+0x00007f0177dfc650:   00007f0177dfc670 00007f0188f363d3
+0x00007f0177dfc660:   000000005515735f 00000000000a33bb
+0x00007f0177dfc670:   00007f0177dfc690 00007f0189079811
+0x00007f0177dfc680:   00007f017d1e40a0 00007f0177dfc8b0
+0x00007f0177dfc690:   00007f0177dfc6e0 00007f0188cbacd2
+0x00007f0177dfc6a0:   00000000064f7c94 000000008002a980
+0x00007f0177dfc6b0:   00007f0177dfc6e0 0000000000000004
+0x00007f0177dfc6c0:   00007f0177dfc890 00007f0177dfc890
+0x00007f0177dfc6d0:   0000000000000004 00007f018002a980
+0x00007f0177dfc6e0:   
