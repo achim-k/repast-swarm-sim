@@ -12,6 +12,7 @@ import repast.simphony.space.SpatialMath;
 import repast.simphony.space.continuous.NdPoint;
 import swarm_sim.Agent;
 import swarm_sim.DisplayAgent;
+import swarm_sim.ScanCircle;
 
 /**
  * Agent which explores the space randomly while searching for the blackbox.

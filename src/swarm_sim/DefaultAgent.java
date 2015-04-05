@@ -54,8 +54,7 @@ public class DefaultAgent extends DefaultNetworkAgent implements Agent {
 			else
 				scenario.redundantExploredAreaCount++;
 			exploredArea.set(gridValue + 1, location[0], location[1]);
-		}
-		
+		}		
 	}
 	
 	public VSpatial getShape(ShapeFactory2D shapeFactory) {

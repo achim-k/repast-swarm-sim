@@ -27,6 +27,10 @@
       <string>swarm_sim.AgentStyle</string>
     </entry>
     <entry>
+      <string>swarm_sim.blackbox.BB_AgentAvoiderMimicDirectionComm</string>
+      <string>swarm_sim.AgentStyle</string>
+    </entry>
+    <entry>
       <string>swarm_sim.blackbox.Blackbox</string>
       <string>repast.simphony.visualization.editedStyle.EditedStyle2D</string>
     </entry>
@@ -61,6 +65,10 @@
       <null/>
     </entry>
     <entry>
+      <string>swarm_sim.blackbox.BB_AgentAvoiderMimicDirectionComm</string>
+      <null/>
+    </entry>
+    <entry>
       <string>swarm_sim.blackbox.Blackbox</string>
       <string>swarm_sim.blackbox.Blackbox.style_3.xml</string>
     </entry>
@@ -84,12 +92,12 @@
   <frequency>ON_MOVE</frequency>
   <schedParams>
     <start>1.0</start>
-    <interval>5.0</interval>
+    <interval>10.0</interval>
     <priority>-Infinity</priority>
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>471215229</hashCode>
+    <hashCode>-1505343012</hashCode>
   </schedParams>
   <layoutClassName>foo.bar.baz</layoutClassName>
   <layoutProjection>space_continuous</layoutProjection>
@@ -97,7 +105,7 @@
   <layerOrder>
     <entry>
       <string>swarm_sim.BaseAgent</string>
-      <int>7</int>
+      <int>8</int>
     </entry>
     <entry>
       <string>swarm_sim.Pheromone</string>
@@ -113,15 +121,19 @@
     </entry>
     <entry>
       <string>swarm_sim.blackbox.BB_AgentAvoiderComm</string>
-      <int>5</int>
+      <int>6</int>
     </entry>
     <entry>
       <string>swarm_sim.blackbox.BB_RandomPoint</string>
       <int>1</int>
     </entry>
     <entry>
+      <string>swarm_sim.blackbox.BB_AgentAvoiderMimicDirectionComm</string>
+      <int>5</int>
+    </entry>
+    <entry>
       <string>swarm_sim.blackbox.Blackbox</string>
-      <int>6</int>
+      <int>7</int>
     </entry>
     <entry>
       <string>swarm_sim.blackbox.BB_RandomComm</string>

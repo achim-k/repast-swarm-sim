@@ -6,9 +6,6 @@ import repast.simphony.space.continuous.ContinuousSpace;
 import swarm_sim.Scenario.AgentDistancePairs;
 
 public class ControllerAgent implements Agent {
-
-	public static final int COMM_RANGE = 15000; /* in meters */
-
 	private Context<Agent> context;
 	private CommNet<Agent> commNet;
 	private ContinuousSpace<Agent> spaceContinuous;
@@ -24,6 +21,7 @@ public class ControllerAgent implements Agent {
 	}
 
 	public void step() {
+		
 		if (scenario.agentDistancePairs.size() == 0)
 			scenario.init();
 

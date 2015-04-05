@@ -6,12 +6,15 @@ import repast.simphony.engine.environment.RunEnvironment;
 import repast.simphony.engine.schedule.ISchedule;
 import repast.simphony.engine.schedule.ScheduleParameters;
 import repast.simphony.parameter.Parameters;
+import repast.simphony.random.RandomHelper;
 import repast.simphony.space.continuous.ContinuousSpace;
 import swarm_sim.Agent;
 import swarm_sim.Agent.AgentType;
+import swarm_sim.ScanCircle.AttractionType;
+import swarm_sim.ScanCircle.DistributionType;
+import swarm_sim.ScanCircle.GrowingDirection;
 import swarm_sim.BaseAgent;
-import swarm_sim.ScanData;
-import swarm_sim.ScanData;
+import swarm_sim.ScanCircle;
 import swarm_sim.Scenario;
 
 public class BlackboxContext extends DefaultContext<Agent> {
@@ -45,6 +48,8 @@ public class BlackboxContext extends DefaultContext<Agent> {
 			bbScenario.agentType = AgentType.BB_RandomPoint;
 		else if(bb_agent.equalsIgnoreCase("BB_AgentAvoiderComm"))
 			bbScenario.agentType = AgentType.BB_AgentAvoiderComm;
+		else if(bb_agent.equalsIgnoreCase("BB_AgentAvoiderMimicDirectionComm"))
+			bbScenario.agentType = AgentType.BB_AgentAvoiderMimicDirectionComm;
 			
 		/* spawn blackbox */
 		Blackbox bb = new Blackbox();
@@ -67,9 +72,15 @@ public class BlackboxContext extends DefaultContext<Agent> {
 				break;
 			case BB_PheromoneAvoider:
 				agent = new BB_PheromoneAvoider(this, parentContext);
+				break;
 			case BB_AgentAvoiderComm:
 				agent = new BB_AgentAvoiderComm(this, parentContext);
 				scenario.networkAgents.add(agent);
+				break;
+			case BB_AgentAvoiderMimicDirectionComm:
+				agent = new BB_AgentAvoiderMimicDirectionComm(this, parentContext);
+				scenario.networkAgents.add(agent);
+				break;
 			default:
 				break;
 			}
@@ -77,6 +88,21 @@ public class BlackboxContext extends DefaultContext<Agent> {
 			schedule.schedule(scheduleParams, agent, "step");
 			this.add(agent);
 		}
+		
+		
+		ScanCircle s = new ScanCircle(8, 1, 1, AttractionType.Appealing, DistributionType.Linear, GrowingDirection.Inner, 0, 10, 0.5, 2);
+		ScanCircle d = new ScanCircle(8, 1, 1, AttractionType.Appealing, DistributionType.Linear, GrowingDirection.Inner, 0, 10, 0.5, 2);
+		s.add(s.new InputPair(0.1, 0.5));
+		d.add(d.new InputPair(2.1, 0.5));
+		s.calculateDirectionDistribution();
+		d.calculateDirectionDistribution();
+		s.normalize();
+		d.normalize();
+		System.out.println(s.getPrintable(null));
+		System.out.println(d.getPrintable(null));
+		System.out.println(ScanCircle.getMerged(8, 0, s,d).getPrintable(null));
+		System.out.println(ScanCircle.getMerged(8, 0.10, s,d).getPrintable(null));
+//		System.out.println(ScanCircle.getMerged(8, s).getPrintable(""));
 		
 		System.out.println("BlackBoxContext loaded!");
 	}

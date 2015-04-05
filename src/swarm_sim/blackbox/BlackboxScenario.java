@@ -16,6 +16,8 @@ public class BlackboxScenario {
 
 	public Blackbox blackboxAgent;
 	
+
+	
 	public AgentType agentType;
 	
 	private BlackboxScenario() {

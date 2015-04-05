@@ -2,6 +2,7 @@ package swarm_sim.blackbox;
 
 import repast.simphony.context.Context;
 import repast.simphony.engine.environment.RunEnvironment;
+import repast.simphony.random.RandomHelper;
 import repast.simphony.space.SpatialMath;
 import repast.simphony.space.continuous.NdPoint;
 import swarm_sim.Agent;
@@ -10,26 +11,36 @@ import swarm_sim.ScanCircle;
 import swarm_sim.ScanCircle.AttractionType;
 import swarm_sim.ScanCircle.DistributionType;
 import swarm_sim.ScanCircle.GrowingDirection;
-import swarm_sim.ScanCircle.InputPair;
 import swarm_sim.communication.Message;
 import swarm_sim.communication.MsgBlackboxFound;
+import swarm_sim.communication.MsgCurrentDirection;
 import swarm_sim.communication.NetworkAgent;
 
-public class BB_AgentAvoiderComm extends DefaultBlackboxAgent implements
+public class BB_AgentAvoiderMimicDirectionComm extends DefaultBlackboxAgent implements
 		Agent, DisplayAgent {
 
 	static int agentNo;
 	
-	ScanCircle agentRepellingScan = new ScanCircle(8, 1, 1, AttractionType.Repelling, DistributionType.Linear, GrowingDirection.Inner, 0, scenario.commScope, 0.2, 1);
+	ScanCircle agentRepellingScan = new ScanCircle(8, 1, 1, AttractionType.Repelling, DistributionType.Linear, GrowingDirection.Inner, 0, 0.8*scenario.commScope, 0.5, 2);
+	ScanCircle agentAppealingScan = new ScanCircle(8, 1, 1.5, AttractionType.Appealing, DistributionType.Linear, GrowingDirection.Outer, 0.9*scenario.commScope, scenario.commScope, 0.5, 2);
+	ScanCircle agentMimicMoveScan = new ScanCircle(8, 1, 1, AttractionType.Appealing, DistributionType.Linear, GrowingDirection.Outer, 0, scenario.commScope, 0.5, 0.5);
+	
 	
 	public void step() {
-		processMessageQueue();
+		agentMimicMoveScan.clear();
+		agentAppealingScan.clear();
+		agentRepellingScan.clear();
 		
-		move();
+		if(currentLocation == null)
+			currentLocation = space.getLocation(this);
+		
+		processMessageQueue();
 		if (scanEnv()) {
 			bbScenario.blackboxFound();
 			state = agentState.blackbox_found;
 		}
+		move();
+		
 		if (state == agentState.blackbox_found) {
 			/* tell others */
 			for (Agent agent : commNet.getAdjacent(this)) {
@@ -38,14 +49,25 @@ public class BB_AgentAvoiderComm extends DefaultBlackboxAgent implements
 						null));
 			}
 			
+		} else {
+			/* tell others current direction */
+			for (Agent agent : commNet.getAdjacent(this)) {
+				NetworkAgent netAgent = (NetworkAgent) agent;
+				netAgent.addToMessageQueue(new MsgCurrentDirection(this, agent,
+						directionAngle));
+			}
 		}
 		prevState = state;
 	}
 	
 	private void processMessageQueue() {
+		agentMimicMoveScan.clear();
 		Message msg = popMessage();
 		while (msg != null) {
 			switch (msg.getType()) {
+			case Current_Direction:
+				agentMimicMoveScan.add((double)msg.getData());
+				break;
 			case Location:
 				break;
 			case Blackbox_found:
@@ -62,13 +84,10 @@ public class BB_AgentAvoiderComm extends DefaultBlackboxAgent implements
 		double speed = scenario.agentMovementSpeed;
 
 		if (state == agentState.exploring) {
-			/* Explore environment randomly */
-			double cameFromAngle = directionAngle + Math.PI;
-			cameFromAngle = cameFromAngle > Math.PI ? cameFromAngle - 2
-					* Math.PI : cameFromAngle;
+			agentMimicMoveScan.add(directionAngle);
+			agentMimicMoveScan.add(3*Math.PI/4);
+			ScanCircle resulting = ScanCircle.getMerged(8, 0.10, agentAppealingScan, agentRepellingScan, agentMimicMoveScan);
 			
-			agentRepellingScan.add(agentRepellingScan.new InputPair(cameFromAngle, scenario.commScope/2.0));
-			ScanCircle resulting = ScanCircle.getMerged(8, 0, agentRepellingScan);
 			directionAngle = resulting.getMovementAngle();
 
 			currentLocation = space
@@ -106,18 +125,18 @@ public class BB_AgentAvoiderComm extends DefaultBlackboxAgent implements
 	private boolean scanEnv() {
 
 		/* Pheromone scan */
-		agentRepellingScan.clear();
 
 		for (Agent agent : commNet.getAdjacent(this)) {
 			
 			switch (agent.getAgentType()) {
-			case BB_AgentAvoiderComm:
+			case BB_AgentAvoiderMimicDirectionComm:
 				double angle = SpatialMath.calcAngleFor2DMovement(space,
 						currentLocation, space.getLocation(agent));
 				double distance = space.getDistance(space.getLocation(this),
 						space.getLocation(agent));
 				
 				agentRepellingScan.add(agentRepellingScan.new InputPair(angle, distance));
+				agentAppealingScan.add(agentAppealingScan.new InputPair(angle, distance));
 				break;
 			default:
 				break;
@@ -133,7 +152,7 @@ public class BB_AgentAvoiderComm extends DefaultBlackboxAgent implements
 		return false;
 	}
 
-	public BB_AgentAvoiderComm(Context<Agent> context,
+	public BB_AgentAvoiderMimicDirectionComm(Context<Agent> context,
 			Context<Agent> rootContext) {
 		super(context, rootContext);
 		agentNo++;
@@ -142,12 +161,12 @@ public class BB_AgentAvoiderComm extends DefaultBlackboxAgent implements
 
 	@Override
 	public String getName() {
-		return "BB_AgentAvoiderComm" + agentNo;
+		return "BB_AgentAvoiderMimicDirectionComm" + agentNo;
 	}
 
 	@Override
 	public AgentType getAgentType() {
-		return AgentType.BB_AgentAvoiderComm;
+		return AgentType.BB_AgentAvoiderMimicDirectionComm;
 	}
 
 }

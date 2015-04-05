@@ -11,6 +11,6 @@ public interface Message {
 	
 	public enum MessageType {
 		Location,
-		Blackbox_found,
+		Blackbox_found, Current_Direction,
 	}
 }

@@ -31,10 +31,10 @@
 									
 		/>
 				<parameter name="blackbox_agent" displayName="Blackbox Agent" type="java.lang.String" 
-						defaultValue="BB_AgentAvoiderComm" 
+						defaultValue="BB_AgentAvoiderMimicDirectionComm" 
 						isReadOnly="false" 
 						converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter"
-									values="BB_Random BB_RandomComm BB_PheromoneAvoider BB_RandomPoint BB_AgentAvoiderComm"
+									values="BB_Random BB_RandomComm BB_PheromoneAvoider BB_RandomPoint BB_AgentAvoiderComm BB_AgentAvoiderMimicDirectionComm"
 						
 		/>
 				<parameter name="perception_scope" displayName="Perception scope [m]" type="double" 

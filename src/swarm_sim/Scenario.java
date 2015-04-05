@@ -30,7 +30,6 @@ public class Scenario implements Agent {
 	private static Scenario instance = null;
 	
 	protected Scenario() {
-		
 	}
 
 	public static Scenario getInstance() {

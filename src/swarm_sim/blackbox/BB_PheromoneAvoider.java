@@ -12,7 +12,6 @@ import repast.simphony.space.continuous.NdPoint;
 import swarm_sim.Agent;
 import swarm_sim.DisplayAgent;
 import swarm_sim.Pheromone;
-import swarm_sim.ScanData;
 import swarm_sim.communication.MsgBlackboxFound;
 import swarm_sim.communication.NetworkAgent;
 
@@ -22,7 +21,7 @@ public class BB_PheromoneAvoider extends DefaultBlackboxAgent implements
 	static int agentNo;
 	List<Agent> pheromonesInRange = new ArrayList<Agent>();
 
-	ScanData pheromoneScan = new ScanData(8, scenario.perceptionScope, 1);
+//	ScanData pheromoneScan = new ScanData(8, scenario.perceptionScope, 1);
 
 	public void step() {
 		move();
@@ -42,8 +41,8 @@ public class BB_PheromoneAvoider extends DefaultBlackboxAgent implements
 			cameFromAngle = cameFromAngle > Math.PI ? cameFromAngle - 2
 					* Math.PI : cameFromAngle;
 			
-			pheromoneScan.addData(cameFromAngle, 0.2);
-			directionAngle = pheromoneScan.getMovementAngle();
+//			pheromoneScan.addData(cameFromAngle, 0.2);
+//			directionAngle = pheromoneScan.getMovementAngle();
 //			System.out.println(pheromoneScan.getPrintable("a"));
 //			System.out.println("→ " + directionAngle);
 
@@ -94,7 +93,7 @@ public class BB_PheromoneAvoider extends DefaultBlackboxAgent implements
 
 		/* Pheromone scan */
 		pheromonesInRange.clear();
-		pheromoneScan.clear();
+//		pheromoneScan.clear();
 
 		ContinuousWithin<Agent> withinQuery = new ContinuousWithin<Agent>(
 				space, this, scenario.perceptionScope);
@@ -106,7 +105,7 @@ public class BB_PheromoneAvoider extends DefaultBlackboxAgent implements
 						currentLocation, space.getLocation(agent));
 				double distance = space.getDistance(space.getLocation(this),
 						space.getLocation(agent));
-				pheromoneScan.addData(angle, distance);
+//				pheromoneScan.addData(angle, distance);
 
 				// System.out.print("Angle: " + String.format("%.2f", angle) +
 				// "Dist: " + String.format("%.1f", distance));

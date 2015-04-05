@@ -1,5 +1,7 @@
 package swarm_sim;
 
+import edu.uci.ics.jung.algorithms.shortestpath.DijkstraDistance;
+import edu.uci.ics.jung.algorithms.shortestpath.DijkstraShortestPath;
 import repast.simphony.context.Context;
 import repast.simphony.context.space.graph.ContextJungNetwork;
 import repast.simphony.space.graph.RepastEdge;
@@ -17,5 +19,6 @@ public class CommNet<T> extends ContextJungNetwork<T> {
 		for (RepastEdge<T> edge : edges) {
 			this.addEdge(edge);
 		}
+		
 	}
 }
