@@ -34,11 +34,11 @@
 						defaultValue="BB_AgentAvoiderMimicDirectionComm" 
 						isReadOnly="false" 
 						converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter"
-									values="BB_Random BB_RandomComm BB_PheromoneAvoider BB_RandomPoint BB_AgentAvoiderComm BB_AgentAvoiderMimicDirectionComm"
+									values="BB_Random BB_RandomComm BB_PheromoneAvoider BB_RandomPoint BB_AgentAvoiderComm BB_AgentAvoiderMimicDirectionComm BB_RandomObstacleAvoider"
 						
 		/>
 				<parameter name="perception_scope" displayName="Perception scope [m]" type="double" 
-						defaultValue="1" 
+						defaultValue="2" 
 						isReadOnly="false" 
 						converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter"
 									

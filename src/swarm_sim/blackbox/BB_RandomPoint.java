@@ -34,12 +34,14 @@ public class BB_RandomPoint extends DefaultBlackboxAgent implements
 	}
 
 	public void step() {
+		defaultStepStart();
 		move();
 		if (scanEnv()) {
 			bbScenario.blackboxFound();
 			state = agentState.blackbox_found;
 		}
 		prevState = state;
+		defaultStepEnd();
 	}
 
 	private void move() {
@@ -74,7 +76,6 @@ public class BB_RandomPoint extends DefaultBlackboxAgent implements
 				RunEnvironment.getInstance().endRun();
 			}
 		}
-		updateExploredLayer();
 	}
 	
 	private void determineRandomPointAndDirection() {

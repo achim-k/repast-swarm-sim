@@ -1,6 +1,8 @@
 package swarm_sim;
 
 import java.awt.BorderLayout;
+import java.awt.image.BufferedImage;
+import java.io.File;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -22,6 +24,7 @@ import repast.simphony.space.SpatialMath;
 import repast.simphony.space.continuous.RandomCartesianAdder;
 import repast.simphony.ui.RSApplication;
 import repast.simphony.valueLayer.GridValueLayer;
+import swarm_sim.AdvancedGridValueLayer.FieldType;
 import swarm_sim.blackbox.Blackbox;
 import swarm_sim.blackbox.BlackboxContext;
 import swarm_sim.blackbox.BlackboxScenario;
@@ -53,11 +56,17 @@ public class RootContextBuilder implements ContextBuilder<Agent> {
 		scenario.randomConsecutiveMoves = params.getInteger("random_consecutive_move");
 
 
+		/* Value layer to track explored area, default: 0.0 */
+		AdvancedGridValueLayer exploredArea = new AdvancedGridValueLayer(
+				"layer_explored", 0.0, false, spaceWidth, spaceHeight);
+		context.addValueLayer(exploredArea);
+		readMapFromImage(exploredArea, "data/map_obstacles.png");
+		
 		/* Create continuous space */
 		ContinuousSpaceFactory spaceFactory = ContinuousSpaceFactoryFinder
 				.createContinuousSpaceFactory(null);
 		
-		PseudoRandomAdder<Agent> adder = new PseudoRandomAdder<Agent>();
+		PseudoRandomAdder<Agent> adder = new PseudoRandomAdder<Agent>(exploredArea);
 		adder.setRandomAdderSaveClass(BaseAgent.class);
 		adder.addRandomAdderClass(Blackbox.class);
 		
@@ -72,11 +81,6 @@ public class RootContextBuilder implements ContextBuilder<Agent> {
 		/* Create comm network (holds only edges of agents which are within communication range */
 		CommNet<Agent> commNet = new CommNet<>("network_comm", context);
 		context.addProjection(commNet);
-
-		/* Value layer to track explored area, default: 0.0 */
-		AdvancedGridValueLayer exploredArea = new AdvancedGridValueLayer(
-				"layer_explored", 0.0, false, spaceWidth, spaceHeight);
-		context.addValueLayer(exploredArea);
 		
 		/* Add scenario context */
 		context.addSubContext(new BlackboxContext(context, "content_blackbox"));
@@ -106,7 +110,28 @@ public class RootContextBuilder implements ContextBuilder<Agent> {
 		JButton OKButton = new JButton("OK");
 		panel.add(OKButton,BorderLayout.CENTER);
 		RSApplication.getRSApplicationInstance().addCustomUserPanel(panel);
-
+		
 		return context;
+	}
+	
+	private void readMapFromImage(AdvancedGridValueLayer exploredArea, String image) {
+		try {
+			BufferedImage map = javax.imageio.ImageIO.read(new File(image));
+			
+			for (int x = 0; x < map.getWidth(); x++) {
+				for (int y = 0; y < map.getHeight(); y++) {
+					double pixelValue = map.getData().getSampleDouble(x, y, 0);
+					
+					if(pixelValue == AdvancedGridValueLayer.ObstaclePixelValue)
+						exploredArea.setFieldType(FieldType.Obstacle, x,y);
+					else
+						exploredArea.setFieldType(FieldType.Default, x,y);
+				}
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 }

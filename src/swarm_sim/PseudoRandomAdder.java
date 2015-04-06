@@ -8,6 +8,7 @@ import repast.simphony.random.RandomHelper;
 import repast.simphony.space.Dimensions;
 import repast.simphony.space.continuous.ContinuousAdder;
 import repast.simphony.space.continuous.ContinuousSpace;
+import swarm_sim.AdvancedGridValueLayer.FieldType;
 
 /**
  * This will place certain objects at a random location in the space. Other objects will be 
@@ -20,6 +21,11 @@ public class PseudoRandomAdder<T> implements ContinuousAdder<T> {
 	double[] savedLocation = new double[2];
 	List<Class> randomAddClasses = new ArrayList<>();
 	List<T> addQueue = new ArrayList<>();
+	AdvancedGridValueLayer exploredArea;
+	
+	public PseudoRandomAdder(AdvancedGridValueLayer exploredArea) {
+		this.exploredArea = exploredArea;
+	}
 	
 	
 	/**
@@ -53,7 +59,7 @@ public class PseudoRandomAdder<T> implements ContinuousAdder<T> {
 		Dimensions dims = space.getDimensions();
 		double[] location = new double[dims.size()];
 		findLocation(location, dims);
-		while (!space.moveTo(obj, location)) {
+		while (!space.moveTo(obj, location) || exploredArea.getFieldType(location[0], location[1]) == FieldType.Obstacle) {
 			findLocation(location, dims);
 		}
 		return location;

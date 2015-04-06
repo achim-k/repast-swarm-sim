@@ -8,9 +8,12 @@ import repast.simphony.space.continuous.NdPoint;
 import swarm_sim.Agent;
 import swarm_sim.DisplayAgent;
 import swarm_sim.ScanCircle;
+import swarm_sim.AdvancedGridValueLayer.FieldDistancePair;
+import swarm_sim.AdvancedGridValueLayer.FieldType;
 import swarm_sim.ScanCircle.AttractionType;
 import swarm_sim.ScanCircle.DistributionType;
 import swarm_sim.ScanCircle.GrowingDirection;
+import swarm_sim.ScanCircle.InputPair;
 import swarm_sim.communication.Message;
 import swarm_sim.communication.MsgBlackboxFound;
 import swarm_sim.communication.MsgCurrentDirection;
@@ -19,20 +22,18 @@ import swarm_sim.communication.NetworkAgent;
 public class BB_AgentAvoiderMimicDirectionComm extends DefaultBlackboxAgent implements
 		Agent, DisplayAgent {
 
-	static int agentNo;
-	
 	ScanCircle agentRepellingScan = new ScanCircle(8, 1, 1, AttractionType.Repelling, DistributionType.Linear, GrowingDirection.Inner, 0, 0.8*scenario.commScope, 0.5, 2);
 	ScanCircle agentAppealingScan = new ScanCircle(8, 1, 1.5, AttractionType.Appealing, DistributionType.Linear, GrowingDirection.Outer, 0.9*scenario.commScope, scenario.commScope, 0.5, 2);
 	ScanCircle agentMimicMoveScan = new ScanCircle(8, 1, 1, AttractionType.Appealing, DistributionType.Linear, GrowingDirection.Outer, 0, scenario.commScope, 0.5, 0.5);
-	
+	ScanCircle obstacles = new ScanCircle(8, 1, 5, AttractionType.Repelling, DistributionType.Linear, GrowingDirection.Inner, 0,
+			scenario.perceptionScope, 2, 2);
 	
 	public void step() {
+		defaultStepStart();
 		agentMimicMoveScan.clear();
 		agentAppealingScan.clear();
 		agentRepellingScan.clear();
-		
-		if(currentLocation == null)
-			currentLocation = space.getLocation(this);
+		obstacles.clear();
 		
 		processMessageQueue();
 		if (scanEnv()) {
@@ -58,6 +59,7 @@ public class BB_AgentAvoiderMimicDirectionComm extends DefaultBlackboxAgent impl
 			}
 		}
 		prevState = state;
+		defaultStepEnd();
 	}
 	
 	private void processMessageQueue() {
@@ -82,11 +84,21 @@ public class BB_AgentAvoiderMimicDirectionComm extends DefaultBlackboxAgent impl
 
 	private void move() {
 		double speed = scenario.agentMovementSpeed;
+		
+		/* check for obstacles */
+		for (FieldDistancePair field : surroundingFields) {
+			if (field.fieldType == FieldType.Obstacle) {
+				double angle = SpatialMath.calcAngleFor2DMovement(space,
+						currentLocation, new NdPoint(field.x, field.y));
+				obstacles.add(obstacles.new InputPair(angle, field.distance));
+			}
+		}
 
 		if (state == agentState.exploring) {
 			agentMimicMoveScan.add(directionAngle);
-			agentMimicMoveScan.add(3*Math.PI/4);
-			ScanCircle resulting = ScanCircle.getMerged(8, 0.10, agentAppealingScan, agentRepellingScan, agentMimicMoveScan);
+			
+//			agentMimicMoveScan.add(3*Math.PI/4);
+			ScanCircle resulting = ScanCircle.merge(8, 0.12, agentAppealingScan, agentRepellingScan, agentMimicMoveScan, obstacles);
 			
 			directionAngle = resulting.getMovementAngle();
 
@@ -119,11 +131,10 @@ public class BB_AgentAvoiderMimicDirectionComm extends DefaultBlackboxAgent impl
 				RunEnvironment.getInstance().endRun();
 			}
 		}
-		updateExploredLayer();
 	}
 
 	private boolean scanEnv() {
-
+		exploredArea.getFieldsRadial(currentLocation, scenario.perceptionScope);
 		/* Pheromone scan */
 
 		for (Agent agent : commNet.getAdjacent(this)) {
@@ -155,13 +166,12 @@ public class BB_AgentAvoiderMimicDirectionComm extends DefaultBlackboxAgent impl
 	public BB_AgentAvoiderMimicDirectionComm(Context<Agent> context,
 			Context<Agent> rootContext) {
 		super(context, rootContext);
-		agentNo++;
 	}
 
 
 	@Override
 	public String getName() {
-		return "BB_AgentAvoiderMimicDirectionComm" + agentNo;
+		return "BB_AgentAvoiderMimicDirectionComm_" + agentId;
 	}
 
 	@Override

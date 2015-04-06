@@ -241,7 +241,7 @@ public class ScanCircle {
 	 * @param scans
 	 * @return
 	 */
-	public static ScanCircle getMerged(int bins, double surpressRandom, ScanCircle... scans) {
+	public static ScanCircle merge(int bins, double surpressRandom, ScanCircle... scans) {
 		ScanCircle merged = new ScanCircle(bins);
 
 		for (ScanCircle scanCircle : scans) {

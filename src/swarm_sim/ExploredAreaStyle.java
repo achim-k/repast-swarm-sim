@@ -1,15 +1,15 @@
 package swarm_sim;
 
 import java.awt.Color;
+
 import repast.simphony.visualization.editedStyle.DefaultEditedValueLayerStyleData2D;
-
-
 import repast.simphony.valueLayer.ValueLayer;
 import repast.simphony.visualization.visualization2D.style.DefaultValueLayerStyle;
 import repast.simphony.visualizationOGL2D.ValueLayerStyleOGL;
+import swarm_sim.AdvancedGridValueLayer.FieldType;
 
 public class ExploredAreaStyle implements ValueLayerStyleOGL {
-	private ValueLayer layer;
+	private AdvancedGridValueLayer layer;
 	int defaultRed = 130;
 	int defaultGreen = 130;
 	int defaultBlue = 130;
@@ -17,9 +17,17 @@ public class ExploredAreaStyle implements ValueLayerStyleOGL {
 	@Override
 	public Color getColor(double... coordinates) {
 		double val = layer.get(coordinates);
+		FieldType fieldType = layer.getFieldType(coordinates);
 		int deltaRed = 0, deltaGreen = 0, deltaBlue = 0;
 		double tmpRed=0, tmpBlue=0, tmpGreen =0;
 	
+		if(fieldType == FieldType.Obstacle) {
+			if(val > 0)
+				return Color.DARK_GRAY;
+			return Color.BLACK;
+		}
+		
+		
 		if (val >= 1) {
 			deltaRed = 70;
 			deltaGreen = 40;
@@ -50,7 +58,7 @@ public class ExploredAreaStyle implements ValueLayerStyleOGL {
 
 	@Override
 	public void init(ValueLayer layer) {
-		this.layer = layer;
+		this.layer = (AdvancedGridValueLayer) layer;
 	}
 
 

@@ -31,6 +31,7 @@ public class BB_RandomComm extends DefaultBlackboxAgent implements
 	}
 
 	public void step() {
+		defaultStepStart();
 		processMessageQueue();
 		move();
 		if (scanEnv()) {
@@ -46,6 +47,7 @@ public class BB_RandomComm extends DefaultBlackboxAgent implements
 			}
 		}
 		prevState = state;
+		defaultStepEnd();
 	}
 
 	private void processMessageQueue() {
@@ -98,7 +100,6 @@ public class BB_RandomComm extends DefaultBlackboxAgent implements
 				RunEnvironment.getInstance().endRun();
 			}
 		}
-		updateExploredLayer();
 	}
 
 	private boolean scanEnv() {

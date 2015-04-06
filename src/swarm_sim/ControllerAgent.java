@@ -8,16 +8,18 @@ import swarm_sim.Scenario.AgentDistancePairs;
 public class ControllerAgent implements Agent {
 	private Context<Agent> context;
 	private CommNet<Agent> commNet;
-	private ContinuousSpace<Agent> spaceContinuous;
+	private ContinuousSpace<Agent> space;
+	protected AdvancedGridValueLayer exploredArea;
 
 	private Scenario scenario;
 
 	public ControllerAgent(Context<Agent> context, Scenario scenario) {
 		this.context = context;
 		this.commNet = context.getProjection(CommNet.class, "network_comm");
-		this.spaceContinuous = (ContinuousSpace<Agent>) context.getProjection(
+		this.space = (ContinuousSpace<Agent>) context.getProjection(
 				ContinuousSpace.class, "space_continuous");
 		this.scenario = scenario;
+		this.exploredArea = (AdvancedGridValueLayer) context.getValueLayer("layer_explored");
 	}
 
 	public void step() {
@@ -33,16 +35,19 @@ public class ControllerAgent implements Agent {
 			boolean toBeChecked = (tick - agentPair.lastTimeChecked) * 2
 					* scenario.agentMovementSpeed >= Math
 					.abs(agentPair.distance - scenario.commScope);
-//			toBeChecked = true;
+
 			if (toBeChecked) {
-				agentPair.distance = spaceContinuous.getDistance(
-						spaceContinuous.getLocation(agentPair.source),
-						spaceContinuous.getLocation(agentPair.target));
+				agentPair.distance = space.getDistance(
+						space.getLocation(agentPair.source),
+						space.getLocation(agentPair.target));
 				agentPair.lastTimeChecked = tick;
 			}
 
-			if (agentPair.distance <= scenario.commScope)
+			if (agentPair.distance <= scenario.commScope && !exploredArea.isObstacleOnLine(space.getLocation(agentPair.source), space.getLocation(agentPair.target)))
 				commNet.addEdge(agentPair.source, agentPair.target);
+//			
+//			if(exploredArea.isObstacleOnLine(space.getLocation(agentPair.source), space.getLocation(agentPair.target)))
+//				System.err.println("ahoh");
 		}
 
 //		commNet.removeEdges();

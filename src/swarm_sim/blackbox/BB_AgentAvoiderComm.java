@@ -23,6 +23,7 @@ public class BB_AgentAvoiderComm extends DefaultBlackboxAgent implements
 	ScanCircle agentRepellingScan = new ScanCircle(8, 1, 1, AttractionType.Repelling, DistributionType.Linear, GrowingDirection.Inner, 0, scenario.commScope, 0.2, 1);
 	
 	public void step() {
+		defaultStepStart();
 		processMessageQueue();
 		
 		move();
@@ -40,6 +41,7 @@ public class BB_AgentAvoiderComm extends DefaultBlackboxAgent implements
 			
 		}
 		prevState = state;
+		defaultStepEnd();
 	}
 	
 	private void processMessageQueue() {
@@ -68,7 +70,7 @@ public class BB_AgentAvoiderComm extends DefaultBlackboxAgent implements
 					* Math.PI : cameFromAngle;
 			
 			agentRepellingScan.add(agentRepellingScan.new InputPair(cameFromAngle, scenario.commScope/2.0));
-			ScanCircle resulting = ScanCircle.getMerged(8, 0, agentRepellingScan);
+			ScanCircle resulting = ScanCircle.merge(8, 0, agentRepellingScan);
 			directionAngle = resulting.getMovementAngle();
 
 			currentLocation = space
@@ -100,7 +102,6 @@ public class BB_AgentAvoiderComm extends DefaultBlackboxAgent implements
 				RunEnvironment.getInstance().endRun();
 			}
 		}
-		updateExploredLayer();
 	}
 
 	private boolean scanEnv() {

@@ -24,12 +24,14 @@ public class BB_PheromoneAvoider extends DefaultBlackboxAgent implements
 //	ScanData pheromoneScan = new ScanData(8, scenario.perceptionScope, 1);
 
 	public void step() {
+		defaultStepStart();
 		move();
 		if (scanEnv()) {
 			bbScenario.blackboxFound();
 			state = agentState.blackbox_found;
 		}
 		prevState = state;
+		defaultStepEnd();
 	}
 
 	private void move() {
@@ -86,7 +88,6 @@ public class BB_PheromoneAvoider extends DefaultBlackboxAgent implements
 				RunEnvironment.getInstance().endRun();
 			}
 		}
-		updateExploredLayer();
 	}
 
 	private boolean scanEnv() {

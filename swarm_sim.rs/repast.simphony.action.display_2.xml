@@ -15,6 +15,10 @@
       <string>swarm_sim.AgentStyle</string>
     </entry>
     <entry>
+      <string>swarm_sim.blackbox.BB_RandomObstacleAvoider</string>
+      <string>swarm_sim.AgentStyle</string>
+    </entry>
+    <entry>
       <string>swarm_sim.blackbox.BB_PheromoneAvoider</string>
       <string>swarm_sim.AgentStyle</string>
     </entry>
@@ -50,6 +54,10 @@
     </entry>
     <entry>
       <string>swarm_sim.blackbox.BB_Random</string>
+      <null/>
+    </entry>
+    <entry>
+      <string>swarm_sim.blackbox.BB_RandomObstacleAvoider</string>
       <null/>
     </entry>
     <entry>
@@ -105,7 +113,7 @@
   <layerOrder>
     <entry>
       <string>swarm_sim.BaseAgent</string>
-      <int>8</int>
+      <int>9</int>
     </entry>
     <entry>
       <string>swarm_sim.Pheromone</string>
@@ -113,31 +121,35 @@
     </entry>
     <entry>
       <string>swarm_sim.blackbox.BB_Random</string>
-      <int>3</int>
-    </entry>
-    <entry>
-      <string>swarm_sim.blackbox.BB_PheromoneAvoider</string>
       <int>4</int>
     </entry>
     <entry>
-      <string>swarm_sim.blackbox.BB_AgentAvoiderComm</string>
-      <int>6</int>
-    </entry>
-    <entry>
-      <string>swarm_sim.blackbox.BB_RandomPoint</string>
+      <string>swarm_sim.blackbox.BB_RandomObstacleAvoider</string>
       <int>1</int>
     </entry>
     <entry>
-      <string>swarm_sim.blackbox.BB_AgentAvoiderMimicDirectionComm</string>
+      <string>swarm_sim.blackbox.BB_PheromoneAvoider</string>
       <int>5</int>
     </entry>
     <entry>
-      <string>swarm_sim.blackbox.Blackbox</string>
+      <string>swarm_sim.blackbox.BB_AgentAvoiderComm</string>
       <int>7</int>
     </entry>
     <entry>
-      <string>swarm_sim.blackbox.BB_RandomComm</string>
+      <string>swarm_sim.blackbox.BB_RandomPoint</string>
       <int>2</int>
+    </entry>
+    <entry>
+      <string>swarm_sim.blackbox.BB_AgentAvoiderMimicDirectionComm</string>
+      <int>6</int>
+    </entry>
+    <entry>
+      <string>swarm_sim.blackbox.Blackbox</string>
+      <int>8</int>
+    </entry>
+    <entry>
+      <string>swarm_sim.blackbox.BB_RandomComm</string>
+      <int>3</int>
     </entry>
   </layerOrder>
   <projections>

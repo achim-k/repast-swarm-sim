@@ -1,9 +1,4 @@
-
-
-
 package swarm_sim.blackbox;
-
-import java.awt.Color;
 
 import repast.simphony.context.Context;
 import repast.simphony.engine.environment.RunEnvironment;
@@ -13,6 +8,12 @@ import repast.simphony.space.continuous.NdPoint;
 import swarm_sim.Agent;
 import swarm_sim.DisplayAgent;
 import swarm_sim.ScanCircle;
+import swarm_sim.AdvancedGridValueLayer.FieldDistancePair;
+import swarm_sim.AdvancedGridValueLayer.FieldType;
+import swarm_sim.ScanCircle.AttractionType;
+import swarm_sim.ScanCircle.DistributionType;
+import swarm_sim.ScanCircle.GrowingDirection;
+import swarm_sim.ScanCircle.InputPair;
 
 /**
  * Agent which explores the space randomly while searching for the blackbox.
@@ -22,41 +23,65 @@ import swarm_sim.ScanCircle;
  * @author achim
  * 
  */
-public class BB_Random extends DefaultBlackboxAgent implements
+public class BB_RandomObstacleAvoider extends DefaultBlackboxAgent implements
 		Agent, DisplayAgent {
 
-	private static int agentNo = 1;
-	
-	
-
-	public BB_Random(Context<Agent> context,
+	public BB_RandomObstacleAvoider(Context<Agent> context,
 			Context<Agent> rootContext) {
 		super(context, rootContext);
-		agentNo++;
 	}
+
+	ScanCircle obstacles = new ScanCircle(8, 1, 1, AttractionType.Repelling,
+			DistributionType.Linear, GrowingDirection.Inner, 0,
+			scenario.perceptionScope, 2, 2);
 
 	public void step() {
 		defaultStepStart();
+
 		move();
+		
+		
 		if (scanEnv()) {
 			bbScenario.blackboxFound();
-			state = agentState.blackbox_found;
+//			state = agentState.blackbox_found;
 		}
 		prevState = state;
 		defaultStepEnd();
 	}
 
 	private void move() {
+		obstacles.clear();
 		double speed = scenario.agentMovementSpeed;
+
+		/* check for obstacles */
+		for (FieldDistancePair field : surroundingFields) {
+			if (field.fieldType == FieldType.Obstacle) {
+				double angle = SpatialMath.calcAngleFor2DMovement(space,
+						currentLocation, new NdPoint(field.x, field.y));
+				obstacles.add(obstacles.new InputPair(angle, field.distance));
+			}
+		}
 
 		if (state == agentState.exploring) {
 			/* Explore environment randomly */
-			if(consecutiveMoveCount >= scenario.randomConsecutiveMoves) {
-				directionAngle = RandomHelper.nextDoubleFromTo(-Math.PI, Math.PI);
-				currentLocation = space.moveByVector(this, speed, directionAngle, 0);
+			if (consecutiveMoveCount >= scenario.randomConsecutiveMoves) {
+				ScanCircle resulting = ScanCircle.merge(8, 0.12, obstacles);
+				directionAngle = resulting.getMovementAngle();
+//				System.out.println(resulting.getPrintable(null));
+				
+				currentLocation = space.moveByVector(this, speed,
+						directionAngle, 0);
+				if(exploredArea.getFieldType(currentLocation.getX(), currentLocation.getY()) == FieldType.Obstacle) {
+					System.out.println(resulting.getPrintable(null));
+					System.err.println("bad!!!");
+					
+				}
+				
+				
 				consecutiveMoveCount = 1;
 			} else {
-				currentLocation = space.moveByVector(this, speed, directionAngle, 0);
+				currentLocation = space.moveByVector(this, speed,
+						directionAngle, 0);
 				consecutiveMoveCount++;
 			}
 		} else if (state == agentState.blackbox_found) {
@@ -92,12 +117,11 @@ public class BB_Random extends DefaultBlackboxAgent implements
 
 	@Override
 	public String getName() {
-		return "RandomExplorerNoComm" + agentNo;
+		return "BB_RandomObstacleAvoider" + agentId;
 	}
 
 	@Override
 	public AgentType getAgentType() {
-		return AgentType.BB_Random;
+		return AgentType.BB_RandomObstacleAvoider;
 	}
 }
-

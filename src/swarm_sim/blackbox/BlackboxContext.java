@@ -50,6 +50,8 @@ public class BlackboxContext extends DefaultContext<Agent> {
 			bbScenario.agentType = AgentType.BB_AgentAvoiderComm;
 		else if(bb_agent.equalsIgnoreCase("BB_AgentAvoiderMimicDirectionComm"))
 			bbScenario.agentType = AgentType.BB_AgentAvoiderMimicDirectionComm;
+		else if(bb_agent.equalsIgnoreCase("BB_RandomObstacleAvoider"))
+			bbScenario.agentType = AgentType.BB_RandomObstacleAvoider;
 			
 		/* spawn blackbox */
 		Blackbox bb = new Blackbox();
@@ -81,6 +83,9 @@ public class BlackboxContext extends DefaultContext<Agent> {
 				agent = new BB_AgentAvoiderMimicDirectionComm(this, parentContext);
 				scenario.networkAgents.add(agent);
 				break;
+			case BB_RandomObstacleAvoider:
+				agent = new BB_RandomObstacleAvoider(this, parentContext);
+				break;
 			default:
 				break;
 			}
@@ -100,8 +105,8 @@ public class BlackboxContext extends DefaultContext<Agent> {
 		d.normalize();
 		System.out.println(s.getPrintable(null));
 		System.out.println(d.getPrintable(null));
-		System.out.println(ScanCircle.getMerged(8, 0, s,d).getPrintable(null));
-		System.out.println(ScanCircle.getMerged(8, 0.10, s,d).getPrintable(null));
+		System.out.println(ScanCircle.merge(8, 0, s,d).getPrintable(null));
+		System.out.println(ScanCircle.merge(8, 0.10, s,d).getPrintable(null));
 //		System.out.println(ScanCircle.getMerged(8, s).getPrintable(""));
 		
 		System.out.println("BlackBoxContext loaded!");
