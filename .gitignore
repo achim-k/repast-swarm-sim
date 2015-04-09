@@ -1,5 +1,6 @@
 .project
 .classpath
 bin/
+output/
 debug.log*
 velocity.log*

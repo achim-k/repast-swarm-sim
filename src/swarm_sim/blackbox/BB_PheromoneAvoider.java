@@ -1,31 +1,39 @@
 package swarm_sim.blackbox;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import repast.simphony.context.Context;
 import repast.simphony.engine.environment.RunEnvironment;
 import repast.simphony.query.space.continuous.ContinuousWithin;
-import repast.simphony.random.RandomHelper;
 import repast.simphony.space.SpatialMath;
 import repast.simphony.space.continuous.NdPoint;
+import swarm_sim.AdvancedGridValueLayer.FieldDistancePair;
+import swarm_sim.AdvancedGridValueLayer.FieldType;
 import swarm_sim.Agent;
 import swarm_sim.DisplayAgent;
 import swarm_sim.Pheromone;
-import swarm_sim.communication.MsgBlackboxFound;
-import swarm_sim.communication.NetworkAgent;
+import swarm_sim.ScanCircle;
+import swarm_sim.ScanCircle.AttractionType;
+import swarm_sim.ScanCircle.DistributionType;
+import swarm_sim.ScanCircle.GrowingDirection;
 
 public class BB_PheromoneAvoider extends DefaultBlackboxAgent implements
 		Agent, DisplayAgent {
 
-	static int agentNo;
-	List<Agent> pheromonesInRange = new ArrayList<Agent>();
-
-//	ScanData pheromoneScan = new ScanData(8, scenario.perceptionScope, 1);
+	ScanCircle pheromones = new ScanCircle(8, 1, 4, 1, AttractionType.Repelling, DistributionType.Linear, GrowingDirection.Inner, scenario.agentMovementSpeed,
+			scenario.perceptionScope, 1, 1);
+	ScanCircle obstacles = new ScanCircle(8, 1, 5, AttractionType.Repelling, DistributionType.Linear, GrowingDirection.Inner, 0,
+			scenario.perceptionScope, 1, 2);
+	ScanCircle followDirection = new ScanCircle(8, 1, 1, AttractionType.Appealing, DistributionType.Linear, GrowingDirection.Inner, 0,
+			scenario.perceptionScope, 2, 2);
 
 	public void step() {
 		defaultStepStart();
+		pheromones.clear();
+		obstacles.clear();
+		followDirection.clear();
+		
 		move();
+		
+		
 		if (scanEnv()) {
 			bbScenario.blackboxFound();
 			state = agentState.blackbox_found;
@@ -37,36 +45,48 @@ public class BB_PheromoneAvoider extends DefaultBlackboxAgent implements
 	private void move() {
 		double speed = scenario.agentMovementSpeed;
 
+		/* check for obstacles */
+		for (FieldDistancePair field : surroundingFields) {
+			if (field.fieldType == FieldType.Obstacle) {
+				double angle = SpatialMath.calcAngleFor2DMovement(space,
+						currentLocation, new NdPoint(field.x, field.y));
+				obstacles.add(obstacles.new InputPair(angle, field.distance));
+			}
+		}
+		
+		/* Pheromone scan */
+		ContinuousWithin<Agent> withinQuery = new ContinuousWithin<Agent>(
+				space, this, scenario.perceptionScope);
+		for (Agent agent : withinQuery.query()) {
+			switch (agent.getAgentType()) {
+			case Pheromone:
+				double angle = SpatialMath.calcAngleFor2DMovement(space,
+						currentLocation, space.getLocation(agent));
+				double distance = space.getDistance(space.getLocation(this),
+						space.getLocation(agent));
+				pheromones.add(angle, distance);
+				break;
+			default:
+				break;
+			}
+		}
+		
 		if (state == agentState.exploring) {
-			/* Explore environment randomly */
-			double cameFromAngle = directionAngle + Math.PI;
-			cameFromAngle = cameFromAngle > Math.PI ? cameFromAngle - 2
-					* Math.PI : cameFromAngle;
 			
-//			pheromoneScan.addData(cameFromAngle, 0.2);
-//			directionAngle = pheromoneScan.getMovementAngle();
-//			System.out.println(pheromoneScan.getPrintable("a"));
-//			System.out.println("→ " + directionAngle);
-
-			// directionAngle += Math.PI;
-			directionAngle = directionAngle > 2 * Math.PI ? directionAngle - 2
-					* Math.PI : directionAngle;
-
+			followDirection.add(directionAngle);
+			ScanCircle resulting = ScanCircle.merge(8, 0.08, pheromones, followDirection, obstacles);
+			directionAngle = resulting.getMovementAngle();
+			
 			currentLocation = space
 					.moveByVector(this, speed, directionAngle, 0);
-
-			if (consecutiveMoveCount >= scenario.randomConsecutiveMoves) {
-				consecutiveMoveCount = 1;
-				/* lay Pheromone */
-				if (pheromonesInRange.size() < 1) {
-					Pheromone p = new Pheromone();
-					context.add(p);
-					space.moveTo(p, currentLocation.getX(),
-							currentLocation.getY());
-				}
-			} else {
-				consecutiveMoveCount++;
+			
+			if(consecutiveMoveCount % scenario.randomConsecutiveMoves == 0 && pheromones.getInputCount() == 0)
+			{
+				Pheromone p = new Pheromone();
+				context.add(p);
+				space.moveTo(p, currentLocation.getX(), currentLocation.getY());
 			}
+			consecutiveMoveCount++;
 
 		} else if (state == agentState.blackbox_found) {
 			/* Go back to base */
@@ -81,7 +101,7 @@ public class BB_PheromoneAvoider extends DefaultBlackboxAgent implements
 					currentLocation, baseLocation);
 			currentLocation = space.moveByVector(this, moveDistance,
 					movementAngle, 0);
-
+			
 			if (moveDistance <= 0.2) {
 				System.out
 						.println("Agent which found BB has arrived at Base, end of Simulation");
@@ -91,34 +111,6 @@ public class BB_PheromoneAvoider extends DefaultBlackboxAgent implements
 	}
 
 	private boolean scanEnv() {
-
-		/* Pheromone scan */
-		pheromonesInRange.clear();
-//		pheromoneScan.clear();
-
-		ContinuousWithin<Agent> withinQuery = new ContinuousWithin<Agent>(
-				space, this, scenario.perceptionScope);
-		for (Agent agent : withinQuery.query()) {
-			switch (agent.getAgentType()) {
-			case Pheromone:
-				pheromonesInRange.add(agent);
-				double angle = SpatialMath.calcAngleFor2DMovement(space,
-						currentLocation, space.getLocation(agent));
-				double distance = space.getDistance(space.getLocation(this),
-						space.getLocation(agent));
-//				pheromoneScan.addData(angle, distance);
-
-				// System.out.print("Angle: " + String.format("%.2f", angle) +
-				// "Dist: " + String.format("%.1f", distance));
-				break;
-			default:
-				break;
-			}
-		}
-		// System.out.print("\n");
-		// System.out.println("r: " + pheromoneScan.getPrintable("a"));
-		// s.normalize();
-		// System.out.println("n: " + s.getPrintable("a"));
 
 		/* CHeck if bb in perception scope */
 		NdPoint baseLocation = space.getLocation(bbScenario.blackboxAgent);
@@ -132,31 +124,11 @@ public class BB_PheromoneAvoider extends DefaultBlackboxAgent implements
 	public BB_PheromoneAvoider(Context<Agent> context,
 			Context<Agent> rootContext) {
 		super(context, rootContext);
-		agentNo++;
-	}
-
-	public double getResultingAngle(List<Agent> agents) {
-		double dx = 0, dy = 0;
-
-		for (Agent agent : agents) {
-			double displacement[] = space.getDisplacement(
-					space.getLocation(this), space.getLocation(agent));
-			double distance = space.getDistance(space.getLocation(this),
-					space.getLocation(agent));
-
-			if (distance > 0) {
-				dx += (scenario.perceptionScope / distance) * displacement[0];
-				dy += (scenario.perceptionScope / distance) * displacement[1];
-			}
-		}
-
-		return SpatialMath.calcAngleFor2DMovement(space, new NdPoint(0, 0),
-				new NdPoint(dx, dy));
 	}
 
 	@Override
 	public String getName() {
-		return "BB_PheromoneAvoider" + agentNo;
+		return "BB_PheromoneAvoider" + agentId;
 	}
 
 	@Override

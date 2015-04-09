@@ -49,6 +49,9 @@ public class RootContextBuilder implements ContextBuilder<Agent> {
 		RunEnvironment runEnv = RunEnvironment.getInstance();
 		Parameters params = runEnv.getParameters();
 		Scenario scenario = Scenario.getInstance();
+		
+		/* Do not run more than 30k ticks */
+		runEnv.endAt(30000);
 
 		scenario.agentCount = params.getInteger("agent_count");
 		scenario.perceptionScope = params.getDouble("perception_scope");
@@ -60,7 +63,7 @@ public class RootContextBuilder implements ContextBuilder<Agent> {
 		AdvancedGridValueLayer exploredArea = new AdvancedGridValueLayer(
 				"layer_explored", 0.0, false, spaceWidth, spaceHeight);
 		context.addValueLayer(exploredArea);
-		readMapFromImage(exploredArea, "data/map_obstacles.png");
+		readMapFromImage(exploredArea, "data/map.png");
 		
 		/* Create continuous space */
 		ContinuousSpaceFactory spaceFactory = ContinuousSpaceFactoryFinder
@@ -106,10 +109,10 @@ public class RootContextBuilder implements ContextBuilder<Agent> {
 		scenario.baseAgent = base;		
 		scenario.networkAgents.add(base);
 		
-		JPanel panel = new JPanel();
-		JButton OKButton = new JButton("OK");
-		panel.add(OKButton,BorderLayout.CENTER);
-		RSApplication.getRSApplicationInstance().addCustomUserPanel(panel);
+//		JPanel panel = new JPanel();
+//		JButton OKButton = new JButton("OK");
+//		panel.add(OKButton,BorderLayout.CENTER);
+//		RSApplication.getRSApplicationInstance().addCustomUserPanel(panel);
 		
 		return context;
 	}

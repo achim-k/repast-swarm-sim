@@ -23,6 +23,10 @@ public class ControllerAgent implements Agent {
 	}
 
 	public void step() {
+//		for (int i = 0; i < scenario.movebins.length; i++) {
+//			System.out.print(scenario.movebins[i] + ", ");
+//		}
+//		System.out.println();
 		
 		if (scenario.agentDistancePairs.size() == 0)
 			scenario.init();

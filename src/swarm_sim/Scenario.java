@@ -25,6 +25,7 @@ public class Scenario implements Agent {
 	public int redundantExploredAreaCount = 0;
 	public int messagesSent = 0;
 	public int randomConsecutiveMoves = 1;
+	public int[] movebins = new int[8];
 
 	
 	private static Scenario instance = null;

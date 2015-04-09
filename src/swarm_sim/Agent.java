@@ -8,7 +8,7 @@ public interface Agent {
 		Scenario, Base,
 
 		/* Blackbox agents */
-		Blackbox, BB_Random, BB_RandomComm, BB_PheromoneAvoider, BB_RandomPoint, BB_AgentAvoiderComm, BB_AgentAvoiderMimicDirectionComm, BB_RandomObstacleAvoider,
+		Blackbox, BB_Random, BB_RandomComm, BB_PheromoneAvoider, BB_RandomPoint, BB_AgentAvoiderComm, BB_AgentAvoiderMimicDirectionComm, BB_RandomObstacleAvoider, BB_MemoryComm,
 	}
 
 	AgentType getAgentType();

@@ -6,6 +6,9 @@ import java.util.Random;
 
 import repast.simphony.random.RandomHelper;
 import sun.rmi.server.UnicastRef;
+import swarm_sim.ScanCircle.AttractionType;
+import swarm_sim.ScanCircle.DistributionType;
+import swarm_sim.ScanCircle.GrowingDirection;
 
 public class ScanCircle {
 	public enum AttractionType {
@@ -30,7 +33,8 @@ public class ScanCircle {
 	}
 
 	int bins;
-	int inputsUntilValid = 1;
+	int lowerValidLImit = 1;
+	int upperValidLimit = 0;
 	private boolean valid = false;
 	double variance = 1;
 	double mergeFactor = 1;
@@ -43,13 +47,14 @@ public class ScanCircle {
 	GrowingDirection growDirection = GrowingDirection.Inner;
 	List<InputPair> inputs = new ArrayList<>();
 	Double data[];
+	private boolean needsToBeUpdated = false;
 
 	public ScanCircle(int bins, int inputsUntilValid, double mergeFactor, AttractionType attrType,
 			DistributionType distType, GrowingDirection growDirection,
 			double minCircleDistance, double maxCircleDistance,
 			double minValue, double maxValue) {
 		this.bins = bins;
-		this.inputsUntilValid = this.inputsUntilValid;
+		this.lowerValidLImit = inputsUntilValid;
 		this.mergeFactor = mergeFactor;
 		this.attrType = attrType;
 		this.distType = distType;
@@ -78,7 +83,7 @@ public class ScanCircle {
 			DistributionType distType, double minCircleDistance,
 			double maxCircleDistance, double value) {
 		this.bins = bins;
-		this.inputsUntilValid = inputsUntilValid;
+		this.lowerValidLImit = inputsUntilValid;
 		this.mergeFactor = mergeFactor;
 		this.attrType = attrType;
 		this.distType = distType;
@@ -111,14 +116,47 @@ public class ScanCircle {
 		}
 	}
 
+	public ScanCircle(int bins, int lowerValidLimit, int upperValidLimit, double mergeFactor, AttractionType attrType,
+			DistributionType distType, GrowingDirection growDirection,
+			double minCircleDistance, double maxCircleDistance,
+			double minValue, double maxValue) {
+		this.bins = bins;
+		this.lowerValidLImit = lowerValidLimit;
+		this.upperValidLimit = upperValidLimit;
+		this.mergeFactor = mergeFactor;
+		this.attrType = attrType;
+		this.distType = distType;
+		this.innerCircleDistance = minCircleDistance;
+		this.outerCircleDistance = maxCircleDistance;
+		this.minValue = minValue;
+		this.maxValue = maxValue;
+		this.data = new Double[bins];
+
+		if (minCircleDistance >= maxCircleDistance)
+			System.err.println("minCircle needs to be smaller than maxCircle");
+		if (minValue > maxValue)
+			System.err.println("minValue needs to be smaller than maxValue");
+
+		/*
+		 * initialize data with same value for each bin (=same probability to go
+		 * in this direction)
+		 */
+		for (int i = 0; i < data.length; i++) {
+			data[i] = 0.5;
+		}
+	}
+
 	public void add(InputPair input) {
 		if (input.distance > outerCircleDistance
 				|| input.distance < innerCircleDistance)
 			return;
 
 		inputs.add(input);
-		if(!valid && inputs.size() >= inputsUntilValid)
+		needsToBeUpdated = true;
+		if(!valid && inputs.size() >= lowerValidLImit)
 			valid = true;
+		if(valid && inputs.size() > upperValidLimit)
+			valid = false;
 
 		if (distType == DistributionType.LinearFluid) {
 			/* min and max value are calculated online (fluid) */
@@ -133,7 +171,16 @@ public class ScanCircle {
 		this.add(new InputPair(angle, 1));
 	}
 	
+	public void add(double angle, double distance) {
+		this.add(new InputPair(angle, distance));
+	}
+	
 	public void calculateDirectionDistribution() {
+		if(!needsToBeUpdated )
+			return;
+		
+		needsToBeUpdated = false;
+		
 		double minMaxCircleDistance = outerCircleDistance - innerCircleDistance;
 		
 		double value = 0;
@@ -232,6 +279,10 @@ public class ScanCircle {
 		for (int i = 0; i < data.length; i++) {
 			data[i] = 0.5;
 		}
+	}
+	
+	public int getInputCount() {
+		return inputs.size();
 	}
 
 	/**
