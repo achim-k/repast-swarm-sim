@@ -38,7 +38,12 @@ public class BlackboxScenario {
 		blackboxFound = true;
 	}
 	
+	public boolean isBBFound() {
+		return blackboxFound;
+	}
+	
 	public void reset() {
 		blackboxFound = false;
+		pauseOnBBfound = false;
 	}
 }

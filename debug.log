@@ -1,61 +1,199 @@
-ERROR [AWT-EventQueue-0] 2015-03-25 10:54:07,097 repast.simphony.ui.RSApplication - Error while initializing simulation
-java.lang.IllegalArgumentException: Method swarm_sim.BaseAgent.step() not found!
-	at repast.simphony.engine.schedule.CallBackAction.initMethod(CallBackAction.java:101)
-	at repast.simphony.engine.schedule.CallBackAction.<init>(CallBackAction.java:79)
-	at repast.simphony.engine.schedule.DefaultActionFactory.createAction(DefaultActionFactory.java:45)
-	at repast.simphony.engine.schedule.DefaultSchedulableActionFactory.createAction(DefaultSchedulableActionFactory.java:81)
-	at repast.simphony.engine.schedule.Schedule.schedule(Schedule.java:191)
-	at swarm_sim.RootContextBuilder.build(RootContextBuilder.java:92)
-	at repast.simphony.dataLoader.engine.ClassNameContextBuilder.build(ClassNameContextBuilder.java:41)
-	at repast.simphony.dataLoader.engine.DataLoaderControllerAction.runInitialize(DataLoaderControllerAction.java:48)
-	at repast.simphony.engine.controller.DefaultController$2.visit(DefaultController.java:214)
-	at repast.simphony.engine.controller.DefaultController$2.visit(DefaultController.java:1)
-	at repast.simphony.util.collections.NaryTree.preOrderTraverals(NaryTree.java:287)
-	at repast.simphony.util.collections.NaryTree.preOrderTraverals(NaryTree.java:290)
-	at repast.simphony.util.collections.NaryTree.preOrderTraverals(NaryTree.java:290)
-	at repast.simphony.util.collections.NaryTree.preOrderTraversal(NaryTree.java:283)
-	at repast.simphony.engine.controller.DefaultController.runInitialize(DefaultController.java:212)
-	at repast.simphony.engine.controller.DefaultController.runInitialize(DefaultController.java:383)
-	at repast.simphony.ui.RSApplication.initSim(RSApplication.java:160)
-	at repast.simphony.ui.action.InitRun.actionPerformed(InitRun.java:17)
-	at javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:2018)
-	at javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2341)
-	at javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:402)
-	at javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:259)
-	at javax.swing.plaf.basic.BasicButtonListener.mouseReleased(BasicButtonListener.java:252)
-	at java.awt.AWTEventMulticaster.mouseReleased(AWTEventMulticaster.java:289)
-	at java.awt.Component.processMouseEvent(Component.java:6516)
-	at javax.swing.JComponent.processMouseEvent(JComponent.java:3312)
-	at java.awt.Component.processEvent(Component.java:6281)
-	at java.awt.Container.processEvent(Container.java:2229)
-	at java.awt.Component.dispatchEventImpl(Component.java:4872)
-	at java.awt.Container.dispatchEventImpl(Container.java:2287)
-	at java.awt.Component.dispatchEvent(Component.java:4698)
-	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4832)
-	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4492)
-	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4422)
-	at java.awt.Container.dispatchEventImpl(Container.java:2273)
-	at java.awt.Window.dispatchEventImpl(Window.java:2719)
-	at java.awt.Component.dispatchEvent(Component.java:4698)
-	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:740)
-	at java.awt.EventQueue.access$300(EventQueue.java:103)
-	at java.awt.EventQueue$3.run(EventQueue.java:699)
-	at java.awt.EventQueue$3.run(EventQueue.java:697)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
-	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:87)
-	at java.awt.EventQueue$4.run(EventQueue.java:713)
-	at java.awt.EventQueue$4.run(EventQueue.java:711)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
-	at java.awt.EventQueue.dispatchEvent(EventQueue.java:710)
-	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:242)
-	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:161)
-	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:150)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:146)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:138)
-	at java.awt.EventDispatchThread.run(EventDispatchThread.java:91)
-FATAL [Thread-6] 2015-03-25 11:29:34,173 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+INFO  [Thread-4] 2015-04-09 09:27:23,105 repast.simphony.batch.ssh.LocalSession - 	... 14 more
+INFO  [pool-2-thread-1] 2015-04-09 09:28:04,449 repast.simphony.batch.ssh.LocalDonePoller - Polled /tmp/simphony_model_1428564421494 for DONE:  yes
+INFO  [SwingWorker-pool-1-thread-2] 2015-04-09 09:28:04,451 repast.simphony.batch.ssh.SessionsDriver - Run Time: 1.0079
+INFO  [SwingWorker-pool-1-thread-2] 2015-04-09 09:28:04,503 repast.simphony.batch.ssh.LocalSession - Finding output on localhost in /tmp/simphony_model_1428564421494
+WARN  [SwingWorker-pool-1-thread-2] 2015-04-09 09:28:04,527 repast.simphony.batch.ssh.OutputFinder - No model output found matching glob:{**/,}/home/achim/repast_ouput/explored_area*.batch_param_map.txt in /tmp/simphony_model_1428564421494/instance_1
+WARN  [SwingWorker-pool-1-thread-2] 2015-04-09 09:28:04,527 repast.simphony.batch.ssh.OutputFinder - No model output found matching glob:{**/,}/home/achim/repast_ouput/explored_area*.txt in /tmp/simphony_model_1428564421494/instance_1
+WARN  [SwingWorker-pool-1-thread-2] 2015-04-09 09:28:04,528 repast.simphony.batch.ssh.OutputFinder - No model output found matching glob:{**/,}/home/achim/repast_ouput/explored_area*.batch_param_map.txt in /tmp/simphony_model_1428564421494/instance_2
+WARN  [SwingWorker-pool-1-thread-2] 2015-04-09 09:28:04,528 repast.simphony.batch.ssh.OutputFinder - No model output found matching glob:{**/,}/home/achim/repast_ouput/explored_area*.txt in /tmp/simphony_model_1428564421494/instance_2
+INFO  [SwingWorker-pool-1-thread-2] 2015-04-09 09:28:04,528 repast.simphony.batch.ssh.SessionsDriver - Aggregating output into /home/achim/workspace/swarm_sim/output
+INFO  [SwingWorker-pool-1-thread-2] 2015-04-09 09:28:04,530 repast.simphony.batch.ssh.SessionsDriver - Get Output Time: 0.0013
+INFO  [SwingWorker-pool-1-thread-2] 2015-04-09 09:28:04,530 repast.simphony.batch.ssh.SessionsDriver - Finished. Elapsed Time: 1.0508
+INFO  [AWT-EventQueue-0] 2015-04-09 09:32:14,266 repast.simphony.batch.gui.BatchConfigMediator - Writing batch run config file to: /home/achim/workspace/swarm_sim/output/config.props
+INFO  [AWT-EventQueue-0] 2015-04-09 09:32:14,275 repast.simphony.batch.gui.BatchConfigMediator - Unrolling batch parameter file:
+	/home/achim/workspace/swarm_sim/batch/batch_params.xml to
+	/tmp/unrolledParamFile.txt
+INFO  [AWT-EventQueue-0] 2015-04-09 09:32:19,121 repast.simphony.batch.gui.BatchConfigMediator - Writing batch run config file to: /home/achim/workspace/swarm_sim/output/config.props
+INFO  [AWT-EventQueue-0] 2015-04-09 09:32:19,123 repast.simphony.batch.gui.BatchConfigMediator - Unrolling batch parameter file:
+	/home/achim/workspace/swarm_sim/batch/batch_params.xml to
+	/tmp/unrolledParamFile.txt
+INFO  [SwingWorker-pool-1-thread-4] 2015-04-09 09:32:25,248 repast.simphony.batch.ssh.LocalSession - 
+	Copying locally /tmp/achim_localhost7879299916524036127.zip to 
+/tmp/simphony_model_1428564742729 ...
+INFO  [SwingWorker-pool-1-thread-4] 2015-04-09 09:32:25,449 repast.simphony.batch.ssh.LocalSession - Copying Finished.
+INFO  [SwingWorker-pool-1-thread-4] 2015-04-09 09:32:25,450 repast.simphony.batch.ssh.SessionsDriver - Initialization Time: 0.0453
+INFO  [SwingWorker-pool-1-thread-4] 2015-04-09 09:32:25,450 repast.simphony.batch.ssh.LocalSession - Unzipping model /tmp/simphony_model_1428564742729/achim_localhost7879299916524036127.zip
+INFO  [SwingWorker-pool-1-thread-4] 2015-04-09 09:32:25,837 repast.simphony.batch.ssh.LocalSession - Running model on localhost ...
+INFO  [Thread-5] 2015-04-09 09:32:42,714 repast.simphony.batch.ssh.LocalSession - BlackBoxContext loaded!
+INFO  [Thread-5] 2015-04-09 09:32:42,765 repast.simphony.batch.ssh.LocalSession - BlackBoxContext loaded!
+INFO  [Thread-5] 2015-04-09 09:32:42,919 repast.simphony.batch.ssh.LocalSession - bb found
+INFO  [Thread-5] 2015-04-09 09:32:42,963 repast.simphony.batch.ssh.LocalSession - Base got aware of BB-Location, end of Simulation
+INFO  [Thread-5] 2015-04-09 09:32:42,966 repast.simphony.batch.ssh.LocalSession - Base got aware of BB-Location, end of Simulation
+INFO  [Thread-5] 2015-04-09 09:32:43,174 repast.simphony.batch.ssh.LocalSession - bb found
+INFO  [Thread-5] 2015-04-09 09:32:43,273 repast.simphony.batch.ssh.LocalSession - Agent which found BB has arrived at Base, end of Simulation
+INFO  [Thread-5] 2015-04-09 09:32:44,273 repast.simphony.batch.ssh.LocalSession - BlackBoxContext loaded!
+INFO  [Thread-5] 2015-04-09 09:32:44,527 repast.simphony.batch.ssh.LocalSession - BlackBoxContext loaded!
+INFO  [Thread-5] 2015-04-09 09:32:45,657 repast.simphony.batch.ssh.LocalSession - bb found
+INFO  [Thread-5] 2015-04-09 09:32:45,667 repast.simphony.batch.ssh.LocalSession - bb found
+INFO  [Thread-5] 2015-04-09 09:32:45,691 repast.simphony.batch.ssh.LocalSession - Base got aware of BB-Location, end of Simulation
+INFO  [Thread-5] 2015-04-09 09:32:45,708 repast.simphony.batch.ssh.LocalSession - Base got aware of BB-Location, end of Simulation
+INFO  [Thread-5] 2015-04-09 09:32:45,709 repast.simphony.batch.ssh.LocalSession - Base got aware of BB-Location, end of Simulation
+INFO  [Thread-5] 2015-04-09 09:32:47,221 repast.simphony.batch.ssh.LocalSession - BlackBoxContext loaded!
+INFO  [Thread-5] 2015-04-09 09:32:47,269 repast.simphony.batch.ssh.LocalSession - BlackBoxContext loaded!
+INFO  [Thread-5] 2015-04-09 09:32:47,358 repast.simphony.batch.ssh.LocalSession - bb found
+INFO  [Thread-5] 2015-04-09 09:32:47,406 repast.simphony.batch.ssh.LocalSession - Base got aware of BB-Location, end of Simulation
+INFO  [Thread-5] 2015-04-09 09:32:47,816 repast.simphony.batch.ssh.LocalSession - bb found
+INFO  [Thread-5] 2015-04-09 09:32:47,819 repast.simphony.batch.ssh.LocalSession - bb found
+INFO  [Thread-5] 2015-04-09 09:32:47,820 repast.simphony.batch.ssh.LocalSession - bb found
+INFO  [Thread-5] 2015-04-09 09:32:47,821 repast.simphony.batch.ssh.LocalSession - bb found
+INFO  [Thread-5] 2015-04-09 09:32:47,832 repast.simphony.batch.ssh.LocalSession - Base got aware of BB-Location, end of Simulation
+INFO  [Thread-5] 2015-04-09 09:32:48,926 repast.simphony.batch.ssh.LocalSession - BlackBoxContext loaded!
+INFO  [Thread-5] 2015-04-09 09:32:49,111 repast.simphony.batch.ssh.LocalSession - bb found
+INFO  [Thread-5] 2015-04-09 09:32:49,111 repast.simphony.batch.ssh.LocalSession - bb found
+INFO  [Thread-5] 2015-04-09 09:32:49,127 repast.simphony.batch.ssh.LocalSession - Base got aware of BB-Location, end of Simulation
+INFO  [Thread-5] 2015-04-09 09:32:49,328 repast.simphony.batch.ssh.LocalSession - BlackBoxContext loaded!
+INFO  [Thread-5] 2015-04-09 09:32:49,686 repast.simphony.batch.ssh.LocalSession - bb found
+INFO  [Thread-5] 2015-04-09 09:32:49,687 repast.simphony.batch.ssh.LocalSession - bb found
+INFO  [Thread-5] 2015-04-09 09:32:49,700 repast.simphony.batch.ssh.LocalSession - Base got aware of BB-Location, end of Simulation
+INFO  [Thread-5] 2015-04-09 09:32:50,294 repast.simphony.batch.ssh.LocalSession - BlackBoxContext loaded!
+INFO  [Thread-5] 2015-04-09 09:32:50,358 repast.simphony.batch.ssh.LocalSession - bb found
+INFO  [Thread-5] 2015-04-09 09:32:50,389 repast.simphony.batch.ssh.LocalSession - Base got aware of BB-Location, end of Simulation
+INFO  [Thread-5] 2015-04-09 09:32:50,875 repast.simphony.batch.ssh.LocalSession - BlackBoxContext loaded!
+INFO  [Thread-5] 2015-04-09 09:32:50,949 repast.simphony.batch.ssh.LocalSession - bb found
+INFO  [Thread-5] 2015-04-09 09:32:50,956 repast.simphony.batch.ssh.LocalSession - Base got aware of BB-Location, end of Simulation
+INFO  [Thread-5] 2015-04-09 09:32:50,957 repast.simphony.batch.ssh.LocalSession - Base got aware of BB-Location, end of Simulation
+INFO  [Thread-5] 2015-04-09 09:32:51,467 repast.simphony.batch.ssh.LocalSession - BlackBoxContext loaded!
+INFO  [Thread-5] 2015-04-09 09:32:51,713 repast.simphony.batch.ssh.LocalSession - bb found
+INFO  [Thread-5] 2015-04-09 09:32:51,723 repast.simphony.batch.ssh.LocalSession - Base got aware of BB-Location, end of Simulation
+INFO  [pool-3-thread-1] 2015-04-09 09:33:25,838 repast.simphony.batch.ssh.LocalDonePoller - Polled /tmp/simphony_model_1428564742729 for DONE:  yes
+INFO  [SwingWorker-pool-1-thread-4] 2015-04-09 09:33:25,840 repast.simphony.batch.ssh.SessionsDriver - Run Time: 1.0065
+INFO  [SwingWorker-pool-1-thread-4] 2015-04-09 09:33:25,849 repast.simphony.batch.ssh.LocalSession - Finding output on localhost in /tmp/simphony_model_1428564742729
+WARN  [SwingWorker-pool-1-thread-4] 2015-04-09 09:33:25,850 repast.simphony.batch.ssh.OutputFinder - No model output found matching glob:{**/,}/home/achim/repast_ouput/explored_area*.batch_param_map.txt in /tmp/simphony_model_1428564742729/instance_1
+WARN  [SwingWorker-pool-1-thread-4] 2015-04-09 09:33:25,851 repast.simphony.batch.ssh.OutputFinder - No model output found matching glob:{**/,}/home/achim/repast_ouput/explored_area*.txt in /tmp/simphony_model_1428564742729/instance_1
+WARN  [SwingWorker-pool-1-thread-4] 2015-04-09 09:33:25,852 repast.simphony.batch.ssh.OutputFinder - No model output found matching glob:{**/,}/home/achim/repast_ouput/explored_area*.batch_param_map.txt in /tmp/simphony_model_1428564742729/instance_2
+WARN  [SwingWorker-pool-1-thread-4] 2015-04-09 09:33:25,852 repast.simphony.batch.ssh.OutputFinder - No model output found matching glob:{**/,}/home/achim/repast_ouput/explored_area*.txt in /tmp/simphony_model_1428564742729/instance_2
+INFO  [SwingWorker-pool-1-thread-4] 2015-04-09 09:33:25,852 repast.simphony.batch.ssh.SessionsDriver - Aggregating output into /home/achim/workspace/swarm_sim/output
+INFO  [SwingWorker-pool-1-thread-4] 2015-04-09 09:33:25,854 repast.simphony.batch.ssh.SessionsDriver - Get Output Time: 0.0002
+INFO  [SwingWorker-pool-1-thread-4] 2015-04-09 09:33:25,854 repast.simphony.batch.ssh.SessionsDriver - Finished. Elapsed Time: 1.0532
+INFO  [AWT-EventQueue-0] 2015-04-09 09:43:26,209 repast.simphony.batch.gui.BatchConfigMediator - Writing batch run config file to: /home/achim/workspace/swarm_sim/output/config.props
+INFO  [AWT-EventQueue-0] 2015-04-09 09:43:26,383 repast.simphony.batch.gui.BatchConfigMediator - Unrolling batch parameter file:
+	/home/achim/workspace/swarm_sim/batch/batch_params.xml to
+	/tmp/unrolledParamFile.txt
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-09 09:43:34,530 repast.simphony.batch.ssh.LocalSession - 
+	Copying locally /tmp/achim_localhost3972626331283336685.zip to 
+/tmp/simphony_model_1428565412094 ...
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-09 09:43:34,694 repast.simphony.batch.ssh.LocalSession - Copying Finished.
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-09 09:43:34,740 repast.simphony.batch.ssh.SessionsDriver - Initialization Time: 0.0433
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-09 09:43:34,740 repast.simphony.batch.ssh.LocalSession - Unzipping model /tmp/simphony_model_1428565412094/achim_localhost3972626331283336685.zip
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-09 09:43:35,143 repast.simphony.batch.ssh.LocalSession - Running model on localhost ...
+INFO  [Thread-7] 2015-04-09 09:43:51,566 repast.simphony.batch.ssh.LocalSession - BlackBoxContext loaded!
+INFO  [Thread-7] 2015-04-09 09:43:52,484 repast.simphony.batch.ssh.LocalSession - BlackBoxContext loaded!
+INFO  [Thread-7] 2015-04-09 09:43:52,595 repast.simphony.batch.ssh.LocalSession - bb found
+INFO  [Thread-7] 2015-04-09 09:43:52,596 repast.simphony.batch.ssh.LocalSession - bb found
+INFO  [Thread-7] 2015-04-09 09:43:52,597 repast.simphony.batch.ssh.LocalSession - bb found
+INFO  [Thread-7] 2015-04-09 09:43:52,646 repast.simphony.batch.ssh.LocalSession - Base got aware of BB-Location, end of Simulation
+INFO  [Thread-7] 2015-04-09 09:43:52,778 repast.simphony.batch.ssh.LocalSession - bb found
+INFO  [Thread-7] 2015-04-09 09:43:52,900 repast.simphony.batch.ssh.LocalSession - Agent which found BB has arrived at Base, end of Simulation
+INFO  [Thread-7] 2015-04-09 09:43:54,423 repast.simphony.batch.ssh.LocalSession - BlackBoxContext loaded!
+INFO  [Thread-7] 2015-04-09 09:43:54,601 repast.simphony.batch.ssh.LocalSession - bb found
+INFO  [Thread-7] 2015-04-09 09:43:54,623 repast.simphony.batch.ssh.LocalSession - Base got aware of BB-Location, end of Simulation
+INFO  [Thread-7] 2015-04-09 09:43:54,725 repast.simphony.batch.ssh.LocalSession - BlackBoxContext loaded!
+INFO  [Thread-7] 2015-04-09 09:43:54,807 repast.simphony.batch.ssh.LocalSession - bb found
+INFO  [Thread-7] 2015-04-09 09:43:54,857 repast.simphony.batch.ssh.LocalSession - Base got aware of BB-Location, end of Simulation
+INFO  [Thread-7] 2015-04-09 09:43:55,815 repast.simphony.batch.ssh.LocalSession - BlackBoxContext loaded!
+INFO  [Thread-7] 2015-04-09 09:43:56,068 repast.simphony.batch.ssh.LocalSession - BlackBoxContext loaded!
+INFO  [Thread-7] 2015-04-09 09:43:56,189 repast.simphony.batch.ssh.LocalSession - bb found
+INFO  [Thread-7] 2015-04-09 09:43:56,190 repast.simphony.batch.ssh.LocalSession - bb found
+INFO  [Thread-7] 2015-04-09 09:43:56,249 repast.simphony.batch.ssh.LocalSession - Base got aware of BB-Location, end of Simulation
+INFO  [Thread-7] 2015-04-09 09:43:56,404 repast.simphony.batch.ssh.LocalSession - bb found
+INFO  [Thread-7] 2015-04-09 09:43:56,405 repast.simphony.batch.ssh.LocalSession - bb found
+INFO  [Thread-7] 2015-04-09 09:43:56,456 repast.simphony.batch.ssh.LocalSession - Base got aware of BB-Location, end of Simulation
+INFO  [Thread-7] 2015-04-09 09:43:57,724 repast.simphony.batch.ssh.LocalSession - BlackBoxContext loaded!
+INFO  [Thread-7] 2015-04-09 09:43:57,737 repast.simphony.batch.ssh.LocalSession - BlackBoxContext loaded!
+INFO  [Thread-7] 2015-04-09 09:43:58,476 repast.simphony.batch.ssh.LocalSession - bb found
+INFO  [Thread-7] 2015-04-09 09:43:58,481 repast.simphony.batch.ssh.LocalSession - bb found
+INFO  [Thread-7] 2015-04-09 09:43:58,483 repast.simphony.batch.ssh.LocalSession - bb found
+INFO  [Thread-7] 2015-04-09 09:43:58,492 repast.simphony.batch.ssh.LocalSession - bb found
+INFO  [Thread-7] 2015-04-09 09:43:58,528 repast.simphony.batch.ssh.LocalSession - Base got aware of BB-Location, end of Simulation
+INFO  [Thread-7] 2015-04-09 09:43:58,540 repast.simphony.batch.ssh.LocalSession - bb found
+INFO  [Thread-7] 2015-04-09 09:43:58,542 repast.simphony.batch.ssh.LocalSession - bb found
+INFO  [Thread-7] 2015-04-09 09:43:58,550 repast.simphony.batch.ssh.LocalSession - Base got aware of BB-Location, end of Simulation
+INFO  [Thread-7] 2015-04-09 09:43:59,796 repast.simphony.batch.ssh.LocalSession - BlackBoxContext loaded!
+INFO  [Thread-7] 2015-04-09 09:43:59,798 repast.simphony.batch.ssh.LocalSession - BlackBoxContext loaded!
+INFO  [Thread-7] 2015-04-09 09:43:59,818 repast.simphony.batch.ssh.LocalSession - bb found
+INFO  [Thread-7] 2015-04-09 09:43:59,821 repast.simphony.batch.ssh.LocalSession - Base got aware of BB-Location, end of Simulation
+INFO  [Thread-7] 2015-04-09 09:43:59,898 repast.simphony.batch.ssh.LocalSession - bb found
+INFO  [Thread-7] 2015-04-09 09:43:59,901 repast.simphony.batch.ssh.LocalSession - bb found
+INFO  [Thread-7] 2015-04-09 09:43:59,901 repast.simphony.batch.ssh.LocalSession - bb found
+INFO  [Thread-7] 2015-04-09 09:43:59,929 repast.simphony.batch.ssh.LocalSession - Base got aware of BB-Location, end of Simulation
+INFO  [Thread-7] 2015-04-09 09:44:00,966 repast.simphony.batch.ssh.LocalSession - BlackBoxContext loaded!
+INFO  [Thread-7] 2015-04-09 09:44:01,246 repast.simphony.batch.ssh.LocalSession - bb found
+INFO  [Thread-7] 2015-04-09 09:44:01,250 repast.simphony.batch.ssh.LocalSession - Base got aware of BB-Location, end of Simulation
+INFO  [pool-2-thread-1] 2015-04-09 09:44:35,156 repast.simphony.batch.ssh.LocalDonePoller - Polled /tmp/simphony_model_1428565412094 for DONE:  yes
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-09 09:44:35,157 repast.simphony.batch.ssh.SessionsDriver - Run Time: 1.0070
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-09 09:44:35,190 repast.simphony.batch.ssh.LocalSession - Finding output on localhost in /tmp/simphony_model_1428565412094
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-09 09:44:35,233 repast.simphony.batch.ssh.SessionsDriver - Aggregating output into /home/achim/workspace/swarm_sim/output
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-09 09:44:35,245 repast.simphony.batch.ssh.SessionsDriver - Get Output Time: 0.0014
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-09 09:44:35,246 repast.simphony.batch.ssh.SessionsDriver - Finished. Elapsed Time: 1.0527
+INFO  [AWT-EventQueue-0] 2015-04-09 09:55:49,667 repast.simphony.batch.gui.BatchConfigMediator - Writing batch run config file to: /home/achim/workspace/swarm_sim/output/config.props
+INFO  [AWT-EventQueue-0] 2015-04-09 09:55:49,934 repast.simphony.batch.gui.BatchConfigMediator - Unrolling batch parameter file:
+	/home/achim/workspace/swarm_sim/batch/batch_params.xml to
+	/tmp/unrolledParamFile.txt
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-09 09:55:58,938 repast.simphony.batch.ssh.RemoteSession - 
+	Copying /tmp/achim_repast_1477134594466797361.zip to 
+	achim@repast_1:~/simphony_model_1428566155975/achim_repast_1477134594466797361.zip ...
+ERROR [SwingWorker-pool-1-thread-1] 2015-04-09 09:55:59,235 repast.simphony.batch.ssh.SessionsDriver - Error while creating connection to achim@repast_1
+com.jcraft.jsch.JSchException: java.net.UnknownHostException: repast_1
+	at com.jcraft.jsch.Util.createSocket(Util.java:341)
+	at com.jcraft.jsch.Session.connect(Session.java:194)
+	at com.jcraft.jsch.Session.connect(Session.java:162)
+	at repast.simphony.batch.ssh.SSHSessionFactory.create(SSHSessionFactory.java:74)
+	at repast.simphony.batch.ssh.RemoteSession.copyFile(RemoteSession.java:141)
+	at repast.simphony.batch.ssh.RemoteSession.initModelArchive(RemoteSession.java:134)
+	at repast.simphony.batch.ssh.SessionsDriver.run(SessionsDriver.java:58)
+	at repast.simphony.batch.gui.BatchConfigMediator$AntSessionRunner.doInBackground(BatchConfigMediator.java:466)
+	at repast.simphony.batch.gui.BatchConfigMediator$AntSessionRunner.doInBackground(BatchConfigMediator.java:1)
+	at javax.swing.SwingWorker$1.call(SwingWorker.java:296)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:262)
+	at javax.swing.SwingWorker.run(SwingWorker.java:335)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:615)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.net.UnknownHostException: repast_1
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:178)
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+	at java.net.Socket.connect(Socket.java:579)
+	at java.net.Socket.connect(Socket.java:528)
+	at java.net.Socket.<init>(Socket.java:425)
+	at java.net.Socket.<init>(Socket.java:208)
+	at com.jcraft.jsch.Util.createSocket(Util.java:335)
+	... 14 more
+INFO  [AWT-EventQueue-0] 2015-04-09 09:56:32,604 repast.simphony.batch.gui.BatchConfigMediator - Writing batch run config file to: /home/achim/workspace/swarm_sim/output/config.props
+INFO  [AWT-EventQueue-0] 2015-04-09 09:56:32,615 repast.simphony.batch.gui.BatchConfigMediator - Unrolling batch parameter file:
+	/home/achim/workspace/swarm_sim/batch/batch_params.xml to
+	/tmp/unrolledParamFile.txt
+INFO  [SwingWorker-pool-1-thread-2] 2015-04-09 09:56:38,968 repast.simphony.batch.ssh.RemoteSession - 
+	Copying /tmp/achim_10.126.128.33445611996178914954.zip to 
+	achim@10.126.128.33:~/simphony_model_1428566196315/achim_10.126.128.33445611996178914954.zip ...
+WARN  [SwingWorker-pool-1-thread-2] 2015-04-09 09:56:41,516 repast.simphony.batch.ssh.SSHSessionFactory - Permanently added '10.126.128.33' (RSA) to the list of known hosts.
+WARN  [SwingWorker-pool-1-thread-2] 2015-04-09 09:56:41,516 repast.simphony.batch.ssh.SSHSessionFactory - Permanently added '10.126.128.33' (RSA) to the list of known hosts.
+INFO  [SwingWorker-pool-1-thread-2] 2015-04-09 09:57:15,854 repast.simphony.batch.ssh.RemoteSession - Copying Finished.
+INFO  [SwingWorker-pool-1-thread-2] 2015-04-09 09:57:15,859 repast.simphony.batch.ssh.SessionsDriver - Initialization Time: 0.6590
+INFO  [SwingWorker-pool-1-thread-2] 2015-04-09 09:57:16,027 repast.simphony.batch.ssh.RemoteSession - Checking for java on achim@10.126.128.33
+INFO  [Connect thread 10.126.128.33 session] 2015-04-09 09:57:16,224 repast.simphony.batch.ssh.SSHSession - java version "1.7.0_65"
+
+INFO  [Connect thread 10.126.128.33 session] 2015-04-09 09:57:16,225 repast.simphony.batch.ssh.SSHSession - OpenJDK Runtime Environment (IcedTea 2.5.3) (7u71-2.5.3-0ubuntu0.14.04.1)
+
+INFO  [Connect thread 10.126.128.33 session] 2015-04-09 09:57:16,225 repast.simphony.batch.ssh.SSHSession - OpenJDK 64-Bit Server VM (build 24.65-b04, mixed mode)
+INFO  [SwingWorker-pool-1-thread-2] 2015-04-09 09:57:17,141 repast.simphony.batch.ssh.RemoteSession - Unzipping model on achim@10.126.128.33
+INFO  [SwingWorker-pool-1-thread-2] 2015-04-09 09:57:19,154 repast.simphony.batch.ssh.RemoteSession - Running model on achim@10.126.128.33 ...
+INFO  [pool-2-thread-1] 2015-04-09 09:58:21,302 repast.simphony.batch.ssh.RemoteDonePoller - Polled simphony_model_1428566196315 on 10.126.128.33 for DONE: yes
+INFO  [SwingWorker-pool-1-thread-2] 2015-04-09 09:58:21,305 repast.simphony.batch.ssh.SessionsDriver - Run Time: 1.0908
+INFO  [SwingWorker-pool-1-thread-2] 2015-04-09 09:58:21,883 repast.simphony.batch.ssh.RemoteSession - Finding and copying remote output from achim@10.126.128.33:simphony_model_1428566196315 to /tmp/achim_10.126.128.33
+INFO  [SwingWorker-pool-1-thread-2] 2015-04-09 09:58:22,764 repast.simphony.batch.ssh.SessionsDriver - Aggregating output into /home/achim/workspace/swarm_sim/output
+INFO  [SwingWorker-pool-1-thread-2] 2015-04-09 09:58:22,784 repast.simphony.batch.ssh.SessionsDriver - Get Output Time: 0.0246
+INFO  [SwingWorker-pool-1-thread-2] 2015-04-09 09:58:22,784 repast.simphony.batch.ssh.SessionsDriver - Finished. Elapsed Time: 1.7746
+FATAL [Thread-6] 2015-04-09 15:29:05,904 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
 Current tick (1.0)
 java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
 	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:129)
@@ -66,994 +204,32 @@ java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
 	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
 	at java.lang.Thread.run(Thread.java:745)
 Caused by: java.lang.reflect.InvocationTargetException
-	at swarm_sim.blackbox.BB_RandomExplorerWithComm$$FastClassByCGLIB$$f964bf4f.invoke(<generated>)
+	at swarm_sim.blackbox.BB_MemoryComm$$FastClassByCGLIB$$5a6cf648.invoke(<generated>)
 	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
 	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:127)
 	... 6 more
-Caused by: java.lang.NullPointerException
-	at repast.simphony.space.continuous.AbstractContinuousSpace.getDistanceSq(AbstractContinuousSpace.java:418)
-	at repast.simphony.space.continuous.AbstractContinuousSpace.getDistance(AbstractContinuousSpace.java:404)
-	at swarm_sim.blackbox.BB_RandomExplorerWithComm.move(BB_RandomExplorerWithComm.java:88)
-	at swarm_sim.blackbox.BB_RandomExplorerWithComm.step(BB_RandomExplorerWithComm.java:38)
+Caused by: java.lang.ArrayIndexOutOfBoundsException: 30
+	at swarm_sim.QuadrantMap.getRandomQuadrant(QuadrantMap.java:109)
+	at swarm_sim.blackbox.BB_MemoryComm.step(BB_MemoryComm.java:42)
 	... 9 more
-FATAL [Thread-6] 2015-03-25 19:08:17,258 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
-Current tick (1.0)
-java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
-	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:129)
-	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
-	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
-	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
-	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
-	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
-	at java.lang.Thread.run(Thread.java:745)
-Caused by: java.lang.reflect.InvocationTargetException
-	at swarm_sim.blackbox.BB_RandomExplorerNoComm$$FastClassByCGLIB$$59d61a0a.invoke(<generated>)
-	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
-	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:127)
-	... 6 more
-Caused by: java.lang.IllegalArgumentException: Displacement matrix has different number of dimensions than space
-	at repast.simphony.space.continuous.AbstractContinuousSpace.moveByVector(AbstractContinuousSpace.java:323)
-	at swarm_sim.blackbox.BB_RandomExplorerNoComm.move(BB_RandomExplorerNoComm.java:56)
-	at swarm_sim.blackbox.BB_RandomExplorerNoComm.step(BB_RandomExplorerNoComm.java:36)
-	... 9 more
-FATAL [Thread-6] 2015-03-25 19:08:51,115 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
-Current tick (1.0)
-java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
-	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:129)
-	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
-	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
-	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
-	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
-	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
-	at java.lang.Thread.run(Thread.java:745)
-Caused by: java.lang.reflect.InvocationTargetException
-	at swarm_sim.blackbox.BB_RandomExplorerNoComm$$FastClassByCGLIB$$59d61a0a.invoke(<generated>)
-	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
-	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:127)
-	... 6 more
-Caused by: java.lang.NullPointerException
-	at repast.simphony.space.continuous.AbstractContinuousSpace.getDistanceSq(AbstractContinuousSpace.java:418)
-	at repast.simphony.space.continuous.AbstractContinuousSpace.getDistance(AbstractContinuousSpace.java:404)
-	at swarm_sim.blackbox.BB_RandomExplorerNoComm.scanEnv(BB_RandomExplorerNoComm.java:88)
-	at swarm_sim.blackbox.BB_RandomExplorerNoComm.step(BB_RandomExplorerNoComm.java:37)
-	... 9 more
-INFO  [AWT-EventQueue-0] 2015-03-26 13:33:34,120 repast.simphony.ui.widget.MovieMaker - Movie capture has started metaData=[STATUS]
-INFO  [AWT-EventQueue-0] 2015-03-26 13:33:55,808 repast.simphony.ui.widget.MovieMaker - Movie capture has finished metaData=[STATUS]
-INFO  [AWT-EventQueue-0] 2015-03-26 13:39:12,970 repast.simphony.ui.widget.MovieMaker - Movie capture has started metaData=[STATUS]
-INFO  [AWT-EventQueue-0] 2015-03-26 13:39:26,361 repast.simphony.ui.widget.MovieMaker - Movie capture has finished metaData=[STATUS]
-INFO  [AWT-EventQueue-0] 2015-03-26 14:05:36,167 repast.simphony.ui.widget.MovieMaker - Movie capture has started metaData=[STATUS]
-INFO  [AWT-EventQueue-0] 2015-03-26 14:05:44,757 repast.simphony.ui.widget.MovieMaker - Movie capture has finished metaData=[STATUS]
-INFO  [AWT-EventQueue-0] 2015-03-26 14:42:26,347 repast.simphony.ui.widget.MovieMaker - Movie capture has started metaData=[STATUS]
-INFO  [AWT-EventQueue-0] 2015-03-26 14:42:34,370 repast.simphony.ui.widget.MovieMaker - Movie capture has finished metaData=[STATUS]
-INFO  [AWT-EventQueue-0] 2015-03-26 14:45:18,529 repast.simphony.ui.widget.MovieMaker - Movie capture has started metaData=[STATUS]
-INFO  [AWT-EventQueue-0] 2015-03-26 14:45:30,919 repast.simphony.ui.widget.MovieMaker - Movie capture has finished metaData=[STATUS]
-INFO  [AWT-EventQueue-0] 2015-03-26 14:47:57,555 repast.simphony.ui.widget.MovieMaker - Movie capture has started metaData=[STATUS]
-INFO  [AWT-EventQueue-0] 2015-03-26 14:47:57,790 repast.simphony.ui.widget.MovieMaker - Movie capture has finished metaData=[STATUS]
-INFO  [AWT-EventQueue-0] 2015-03-26 14:49:58,223 repast.simphony.ui.widget.MovieMaker - Movie capture has started metaData=[STATUS]
-INFO  [AWT-EventQueue-0] 2015-03-26 14:49:58,469 repast.simphony.ui.widget.MovieMaker - Movie capture has finished metaData=[STATUS]
-ERROR [AWT-EventQueue-0] 2015-03-26 15:09:23,365 repast.simphony.ui.RSApplication - Scenario Load Error
-repast.simphony.scenario.ScenarioLoadException: For input string: "20.0"
-	at repast.simphony.scenario.ScenarioLoader.load(ScenarioLoader.java:220)
-	at repast.simphony.ui.RSApplication.open(RSApplication.java:353)
-	at repast.simphony.ui.RSAppConfigurator.postWindowOpen(RSAppConfigurator.java:39)
-	at saf.core.ui.GUICreatorDelegate.runDisplay(GUICreatorDelegate.java:188)
-	at saf.core.ui.GUICreator$1.run(GUICreator.java:18)
-	at simphony.util.ThreadUtilities$Runner.run(ThreadUtilities.java:33)
-	at simphony.util.ThreadUtilities.runInEventThread(ThreadUtilities.java:47)
-	at saf.core.ui.GUICreator.runDisplay(GUICreator.java:16)
-	at repast.simphony.ui.RSUIPlugin$1.run(RSUIPlugin.java:104)
-	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:312)
-	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:738)
-	at java.awt.EventQueue.access$300(EventQueue.java:103)
-	at java.awt.EventQueue$3.run(EventQueue.java:699)
-	at java.awt.EventQueue$3.run(EventQueue.java:697)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
-	at java.awt.EventQueue.dispatchEvent(EventQueue.java:708)
-	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:242)
-	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:161)
-	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:150)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:146)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:138)
-	at java.awt.EventDispatchThread.run(EventDispatchThread.java:91)
-Caused by: java.lang.NumberFormatException: For input string: "20.0"
-	at java.lang.NumberFormatException.forInputString(NumberFormatException.java:65)
-	at java.lang.Integer.parseInt(Integer.java:492)
-	at java.lang.Integer.valueOf(Integer.java:582)
-	at repast.simphony.parameter.StringConverterFactory$IntConverter.fromString(StringConverterFactory.java:96)
-	at repast.simphony.parameter.ParametersParser.startElement(ParametersParser.java:94)
-	at com.sun.org.apache.xerces.internal.parsers.AbstractSAXParser.startElement(AbstractSAXParser.java:509)
-	at com.sun.org.apache.xerces.internal.parsers.AbstractXMLDocumentParser.emptyElement(AbstractXMLDocumentParser.java:182)
-	at com.sun.org.apache.xerces.internal.impl.XMLDocumentFragmentScannerImpl.scanStartElement(XMLDocumentFragmentScannerImpl.java:1343)
-	at com.sun.org.apache.xerces.internal.impl.XMLDocumentFragmentScannerImpl$FragmentContentDriver.next(XMLDocumentFragmentScannerImpl.java:2786)
-	at com.sun.org.apache.xerces.internal.impl.XMLDocumentScannerImpl.next(XMLDocumentScannerImpl.java:606)
-	at com.sun.org.apache.xerces.internal.impl.XMLDocumentFragmentScannerImpl.scanDocument(XMLDocumentFragmentScannerImpl.java:510)
-	at com.sun.org.apache.xerces.internal.parsers.XML11Configuration.parse(XML11Configuration.java:848)
-	at com.sun.org.apache.xerces.internal.parsers.XML11Configuration.parse(XML11Configuration.java:777)
-	at com.sun.org.apache.xerces.internal.parsers.XMLParser.parse(XMLParser.java:141)
-	at com.sun.org.apache.xerces.internal.parsers.AbstractSAXParser.parse(AbstractSAXParser.java:1213)
-	at com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser.parse(SAXParserImpl.java:648)
-	at com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl.parse(SAXParserImpl.java:332)
-	at javax.xml.parsers.SAXParser.parse(SAXParser.java:328)
-	at repast.simphony.parameter.ParametersParser.<init>(ParametersParser.java:46)
-	at repast.simphony.scenario.ScenarioLoader.load(ScenarioLoader.java:168)
-	... 22 more
-ERROR [AWT-EventQueue-0] 2015-03-26 17:06:40,613 repast.simphony.ui.RSApplication - Error while initializing simulation
-java.lang.NullPointerException
-	at repast.simphony.space.continuous.AbstractContinuousSpace.getDisplacement(AbstractContinuousSpace.java:448)
-	at repast.simphony.space.SpatialMath.calcAngleFor2DMovement(SpatialMath.java:122)
-	at swarm_sim.blackbox.BB_RandomPointExplorerNoComm.determineRandomPointAndDirection(BB_RandomPointExplorerNoComm.java:84)
-	at swarm_sim.blackbox.BB_RandomPointExplorerNoComm.<init>(BB_RandomPointExplorerNoComm.java:33)
-	at swarm_sim.blackbox.BlackboxContext.<init>(BlackboxContext.java:55)
-	at swarm_sim.RootContextBuilder.build(RootContextBuilder.java:82)
-	at repast.simphony.dataLoader.engine.ClassNameContextBuilder.build(ClassNameContextBuilder.java:41)
-	at repast.simphony.dataLoader.engine.DataLoaderControllerAction.runInitialize(DataLoaderControllerAction.java:48)
-	at repast.simphony.engine.controller.DefaultController$2.visit(DefaultController.java:214)
-	at repast.simphony.engine.controller.DefaultController$2.visit(DefaultController.java:1)
-	at repast.simphony.util.collections.NaryTree.preOrderTraverals(NaryTree.java:287)
-	at repast.simphony.util.collections.NaryTree.preOrderTraverals(NaryTree.java:290)
-	at repast.simphony.util.collections.NaryTree.preOrderTraverals(NaryTree.java:290)
-	at repast.simphony.util.collections.NaryTree.preOrderTraversal(NaryTree.java:283)
-	at repast.simphony.engine.controller.DefaultController.runInitialize(DefaultController.java:212)
-	at repast.simphony.engine.controller.DefaultController.runInitialize(DefaultController.java:383)
-	at repast.simphony.ui.RSApplication.initSim(RSApplication.java:160)
-	at repast.simphony.ui.action.InitRun.actionPerformed(InitRun.java:17)
-	at javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:2018)
-	at javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2341)
-	at javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:402)
-	at javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:259)
-	at javax.swing.plaf.basic.BasicButtonListener.mouseReleased(BasicButtonListener.java:252)
-	at java.awt.AWTEventMulticaster.mouseReleased(AWTEventMulticaster.java:289)
-	at java.awt.Component.processMouseEvent(Component.java:6516)
-	at javax.swing.JComponent.processMouseEvent(JComponent.java:3312)
-	at java.awt.Component.processEvent(Component.java:6281)
-	at java.awt.Container.processEvent(Container.java:2229)
-	at java.awt.Component.dispatchEventImpl(Component.java:4872)
-	at java.awt.Container.dispatchEventImpl(Container.java:2287)
-	at java.awt.Component.dispatchEvent(Component.java:4698)
-	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4832)
-	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4492)
-	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4422)
-	at java.awt.Container.dispatchEventImpl(Container.java:2273)
-	at java.awt.Window.dispatchEventImpl(Window.java:2719)
-	at java.awt.Component.dispatchEvent(Component.java:4698)
-	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:740)
-	at java.awt.EventQueue.access$300(EventQueue.java:103)
-	at java.awt.EventQueue$3.run(EventQueue.java:699)
-	at java.awt.EventQueue$3.run(EventQueue.java:697)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
-	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:87)
-	at java.awt.EventQueue$4.run(EventQueue.java:713)
-	at java.awt.EventQueue$4.run(EventQueue.java:711)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
-	at java.awt.EventQueue.dispatchEvent(EventQueue.java:710)
-	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:242)
-	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:161)
-	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:150)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:146)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:138)
-	at java.awt.EventDispatchThread.run(EventDispatchThread.java:91)
-FATAL [Thread-6] 2015-03-26 17:07:48,633 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
-Current tick (1.0)
-java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
-	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:129)
-	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
-	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
-	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
-	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
-	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
-	at java.lang.Thread.run(Thread.java:745)
-Caused by: java.lang.reflect.InvocationTargetException
-	at swarm_sim.blackbox.BB_RandomPointExplorerNoComm$$FastClassByCGLIB$$6eb42d7e.invoke(<generated>)
-	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
-	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:127)
-	... 6 more
-Caused by: java.lang.NullPointerException
-	at repast.simphony.space.continuous.AbstractContinuousSpace.getDistanceSq(AbstractContinuousSpace.java:418)
-	at repast.simphony.space.continuous.AbstractContinuousSpace.getDistance(AbstractContinuousSpace.java:404)
-	at swarm_sim.blackbox.BB_RandomPointExplorerNoComm.move(BB_RandomPointExplorerNoComm.java:54)
-	at swarm_sim.blackbox.BB_RandomPointExplorerNoComm.step(BB_RandomPointExplorerNoComm.java:37)
-	... 9 more
-FATAL [Thread-6] 2015-03-26 17:09:05,060 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
-Current tick (1.0)
-java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
-	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:129)
-	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
-	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
-	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
-	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
-	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
-	at java.lang.Thread.run(Thread.java:745)
-Caused by: java.lang.reflect.InvocationTargetException
-	at swarm_sim.blackbox.BB_RandomPointExplorerNoComm$$FastClassByCGLIB$$6eb42d7e.invoke(<generated>)
-	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
-	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:127)
-	... 6 more
-Caused by: java.lang.NullPointerException
-	at repast.simphony.space.continuous.AbstractContinuousSpace.getDistanceSq(AbstractContinuousSpace.java:418)
-	at repast.simphony.space.continuous.AbstractContinuousSpace.getDistance(AbstractContinuousSpace.java:404)
-	at swarm_sim.blackbox.BB_RandomPointExplorerNoComm.move(BB_RandomPointExplorerNoComm.java:54)
-	at swarm_sim.blackbox.BB_RandomPointExplorerNoComm.step(BB_RandomPointExplorerNoComm.java:37)
-	... 9 more
-ERROR [AWT-EventQueue-0] 2015-03-27 10:52:12,240 repast.simphony.visualization.engine.DisplayComponentControllerAction - Error while creating displays
-repast.simphony.visualization.engine.DisplayCreationException: Error while creating display.
-	at repast.simphony.visualization.engine.DisplayCreatorOGL2D.createDisplay(DisplayCreatorOGL2D.java:102)
-	at repast.simphony.visualization.engine.DisplayProducer.createDisplay(DisplayProducer.java:45)
-	at repast.simphony.visualization.engine.DisplayComponentControllerAction.runInitialize(DisplayComponentControllerAction.java:104)
-	at repast.simphony.engine.controller.DefaultController$2.visit(DefaultController.java:214)
-	at repast.simphony.engine.controller.DefaultController$2.visit(DefaultController.java:1)
-	at repast.simphony.util.collections.NaryTree.preOrderTraverals(NaryTree.java:287)
-	at repast.simphony.util.collections.NaryTree.preOrderTraverals(NaryTree.java:290)
-	at repast.simphony.util.collections.NaryTree.preOrderTraverals(NaryTree.java:290)
-	at repast.simphony.util.collections.NaryTree.preOrderTraversal(NaryTree.java:283)
-	at repast.simphony.engine.controller.DefaultController.runInitialize(DefaultController.java:212)
-	at repast.simphony.engine.controller.DefaultController.runInitialize(DefaultController.java:383)
-	at repast.simphony.ui.RSApplication.initSim(RSApplication.java:160)
-	at repast.simphony.ui.action.InitRun.actionPerformed(InitRun.java:17)
-	at javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:2018)
-	at javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2341)
-	at javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:402)
-	at javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:259)
-	at javax.swing.plaf.basic.BasicButtonListener.mouseReleased(BasicButtonListener.java:252)
-	at java.awt.AWTEventMulticaster.mouseReleased(AWTEventMulticaster.java:289)
-	at java.awt.Component.processMouseEvent(Component.java:6516)
-	at javax.swing.JComponent.processMouseEvent(JComponent.java:3312)
-	at java.awt.Component.processEvent(Component.java:6281)
-	at java.awt.Container.processEvent(Container.java:2229)
-	at java.awt.Component.dispatchEventImpl(Component.java:4872)
-	at java.awt.Container.dispatchEventImpl(Container.java:2287)
-	at java.awt.Component.dispatchEvent(Component.java:4698)
-	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4832)
-	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4492)
-	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4422)
-	at java.awt.Container.dispatchEventImpl(Container.java:2273)
-	at java.awt.Window.dispatchEventImpl(Window.java:2719)
-	at java.awt.Component.dispatchEvent(Component.java:4698)
-	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:740)
-	at java.awt.EventQueue.access$300(EventQueue.java:103)
-	at java.awt.EventQueue$3.run(EventQueue.java:699)
-	at java.awt.EventQueue$3.run(EventQueue.java:697)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
-	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:87)
-	at java.awt.EventQueue$4.run(EventQueue.java:713)
-	at java.awt.EventQueue$4.run(EventQueue.java:711)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
-	at java.awt.EventQueue.dispatchEvent(EventQueue.java:710)
-	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:242)
-	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:161)
-	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:150)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:146)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:138)
-	at java.awt.EventDispatchThread.run(EventDispatchThread.java:91)
-Caused by: java.lang.ClassNotFoundException: swarm_sim.blackbox.BB_MemoryExplorerNoComm
-	at org.java.plugin.standard.StandardPluginClassLoader.loadClass(Unknown Source)
-	at java.lang.ClassLoader.loadClass(ClassLoader.java:358)
-	at java.lang.Class.forName0(Native Method)
-	at java.lang.Class.forName(Class.java:274)
-	at repast.simphony.visualization.engine.StyleRegistrar.registerStyles(StyleRegistrar.java:87)
-	at repast.simphony.visualization.engine.StyleRegistrar.registerStyles(StyleRegistrar.java:34)
-	at repast.simphony.visualization.engine.DisplayCreatorOGL2D.createDisplay(DisplayCreatorOGL2D.java:79)
-	... 49 more
-WARN  [Thread-6] 2015-03-27 12:58:02,033 repast.simphony.ui.GUIScheduleRunner - Caught InterruptedException when running simulation, unpausing.
-java.lang.InterruptedException
-	at java.lang.Object.wait(Native Method)
-	at java.lang.Object.wait(Object.java:503)
-	at repast.simphony.ui.GUIScheduleRunner.go(GUIScheduleRunner.java:137)
-	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:48)
-	at java.lang.Thread.run(Thread.java:745)
-FATAL [Thread-6] 2015-03-27 16:09:22,116 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
-Current tick (1.0)
-java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
-	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:129)
-	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
-	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
-	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
-	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
-	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
-	at java.lang.Thread.run(Thread.java:745)
-Caused by: java.lang.reflect.InvocationTargetException
-	at swarm_sim.blackbox.BB_PheromoneExplorerNoComm$$FastClassByCGLIB$$a562bff4.invoke(<generated>)
-	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
-	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:127)
-	... 6 more
-Caused by: java.lang.ArrayIndexOutOfBoundsException: -1
-	at swarm_sim.ScanData.addData(ScanData.java:30)
-	at swarm_sim.blackbox.BB_PheromoneExplorerNoComm.scanEnv(BB_PheromoneExplorerNoComm.java:102)
-	at swarm_sim.blackbox.BB_PheromoneExplorerNoComm.step(BB_PheromoneExplorerNoComm.java:27)
-	... 9 more
-FATAL [Thread-6] 2015-03-30 12:28:46,238 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
-Current tick (26.0)
-java.lang.NullPointerException
-	at repast.simphony.visualizationOGL2D.DisplayOGL2D.getSpatialForObject(DisplayOGL2D.java:533)
-	at repast.simphony.visualizationOGL2D.NetworkLayerOGL2D.update(NetworkLayerOGL2D.java:103)
-	at repast.simphony.visualizationOGL2D.DisplayOGL2D.update(DisplayOGL2D.java:408)
-	at repast.simphony.visualization.engine.DisplayComponentControllerAction$DisplayUpdater.execute(DisplayComponentControllerAction.java:44)
-	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
-	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
-	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:238)
-	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
-	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
-	at java.lang.Thread.run(Thread.java:745)
-WARN  [Thread-6] 2015-03-30 12:40:53,641 repast.simphony.ui.GUIScheduleRunner - Caught InterruptedException when running simulation, unpausing.
-java.lang.InterruptedException
-	at java.lang.Object.wait(Native Method)
-	at java.lang.Object.wait(Object.java:503)
-	at repast.simphony.ui.GUIScheduleRunner.go(GUIScheduleRunner.java:137)
-	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:48)
-	at java.lang.Thread.run(Thread.java:745)
-INFO  [AWT-EventQueue-0] 2015-03-30 13:19:33,578 repast.simphony.ui.widget.MovieMaker - Movie capture has started metaData=[STATUS]
-INFO  [AWT-EventQueue-0] 2015-03-30 13:19:43,392 repast.simphony.ui.widget.MovieMaker - Movie capture has finished metaData=[STATUS]
-ERROR [AWT-EventQueue-0] 2015-03-30 14:02:04,866 repast.simphony.visualization.engine.DisplayComponentControllerAction - Error while creating displays
-repast.simphony.visualization.engine.DisplayCreationException: Error while creating display.
-	at repast.simphony.visualization.engine.DisplayCreatorOGL2D.createDisplay(DisplayCreatorOGL2D.java:102)
-	at repast.simphony.visualization.engine.DisplayProducer.createDisplay(DisplayProducer.java:45)
-	at repast.simphony.visualization.engine.DisplayComponentControllerAction.runInitialize(DisplayComponentControllerAction.java:104)
-	at repast.simphony.engine.controller.DefaultController$2.visit(DefaultController.java:214)
-	at repast.simphony.engine.controller.DefaultController$2.visit(DefaultController.java:1)
-	at repast.simphony.util.collections.NaryTree.preOrderTraverals(NaryTree.java:287)
-	at repast.simphony.util.collections.NaryTree.preOrderTraverals(NaryTree.java:290)
-	at repast.simphony.util.collections.NaryTree.preOrderTraverals(NaryTree.java:290)
-	at repast.simphony.util.collections.NaryTree.preOrderTraversal(NaryTree.java:283)
-	at repast.simphony.engine.controller.DefaultController.runInitialize(DefaultController.java:212)
-	at repast.simphony.engine.controller.DefaultController.runInitialize(DefaultController.java:383)
-	at repast.simphony.ui.RSApplication.initSim(RSApplication.java:160)
-	at repast.simphony.ui.RSApplication.start(RSApplication.java:192)
-	at repast.simphony.ui.action.StartRun.actionPerformed(StartRun.java:17)
-	at javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:2018)
-	at javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2341)
-	at javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:402)
-	at javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:259)
-	at javax.swing.plaf.basic.BasicButtonListener.mouseReleased(BasicButtonListener.java:252)
-	at java.awt.AWTEventMulticaster.mouseReleased(AWTEventMulticaster.java:289)
-	at java.awt.Component.processMouseEvent(Component.java:6516)
-	at javax.swing.JComponent.processMouseEvent(JComponent.java:3312)
-	at java.awt.Component.processEvent(Component.java:6281)
-	at java.awt.Container.processEvent(Container.java:2229)
-	at java.awt.Component.dispatchEventImpl(Component.java:4872)
-	at java.awt.Container.dispatchEventImpl(Container.java:2287)
-	at java.awt.Component.dispatchEvent(Component.java:4698)
-	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4832)
-	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4492)
-	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4422)
-	at java.awt.Container.dispatchEventImpl(Container.java:2273)
-	at java.awt.Window.dispatchEventImpl(Window.java:2719)
-	at java.awt.Component.dispatchEvent(Component.java:4698)
-	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:740)
-	at java.awt.EventQueue.access$300(EventQueue.java:103)
-	at java.awt.EventQueue$3.run(EventQueue.java:699)
-	at java.awt.EventQueue$3.run(EventQueue.java:697)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
-	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:87)
-	at java.awt.EventQueue$4.run(EventQueue.java:713)
-	at java.awt.EventQueue$4.run(EventQueue.java:711)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
-	at java.awt.EventQueue.dispatchEvent(EventQueue.java:710)
-	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:242)
-	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:161)
-	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:150)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:146)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:138)
-	at java.awt.EventDispatchThread.run(EventDispatchThread.java:91)
-Caused by: java.lang.ClassNotFoundException: swarm_sim.blackbox.BB_PheromoneExplorerNoComm
-	at org.java.plugin.standard.StandardPluginClassLoader.loadClass(Unknown Source)
-	at java.lang.ClassLoader.loadClass(ClassLoader.java:358)
-	at java.lang.Class.forName0(Native Method)
-	at java.lang.Class.forName(Class.java:274)
-	at repast.simphony.visualization.engine.StyleRegistrar.registerStyles(StyleRegistrar.java:87)
-	at repast.simphony.visualization.engine.StyleRegistrar.registerStyles(StyleRegistrar.java:34)
-	at repast.simphony.visualization.engine.DisplayCreatorOGL2D.createDisplay(DisplayCreatorOGL2D.java:79)
-	... 50 more
-ERROR [AWT-EventQueue-0] 2015-03-30 14:04:36,154 repast.simphony.visualization.engine.DisplayComponentControllerAction - Error while creating displays
-repast.simphony.visualization.engine.DisplayCreationException: Error while creating display.
-	at repast.simphony.visualization.engine.DisplayCreatorOGL2D.createDisplay(DisplayCreatorOGL2D.java:102)
-	at repast.simphony.visualization.engine.DisplayProducer.createDisplay(DisplayProducer.java:45)
-	at repast.simphony.visualization.engine.DisplayComponentControllerAction.runInitialize(DisplayComponentControllerAction.java:104)
-	at repast.simphony.engine.controller.DefaultController$2.visit(DefaultController.java:214)
-	at repast.simphony.engine.controller.DefaultController$2.visit(DefaultController.java:1)
-	at repast.simphony.util.collections.NaryTree.preOrderTraverals(NaryTree.java:287)
-	at repast.simphony.util.collections.NaryTree.preOrderTraverals(NaryTree.java:290)
-	at repast.simphony.util.collections.NaryTree.preOrderTraverals(NaryTree.java:290)
-	at repast.simphony.util.collections.NaryTree.preOrderTraversal(NaryTree.java:283)
-	at repast.simphony.engine.controller.DefaultController.runInitialize(DefaultController.java:212)
-	at repast.simphony.engine.controller.DefaultController.runInitialize(DefaultController.java:383)
-	at repast.simphony.ui.RSApplication.initSim(RSApplication.java:160)
-	at repast.simphony.ui.action.InitRun.actionPerformed(InitRun.java:17)
-	at javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:2018)
-	at javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2341)
-	at javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:402)
-	at javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:259)
-	at javax.swing.plaf.basic.BasicButtonListener.mouseReleased(BasicButtonListener.java:252)
-	at java.awt.AWTEventMulticaster.mouseReleased(AWTEventMulticaster.java:289)
-	at java.awt.Component.processMouseEvent(Component.java:6516)
-	at javax.swing.JComponent.processMouseEvent(JComponent.java:3312)
-	at java.awt.Component.processEvent(Component.java:6281)
-	at java.awt.Container.processEvent(Container.java:2229)
-	at java.awt.Component.dispatchEventImpl(Component.java:4872)
-	at java.awt.Container.dispatchEventImpl(Container.java:2287)
-	at java.awt.Component.dispatchEvent(Component.java:4698)
-	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4832)
-	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4492)
-	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4422)
-	at java.awt.Container.dispatchEventImpl(Container.java:2273)
-	at java.awt.Window.dispatchEventImpl(Window.java:2719)
-	at java.awt.Component.dispatchEvent(Component.java:4698)
-	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:740)
-	at java.awt.EventQueue.access$300(EventQueue.java:103)
-	at java.awt.EventQueue$3.run(EventQueue.java:699)
-	at java.awt.EventQueue$3.run(EventQueue.java:697)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
-	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:87)
-	at java.awt.EventQueue$4.run(EventQueue.java:713)
-	at java.awt.EventQueue$4.run(EventQueue.java:711)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
-	at java.awt.EventQueue.dispatchEvent(EventQueue.java:710)
-	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:242)
-	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:161)
-	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:150)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:146)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:138)
-	at java.awt.EventDispatchThread.run(EventDispatchThread.java:91)
-Caused by: java.lang.ClassNotFoundException: swarm_sim.blackbox.BB_PheromoneExplorerNoComm
-	at org.java.plugin.standard.StandardPluginClassLoader.loadClass(Unknown Source)
-	at java.lang.ClassLoader.loadClass(ClassLoader.java:358)
-	at java.lang.Class.forName0(Native Method)
-	at java.lang.Class.forName(Class.java:274)
-	at repast.simphony.visualization.engine.StyleRegistrar.registerStyles(StyleRegistrar.java:87)
-	at repast.simphony.visualization.engine.StyleRegistrar.registerStyles(StyleRegistrar.java:34)
-	at repast.simphony.visualization.engine.DisplayCreatorOGL2D.createDisplay(DisplayCreatorOGL2D.java:79)
-	... 49 more
-FATAL [Thread-6] 2015-04-01 13:44:39,554 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
-Current tick (1.0)
-java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
-	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:129)
-	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
-	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
-	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
-	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
-	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
-	at java.lang.Thread.run(Thread.java:745)
-Caused by: java.lang.reflect.InvocationTargetException
-	at swarm_sim.blackbox.BB_AgentAvoiderComm$$FastClassByCGLIB$$79ad3d24.invoke(<generated>)
-	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
-	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:127)
-	... 6 more
-Caused by: java.lang.NullPointerException
-	at swarm_sim.ScanCircle.<init>(ScanCircle.java:77)
-	at swarm_sim.ScanCircle.getMerged(ScanCircle.java:210)
-	at swarm_sim.blackbox.BB_AgentAvoiderComm.move(BB_AgentAvoiderComm.java:74)
-	at swarm_sim.blackbox.BB_AgentAvoiderComm.step(BB_AgentAvoiderComm.java:31)
-	... 9 more
-ERROR [AWT-EventQueue-0] 2015-04-01 16:10:29,374 repast.simphony.ui.RSApplication - Error while initializing simulation
-java.lang.NullPointerException
-	at swarm_sim.blackbox.BlackboxContext.<init>(BlackboxContext.java:59)
-	at swarm_sim.RootContextBuilder.build(RootContextBuilder.java:82)
-	at repast.simphony.dataLoader.engine.ClassNameContextBuilder.build(ClassNameContextBuilder.java:41)
-	at repast.simphony.dataLoader.engine.DataLoaderControllerAction.runInitialize(DataLoaderControllerAction.java:48)
-	at repast.simphony.engine.controller.DefaultController$2.visit(DefaultController.java:214)
-	at repast.simphony.engine.controller.DefaultController$2.visit(DefaultController.java:1)
-	at repast.simphony.util.collections.NaryTree.preOrderTraverals(NaryTree.java:287)
-	at repast.simphony.util.collections.NaryTree.preOrderTraverals(NaryTree.java:290)
-	at repast.simphony.util.collections.NaryTree.preOrderTraverals(NaryTree.java:290)
-	at repast.simphony.util.collections.NaryTree.preOrderTraversal(NaryTree.java:283)
-	at repast.simphony.engine.controller.DefaultController.runInitialize(DefaultController.java:212)
-	at repast.simphony.engine.controller.DefaultController.runInitialize(DefaultController.java:383)
-	at repast.simphony.ui.RSApplication.initSim(RSApplication.java:160)
-	at repast.simphony.ui.action.InitRun.actionPerformed(InitRun.java:17)
-	at javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:2018)
-	at javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2341)
-	at javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:402)
-	at javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:259)
-	at javax.swing.plaf.basic.BasicButtonListener.mouseReleased(BasicButtonListener.java:252)
-	at java.awt.AWTEventMulticaster.mouseReleased(AWTEventMulticaster.java:289)
-	at java.awt.Component.processMouseEvent(Component.java:6516)
-	at javax.swing.JComponent.processMouseEvent(JComponent.java:3312)
-	at java.awt.Component.processEvent(Component.java:6281)
-	at java.awt.Container.processEvent(Container.java:2229)
-	at java.awt.Component.dispatchEventImpl(Component.java:4872)
-	at java.awt.Container.dispatchEventImpl(Container.java:2287)
-	at java.awt.Component.dispatchEvent(Component.java:4698)
-	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4832)
-	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4492)
-	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4422)
-	at java.awt.Container.dispatchEventImpl(Container.java:2273)
-	at java.awt.Window.dispatchEventImpl(Window.java:2719)
-	at java.awt.Component.dispatchEvent(Component.java:4698)
-	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:740)
-	at java.awt.EventQueue.access$300(EventQueue.java:103)
-	at java.awt.EventQueue$3.run(EventQueue.java:699)
-	at java.awt.EventQueue$3.run(EventQueue.java:697)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
-	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:87)
-	at java.awt.EventQueue$4.run(EventQueue.java:713)
-	at java.awt.EventQueue$4.run(EventQueue.java:711)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
-	at java.awt.EventQueue.dispatchEvent(EventQueue.java:710)
-	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:242)
-	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:161)
-	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:150)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:146)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:138)
-	at java.awt.EventDispatchThread.run(EventDispatchThread.java:91)
-FATAL [Thread-6] 2015-04-01 17:33:09,638 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
-Current tick (0.0)
-java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
-	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:129)
-	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
-	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
-	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:227)
-	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
-	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
-	at java.lang.Thread.run(Thread.java:745)
-Caused by: java.lang.reflect.InvocationTargetException
-	at swarm_sim.Scenario$$FastClassByCGLIB$$fa52fa4e.invoke(<generated>)
-	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
-	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:127)
-	... 6 more
-Caused by: java.lang.NullPointerException
-	at repast.simphony.space.continuous.AbstractContinuousSpace.getDistanceSq(AbstractContinuousSpace.java:418)
-	at repast.simphony.space.continuous.AbstractContinuousSpace.getDistance(AbstractContinuousSpace.java:404)
-	at swarm_sim.Scenario.init(Scenario.java:77)
-	... 9 more
-FATAL [Thread-8] 2015-04-01 17:33:55,796 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
-Current tick (0.0)
-java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
-	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:129)
-	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
-	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
-	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:227)
-	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
-	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
-	at java.lang.Thread.run(Thread.java:745)
-Caused by: java.lang.reflect.InvocationTargetException
-	at swarm_sim.Scenario$$FastClassByCGLIB$$fa52fa4e.invoke(<generated>)
-	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
-	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:127)
-	... 6 more
-Caused by: java.lang.NullPointerException
-	at repast.simphony.space.continuous.AbstractContinuousSpace.getDistanceSq(AbstractContinuousSpace.java:418)
-	at repast.simphony.space.continuous.AbstractContinuousSpace.getDistance(AbstractContinuousSpace.java:404)
-	at swarm_sim.Scenario.init(Scenario.java:77)
-	... 9 more
-FATAL [Thread-6] 2015-04-03 12:32:27,739 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
-Current tick (1.0)
-java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
-	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:129)
-	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
-	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
-	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
-	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
-	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
-	at java.lang.Thread.run(Thread.java:745)
-Caused by: java.lang.reflect.InvocationTargetException
-	at swarm_sim.blackbox.BB_AgentAvoiderMimicDirectionComm$$FastClassByCGLIB$$3d29e1d8.invoke(<generated>)
-	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
-	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:127)
-	... 6 more
-Caused by: java.lang.NullPointerException
-	at repast.simphony.space.continuous.AbstractContinuousSpace.getDisplacement(AbstractContinuousSpace.java:448)
-	at repast.simphony.space.SpatialMath.calcAngleFor2DMovement(SpatialMath.java:122)
-	at swarm_sim.blackbox.BB_AgentAvoiderMimicDirectionComm.scanEnv(BB_AgentAvoiderMimicDirectionComm.java:135)
-	at swarm_sim.blackbox.BB_AgentAvoiderMimicDirectionComm.step(BB_AgentAvoiderMimicDirectionComm.java:33)
-	... 9 more
-ERROR [AWT-EventQueue-0] 2015-04-04 12:50:41,769 repast.simphony.ui.RSApplication - Error while initializing simulation
-java.lang.ArrayIndexOutOfBoundsException: 7
-	at swarm_sim.ScanCircle.calculateDirectionDistribution(ScanCircle.java:176)
-	at swarm_sim.blackbox.BlackboxContext.<init>(BlackboxContext.java:107)
-	at swarm_sim.RootContextBuilder.build(RootContextBuilder.java:82)
-	at repast.simphony.dataLoader.engine.ClassNameContextBuilder.build(ClassNameContextBuilder.java:41)
-	at repast.simphony.dataLoader.engine.DataLoaderControllerAction.runInitialize(DataLoaderControllerAction.java:48)
-	at repast.simphony.engine.controller.DefaultController$2.visit(DefaultController.java:214)
-	at repast.simphony.engine.controller.DefaultController$2.visit(DefaultController.java:1)
-	at repast.simphony.util.collections.NaryTree.preOrderTraverals(NaryTree.java:287)
-	at repast.simphony.util.collections.NaryTree.preOrderTraverals(NaryTree.java:290)
-	at repast.simphony.util.collections.NaryTree.preOrderTraverals(NaryTree.java:290)
-	at repast.simphony.util.collections.NaryTree.preOrderTraversal(NaryTree.java:283)
-	at repast.simphony.engine.controller.DefaultController.runInitialize(DefaultController.java:212)
-	at repast.simphony.engine.controller.DefaultController.runInitialize(DefaultController.java:383)
-	at repast.simphony.ui.RSApplication.initSim(RSApplication.java:160)
-	at repast.simphony.ui.action.InitRun.actionPerformed(InitRun.java:17)
-	at javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:2018)
-	at javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2341)
-	at javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:402)
-	at javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:259)
-	at javax.swing.plaf.basic.BasicButtonListener.mouseReleased(BasicButtonListener.java:252)
-	at java.awt.AWTEventMulticaster.mouseReleased(AWTEventMulticaster.java:289)
-	at java.awt.Component.processMouseEvent(Component.java:6516)
-	at javax.swing.JComponent.processMouseEvent(JComponent.java:3312)
-	at java.awt.Component.processEvent(Component.java:6281)
-	at java.awt.Container.processEvent(Container.java:2229)
-	at java.awt.Component.dispatchEventImpl(Component.java:4872)
-	at java.awt.Container.dispatchEventImpl(Container.java:2287)
-	at java.awt.Component.dispatchEvent(Component.java:4698)
-	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4832)
-	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4492)
-	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4422)
-	at java.awt.Container.dispatchEventImpl(Container.java:2273)
-	at java.awt.Window.dispatchEventImpl(Window.java:2719)
-	at java.awt.Component.dispatchEvent(Component.java:4698)
-	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:740)
-	at java.awt.EventQueue.access$300(EventQueue.java:103)
-	at java.awt.EventQueue$3.run(EventQueue.java:699)
-	at java.awt.EventQueue$3.run(EventQueue.java:697)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
-	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:87)
-	at java.awt.EventQueue$4.run(EventQueue.java:713)
-	at java.awt.EventQueue$4.run(EventQueue.java:711)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
-	at java.awt.EventQueue.dispatchEvent(EventQueue.java:710)
-	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:242)
-	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:161)
-	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:150)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:146)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:138)
-	at java.awt.EventDispatchThread.run(EventDispatchThread.java:91)
-ERROR [AWT-EventQueue-0] 2015-04-04 12:52:13,835 repast.simphony.ui.RSApplication - Error while initializing simulation
-java.lang.ArrayIndexOutOfBoundsException: 7
-	at swarm_sim.ScanCircle.calculateDirectionDistribution(ScanCircle.java:176)
-	at swarm_sim.blackbox.BlackboxContext.<init>(BlackboxContext.java:107)
-	at swarm_sim.RootContextBuilder.build(RootContextBuilder.java:82)
-	at repast.simphony.dataLoader.engine.ClassNameContextBuilder.build(ClassNameContextBuilder.java:41)
-	at repast.simphony.dataLoader.engine.DataLoaderControllerAction.runInitialize(DataLoaderControllerAction.java:48)
-	at repast.simphony.engine.controller.DefaultController$2.visit(DefaultController.java:214)
-	at repast.simphony.engine.controller.DefaultController$2.visit(DefaultController.java:1)
-	at repast.simphony.util.collections.NaryTree.preOrderTraverals(NaryTree.java:287)
-	at repast.simphony.util.collections.NaryTree.preOrderTraverals(NaryTree.java:290)
-	at repast.simphony.util.collections.NaryTree.preOrderTraverals(NaryTree.java:290)
-	at repast.simphony.util.collections.NaryTree.preOrderTraversal(NaryTree.java:283)
-	at repast.simphony.engine.controller.DefaultController.runInitialize(DefaultController.java:212)
-	at repast.simphony.engine.controller.DefaultController.runInitialize(DefaultController.java:383)
-	at repast.simphony.ui.RSApplication.initSim(RSApplication.java:160)
-	at repast.simphony.ui.action.InitRun.actionPerformed(InitRun.java:17)
-	at javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:2018)
-	at javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2341)
-	at javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:402)
-	at javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:259)
-	at javax.swing.plaf.basic.BasicButtonListener.mouseReleased(BasicButtonListener.java:252)
-	at java.awt.AWTEventMulticaster.mouseReleased(AWTEventMulticaster.java:289)
-	at java.awt.Component.processMouseEvent(Component.java:6516)
-	at javax.swing.JComponent.processMouseEvent(JComponent.java:3312)
-	at java.awt.Component.processEvent(Component.java:6281)
-	at java.awt.Container.processEvent(Container.java:2229)
-	at java.awt.Component.dispatchEventImpl(Component.java:4872)
-	at java.awt.Container.dispatchEventImpl(Container.java:2287)
-	at java.awt.Component.dispatchEvent(Component.java:4698)
-	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4832)
-	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4492)
-	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4422)
-	at java.awt.Container.dispatchEventImpl(Container.java:2273)
-	at java.awt.Window.dispatchEventImpl(Window.java:2719)
-	at java.awt.Component.dispatchEvent(Component.java:4698)
-	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:740)
-	at java.awt.EventQueue.access$300(EventQueue.java:103)
-	at java.awt.EventQueue$3.run(EventQueue.java:699)
-	at java.awt.EventQueue$3.run(EventQueue.java:697)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
-	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:87)
-	at java.awt.EventQueue$4.run(EventQueue.java:713)
-	at java.awt.EventQueue$4.run(EventQueue.java:711)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
-	at java.awt.EventQueue.dispatchEvent(EventQueue.java:710)
-	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:242)
-	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:161)
-	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:150)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:146)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:138)
-	at java.awt.EventDispatchThread.run(EventDispatchThread.java:91)
-ERROR [AWT-EventQueue-0] 2015-04-04 12:53:08,567 repast.simphony.ui.RSApplication - Error while initializing simulation
-java.lang.ArrayIndexOutOfBoundsException: 7
-	at swarm_sim.ScanCircle.calculateDirectionDistribution(ScanCircle.java:176)
-	at swarm_sim.blackbox.BlackboxContext.<init>(BlackboxContext.java:107)
-	at swarm_sim.RootContextBuilder.build(RootContextBuilder.java:82)
-	at repast.simphony.dataLoader.engine.ClassNameContextBuilder.build(ClassNameContextBuilder.java:41)
-	at repast.simphony.dataLoader.engine.DataLoaderControllerAction.runInitialize(DataLoaderControllerAction.java:48)
-	at repast.simphony.engine.controller.DefaultController$2.visit(DefaultController.java:214)
-	at repast.simphony.engine.controller.DefaultController$2.visit(DefaultController.java:1)
-	at repast.simphony.util.collections.NaryTree.preOrderTraverals(NaryTree.java:287)
-	at repast.simphony.util.collections.NaryTree.preOrderTraverals(NaryTree.java:290)
-	at repast.simphony.util.collections.NaryTree.preOrderTraverals(NaryTree.java:290)
-	at repast.simphony.util.collections.NaryTree.preOrderTraversal(NaryTree.java:283)
-	at repast.simphony.engine.controller.DefaultController.runInitialize(DefaultController.java:212)
-	at repast.simphony.engine.controller.DefaultController.runInitialize(DefaultController.java:383)
-	at repast.simphony.ui.RSApplication.initSim(RSApplication.java:160)
-	at repast.simphony.ui.action.InitRun.actionPerformed(InitRun.java:17)
-	at javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:2018)
-	at javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2341)
-	at javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:402)
-	at javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:259)
-	at javax.swing.plaf.basic.BasicButtonListener.mouseReleased(BasicButtonListener.java:252)
-	at java.awt.AWTEventMulticaster.mouseReleased(AWTEventMulticaster.java:289)
-	at java.awt.Component.processMouseEvent(Component.java:6516)
-	at javax.swing.JComponent.processMouseEvent(JComponent.java:3312)
-	at java.awt.Component.processEvent(Component.java:6281)
-	at java.awt.Container.processEvent(Container.java:2229)
-	at java.awt.Component.dispatchEventImpl(Component.java:4872)
-	at java.awt.Container.dispatchEventImpl(Container.java:2287)
-	at java.awt.Component.dispatchEvent(Component.java:4698)
-	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4832)
-	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4492)
-	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4422)
-	at java.awt.Container.dispatchEventImpl(Container.java:2273)
-	at java.awt.Window.dispatchEventImpl(Window.java:2719)
-	at java.awt.Component.dispatchEvent(Component.java:4698)
-	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:740)
-	at java.awt.EventQueue.access$300(EventQueue.java:103)
-	at java.awt.EventQueue$3.run(EventQueue.java:699)
-	at java.awt.EventQueue$3.run(EventQueue.java:697)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
-	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:87)
-	at java.awt.EventQueue$4.run(EventQueue.java:713)
-	at java.awt.EventQueue$4.run(EventQueue.java:711)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
-	at java.awt.EventQueue.dispatchEvent(EventQueue.java:710)
-	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:242)
-	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:161)
-	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:150)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:146)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:138)
-	at java.awt.EventDispatchThread.run(EventDispatchThread.java:91)
-FATAL [Thread-6] 2015-04-05 10:37:50,197 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
-Current tick (291.0)
-java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
-	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:129)
-	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
-	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
-	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
-	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
-	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
-	at java.lang.Thread.run(Thread.java:745)
-Caused by: java.lang.reflect.InvocationTargetException
-	at swarm_sim.blackbox.BB_AgentAvoiderMimicDirectionComm$$FastClassByCGLIB$$3d29e1d8.invoke(<generated>)
-	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
-	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:127)
-	... 6 more
-Caused by: repast.simphony.space.SpatialException: Target location -0.9237408214861921 is outside of grid's dimensions.
-	at repast.simphony.space.continuous.AbstractPointTranslator.boundsCheck(AbstractPointTranslator.java:49)
-	at repast.simphony.space.continuous.StrictBorders.translate(StrictBorders.java:35)
-	at repast.simphony.space.continuous.AbstractContinuousSpace.doMove(AbstractContinuousSpace.java:147)
-	at repast.simphony.space.continuous.AbstractContinuousSpace.moveByDisplacement(AbstractContinuousSpace.java:294)
-	at repast.simphony.space.continuous.AbstractContinuousSpace.moveByVector(AbstractContinuousSpace.java:326)
-	at swarm_sim.blackbox.BB_AgentAvoiderMimicDirectionComm.move(BB_AgentAvoiderMimicDirectionComm.java:99)
-	at swarm_sim.blackbox.BB_AgentAvoiderMimicDirectionComm.step(BB_AgentAvoiderMimicDirectionComm.java:40)
-	... 9 more
-ERROR [AWT-EventQueue-0] 2015-04-05 11:02:55,177 repast.simphony.ui.RSApplication - Projection error
-repast.simphony.space.SpatialException: Target location 100 is outside of grid's dimensions.
-	at repast.simphony.space.grid.AbstractGridPointTranslator.boundsCheck(AbstractGridPointTranslator.java:48)
-	at repast.simphony.space.grid.AbstractGridPointTranslator.transform(AbstractGridPointTranslator.java:38)
-	at repast.simphony.valueLayer.GridValueLayer.getTransformedLocation(GridValueLayer.java:288)
-	at repast.simphony.valueLayer.GridValueLayer.set(GridValueLayer.java:264)
-	at swarm_sim.RootContextBuilder.build(RootContextBuilder.java:115)
-	at repast.simphony.dataLoader.engine.ClassNameContextBuilder.build(ClassNameContextBuilder.java:41)
-	at repast.simphony.dataLoader.engine.DataLoaderControllerAction.runInitialize(DataLoaderControllerAction.java:48)
-	at repast.simphony.engine.controller.DefaultController$2.visit(DefaultController.java:214)
-	at repast.simphony.engine.controller.DefaultController$2.visit(DefaultController.java:1)
-	at repast.simphony.util.collections.NaryTree.preOrderTraverals(NaryTree.java:287)
-	at repast.simphony.util.collections.NaryTree.preOrderTraverals(NaryTree.java:290)
-	at repast.simphony.util.collections.NaryTree.preOrderTraverals(NaryTree.java:290)
-	at repast.simphony.util.collections.NaryTree.preOrderTraversal(NaryTree.java:283)
-	at repast.simphony.engine.controller.DefaultController.runInitialize(DefaultController.java:212)
-	at repast.simphony.engine.controller.DefaultController.runInitialize(DefaultController.java:383)
-	at repast.simphony.ui.RSApplication.initSim(RSApplication.java:160)
-	at repast.simphony.ui.RSApplication.start(RSApplication.java:192)
-	at repast.simphony.ui.action.StartRun.actionPerformed(StartRun.java:17)
-	at javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:2018)
-	at javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2341)
-	at javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:402)
-	at javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:259)
-	at javax.swing.plaf.basic.BasicButtonListener.mouseReleased(BasicButtonListener.java:252)
-	at java.awt.AWTEventMulticaster.mouseReleased(AWTEventMulticaster.java:289)
-	at java.awt.Component.processMouseEvent(Component.java:6516)
-	at javax.swing.JComponent.processMouseEvent(JComponent.java:3312)
-	at java.awt.Component.processEvent(Component.java:6281)
-	at java.awt.Container.processEvent(Container.java:2229)
-	at java.awt.Component.dispatchEventImpl(Component.java:4872)
-	at java.awt.Container.dispatchEventImpl(Container.java:2287)
-	at java.awt.Component.dispatchEvent(Component.java:4698)
-	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4832)
-	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4492)
-	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4422)
-	at java.awt.Container.dispatchEventImpl(Container.java:2273)
-	at java.awt.Window.dispatchEventImpl(Window.java:2719)
-	at java.awt.Component.dispatchEvent(Component.java:4698)
-	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:740)
-	at java.awt.EventQueue.access$300(EventQueue.java:103)
-	at java.awt.EventQueue$3.run(EventQueue.java:699)
-	at java.awt.EventQueue$3.run(EventQueue.java:697)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
-	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:87)
-	at java.awt.EventQueue$4.run(EventQueue.java:713)
-	at java.awt.EventQueue$4.run(EventQueue.java:711)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
-	at java.awt.EventQueue.dispatchEvent(EventQueue.java:710)
-	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:242)
-	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:161)
-	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:150)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:146)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:138)
-	at java.awt.EventDispatchThread.run(EventDispatchThread.java:91)
-FATAL [Thread-4] 2015-04-05 11:02:55,197 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
-Current tick (0.0)
-java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
-	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:129)
-	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
-	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
-	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:227)
-	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
-	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
-	at java.lang.Thread.run(Thread.java:745)
-Caused by: java.lang.reflect.InvocationTargetException
-	at swarm_sim.Scenario$$FastClassByCGLIB$$fa52fa4e.invoke(<generated>)
-	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
-	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:127)
-	... 6 more
-Caused by: java.lang.NullPointerException
-	at swarm_sim.Scenario.init(Scenario.java:69)
-	... 9 more
-ERROR [AWT-EventQueue-0] 2015-04-05 11:03:10,844 repast.simphony.ui.RSApplication - Projection error
-repast.simphony.space.SpatialException: Target location 100 is outside of grid's dimensions.
-	at repast.simphony.space.grid.AbstractGridPointTranslator.boundsCheck(AbstractGridPointTranslator.java:48)
-	at repast.simphony.space.grid.AbstractGridPointTranslator.transform(AbstractGridPointTranslator.java:38)
-	at repast.simphony.valueLayer.GridValueLayer.getTransformedLocation(GridValueLayer.java:288)
-	at repast.simphony.valueLayer.GridValueLayer.set(GridValueLayer.java:264)
-	at swarm_sim.RootContextBuilder.build(RootContextBuilder.java:115)
-	at repast.simphony.dataLoader.engine.ClassNameContextBuilder.build(ClassNameContextBuilder.java:41)
-	at repast.simphony.dataLoader.engine.DataLoaderControllerAction.runInitialize(DataLoaderControllerAction.java:48)
-	at repast.simphony.engine.controller.DefaultController$2.visit(DefaultController.java:214)
-	at repast.simphony.engine.controller.DefaultController$2.visit(DefaultController.java:1)
-	at repast.simphony.util.collections.NaryTree.preOrderTraverals(NaryTree.java:287)
-	at repast.simphony.util.collections.NaryTree.preOrderTraverals(NaryTree.java:290)
-	at repast.simphony.util.collections.NaryTree.preOrderTraverals(NaryTree.java:290)
-	at repast.simphony.util.collections.NaryTree.preOrderTraversal(NaryTree.java:283)
-	at repast.simphony.engine.controller.DefaultController.runInitialize(DefaultController.java:212)
-	at repast.simphony.engine.controller.DefaultController.runInitialize(DefaultController.java:383)
-	at repast.simphony.ui.RSApplication.initSim(RSApplication.java:160)
-	at repast.simphony.ui.action.InitRun.actionPerformed(InitRun.java:17)
-	at javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:2018)
-	at javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2341)
-	at javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:402)
-	at javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:259)
-	at javax.swing.plaf.basic.BasicButtonListener.mouseReleased(BasicButtonListener.java:252)
-	at java.awt.AWTEventMulticaster.mouseReleased(AWTEventMulticaster.java:289)
-	at java.awt.Component.processMouseEvent(Component.java:6516)
-	at javax.swing.JComponent.processMouseEvent(JComponent.java:3312)
-	at java.awt.Component.processEvent(Component.java:6281)
-	at java.awt.Container.processEvent(Container.java:2229)
-	at java.awt.Component.dispatchEventImpl(Component.java:4872)
-	at java.awt.Container.dispatchEventImpl(Container.java:2287)
-	at java.awt.Component.dispatchEvent(Component.java:4698)
-	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4832)
-	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4492)
-	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4422)
-	at java.awt.Container.dispatchEventImpl(Container.java:2273)
-	at java.awt.Window.dispatchEventImpl(Window.java:2719)
-	at java.awt.Component.dispatchEvent(Component.java:4698)
-	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:740)
-	at java.awt.EventQueue.access$300(EventQueue.java:103)
-	at java.awt.EventQueue$3.run(EventQueue.java:699)
-	at java.awt.EventQueue$3.run(EventQueue.java:697)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
-	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:87)
-	at java.awt.EventQueue$4.run(EventQueue.java:713)
-	at java.awt.EventQueue$4.run(EventQueue.java:711)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
-	at java.awt.EventQueue.dispatchEvent(EventQueue.java:710)
-	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:242)
-	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:161)
-	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:150)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:146)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:138)
-	at java.awt.EventDispatchThread.run(EventDispatchThread.java:91)
-ERROR [AWT-EventQueue-0] 2015-04-05 11:18:46,634 repast.simphony.ui.RSApplication - Projection error
-repast.simphony.space.SpatialException: Target location 100 is outside of grid's dimensions.
-	at repast.simphony.space.grid.AbstractGridPointTranslator.boundsCheck(AbstractGridPointTranslator.java:48)
-	at repast.simphony.space.grid.AbstractGridPointTranslator.transform(AbstractGridPointTranslator.java:38)
-	at repast.simphony.valueLayer.GridValueLayer.getTransformedLocation(GridValueLayer.java:288)
-	at repast.simphony.valueLayer.GridValueLayer.set(GridValueLayer.java:264)
-	at swarm_sim.RootContextBuilder.build(RootContextBuilder.java:127)
-	at repast.simphony.dataLoader.engine.ClassNameContextBuilder.build(ClassNameContextBuilder.java:41)
-	at repast.simphony.dataLoader.engine.DataLoaderControllerAction.runInitialize(DataLoaderControllerAction.java:48)
-	at repast.simphony.engine.controller.DefaultController$2.visit(DefaultController.java:214)
-	at repast.simphony.engine.controller.DefaultController$2.visit(DefaultController.java:1)
-	at repast.simphony.util.collections.NaryTree.preOrderTraverals(NaryTree.java:287)
-	at repast.simphony.util.collections.NaryTree.preOrderTraverals(NaryTree.java:290)
-	at repast.simphony.util.collections.NaryTree.preOrderTraverals(NaryTree.java:290)
-	at repast.simphony.util.collections.NaryTree.preOrderTraversal(NaryTree.java:283)
-	at repast.simphony.engine.controller.DefaultController.runInitialize(DefaultController.java:212)
-	at repast.simphony.engine.controller.DefaultController.runInitialize(DefaultController.java:383)
-	at repast.simphony.ui.RSApplication.initSim(RSApplication.java:160)
-	at repast.simphony.ui.RSApplication.start(RSApplication.java:192)
-	at repast.simphony.ui.action.StartRun.actionPerformed(StartRun.java:17)
-	at javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:2018)
-	at javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2341)
-	at javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:402)
-	at javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:259)
-	at javax.swing.plaf.basic.BasicButtonListener.mouseReleased(BasicButtonListener.java:252)
-	at java.awt.AWTEventMulticaster.mouseReleased(AWTEventMulticaster.java:289)
-	at java.awt.Component.processMouseEvent(Component.java:6516)
-	at javax.swing.JComponent.processMouseEvent(JComponent.java:3312)
-	at java.awt.Component.processEvent(Component.java:6281)
-	at java.awt.Container.processEvent(Container.java:2229)
-	at java.awt.Component.dispatchEventImpl(Component.java:4872)
-	at java.awt.Container.dispatchEventImpl(Container.java:2287)
-	at java.awt.Component.dispatchEvent(Component.java:4698)
-	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4832)
-	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4492)
-	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4422)
-	at java.awt.Container.dispatchEventImpl(Container.java:2273)
-	at java.awt.Window.dispatchEventImpl(Window.java:2719)
-	at java.awt.Component.dispatchEvent(Component.java:4698)
-	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:740)
-	at java.awt.EventQueue.access$300(EventQueue.java:103)
-	at java.awt.EventQueue$3.run(EventQueue.java:699)
-	at java.awt.EventQueue$3.run(EventQueue.java:697)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
-	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:87)
-	at java.awt.EventQueue$4.run(EventQueue.java:713)
-	at java.awt.EventQueue$4.run(EventQueue.java:711)
-	at java.security.AccessController.doPrivileged(Native Method)
-	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
-	at java.awt.EventQueue.dispatchEvent(EventQueue.java:710)
-	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:242)
-	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:161)
-	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:150)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:146)
-	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:138)
-	at java.awt.EventDispatchThread.run(EventDispatchThread.java:91)
-FATAL [Thread-4] 2015-04-05 11:18:46,663 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
-Current tick (0.0)
-java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
-	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:129)
-	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
-	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
-	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:227)
-	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
-	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
-	at java.lang.Thread.run(Thread.java:745)
-Caused by: java.lang.reflect.InvocationTargetException
-	at swarm_sim.Scenario$$FastClassByCGLIB$$fa52fa4e.invoke(<generated>)
-	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
-	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:127)
-	... 6 more
-Caused by: java.lang.NullPointerException
-	at swarm_sim.Scenario.init(Scenario.java:69)
-	... 9 more
-FATAL [Thread-6] 2015-04-06 11:43:43,304 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
-Current tick (1.0)
-java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
-	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:129)
-	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
-	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
-	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
-	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
-	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
-	at java.lang.Thread.run(Thread.java:745)
-Caused by: java.lang.reflect.InvocationTargetException
-	at swarm_sim.blackbox.BB_AgentAvoiderMimicDirectionComm$$FastClassByCGLIB$$3d29e1d8.invoke(<generated>)
-	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
-	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:127)
-	... 6 more
-Caused by: java.lang.NullPointerException
-	at swarm_sim.AdvancedGridValueLayer.getFieldsRadial(AdvancedGridValueLayer.java:150)
-	at swarm_sim.DefaultAgent.defaultStepStart(DefaultAgent.java:52)
-	at swarm_sim.blackbox.BB_AgentAvoiderMimicDirectionComm.step(BB_AgentAvoiderMimicDirectionComm.java:28)
-	... 9 more
+INFO  [AWT-EventQueue-0] 2015-04-09 17:01:53,662 repast.simphony.batch.gui.BatchConfigMediator - Writing batch run config file to: /home/achim/workspace/swarm_sim/output/config.props
+INFO  [AWT-EventQueue-0] 2015-04-09 17:01:53,876 repast.simphony.batch.gui.BatchConfigMediator - Unrolling batch parameter file:
+	/home/achim/workspace/swarm_sim/batch/batch_params.xml to
+	/tmp/unrolledParamFile.txt
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-09 17:02:02,842 repast.simphony.batch.ssh.RemoteSession - 
+	Copying /tmp/achim_10.126.128.332671354191007760522.zip to 
+	achim@10.126.128.33:~/simphony_model_1428591720282/achim_10.126.128.332671354191007760522.zip ...
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-09 17:02:32,056 repast.simphony.batch.ssh.RemoteSession - Copying Finished.
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-09 17:02:32,062 repast.simphony.batch.ssh.SessionsDriver - Initialization Time: 0.5296
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-09 17:02:32,254 repast.simphony.batch.ssh.RemoteSession - Checking for java on achim@10.126.128.33
+INFO  [Connect thread 10.126.128.33 session] 2015-04-09 17:02:32,810 repast.simphony.batch.ssh.SSHSession - java version "1.7.0_65"
+INFO  [Connect thread 10.126.128.33 session] 2015-04-09 17:02:32,810 repast.simphony.batch.ssh.SSHSession - OpenJDK Runtime Environment (IcedTea 2.5.3) (7u71-2.5.3-0ubuntu0.14.04.1)
+OpenJDK 64-Bit Server VM (build 24.65-b04, mixed mode)
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-09 17:02:33,383 repast.simphony.batch.ssh.RemoteSession - Unzipping model on achim@10.126.128.33
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-09 17:02:35,398 repast.simphony.batch.ssh.RemoteSession - Running model on achim@10.126.128.33 ...
+INFO  [pool-2-thread-1] 2015-04-09 17:30:01,771 repast.simphony.batch.ssh.RemoteDonePoller - Polled simphony_model_1428591720282 on 10.126.128.33 for DONE: yes
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-09 17:30:01,778 repast.simphony.batch.ssh.SessionsDriver - Run Time: 27.4952
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-09 17:31:06,132 repast.simphony.batch.ssh.RemoteSession - Finding and copying remote output from achim@10.126.128.33:simphony_model_1428591720282 to /tmp/achim_10.126.128.33
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-09 17:31:08,657 repast.simphony.batch.ssh.SessionsDriver - Aggregating output into /home/achim/workspace/swarm_sim/output
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-09 17:31:08,756 repast.simphony.batch.ssh.SessionsDriver - Get Output Time: 1.1163
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-09 17:31:08,757 repast.simphony.batch.ssh.SessionsDriver - Finished. Elapsed Time: 29.1414
