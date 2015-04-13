@@ -51,7 +51,7 @@ public class BB_RandomObstacleAvoider extends DefaultBlackboxAgent implements
 
 	private void move() {
 		obstacles.clear();
-		double speed = scenario.agentMovementSpeed;
+		double speed = scenario.maxMoveDistance;
 
 		/* check for obstacles */
 		for (FieldDistancePair field : surroundingFields) {

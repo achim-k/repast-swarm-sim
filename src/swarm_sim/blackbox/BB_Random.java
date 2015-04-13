@@ -1,18 +1,26 @@
-
-
-
 package swarm_sim.blackbox;
 
 import java.awt.Color;
+import java.util.List;
 
 import repast.simphony.context.Context;
 import repast.simphony.engine.environment.RunEnvironment;
+import repast.simphony.query.space.continuous.ContinuousWithin;
 import repast.simphony.random.RandomHelper;
 import repast.simphony.space.SpatialMath;
 import repast.simphony.space.continuous.NdPoint;
 import swarm_sim.Agent;
 import swarm_sim.DisplayAgent;
 import swarm_sim.ScanCircle;
+import swarm_sim.AdvancedGridValueLayer.FieldDistancePair;
+import swarm_sim.AdvancedGridValueLayer.FieldType;
+import swarm_sim.ScanCircle.AttractionType;
+import swarm_sim.ScanCircle.DistributionType;
+import swarm_sim.ScanCircle.GrowingDirection;
+import swarm_sim.ScanCircle.InputPair;
+import swarm_sim.perception.AngleFilter;
+import swarm_sim.perception.AngleSegment;
+import swarm_sim.perception.CircleScan;
 
 /**
  * Agent which explores the space randomly while searching for the blackbox.
@@ -22,41 +30,75 @@ import swarm_sim.ScanCircle;
  * @author achim
  * 
  */
-public class BB_Random extends DefaultBlackboxAgent implements
-		Agent, DisplayAgent {
+public class BB_Random extends DefaultBlackboxAgent implements Agent,
+		DisplayAgent {
 
-	private static int agentNo = 1;
-	
+	CircleScan perceivedAgents = new CircleScan(8, 1, 1, 100, 1, 1, 2, 0,
+			scenario.perceptionScope);
 	
 
-	public BB_Random(Context<Agent> context,
-			Context<Agent> rootContext) {
+	public BB_Random(Context<Agent> context, Context<Agent> rootContext) {
 		super(context, rootContext);
-		agentNo++;
 	}
 
 	public void step() {
 		defaultStepStart();
-		move();
+
 		if (scanEnv()) {
 			bbScenario.blackboxFound();
-			state = agentState.blackbox_found;
+			// state = agentState.blackbox_found;
 		}
+
+		move();
 		prevState = state;
 		defaultStepEnd();
 	}
 
 	private void move() {
-		double speed = scenario.agentMovementSpeed;
+		double speed = scenario.maxMoveDistance;
 
 		if (state == agentState.exploring) {
 			/* Explore environment randomly */
-			if(consecutiveMoveCount >= scenario.randomConsecutiveMoves) {
-				directionAngle = RandomHelper.nextDoubleFromTo(-Math.PI, Math.PI);
-				currentLocation = space.moveByVector(this, speed, directionAngle, 0);
+			if (consecutiveMoveCount >= scenario.randomConsecutiveMoves) {
+
+				List<AngleSegment> filterSegments = collisionAngleFilter
+						.getFilterSegments();
+				AngleSegment r = new AngleSegment(-Math.PI, Math.PI);
+
+				List<AngleSegment> freeToGoSegments = r
+						.filterSegment(filterSegments);
+
+				double sum = 0;
+				for (AngleSegment s : freeToGoSegments) {
+					if (s.start > s.end)
+						System.err.println("This is fatal!!!!");
+					sum += s.end - s.start;
+					// System.out.println(s.start + "\t" + s.end + "\t"
+					// + (s.end - s.start));
+				}
+
+				double rndS = Math.random();
+				double rndSum = 0;
+				for (AngleSegment s : freeToGoSegments) {
+					rndSum += (s.end - s.start) / sum;
+					if (rndSum > rndS) {
+						directionAngle = RandomHelper.nextDoubleFromTo(s.start,
+								s.end);
+						break;
+					}
+				}
+
+				scenario.movebins[CircleScan.movementAngleToSegmentIndex(
+						directionAngle, 8)]++;
+
+				if (freeToGoSegments.size() > 0)
+					currentLocation = space.moveByVector(this, speed,
+							directionAngle, 0);
+
 				consecutiveMoveCount = 1;
 			} else {
-				currentLocation = space.moveByVector(this, speed, directionAngle, 0);
+				currentLocation = space.moveByVector(this, speed,
+						directionAngle, 0);
 				consecutiveMoveCount++;
 			}
 		} else if (state == agentState.blackbox_found) {
@@ -82,17 +124,41 @@ public class BB_Random extends DefaultBlackboxAgent implements
 	}
 
 	private boolean scanEnv() {
-		NdPoint baseLocation = space.getLocation(bbScenario.blackboxAgent);
-		if (space.getDistance(currentLocation, baseLocation) <= scenario.perceptionScope) {
-			System.out.println("bb found");
-			return true; /* Blackbox found */
+		boolean bbFound = false;
+
+		perceivedAgents.clear();
+
+
+		/* scan environment for surrounding agents, pheromones, resources, ... */
+		ContinuousWithin<Agent> withinQuery = new ContinuousWithin<Agent>(
+				space, this, scenario.perceptionScope);
+		for (Agent agent : withinQuery.query()) {
+			switch (agent.getAgentType()) {
+			case BB_Random:
+				double distance = space.getDistance(space.getLocation(this),
+						space.getLocation(agent));
+				if (distance > 0 && distance <= scenario.maxMoveDistance + 1) {
+					double angle = SpatialMath.calcAngleFor2DMovement(space,
+							currentLocation, space.getLocation(agent));
+					perceivedAgents.add(angle, distance);
+					collisionAngleFilter.add(distance, angle);
+				}
+
+				break;
+			case Blackbox:
+				bbFound = true;
+				break;
+			default:
+				break;
+			}
 		}
-		return false;
+
+		return bbFound;
 	}
 
 	@Override
 	public String getName() {
-		return "RandomExplorerNoComm" + agentNo;
+		return "RandomExplorerNoComm" + agentId;
 	}
 
 	@Override
@@ -100,4 +166,3 @@ public class BB_Random extends DefaultBlackboxAgent implements
 		return AgentType.BB_Random;
 	}
 }
-

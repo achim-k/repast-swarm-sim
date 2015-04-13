@@ -61,7 +61,7 @@ public class BB_AgentAvoiderComm extends DefaultBlackboxAgent implements
 	}
 
 	private void move() {
-		double speed = scenario.agentMovementSpeed;
+		double speed = scenario.maxMoveDistance;
 
 		if (state == agentState.exploring) {
 			/* Explore environment randomly */

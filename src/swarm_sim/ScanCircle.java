@@ -16,7 +16,7 @@ public class ScanCircle {
 	}
 
 	public enum DistributionType {
-		Linear, LinearFluid
+		Linear, LinearFluid, Exclusive
 	}
 
 	public enum GrowingDirection {
@@ -34,7 +34,7 @@ public class ScanCircle {
 
 	int bins;
 	int lowerValidLImit = 1;
-	int upperValidLimit = 0;
+	int upperValidLimit = 1000;
 	private boolean valid = false;
 	double variance = 1;
 	double mergeFactor = 1;
@@ -163,7 +163,7 @@ public class ScanCircle {
 			if (input.distance < innerCircleDistance)
 				innerCircleDistance = input.distance;
 			if (input.distance > outerCircleDistance)
-				outerCircleDistance = input.distance;
+				outerCircleDistance = input.distance; 
 		}
 	}
 	
@@ -208,6 +208,13 @@ public class ScanCircle {
 				if (currBin < 0)
 					currBin += bins;
 
+				if(distType == DistributionType.Exclusive)
+				{
+					data[currBin] = 0.0;
+					continue;
+				}
+				
+				
 				double exp = (1 / (variance * 2.50))
 						* Math.exp(-binDistance
 								/ (2 * variance * variance * bins / 8));
@@ -219,6 +226,7 @@ public class ScanCircle {
 					delta = - data[currBin] * value * exp;
 				}
 				data[currBin] += delta;
+				
 			}
 		}
 	}
@@ -235,7 +243,9 @@ public class ScanCircle {
 				return binToMovementAngle(i);
 			}
 		}
-		return 0;
+		
+		System.err.println("No other choice :'(");
+		return -100;
 	}
 
 	private double binToMovementAngle(int bin) {

@@ -1,6 +1,7 @@
 package swarm_sim;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import repast.simphony.random.RandomHelper;
@@ -13,8 +14,10 @@ public class QuadrantMap {
 	private int binsX, binsY;
 	
 	private Quadrant quadrants [][];
+	
+	public Quadrant target = null;
 
-	public QuadrantMap(Dimensions dimensions, int binsX, int binsY) {
+	public QuadrantMap(Dimensions dimensions, int binsX, int binsY, double quadrantDoneValue) {
 		this.width = dimensions.getWidth();
 		this.height = dimensions.getHeight();
 		this.binsX = binsX;
@@ -25,7 +28,7 @@ public class QuadrantMap {
 		
 		for (int x = 0; x < binsX; x++) {
 			for (int y = 0; y < binsY; y++) {
-				quadrants[x][y] = new Quadrant(x, y, binWidth, binHeight);
+				quadrants[x][y] = new Quadrant(x, y, binWidth, binHeight, quadrantDoneValue);
 			}
 		}
 	}
@@ -40,8 +43,14 @@ public class QuadrantMap {
 		return binWidth*binHeight;
 	}
 	
-	public Dimensions getQuadrantDimensions() {
-		return new Dimensions(binWidth, binHeight);
+	public boolean isDone(Quadrant q) {
+		for (int x = 0; x < binsX; x++) {
+			for (int y = 0; y < binsY; y++) {
+				if(!quadrants[x][y].isDone())
+					return false;
+			}
+		}
+		return true;
 	}
 	
 	public void setData(NdPoint location, double data) {
@@ -66,9 +75,9 @@ public class QuadrantMap {
 			int yLower = q.y - degree;
 			
 			if(x >= 0 && x < binsX && yUpper < binsY)
-				neighbors.add(new Quadrant(x, yUpper, binWidth, binHeight));
+				neighbors.add(quadrants[x][yUpper]);
 			if(x >= 0 && x < binsX && yLower >= 0)
-				neighbors.add(new Quadrant(x, yLower, binWidth, binHeight));
+				neighbors.add(quadrants[x][yLower]);
 		}
 		
 		for (int y = q.y - degree + 1; y <= q.y + degree - 1; y++) {
@@ -76,12 +85,30 @@ public class QuadrantMap {
 			int xRight = q.x + degree;
 			
 			if(y >= 0 && y < binsY && xLeft >= 0)
-				neighbors.add(new Quadrant(xLeft, y, binWidth, binHeight));
+				neighbors.add(quadrants[xLeft][y]);
 			if(y >= 0 && y < binsY && xRight < binsX)
-				neighbors.add(new Quadrant(xRight, y, binWidth, binHeight));
+				neighbors.add(quadrants[xRight][y]);
 		}
 		
 		return neighbors;
+	}
+	
+	public Quadrant getCloseQuadrant(Quadrant q, double maxValue) {
+		List<Quadrant> neighbors = null;
+		int degree = 1;
+		
+		do {
+			neighbors = getNeighboringQuadrants(q, degree++);
+			Collections.shuffle(neighbors);
+			for (Quadrant quadrant : neighbors) {
+				if(quadrant.data < maxValue) {
+					return quadrant;
+				}
+			}
+		}
+		while(neighbors.size() > 0);
+		
+		return null;
 	}
 
 //	public List<Quadrant> getCloseQuadrants(Quadrant q) {

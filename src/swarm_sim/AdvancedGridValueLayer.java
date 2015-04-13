@@ -145,12 +145,12 @@ public class AdvancedGridValueLayer extends GridValueLayer {
 		int[] maxs = new int[dimsSize];
 
 		for (int i = 0; i < dimsSize; i++) {
-			int min = (int) (origin.getCoord(i) - radius);
+			int min = (int)Math.round(origin.getCoord(i) - radius);
 			if (min < dims.getOrigin(i))
 				min = (int) dims.getOrigin(i);
 			mins[i] = min;
 
-			int max = (int) (origin.getCoord(i) + radius);
+			int max = (int)Math.round(origin.getCoord(i) + radius) - 1;
 			if (max >= dims.getOrigin(i) + dims.getDimension(i))
 				max = (int) (dims.getOrigin(i) + dims.getDimension(i)) - 1;
 			maxs[i] = max;
@@ -158,8 +158,8 @@ public class AdvancedGridValueLayer extends GridValueLayer {
 
 		for (int x = mins[0]; x <= maxs[0]; x++) {
 			for (int y = mins[1]; y <= maxs[1]; y++) {
-				double distance = Math.sqrt(Math.pow((x - origin.getX()), 2)
-						+ Math.pow((y - origin.getY()), 2));
+				double distance = Math.sqrt(Math.pow((x + .5 - origin.getX()), 2)
+						+ Math.pow((y + .5 - origin.getY()), 2));
 				if (distance <= radius)
 					ret.add(new FieldDistancePair(x, y, getFieldType(x, y),
 							get(x, y), distance));

@@ -23,7 +23,7 @@ import swarm_sim.communication.NetworkAgent;
 public class BB_MemoryComm extends DefaultBlackboxAgent implements Agent,
 		DisplayAgent {
 
-	QuadrantMap map = new QuadrantMap(space.getDimensions(), 15, 15);
+	QuadrantMap map = new QuadrantMap(space.getDimensions(), 15, 15, 200);
 	QuadrantMap currentQuadrantMap = null;
 	
 	Quadrant targetQuadrant = null;
@@ -41,13 +41,14 @@ public class BB_MemoryComm extends DefaultBlackboxAgent implements Agent,
 		defaultStepStart();
 		processMessageQueue();
 
-		if (targetQuadrant == null)
+		if (targetQuadrant == null) {
 			targetQuadrant = map.getRandomQuadrant();
+		}
 
 		move();
 		if (scanEnv()) {
 			bbScenario.blackboxFound();
-//			 state = agentState.blackbox_found;
+			 state = agentState.blackbox_found;
 		}
 		prevState = state;
 		sendMessages();
@@ -55,7 +56,7 @@ public class BB_MemoryComm extends DefaultBlackboxAgent implements Agent,
 	}
 
 	private void move() {
-		double speed = scenario.agentMovementSpeed;
+		double speed = scenario.maxMoveDistance;
 
 		if (state == agentState.exploring) {
 			// NdPoint quadrantLowerLeft = targetQuadrant.getLowerLeftCorner(0);
@@ -111,6 +112,7 @@ public class BB_MemoryComm extends DefaultBlackboxAgent implements Agent,
 					for (Quadrant q : neighborQuadrants) {
 						if (map.getData(q) / map.getBinArea() < 1) {
 							targetQuadrant = q;
+							
 							newQuadrant = true;
 							System.out.println(q + "\t → " + (degree-1));
 							System.out.println("---");
@@ -196,7 +198,6 @@ public class BB_MemoryComm extends DefaultBlackboxAgent implements Agent,
 			else
 				netAgent.addToMessageQueue(new MsgQuadrantValues(this, agent,
 						map));
-
 		}
 	}
 

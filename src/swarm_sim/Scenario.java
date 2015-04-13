@@ -13,18 +13,19 @@ public class Scenario implements Agent {
 	public int agentCount;
 	public double perceptionScope;
 	public double commScope;
-	public double agentMovementSpeed = 1.0;
+	public double maxMoveDistance = 1.0;
 	public BaseAgent baseAgent;
 	public AgentNet agentNet;
 	public List<Agent> networkAgents = new ArrayList<>();
 	public List<AgentDistancePairs> agentDistancePairs = new ArrayList<>();
 	
+	public int randomConsecutiveMoves = 1;
 	
 	/* Data */
 	public int exploredAreaCount = 0;
 	public int redundantExploredAreaCount = 0;
 	public int messagesSent = 0;
-	public int randomConsecutiveMoves = 1;
+	
 	public int[] movebins = new int[8];
 
 	

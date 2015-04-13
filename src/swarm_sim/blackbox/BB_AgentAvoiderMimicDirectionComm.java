@@ -83,7 +83,7 @@ public class BB_AgentAvoiderMimicDirectionComm extends DefaultBlackboxAgent impl
 	}
 
 	private void move() {
-		double speed = scenario.agentMovementSpeed;
+		double speed = scenario.maxMoveDistance;
 		
 		/* check for obstacles */
 		for (FieldDistancePair field : surroundingFields) {

@@ -19,7 +19,7 @@
 									
 		/>
 				<parameter name="pauseOnBBfound" displayName="pauseOnBBfound" type="boolean" 
-						defaultValue="false" 
+						defaultValue="true" 
 						isReadOnly="false" 
 						converter="repast.simphony.parameter.StringConverterFactory$BooleanConverter"
 									
@@ -31,14 +31,14 @@
 									
 		/>
 				<parameter name="blackbox_agent" displayName="Blackbox Agent" type="java.lang.String" 
-						defaultValue="BB_MemoryComm" 
+						defaultValue="BB_Random" 
 						isReadOnly="false" 
 						converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter"
 									values="BB_Random BB_RandomComm BB_PheromoneAvoider BB_RandomPoint BB_AgentAvoiderComm BB_AgentAvoiderMimicDirectionComm BB_RandomObstacleAvoider BB_MemoryComm"
 						
 		/>
 				<parameter name="perception_scope" displayName="Perception scope [m]" type="double" 
-						defaultValue="2" 
+						defaultValue="1" 
 						isReadOnly="false" 
 						converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter"
 									

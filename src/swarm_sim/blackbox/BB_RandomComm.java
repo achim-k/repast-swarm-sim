@@ -7,6 +7,10 @@ import repast.simphony.space.SpatialMath;
 import repast.simphony.space.continuous.NdPoint;
 import swarm_sim.Agent;
 import swarm_sim.DisplayAgent;
+import swarm_sim.ScanCircle;
+import swarm_sim.ScanCircle.AttractionType;
+import swarm_sim.ScanCircle.DistributionType;
+import swarm_sim.ScanCircle.GrowingDirection;
 import swarm_sim.communication.Message;
 import swarm_sim.communication.MsgBlackboxFound;
 import swarm_sim.communication.NetworkAgent;
@@ -22,12 +26,13 @@ import swarm_sim.communication.NetworkAgent;
 public class BB_RandomComm extends DefaultBlackboxAgent implements
 		Agent, DisplayAgent {
 
-	private static int agentNo = 1;
+	ScanCircle obstacles = new ScanCircle(8, 1, 1, AttractionType.Repelling,
+			DistributionType.Linear, GrowingDirection.Inner, 0,
+			scenario.perceptionScope, 2, 2);
 
 	public BB_RandomComm(Context<Agent> context,
 			Context<Agent> rootContext) {
 		super(context, rootContext);
-		agentNo++;
 	}
 
 	public void step() {
@@ -67,7 +72,7 @@ public class BB_RandomComm extends DefaultBlackboxAgent implements
 	}
 
 	private void move() {
-		double speed = scenario.agentMovementSpeed;
+		double speed = scenario.maxMoveDistance;
 
 		if (state == agentState.exploring) {
 			/* Explore environment randomly */
@@ -115,7 +120,7 @@ public class BB_RandomComm extends DefaultBlackboxAgent implements
 
 	@Override
 	public String getName() {
-		return "RandomExplorerWithComm" + agentNo;
+		return "RandomExplorerWithComm" + agentId;
 	}
 
 	@Override

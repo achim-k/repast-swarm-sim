@@ -1,5 +1,11 @@
 package swarm_sim.blackbox;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import com.vividsolutions.jts.algorithm.Angle;
+
 import repast.simphony.context.Context;
 import repast.simphony.context.DefaultContext;
 import repast.simphony.engine.environment.RunEnvironment;
@@ -13,6 +19,9 @@ import swarm_sim.Agent.AgentType;
 import swarm_sim.ScanCircle.AttractionType;
 import swarm_sim.ScanCircle.DistributionType;
 import swarm_sim.ScanCircle.GrowingDirection;
+import swarm_sim.perception.AngleFilter;
+import swarm_sim.perception.AngleSegment;
+import swarm_sim.perception.CircleScan;
 import swarm_sim.BaseAgent;
 import swarm_sim.ScanCircle;
 import swarm_sim.Scenario;
@@ -100,6 +109,49 @@ public class BlackboxContext extends DefaultContext<Agent> {
 			this.add(agent);
 		}
 		
+		
+		AngleFilter f = new AngleFilter(1);
+		f.add(2, -3*Math.PI/4, 1);
+		List<AngleSegment> l = new ArrayList<AngleSegment>();
+		
+		CircleScan c = new CircleScan(8, 1, 1, 10, 1, 1, 2, 0, 10);
+		c.add(0.2, 5);
+//		c.add(-1.2, 5);
+		c.setExlusiveSegments(l);
+		c.calculateDirectionDistribution();
+		c.normalize();
+		System.out.println(c.getPrintable());
+//		l.add(new AngleSegment(-0, Math.PI));
+		
+		CircleScan res = CircleScan.merge(8, 0.12, l, c);
+		System.out.println(res.getPrintable());
+		System.out.println(res.getMovementAngle());
+		
+		
+		AngleSegment test1 = new AngleSegment(3*Math.PI/4, Math.PI);
+		AngleSegment test2 = new AngleSegment(-Math.PI, -3*Math.PI/4);
+		
+		
+		l.add(new AngleSegment(Math.PI/2, 13*Math.PI/16));
+		l.add(new AngleSegment(3*Math.PI/4, 14*Math.PI/16));
+		l.add(new AngleSegment(15*Math.PI/16, -14*Math.PI/16));
+		l.add(new AngleSegment(15*Math.PI/16, -15*Math.PI/16));
+		l.add(new AngleSegment(-13*Math.PI/16, -8*Math.PI/16));
+				
+//		f.new AngleSegment(0, 8).filterSegment(l);
+		Collections.shuffle(l);
+		Collections.sort(l, new AngleSegment(0, 0));
+		System.out.println();
+		System.out.println(test1.start + "\t" + test1.end);
+		for (AngleSegment ap : test1.filterSegment(l)) {
+			System.out.println(ap.start + "\t" + ap.end);
+		}
+		
+		System.out.println();
+		System.out.println(test2.start + "\t" + test2.end);
+		for (AngleSegment ap : test2.filterSegment(l)) {
+			System.out.println(ap.start + "\t" + ap.end);
+		}
 		
 		
 		System.out.println("BlackBoxContext loaded!");

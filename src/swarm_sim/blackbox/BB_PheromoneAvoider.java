@@ -18,7 +18,7 @@ import swarm_sim.ScanCircle.GrowingDirection;
 public class BB_PheromoneAvoider extends DefaultBlackboxAgent implements
 		Agent, DisplayAgent {
 
-	ScanCircle pheromones = new ScanCircle(8, 1, 4, 1, AttractionType.Repelling, DistributionType.Linear, GrowingDirection.Inner, scenario.agentMovementSpeed,
+	ScanCircle pheromones = new ScanCircle(8, 1, 4, 1, AttractionType.Repelling, DistributionType.Linear, GrowingDirection.Inner, scenario.maxMoveDistance,
 			scenario.perceptionScope, 1, 1);
 	ScanCircle obstacles = new ScanCircle(8, 1, 5, AttractionType.Repelling, DistributionType.Linear, GrowingDirection.Inner, 0,
 			scenario.perceptionScope, 1, 2);
@@ -43,7 +43,7 @@ public class BB_PheromoneAvoider extends DefaultBlackboxAgent implements
 	}
 
 	private void move() {
-		double speed = scenario.agentMovementSpeed;
+		double speed = scenario.maxMoveDistance;
 
 		/* check for obstacles */
 		for (FieldDistancePair field : surroundingFields) {

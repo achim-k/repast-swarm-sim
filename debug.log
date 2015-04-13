@@ -233,3 +233,106 @@ INFO  [SwingWorker-pool-1-thread-1] 2015-04-09 17:31:06,132 repast.simphony.batc
 INFO  [SwingWorker-pool-1-thread-1] 2015-04-09 17:31:08,657 repast.simphony.batch.ssh.SessionsDriver - Aggregating output into /home/achim/workspace/swarm_sim/output
 INFO  [SwingWorker-pool-1-thread-1] 2015-04-09 17:31:08,756 repast.simphony.batch.ssh.SessionsDriver - Get Output Time: 1.1163
 INFO  [SwingWorker-pool-1-thread-1] 2015-04-09 17:31:08,757 repast.simphony.batch.ssh.SessionsDriver - Finished. Elapsed Time: 29.1414
+INFO  [AWT-EventQueue-0] 2015-04-10 10:28:06,422 repast.simphony.batch.gui.BatchConfigMediator - Writing batch run config file to: /home/achim/workspace/swarm_sim/output/config.props
+INFO  [AWT-EventQueue-0] 2015-04-10 10:28:06,606 repast.simphony.batch.gui.BatchConfigMediator - Unrolling batch parameter file:
+	/home/achim/workspace/swarm_sim/batch/batch_params.xml to
+	/tmp/unrolledParamFile.txt
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-10 10:28:15,141 repast.simphony.batch.ssh.RemoteSession - 
+	Copying /tmp/achim_10.126.128.3384554912547526994.zip to 
+	achim@10.126.128.33:~/simphony_model_1428654492676/achim_10.126.128.3384554912547526994.zip ...
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-10 10:29:53,065 repast.simphony.batch.ssh.RemoteSession - Copying Finished.
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-10 10:29:53,068 repast.simphony.batch.ssh.SessionsDriver - Initialization Time: 1.6732
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-10 10:29:53,327 repast.simphony.batch.ssh.RemoteSession - Checking for java on achim@10.126.128.33
+INFO  [Connect thread 10.126.128.33 session] 2015-04-10 10:29:54,333 repast.simphony.batch.ssh.SSHSession - java version "1.7.0_65"
+
+INFO  [Connect thread 10.126.128.33 session] 2015-04-10 10:29:54,334 repast.simphony.batch.ssh.SSHSession - OpenJDK Runtime Environment (IcedTea 2.5.3) (7u71-2.5.3-0ubuntu0.14.04.1)
+INFO  [Connect thread 10.126.128.33 session] 2015-04-10 10:29:54,335 repast.simphony.batch.ssh.SSHSession - OpenJDK 64-Bit Server VM (build 24.65-b04, mixed mode)
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-10 10:29:54,426 repast.simphony.batch.ssh.RemoteSession - Unzipping model on achim@10.126.128.33
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-10 10:29:57,466 repast.simphony.batch.ssh.RemoteSession - Running model on achim@10.126.128.33 ...
+INFO  [pool-2-thread-1] 2015-04-10 10:31:00,841 repast.simphony.batch.ssh.RemoteDonePoller - Polled simphony_model_1428654492676 on 10.126.128.33 for DONE: yes
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-10 10:31:00,849 repast.simphony.batch.ssh.SessionsDriver - Run Time: 1.1297
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-10 10:31:01,559 repast.simphony.batch.ssh.RemoteSession - Finding and copying remote output from achim@10.126.128.33:simphony_model_1428654492676 to /tmp/achim_10.126.128.33
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-10 10:31:02,462 repast.simphony.batch.ssh.SessionsDriver - Aggregating output into /home/achim/workspace/swarm_sim/output
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-10 10:31:02,526 repast.simphony.batch.ssh.SessionsDriver - Get Output Time: 0.0279
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-10 10:31:02,526 repast.simphony.batch.ssh.SessionsDriver - Finished. Elapsed Time: 2.8312
+INFO  [AWT-EventQueue-0] 2015-04-10 10:37:31,108 repast.simphony.batch.gui.BatchConfigMediator - Writing batch run config file to: /home/achim/workspace/swarm_sim/output/config.props
+INFO  [AWT-EventQueue-0] 2015-04-10 10:37:31,117 repast.simphony.batch.gui.BatchConfigMediator - Unrolling batch parameter file:
+	/home/achim/workspace/swarm_sim/batch/batch_params.xml to
+	/tmp/unrolledParamFile.txt
+INFO  [SwingWorker-pool-1-thread-2] 2015-04-10 10:37:39,161 repast.simphony.batch.ssh.RemoteSession - 
+	Copying /tmp/achim_10.126.128.334506018876807604133.zip to 
+	achim@10.126.128.33:~/simphony_model_1428655056107/achim_10.126.128.334506018876807604133.zip ...
+INFO  [AWT-EventQueue-0] 2015-04-10 11:17:41,056 repast.simphony.batch.gui.BatchConfigMediator - Writing batch run config file to: /home/achim/workspace/swarm_sim/output/config.props
+INFO  [AWT-EventQueue-0] 2015-04-10 11:17:41,227 repast.simphony.batch.gui.BatchConfigMediator - Unrolling batch parameter file:
+	/home/achim/workspace/swarm_sim/batch/batch_params.xml to
+	/tmp/unrolledParamFile.txt
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-10 11:17:49,603 repast.simphony.batch.ssh.RemoteSession - 
+	Copying /tmp/achim_10.126.128.334471803179324600515.zip to 
+	achim@10.126.128.33:~/simphony_model_1428657467166/achim_10.126.128.334471803179324600515.zip ...
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-10 11:18:49,708 repast.simphony.batch.ssh.RemoteSession - Copying Finished.
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-10 11:18:49,713 repast.simphony.batch.ssh.SessionsDriver - Initialization Time: 1.0424
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-10 11:18:50,176 repast.simphony.batch.ssh.RemoteSession - Checking for java on achim@10.126.128.33
+INFO  [Connect thread 10.126.128.33 session] 2015-04-10 11:18:51,265 repast.simphony.batch.ssh.SSHSession - java version "1.7.0_75"
+
+INFO  [Connect thread 10.126.128.33 session] 2015-04-10 11:18:51,266 repast.simphony.batch.ssh.SSHSession - OpenJDK Runtime Environment (IcedTea 2.5.4) (7u75-2.5.4-1~trusty1)
+
+INFO  [Connect thread 10.126.128.33 session] 2015-04-10 11:18:51,266 repast.simphony.batch.ssh.SSHSession - OpenJDK 64-Bit Server VM (build 24.75-b04, mixed mode)
+
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-10 11:18:51,278 repast.simphony.batch.ssh.RemoteSession - Unzipping model on achim@10.126.128.33
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-10 11:18:54,296 repast.simphony.batch.ssh.RemoteSession - Running model on achim@10.126.128.33 ...
+INFO  [pool-2-thread-1] 2015-04-10 11:19:56,595 repast.simphony.batch.ssh.RemoteDonePoller - Polled simphony_model_1428657467166 on 10.126.128.33 for DONE: no
+INFO  [pool-2-thread-1] 2015-04-10 11:20:57,819 repast.simphony.batch.ssh.RemoteDonePoller - Polled simphony_model_1428657467166 on 10.126.128.33 for DONE: no
+INFO  [pool-2-thread-1] 2015-04-10 11:21:58,828 repast.simphony.batch.ssh.RemoteDonePoller - Polled simphony_model_1428657467166 on 10.126.128.33 for DONE: no
+INFO  [pool-2-thread-1] 2015-04-10 11:22:59,857 repast.simphony.batch.ssh.RemoteDonePoller - Polled simphony_model_1428657467166 on 10.126.128.33 for DONE: no
+INFO  [pool-2-thread-1] 2015-04-10 11:24:01,074 repast.simphony.batch.ssh.RemoteDonePoller - Polled simphony_model_1428657467166 on 10.126.128.33 for DONE: no
+ERROR [SwingWorker-pool-1-thread-1] 2015-04-10 11:25:51,089 repast.simphony.batch.ssh.SessionsDriver - Error while polling a remote for finish
+java.util.concurrent.ExecutionException: com.jcraft.jsch.JSchException: channel is not opened.
+	at java.util.concurrent.FutureTask.report(FutureTask.java:122)
+	at java.util.concurrent.FutureTask.get(FutureTask.java:188)
+	at repast.simphony.batch.ssh.SessionsDriver.pollForDone(SessionsDriver.java:216)
+	at repast.simphony.batch.ssh.SessionsDriver.run(SessionsDriver.java:70)
+	at repast.simphony.batch.gui.BatchConfigMediator$AntSessionRunner.doInBackground(BatchConfigMediator.java:466)
+	at repast.simphony.batch.gui.BatchConfigMediator$AntSessionRunner.doInBackground(BatchConfigMediator.java:1)
+	at javax.swing.SwingWorker$1.call(SwingWorker.java:296)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:262)
+	at javax.swing.SwingWorker.run(SwingWorker.java:335)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:615)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: com.jcraft.jsch.JSchException: channel is not opened.
+	at com.jcraft.jsch.Channel.sendChannelOpen(Channel.java:670)
+	at com.jcraft.jsch.Channel.connect(Channel.java:151)
+	at com.jcraft.jsch.Channel.connect(Channel.java:145)
+	at repast.simphony.batch.ssh.SSHSession.executeCmd(SSHSession.java:153)
+	at repast.simphony.batch.ssh.RemoteDonePoller.call(RemoteDonePoller.java:51)
+	at repast.simphony.batch.ssh.RemoteDonePoller.call(RemoteDonePoller.java:1)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:262)
+	... 3 more
+INFO  [AWT-EventQueue-0] 2015-04-10 11:32:00,485 repast.simphony.batch.gui.BatchConfigMediator - Writing batch run config file to: /home/achim/workspace/swarm_sim/output/config.props
+INFO  [AWT-EventQueue-0] 2015-04-10 11:32:00,493 repast.simphony.batch.gui.BatchConfigMediator - Unrolling batch parameter file:
+	/home/achim/workspace/swarm_sim/batch/batch_params.xml to
+	/tmp/unrolledParamFile.txt
+INFO  [SwingWorker-pool-1-thread-2] 2015-04-10 11:32:07,326 repast.simphony.batch.ssh.RemoteSession - 
+	Copying /tmp/achim_10.126.128.337284692034940907418.zip to 
+	achim@10.126.128.33:~/simphony_model_1428658324996/achim_10.126.128.337284692034940907418.zip ...
+INFO  [SwingWorker-pool-1-thread-2] 2015-04-10 11:33:08,746 repast.simphony.batch.ssh.RemoteSession - Copying Finished.
+INFO  [SwingWorker-pool-1-thread-2] 2015-04-10 11:33:08,747 repast.simphony.batch.ssh.SessionsDriver - Initialization Time: 1.0625
+INFO  [SwingWorker-pool-1-thread-2] 2015-04-10 11:33:08,888 repast.simphony.batch.ssh.RemoteSession - Checking for java on achim@10.126.128.33
+INFO  [Connect thread 10.126.128.33 session] 2015-04-10 11:33:09,066 repast.simphony.batch.ssh.SSHSession - java version "1.7.0_75"
+INFO  [Connect thread 10.126.128.33 session] 2015-04-10 11:33:09,067 repast.simphony.batch.ssh.SSHSession - OpenJDK Runtime Environment (IcedTea 2.5.4) (7u75-2.5.4-1~trusty1)
+INFO  [Connect thread 10.126.128.33 session] 2015-04-10 11:33:09,068 repast.simphony.batch.ssh.SSHSession - OpenJDK 64-Bit Server VM (build 24.75-b04, mixed mode)
+INFO  [SwingWorker-pool-1-thread-2] 2015-04-10 11:33:09,988 repast.simphony.batch.ssh.RemoteSession - Unzipping model on achim@10.126.128.33
+INFO  [SwingWorker-pool-1-thread-2] 2015-04-10 11:33:13,009 repast.simphony.batch.ssh.RemoteSession - Running model on achim@10.126.128.33 ...
+INFO  [pool-3-thread-1] 2015-04-10 11:34:15,171 repast.simphony.batch.ssh.RemoteDonePoller - Polled simphony_model_1428658324996 on 10.126.128.33 for DONE: no
+INFO  [pool-3-thread-1] 2015-04-10 11:35:16,250 repast.simphony.batch.ssh.RemoteDonePoller - Polled simphony_model_1428658324996 on 10.126.128.33 for DONE: no
+INFO  [pool-3-thread-1] 2015-04-10 11:36:17,258 repast.simphony.batch.ssh.RemoteDonePoller - Polled simphony_model_1428658324996 on 10.126.128.33 for DONE: no
+INFO  [pool-3-thread-1] 2015-04-10 11:37:18,270 repast.simphony.batch.ssh.RemoteDonePoller - Polled simphony_model_1428658324996 on 10.126.128.33 for DONE: no
+INFO  [pool-3-thread-1] 2015-04-10 11:38:19,448 repast.simphony.batch.ssh.RemoteDonePoller - Polled simphony_model_1428658324996 on 10.126.128.33 for DONE: no
+INFO  [pool-3-thread-1] 2015-04-10 11:39:20,458 repast.simphony.batch.ssh.RemoteDonePoller - Polled simphony_model_1428658324996 on 10.126.128.33 for DONE: no
+INFO  [pool-3-thread-1] 2015-04-10 11:40:21,526 repast.simphony.batch.ssh.RemoteDonePoller - Polled simphony_model_1428658324996 on 10.126.128.33 for DONE: no
+INFO  [pool-3-thread-1] 2015-04-10 11:41:22,536 repast.simphony.batch.ssh.RemoteDonePoller - Polled simphony_model_1428658324996 on 10.126.128.33 for DONE: yes
+INFO  [SwingWorker-pool-1-thread-2] 2015-04-10 11:41:22,538 repast.simphony.batch.ssh.SessionsDriver - Run Time: 8.2297
+INFO  [SwingWorker-pool-1-thread-2] 2015-04-10 11:41:23,313 repast.simphony.batch.ssh.RemoteSession - Finding and copying remote output from achim@10.126.128.33:simphony_model_1428658324996 to /tmp/achim_10.126.128.33
+INFO  [SwingWorker-pool-1-thread-2] 2015-04-10 11:41:25,551 repast.simphony.batch.ssh.SessionsDriver - Aggregating output into /home/achim/workspace/swarm_sim/output
+INFO  [SwingWorker-pool-1-thread-2] 2015-04-10 11:41:25,706 repast.simphony.batch.ssh.SessionsDriver - Get Output Time: 0.0528
+INFO  [SwingWorker-pool-1-thread-2] 2015-04-10 11:41:25,708 repast.simphony.batch.ssh.SessionsDriver - Finished. Elapsed Time: 9.3463
