@@ -23,10 +23,10 @@ public class ControllerAgent implements Agent {
 	}
 
 	public void step() {
-		for (int i = 0; i < scenario.movebins.length; i++) {
-			System.out.print(scenario.movebins[i] + ", ");
-		}
-		System.out.println();
+//		for (int i = 0; i < scenario.movebins.length; i++) {
+//			System.out.print(scenario.movebins[i] + ", ");
+//		}
+//		System.out.println();
 		
 		if (scenario.agentDistancePairs.size() == 0)
 			scenario.init();
@@ -49,41 +49,8 @@ public class ControllerAgent implements Agent {
 
 			if (agentPair.distance <= scenario.commScope && !exploredArea.isObstacleOnLine(space.getLocation(agentPair.source), space.getLocation(agentPair.target)))
 				commNet.addEdge(agentPair.source, agentPair.target);
-//			
-//			if(exploredArea.isObstacleOnLine(space.getLocation(agentPair.source), space.getLocation(agentPair.target)))
-//				System.err.println("ahoh");
 		}
 
-//		commNet.removeEdges();
-//		for (int i = 0; i < scenario.networkAgents.size(); i++) {
-//			Agent source = scenario.networkAgents.get(i);
-//			for (int j = i + 1; j < scenario.networkAgents.size(); j++) {
-//				Agent target = scenario.networkAgents.get(j);
-//
-//				double dist = spaceContinuous.getDistance(
-//						spaceContinuous.getLocation(source),
-//						spaceContinuous.getLocation(target));
-//				if (dist <= scenario.commScope) {
-//					commNet.addEdge(source, target);
-//				}
-//			}
-//		}
-
-		/* Update communication network */
-		// System.out.println(this.getName());
-		// List<RepastEdge> edges =
-		// scenario.agentNet.getActiveEdges(spaceContinuous,
-		// scenario.commScope, scenario.agentMovementSpeed);
-		// commNet.removeEdges();
-		// System.out.println("Total edges: " + commNet.getDegree());
-		// int i =0;
-		// for (RepastEdge<Agent> edge : edges) {
-		// CommNetEdge<Agent> e = (CommNetEdge<Agent>)edge;
-		// commNet.addEdge(edge);
-		// i++;
-		// }
-		// System.out.println(i +" edges added");
-		// System.out.println("Total edges: " + commNet.getDegree());
 	}
 
 	@Override

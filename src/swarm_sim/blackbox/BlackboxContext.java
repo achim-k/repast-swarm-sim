@@ -22,7 +22,7 @@ import swarm_sim.ScanCircle.GrowingDirection;
 import swarm_sim.perception.AngleFilter;
 import swarm_sim.perception.AngleSegment;
 import swarm_sim.perception.CircleScan;
-import swarm_sim.BaseAgent;
+import swarm_sim.Base;
 import swarm_sim.ScanCircle;
 import swarm_sim.Scenario;
 
@@ -153,6 +153,15 @@ public class BlackboxContext extends DefaultContext<Agent> {
 			System.out.println(ap.start + "\t" + ap.end);
 		}
 		
+		
+		l.clear();
+//		l.add(new AngleSegment(-1, 0.5));
+//		l.add(new AngleSegment(1, 1.75));
+		l.add(new AngleSegment(-1, 3));
+		System.out.println("mutual");
+		for (AngleSegment ap : new AngleSegment(0, 2).calcMutualSegments(l)) {
+			System.out.println(ap.start + "\t" + ap.end);
+		}
 		
 		System.out.println("BlackBoxContext loaded!");
 	}

@@ -14,6 +14,7 @@ import swarm_sim.ScanCircle.GrowingDirection;
 import swarm_sim.communication.Message;
 import swarm_sim.communication.MsgBlackboxFound;
 import swarm_sim.communication.NetworkAgent;
+import swarm_sim.perception.CircleScan;
 
 /**
  * Agent which explores the space randomly while searching for the blackbox.

@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.stringtemplate.v4.compiler.CodeGenerator.conditional_return;
+
 public class AngleSegment implements Comparator<AngleSegment> {
 	public double start, end;
 
@@ -67,7 +69,7 @@ public class AngleSegment implements Comparator<AngleSegment> {
 				}
 				continue;
 			} else {
-				if(s.end <= remaining.start)
+				if (s.end <= remaining.start)
 					continue;
 				if (s.start <= remaining.start && s.end > remaining.start) {
 					if (s.end <= remaining.end)
@@ -93,10 +95,42 @@ public class AngleSegment implements Comparator<AngleSegment> {
 		}
 		if (remaining.start < remaining.end)
 			segments.add(new AngleSegment(remaining.start, remaining.end));
-//		else {
-//			System.err.println("remaining.start NOT < remaining.end");
-//			System.err.println(remaining.start + "\t" + remaining.end);
-//		}
+		// else {
+		// System.err.println("remaining.start NOT < remaining.end");
+		// System.err.println(remaining.start + "\t" + remaining.end);
+		// }
+		return segments;
+	}
+
+	public List<AngleSegment> calcMutualSegments(List<AngleSegment> filters) {
+		List<AngleSegment> segments = new ArrayList<>();
+		AngleSegment remaining = new AngleSegment(start, end);
+
+		for (AngleSegment s : filters) {
+			if (s.end <= remaining.start || s.start >= remaining.end)
+				continue;
+
+			if (s.start <= remaining.start && s.end > remaining.start) {
+				if (s.end >= remaining.end) {
+					segments.add(remaining);
+					return segments;
+				} else {
+					segments.add(new AngleSegment(remaining.start, s.end));
+					remaining.start = s.end;
+				}
+			}
+
+			if (s.start >= remaining.start && s.start < remaining.end) {
+				if (s.end > remaining.end) {
+					segments.add(new AngleSegment(s.start, remaining.end));
+					return segments;
+				} else {
+					segments.add(new AngleSegment(s.start, s.end));
+					remaining.start = s.end;
+				}
+			}
+		}
+
 		return segments;
 	}
 

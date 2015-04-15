@@ -14,8 +14,7 @@ public class Scenario implements Agent {
 	public double perceptionScope;
 	public double commScope;
 	public double maxMoveDistance = 1.0;
-	public BaseAgent baseAgent;
-	public AgentNet agentNet;
+	public Base baseAgent;
 	public List<Agent> networkAgents = new ArrayList<>();
 	public List<AgentDistancePairs> agentDistancePairs = new ArrayList<>();
 	

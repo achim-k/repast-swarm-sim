@@ -1,32 +1,21 @@
 package swarm_sim.blackbox;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import repast.simphony.context.Context;
 import repast.simphony.engine.environment.RunEnvironment;
-import repast.simphony.random.RandomHelper;
 import repast.simphony.space.SpatialMath;
 import repast.simphony.space.continuous.NdPoint;
 import swarm_sim.Agent;
 import swarm_sim.DisplayAgent;
-import swarm_sim.Quadrant;
-import swarm_sim.QuadrantMap;
-import swarm_sim.blackbox.DefaultBlackboxAgent.agentState;
+import swarm_sim.SectorMap;
 import swarm_sim.communication.Message;
 import swarm_sim.communication.MsgBlackboxFound;
-import swarm_sim.communication.MsgCurrentDirection;
-import swarm_sim.communication.MsgQuadrantValues;
+import swarm_sim.communication.MsgSectorValues;
 import swarm_sim.communication.NetworkAgent;
 
 public class BB_MemoryComm extends DefaultBlackboxAgent implements Agent,
 		DisplayAgent {
 
-	QuadrantMap map = new QuadrantMap(space.getDimensions(), 15, 15, 200);
-	QuadrantMap currentQuadrantMap = null;
-	
-	Quadrant targetQuadrant = null;
+	SectorMap sectors = new SectorMap(space.getDimensions(), 40, 40, 1);
 
 	int lineX = -1;
 	int lineY = -1;
@@ -40,10 +29,6 @@ public class BB_MemoryComm extends DefaultBlackboxAgent implements Agent,
 	public void step() {
 		defaultStepStart();
 		processMessageQueue();
-
-		if (targetQuadrant == null) {
-			targetQuadrant = map.getRandomQuadrant();
-		}
 
 		move();
 		if (scanEnv()) {
@@ -59,83 +44,11 @@ public class BB_MemoryComm extends DefaultBlackboxAgent implements Agent,
 		double speed = scenario.maxMoveDistance;
 
 		if (state == agentState.exploring) {
-			// NdPoint quadrantLowerLeft = targetQuadrant.getLowerLeftCorner(0);
-			// NdPoint quadrantLowerRight = targetQuadrant
-			// .getLowerRightCorner(scenario.perceptionScope);
-			//
-			// double x = targetQuadrant.getLocationX(currentLocation);
-			// double y = targetQuadrant.getLocationY(currentLocation);
-			//
-			// if (x < 0.1 && x > -0.1 && y < 0.1 && y > -0.1) {
-			// lineX = 0;
-			// lineY = 0;
-			// directionAngle = SpatialMath.calcAngleFor2DMovement(space,
-			// currentLocation, quadrantLowerRight);
-			// }
-			// if(lineX >= 0) {
-			// if(x >= 1 && verticalSteps < 3) {
-			// direction *= -1;
-			// directionAngle = Math.PI/2;
-			// verticalSteps++;
-			// } else {
-			// directionAngle = direction < 0 ? 0 : Math.PI;
-			// verticalSteps = 0;
-			// }
-			// }
-			// else
-			// directionAngle = SpatialMath.calcAngleFor2DMovement(space,
-			// currentLocation, quadrantLowerLeft);
-			//
-			// currentLocation = space
-			// .moveByVector(this, speed, directionAngle, 0);
-
-			Quadrant currentQuadrant = map.locationToQuadrant(currentLocation);
-			if (!currentQuadrant.equals(targetQuadrant)) {
-				directionAngle = SpatialMath.calcAngleFor2DMovement(space,
-						currentLocation, targetQuadrant.getCenter());
-			} else if (map.getData(targetQuadrant) / map.getBinArea() < 2) {
-				directionAngle = RandomHelper.nextDoubleFromTo(-Math.PI,
-						Math.PI);
-			} else {
-				/* choose new quadrant */
-//				RunEnvironment.getInstance().pauseRun();
-				boolean newQuadrant = false;
-				int degree = 1;
-				System.out.println(targetQuadrant);
-
-				List<Quadrant> neighborQuadrants = new ArrayList<>();
-				do {
-					neighborQuadrants = map.getNeighboringQuadrants(
-							currentQuadrant, degree++);
-					Collections.shuffle(neighborQuadrants);
-
-					for (Quadrant q : neighborQuadrants) {
-						if (map.getData(q) / map.getBinArea() < 1) {
-							targetQuadrant = q;
-							
-							newQuadrant = true;
-							System.out.println(q + "\t → " + (degree-1));
-							System.out.println("---");
-							break;
-						}
-					}
-				} while (newQuadrant == false && neighborQuadrants.size() > 0);
-
-				if (!newQuadrant) {
-					targetQuadrant = map.getRandomQuadrant();
-					targetQuadrant.data = 0;
-					targetQuadrant.doUpdate = false;
-				}
-
-				directionAngle = SpatialMath.calcAngleFor2DMovement(space,
-						currentLocation, targetQuadrant.getCenter());
-			}
+			sectors.setPosition(currentLocation);
+			directionAngle = sectors.getNewMoveAngle();
 
 			currentLocation = space
 					.moveByVector(this, speed, directionAngle, 0);
-			map.incrementData(currentLocation, 2 * Math.PI
-					* scenario.perceptionScope * 0.1);
-
 		} else if (state == agentState.blackbox_found) {
 			/* Go back to base */
 			NdPoint baseLocation = space.getLocation(scenario.baseAgent);
@@ -171,8 +84,18 @@ public class BB_MemoryComm extends DefaultBlackboxAgent implements Agent,
 		Message msg = popMessage();
 		while (msg != null) {
 			switch (msg.getType()) {
-			case QuadrantMap:
-				map.merge((QuadrantMap) msg.getData());
+			case SectorMap:
+				Object data[] = (Object[]) msg.getData();
+				SectorMap s = (SectorMap) data[0];
+				sectors.merge(s);
+				SectorMap targetSector = (SectorMap) data[2];
+				if (targetSector.equals(sectors.getTargetSector())) {
+					NdPoint targetSectorCenter = s
+							.getSectorCenter(targetSector);
+					if (space.getDistance(currentLocation, targetSectorCenter) > space
+							.getDistance((NdPoint) data[1], targetSectorCenter))
+						sectors.chooseNewTargetSector();
+				}
 				break;
 			case Current_Direction:
 				break;
@@ -195,9 +118,15 @@ public class BB_MemoryComm extends DefaultBlackboxAgent implements Agent,
 			if (state == agentState.blackbox_found)
 				netAgent.addToMessageQueue(new MsgBlackboxFound(this, agent,
 						null));
-			else
-				netAgent.addToMessageQueue(new MsgQuadrantValues(this, agent,
-						map));
+			else {
+				Object data[] = new Object[3];
+				data[0] = sectors;
+				data[1] = currentLocation;
+				data[2] = sectors.getTargetSector();
+				netAgent.addToMessageQueue(new MsgSectorValues(this, agent,
+						data));
+			}
+
 		}
 	}
 

@@ -11,6 +11,6 @@ public interface Message {
 	
 	public enum MessageType {
 		Location,
-		Blackbox_found, Current_Direction, QuadrantMap,
+		Blackbox_found, Current_Direction, SectorMap,
 	}
 }

@@ -25,10 +25,26 @@ public class CircleScan {
 	private class DataAngleSegement extends AngleSegment {
 		public double value;
 		public List<AngleSegment> allowedSegments = new ArrayList<>();
+		public boolean isAllowed = false;
+		public double segmentWidthSum;
 
 		public DataAngleSegement(double start, double end, double value) {
 			super(start, end);
 			this.value = value;
+		}
+
+		public double getRandomAngle() {
+			double rndS = Math.random();
+			double rndSum = 0;
+			for (AngleSegment s : allowedSegments) {
+				rndSum += (s.end - s.start) / segmentWidthSum;
+				if (rndSum >= rndS) {
+					return RandomHelper.nextDoubleFromTo(s.start,
+							s.end);
+				}
+			}
+			
+			return -100;
 		}
 	}
 
@@ -143,11 +159,10 @@ public class CircleScan {
 		double sum = 0;
 
 		for (DataAngleSegement s : segments) {
-			if (s.allowedSegments.size() > 0)
+			if (s.isAllowed)
 				sum += s.value;
-			if (sum > rnd) {
-				return rndSegmentAngle(s.allowedSegments.get(RandomHelper
-						.nextIntFromTo(0, s.allowedSegments.size()-1)));
+			if (sum >= rnd) {
+				return s.getRandomAngle();
 			}
 		}
 		System.err.println("No other choice :'(");
@@ -204,6 +219,8 @@ public class CircleScan {
 					currBin += segmentCount;
 				
 				DataAngleSegement segment = segments.get(currBin);
+				if(!segment.isAllowed)
+					continue;
 
 				double exp = (1 / (variance * 2.50))
 						* Math.exp(-binDistance
@@ -227,12 +244,14 @@ public class CircleScan {
 	 * @param scans
 	 * @return
 	 */
-	public static CircleScan merge(int segmentCount, double surpressRandom, List<AngleSegment> exclusiveSegments, CircleScan... scans) {
+	public static CircleScan merge(int segmentCount, double surpressRandom, List<AngleSegment> freeToGoSegments, CircleScan... scans) {
 		CircleScan merged = new CircleScan(segmentCount);
+		merged.setValidSegments(freeToGoSegments);
 
 		for (CircleScan cs : scans) {
 			if(!cs.isValid)
 				continue;
+			cs.setValidSegments(freeToGoSegments);
 			cs.calculateDirectionDistribution();
 			cs.normalize();
 		}
@@ -241,22 +260,24 @@ public class CircleScan {
 		for (int i = 0; i < segmentCount; i++) {
 			double weightedDataSum = 0;
 			double mergeFactorSum = 0;
+			double segmentWidthSum = 0;
 
 			for (CircleScan cs : scans) {
 				if(!cs.isValid)
 					continue;
 				mergeFactorSum += cs.mergeWeight;
-				weightedDataSum += cs.mergeWeight * cs.segments.get(i).value;
+				segmentWidthSum += cs.segments.get(i).segmentWidthSum;
+				weightedDataSum += cs.mergeWeight * cs.segments.get(i).segmentWidthSum * cs.segments.get(i).value;
 			}
 
-			if(mergeFactorSum > 0)
-				merged.segments.get(i).value = weightedDataSum / mergeFactorSum;
+			if(mergeFactorSum > 0) {
+				if(merged.segments.get(i).isAllowed)
+					merged.segments.get(i).value = weightedDataSum / (mergeFactorSum * segmentWidthSum);
+				else
+					merged.segments.get(i).value = 0;
+			}
+				
 		}
-
-		
-		merged.setExlusiveSegments(exclusiveSegments);
-		if(exclusiveSegments.size() > 0)
-			merged.normalize();
 		
 		merged.removeRandomNess(surpressRandom);
 		return merged;
@@ -269,5 +290,23 @@ public class CircleScan {
 				s.value = 0;
 		}
 		normalize();
+	}
+
+	public void setValidSegments(List<AngleSegment> freeToGoSegments) {
+		for (DataAngleSegement s : segments) {
+			s.allowedSegments.clear();
+			s.allowedSegments = s.calcMutualSegments(freeToGoSegments);
+			if(s.allowedSegments.size() > 0) 
+				s.isAllowed  = true;
+			else {
+				s.isAllowed = false;
+				s.value = 0;
+			}
+			
+			s.segmentWidthSum = 0;
+			for (AngleSegment as : s.allowedSegments) {
+				s.segmentWidthSum += as.end - as.start; 
+			}
+		}
 	}
 }

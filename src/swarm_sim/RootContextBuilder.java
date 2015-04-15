@@ -63,14 +63,14 @@ public class RootContextBuilder implements ContextBuilder<Agent> {
 		AdvancedGridValueLayer exploredArea = new AdvancedGridValueLayer(
 				"layer_explored", 0.0, false, spaceWidth, spaceHeight);
 		context.addValueLayer(exploredArea);
-		readMapFromImage(exploredArea, "data/map.png");
+		readMapFromImage(exploredArea, "data/map_obstacles.png");
 		
 		/* Create continuous space */
 		ContinuousSpaceFactory spaceFactory = ContinuousSpaceFactoryFinder
 				.createContinuousSpaceFactory(null);
 		
 		PseudoRandomAdder<Agent> adder = new PseudoRandomAdder<Agent>(exploredArea);
-		adder.setRandomAdderSaveClass(BaseAgent.class);
+		adder.setRandomAdderSaveClass(Base.class);
 		adder.addRandomAdderClass(Blackbox.class);
 		
 		spaceFactory.createContinuousSpace("space_continuous", context,
@@ -79,7 +79,7 @@ public class RootContextBuilder implements ContextBuilder<Agent> {
 				spaceWidth, spaceWidth);
 		
 		/* Create agent network (holds all edges between all agents) */
-		scenario.agentNet = new AgentNet();
+		
 		scenario.networkAgents.clear();
 		/* Create comm network (holds only edges of agents which are within communication range */
 		CommNet<Agent> commNet = new CommNet<>("network_comm", context);
@@ -103,7 +103,7 @@ public class RootContextBuilder implements ContextBuilder<Agent> {
 		
 		/* spawn base */
 		scheduleParams = ScheduleParameters.createRepeating(1, 1, ScheduleParameters.LAST_PRIORITY);
-		BaseAgent base = new BaseAgent();
+		Base base = new Base();
 		schedule.schedule(scheduleParams, base, "step");
 		context.add(base);
 		scenario.baseAgent = base;		

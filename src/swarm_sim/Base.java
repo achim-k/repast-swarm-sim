@@ -10,7 +10,7 @@ import swarm_sim.communication.DefaultNetworkAgent;
 import swarm_sim.communication.Message;
 import swarm_sim.communication.NetworkAgent;
 
-public class BaseAgent extends DefaultNetworkAgent implements Agent, DisplayAgent {
+public class Base extends DefaultNetworkAgent implements Agent, DisplayAgent {
 
 	private agentState state = agentState.exploring;
 	

@@ -3,7 +3,7 @@ package swarm_sim.blackbox;
 import repast.simphony.engine.environment.RunEnvironment;
 import repast.simphony.space.continuous.NdPoint;
 import swarm_sim.Agent.AgentType;
-import swarm_sim.BaseAgent;
+import swarm_sim.Base;
 import swarm_sim.Scenario;
 
 public class BlackboxScenario {
