@@ -9,16 +9,16 @@ import repast.simphony.space.graph.UndirectedJungNetwork;
 
 public class CommNet<T> extends ContextJungNetwork<T> {
 
-	public CommNet(String name, Context<T> context) {
-		super(new UndirectedJungNetwork<T>(name), context);
-		
+    public CommNet(String name, Context<T> context) {
+	super(new UndirectedJungNetwork<T>(name), context);
+
+    }
+
+    public void updateEdges(Iterable<RepastEdge<T>> edges) {
+	this.removeAll();
+	for (RepastEdge<T> edge : edges) {
+	    this.addEdge(edge);
 	}
-	
-	public void updateEdges(Iterable<RepastEdge<T>> edges) {
-		this.removeAll();
-		for (RepastEdge<T> edge : edges) {
-			this.addEdge(edge);
-		}
-		
-	}
+
+    }
 }

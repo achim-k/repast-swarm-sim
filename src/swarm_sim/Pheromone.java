@@ -7,12 +7,11 @@ import saf.v3d.scene.VSpatial;
 
 public class Pheromone implements Agent {
 
-	
-	public Pheromone() {
-	}
-	
-	@Override
-	public AgentType getAgentType() {
-		return AgentType.Pheromone;
-	}
+    public Pheromone() {
+    }
+
+    @Override
+    public AgentType getAgentType() {
+	return AgentType.Pheromone;
+    }
 }

@@ -8,27 +8,27 @@ import swarm_sim.DefaultAgent;
 
 public class DefaultExplorationAgent extends DefaultAgent {
 
-	public enum agentState {
-		exploring, blackbox_found,
-	}
+    public enum agentState {
+	exploring, blackbox_found,
+    }
 
-	protected agentState state = agentState.exploring;
-	protected agentState prevState = agentState.exploring;
+    protected agentState state = agentState.exploring;
+    protected agentState prevState = agentState.exploring;
 
-	public DefaultExplorationAgent(Context<Agent> context) {
-		super(context);
+    public DefaultExplorationAgent(Context<Agent> context) {
+	super(context);
+    }
+
+    public Color getColor() {
+	Color retColor = Color.BLUE;
+	switch (state) {
+	case blackbox_found:
+	    retColor = Color.YELLOW;
+	    break;
+	default:
+	    retColor = Color.BLUE;
+	    break;
 	}
-	
-	public Color getColor() {
-		Color retColor = Color.BLUE;
-		switch (state) {
-		case blackbox_found:
-			retColor = Color.YELLOW;
-			break;
-		default:
-			retColor = Color.BLUE;
-			break;
-		}
-		return retColor;
-	}
+	return retColor;
+    }
 }

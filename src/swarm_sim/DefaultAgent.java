@@ -20,77 +20,78 @@ import swarm_sim.perception.AngleFilter;
 
 public class DefaultAgent extends DefaultNetworkAgent implements Agent {
 
-	static int agentNo = 0;
+    static int agentNo = 0;
 
-	protected int agentId;
-	protected Context<Agent> context;
-	protected Network<Agent> commNet;
-	protected ContinuousSpace<Agent> space;
-	protected AdvancedGridValueLayer exploredArea;
-	protected Scenario scenario;
-	public NdPoint currentLocation;
+    protected int agentId;
+    protected Context<Agent> context;
+    protected Network<Agent> commNet;
+    protected ContinuousSpace<Agent> space;
+    protected AdvancedGridValueLayer exploredArea;
+    protected Scenario scenario;
+    public NdPoint currentLocation;
 
-	protected int consecutiveMoveCount = 1;
-	protected double directionAngle = RandomHelper.nextDoubleFromTo(-Math.PI,
-			Math.PI);
-	protected List<FieldDistancePair> surroundingFields = new ArrayList<>();
-	protected AngleFilter collisionAngleFilter = new AngleFilter(1);
+    protected int consecutiveMoveCount = 1;
+    protected double directionAngle = RandomHelper.nextDoubleFromTo(-Math.PI,
+	    Math.PI);
+    protected List<FieldDistancePair> surroundingFields = new ArrayList<>();
+    protected AngleFilter collisionAngleFilter = new AngleFilter(1);
 
-	@SuppressWarnings("unchecked")
-	public DefaultAgent(Context<Agent> context) {
-		this.context = context;
-		this.space = (ContinuousSpace<Agent>) context.getProjection(
-				ContinuousSpace.class, "space_continuous");
-		this.commNet = (Network<Agent>) context.getProjection(
-				Network.class, "network_comm");
-		this.exploredArea = (AdvancedGridValueLayer) context
-				.getValueLayer("layer_explored");
-		this.scenario = Scenario.getInstance();
-		this.agentId = ++agentNo;
-	}
+    @SuppressWarnings("unchecked")
+    public DefaultAgent(Context<Agent> context) {
+	this.context = context;
+	this.space = (ContinuousSpace<Agent>) context.getProjection(
+		ContinuousSpace.class, "space_continuous");
+	this.commNet = (Network<Agent>) context.getProjection(Network.class,
+		"network_comm");
+	this.exploredArea = (AdvancedGridValueLayer) context
+		.getValueLayer("layer_explored");
+	this.scenario = Scenario.getInstance();
+	this.agentId = ++agentNo;
+    }
 
-	@Override
-	public AgentType getAgentType() {
-		return null;
-	}
+    @Override
+    public AgentType getAgentType() {
+	return null;
+    }
 
-	protected void defaultStepStart() {
-		surroundingFields.clear();
-		collisionAngleFilter.clear();
-		
-		if (currentLocation == null)
-			currentLocation = space.getLocation(this);
-		surroundingFields = exploredArea.getFieldsRadial(currentLocation,
-				scenario.perceptionScope);
-		
-		/* check for obstacles */
-		for (FieldDistancePair field : surroundingFields) {
-			if (field.fieldType == FieldType.Obstacle) {
-				if(field.distance <= scenario.maxMoveDistance + 1 && field.distance > 0) {
-					double angle = SpatialMath.calcAngleFor2DMovement(space,
-							currentLocation,
-							new NdPoint(field.x + .5, field.y + .5));
-					collisionAngleFilter.add(field.distance, angle);
-				}
-			}
+    protected void defaultStepStart() {
+	surroundingFields.clear();
+	collisionAngleFilter.clear();
+
+	if (currentLocation == null)
+	    currentLocation = space.getLocation(this);
+	surroundingFields = exploredArea.getFieldsRadial(currentLocation,
+		scenario.perceptionScope);
+
+	/* check for obstacles */
+	for (FieldDistancePair field : surroundingFields) {
+	    if (field.fieldType == FieldType.Obstacle) {
+		if (field.distance <= scenario.maxMoveDistance + 1
+			&& field.distance > 0) {
+		    double angle = SpatialMath.calcAngleFor2DMovement(space,
+			    currentLocation, new NdPoint(field.x + .5,
+				    field.y + .5));
+		    collisionAngleFilter.add(field.distance, angle);
 		}
+	    }
 	}
+    }
 
-	protected void defaultStepEnd() {
+    protected void defaultStepEnd() {
 
-		/* set area as explored */
-		for (FieldDistancePair field : surroundingFields) {
-			if (field.fieldType != FieldType.Obstacle) {
-				if (field.value == 0)
-					scenario.exploredAreaCount++;
-				else
-					scenario.redundantExploredAreaCount++;
-			}
-			exploredArea.set(field.value + 1, field.x, field.y);
-		}
+	/* set area as explored */
+	for (FieldDistancePair field : surroundingFields) {
+	    if (field.fieldType != FieldType.Obstacle) {
+		if (field.value == 0)
+		    scenario.exploredAreaCount++;
+		else
+		    scenario.redundantExploredAreaCount++;
+	    }
+	    exploredArea.set(field.value + 1, field.x, field.y);
 	}
+    }
 
-	public VSpatial getShape(ShapeFactory2D shapeFactory) {
-		return shapeFactory.createCircle(3, 16);
-	}
+    public VSpatial getShape(ShapeFactory2D shapeFactory) {
+	return shapeFactory.createCircle(3, 16);
+    }
 }

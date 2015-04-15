@@ -8,29 +8,30 @@ import swarm_sim.Scenario;
 
 public class DefaultNetworkAgent implements NetworkAgent {
 
-	protected List<Message> messageQueue = new ArrayList<>();
-	protected Scenario scenario;
-	
-	public DefaultNetworkAgent() {
-		this.scenario = Scenario.getInstance();
+    protected List<Message> messageQueue = new ArrayList<>();
+    protected Scenario scenario;
+
+    public DefaultNetworkAgent() {
+	this.scenario = Scenario.getInstance();
+    }
+
+    @Override
+    public void addToMessageQueue(Message msg) {
+	messageQueue.add(msg);
+	scenario.messagesSent++;
+    }
+
+    protected Message popMessage() {
+	if (messageQueue.size() <= 0)
+	    return null;
+	else {
+	    Message msg = messageQueue.get(0);
+	    if (msg.getTick() >= (int) RunEnvironment.getInstance()
+		    .getCurrentSchedule().getTickCount())
+		return null;
+	    messageQueue.remove(0);
+	    return msg;
 	}
-	
-	@Override
-	public void addToMessageQueue(Message msg) {
-		messageQueue.add(msg);
-		scenario.messagesSent++;
-	}
-	
-	protected Message popMessage() {
-		if(messageQueue.size() <= 0)
-			return null;
-		else {
-			Message msg = messageQueue.get(0);
-			if(msg.getTick() >= (int)RunEnvironment.getInstance().getCurrentSchedule().getTickCount())
-				return null;
-			messageQueue.remove(0);
-			return msg;
-		}
-	}
+    }
 
 }

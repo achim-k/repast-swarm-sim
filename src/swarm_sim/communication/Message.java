@@ -4,13 +4,15 @@ import swarm_sim.Agent;
 
 public interface Message {
 
-	MessageType getType();
-	Agent getSender();
-	Object getData();
-	int getTick();
-	
-	public enum MessageType {
-		Location,
-		Blackbox_found, Current_Direction, SectorMap,
-	}
+    MessageType getType();
+
+    Agent getSender();
+
+    Object getData();
+
+    int getTick();
+
+    public enum MessageType {
+	Location, Blackbox_found, Current_Direction, SectorMap,
+    }
 }

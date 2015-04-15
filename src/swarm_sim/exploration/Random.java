@@ -59,8 +59,8 @@ public class Random extends DefaultExplorationAgent implements Agent,
 	CircleScan res = CircleScan.merge(8, 0, moveCircleFree);
 	directionAngle = res.getMovementAngle();
 	if (directionAngle > -10) {
-		currentLocation = space.moveByVector(this,
-			scenario.maxMoveDistance, directionAngle, 0);
+	    currentLocation = space.moveByVector(this,
+		    scenario.maxMoveDistance, directionAngle, 0);
 	}
 	consecutiveMoveCount = 0;
     }
