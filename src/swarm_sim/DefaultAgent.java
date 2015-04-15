@@ -9,8 +9,6 @@ import repast.simphony.space.SpatialMath;
 import repast.simphony.space.continuous.ContinuousSpace;
 import repast.simphony.space.continuous.NdPoint;
 import repast.simphony.space.graph.Network;
-import repast.simphony.space.grid.GridPoint;
-import repast.simphony.valueLayer.GridFunction;
 import saf.v3d.ShapeFactory2D;
 import saf.v3d.scene.VSpatial;
 import swarm_sim.AdvancedGridValueLayer.FieldDistancePair;

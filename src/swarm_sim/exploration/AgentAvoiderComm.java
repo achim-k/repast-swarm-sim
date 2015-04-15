@@ -10,10 +10,7 @@ import swarm_sim.ScanCircle;
 import swarm_sim.ScanCircle.AttractionType;
 import swarm_sim.ScanCircle.DistributionType;
 import swarm_sim.ScanCircle.GrowingDirection;
-import swarm_sim.ScanCircle.InputPair;
 import swarm_sim.communication.Message;
-import swarm_sim.communication.MsgBlackboxFound;
-import swarm_sim.communication.NetworkAgent;
 
 public class AgentAvoiderComm extends DefaultExplorationAgent implements Agent,
 	DisplayAgent {

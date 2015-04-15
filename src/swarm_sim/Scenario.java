@@ -5,7 +5,6 @@ import java.util.List;
 
 import repast.simphony.context.Context;
 import repast.simphony.space.continuous.ContinuousSpace;
-import repast.simphony.space.continuous.NdPoint;
 import repast.simphony.util.ContextUtils;
 
 public class Scenario implements Agent {

@@ -2,9 +2,7 @@ package swarm_sim;
 
 import java.awt.Color;
 
-import repast.simphony.visualization.editedStyle.DefaultEditedValueLayerStyleData2D;
 import repast.simphony.valueLayer.ValueLayer;
-import repast.simphony.visualization.visualization2D.style.DefaultValueLayerStyle;
 import repast.simphony.visualizationOGL2D.ValueLayerStyleOGL;
 import swarm_sim.AdvancedGridValueLayer.FieldType;
 

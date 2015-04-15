@@ -11,7 +11,6 @@ import swarm_sim.communication.Message;
 import swarm_sim.communication.MsgBlackboxFound;
 import swarm_sim.communication.MsgSectorValues;
 import swarm_sim.communication.NetworkAgent;
-import swarm_sim.exploration.DefaultExplorationAgent.agentState;
 
 public class MemoryComm extends DefaultExplorationAgent implements Agent,
 	DisplayAgent {

@@ -2,13 +2,6 @@ package swarm_sim;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-
-import repast.simphony.random.RandomHelper;
-import sun.rmi.server.UnicastRef;
-import swarm_sim.ScanCircle.AttractionType;
-import swarm_sim.ScanCircle.DistributionType;
-import swarm_sim.ScanCircle.GrowingDirection;
 
 public class ScanCircle {
     public enum AttractionType {

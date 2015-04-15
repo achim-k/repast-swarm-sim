@@ -4,11 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import repast.simphony.random.RandomHelper;
-import swarm_sim.ScanCircle;
-import swarm_sim.ScanCircle.AttractionType;
-import swarm_sim.ScanCircle.DistributionType;
-import swarm_sim.ScanCircle.GrowingDirection;
-import swarm_sim.ScanCircle.InputPair;
 
 public class CircleScan {
 

@@ -3,19 +3,13 @@ package swarm_sim;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.josql.functions.regexp.OroApacheRegExpWrapper;
-
-import com.sun.org.apache.bcel.internal.generic.ARRAYLENGTH;
-
+import repast.simphony.space.SpatialException;
+import repast.simphony.space.continuous.NdPoint;
+import repast.simphony.valueLayer.GridFunction;
+import repast.simphony.valueLayer.GridValueLayer;
 import cern.colt.matrix.DoubleMatrix1D;
 import cern.colt.matrix.impl.DenseDoubleMatrix1D;
 import cern.colt.matrix.impl.SparseDoubleMatrix1D;
-import repast.simphony.space.SpatialException;
-import repast.simphony.space.SpatialMath;
-import repast.simphony.space.continuous.NdPoint;
-import repast.simphony.space.grid.GridPoint;
-import repast.simphony.valueLayer.GridFunction;
-import repast.simphony.valueLayer.GridValueLayer;
 
 public class AdvancedGridValueLayer extends GridValueLayer {
 

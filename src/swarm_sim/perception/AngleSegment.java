@@ -5,8 +5,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.stringtemplate.v4.compiler.CodeGenerator.conditional_return;
-
 public class AngleSegment implements Comparator<AngleSegment> {
     public double start, end;
 
