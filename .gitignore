@@ -3,4 +3,5 @@
 bin/
 output/
 debug.log*
-velocity.log*
+/velocity.log
+/velocity.log.*

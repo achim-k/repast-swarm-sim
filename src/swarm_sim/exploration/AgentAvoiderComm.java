@@ -1,4 +1,4 @@
-package swarm_sim.blackbox;
+package swarm_sim.exploration;
 
 import repast.simphony.context.Context;
 import repast.simphony.engine.environment.RunEnvironment;
@@ -15,31 +15,19 @@ import swarm_sim.communication.Message;
 import swarm_sim.communication.MsgBlackboxFound;
 import swarm_sim.communication.NetworkAgent;
 
-public class BB_AgentAvoiderComm extends DefaultBlackboxAgent implements
+public class AgentAvoiderComm extends DefaultExplorationAgent implements
 		Agent, DisplayAgent {
-
-	static int agentNo;
-	
 	ScanCircle agentRepellingScan = new ScanCircle(8, 1, 1, AttractionType.Repelling, DistributionType.Linear, GrowingDirection.Inner, 0, scenario.commScope, 0.2, 1);
+	
+	public AgentAvoiderComm(Context<Agent> context) {
+		super(context);
+	}
 	
 	public void step() {
 		defaultStepStart();
 		processMessageQueue();
-		
 		move();
-		if (scanEnv()) {
-			bbScenario.blackboxFound();
-			state = agentState.blackbox_found;
-		}
-		if (state == agentState.blackbox_found) {
-			/* tell others */
-			for (Agent agent : commNet.getAdjacent(this)) {
-				NetworkAgent netAgent = (NetworkAgent) agent;
-				netAgent.addToMessageQueue(new MsgBlackboxFound(this, agent,
-						null));
-			}
-			
-		}
+		scanEnv();
 		prevState = state;
 		defaultStepEnd();
 	}
@@ -76,7 +64,7 @@ public class BB_AgentAvoiderComm extends DefaultBlackboxAgent implements
 			currentLocation = space
 					.moveByVector(this, speed, directionAngle, 0);
 
-			if (consecutiveMoveCount >= scenario.randomConsecutiveMoves) {
+			if (consecutiveMoveCount >= scenario.rndConsecutiveMoves) {
 				consecutiveMoveCount = 1;
 			} else {
 				consecutiveMoveCount++;
@@ -104,7 +92,7 @@ public class BB_AgentAvoiderComm extends DefaultBlackboxAgent implements
 		}
 	}
 
-	private boolean scanEnv() {
+	private void scanEnv() {
 
 		/* Pheromone scan */
 		agentRepellingScan.clear();
@@ -112,7 +100,7 @@ public class BB_AgentAvoiderComm extends DefaultBlackboxAgent implements
 		for (Agent agent : commNet.getAdjacent(this)) {
 			
 			switch (agent.getAgentType()) {
-			case BB_AgentAvoiderComm:
+			case EXPL_AgentAvoiderComm:
 				double angle = SpatialMath.calcAngleFor2DMovement(space,
 						currentLocation, space.getLocation(agent));
 				double distance = space.getDistance(space.getLocation(this),
@@ -124,31 +112,19 @@ public class BB_AgentAvoiderComm extends DefaultBlackboxAgent implements
 				break;
 			}
 		}
-
-		/* CHeck if bb in perception scope */
-		NdPoint baseLocation = space.getLocation(bbScenario.blackboxAgent);
-		if (space.getDistance(currentLocation, baseLocation) <= scenario.perceptionScope) {
-			System.out.println("bb found");
-			return true; /* Blackbox found */
-		}
-		return false;
 	}
 
-	public BB_AgentAvoiderComm(Context<Agent> context,
-			Context<Agent> rootContext) {
-		super(context, rootContext);
-		agentNo++;
-	}
+
 
 
 	@Override
 	public String getName() {
-		return "BB_AgentAvoiderComm" + agentNo;
+		return "BB_AgentAvoiderComm" + agentId;
 	}
 
 	@Override
 	public AgentType getAgentType() {
-		return AgentType.BB_AgentAvoiderComm;
+		return AgentType.EXPL_AgentAvoiderComm;
 	}
 
 }

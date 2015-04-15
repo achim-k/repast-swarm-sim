@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<parameters>
+	<parameter name="agent_count" displayName="Number of Agents"
+		type="int" defaultValue="10" isReadOnly="false"
+		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
+	<parameter name="random_consecutive_move" displayName="random_consecutive_move"
+		type="int" defaultValue="1" isReadOnly="false"
+		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
+	<parameter name="randomSeed" displayName="Default Random Seed"
+		type="int" defaultValue="__NULL__" isReadOnly="false"
+		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
+	<parameter name="communication_scope" displayName="Communication scope [m]"
+		type="double" defaultValue="20.0" isReadOnly="false"
+		converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter" />
+	<parameter name="blackbox_agent" displayName="Blackbox Agent"
+		type="java.lang.String" defaultValue="BB_Random" isReadOnly="false"
+		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter"
+		values="BB_Random BB_PheromoneAvoider BB_AgentAvoiderComm BB_AgentAvoiderMimicDirectionComm BB_MemoryComm" />
+	<parameter name="perception_scope" displayName="Perception scope [m]"
+		type="double" defaultValue="2" isReadOnly="false"
+		converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter" />
+</parameters>
+
+

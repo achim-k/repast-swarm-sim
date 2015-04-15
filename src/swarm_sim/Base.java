@@ -5,10 +5,10 @@ import java.awt.Color;
 import repast.simphony.engine.environment.RunEnvironment;
 import saf.v3d.ShapeFactory2D;
 import saf.v3d.scene.VSpatial;
-import swarm_sim.blackbox.DefaultBlackboxAgent.agentState;
 import swarm_sim.communication.DefaultNetworkAgent;
 import swarm_sim.communication.Message;
 import swarm_sim.communication.NetworkAgent;
+import swarm_sim.exploration.DefaultExplorationAgent.agentState;
 
 public class Base extends DefaultNetworkAgent implements Agent, DisplayAgent {
 

@@ -1,4 +1,4 @@
-package swarm_sim.blackbox;
+package swarm_sim.exploration;
 
 import repast.simphony.context.Context;
 import repast.simphony.engine.environment.RunEnvironment;
@@ -11,30 +11,22 @@ import swarm_sim.communication.Message;
 import swarm_sim.communication.MsgBlackboxFound;
 import swarm_sim.communication.MsgSectorValues;
 import swarm_sim.communication.NetworkAgent;
+import swarm_sim.exploration.DefaultExplorationAgent.agentState;
 
-public class BB_MemoryComm extends DefaultBlackboxAgent implements Agent,
+public class MemoryComm extends DefaultExplorationAgent implements Agent,
 		DisplayAgent {
 
 	SectorMap sectors = new SectorMap(space.getDimensions(), 40, 40, 1);
 
-	int lineX = -1;
-	int lineY = -1;
-	int direction = 1;
-	int verticalSteps = 0;
-
-	public BB_MemoryComm(Context<Agent> context, Context<Agent> rootContext) {
-		super(context, rootContext);
+	public MemoryComm(Context<Agent> context) {
+		super(context);
 	}
 
 	public void step() {
 		defaultStepStart();
 		processMessageQueue();
-
 		move();
-		if (scanEnv()) {
-			bbScenario.blackboxFound();
-			 state = agentState.blackbox_found;
-		}
+		scanEnv();
 		prevState = state;
 		sendMessages();
 		defaultStepEnd();
@@ -71,13 +63,8 @@ public class BB_MemoryComm extends DefaultBlackboxAgent implements Agent,
 		}
 	}
 
-	private boolean scanEnv() {
-		NdPoint baseLocation = space.getLocation(bbScenario.blackboxAgent);
-		if (space.getDistance(currentLocation, baseLocation) <= scenario.perceptionScope) {
-			System.out.println("bb found");
-			return true; /* Blackbox found */
-		}
-		return false;
+	private void scanEnv() {
+
 	}
 
 	private void processMessageQueue() {
@@ -137,6 +124,6 @@ public class BB_MemoryComm extends DefaultBlackboxAgent implements Agent,
 
 	@Override
 	public AgentType getAgentType() {
-		return AgentType.BB_MemoryComm;
+		return AgentType.EXPL_MemoryComm;
 	}
 }

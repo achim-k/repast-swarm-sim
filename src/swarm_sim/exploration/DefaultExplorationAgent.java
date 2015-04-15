@@ -1,4 +1,4 @@
-package swarm_sim.blackbox;
+package swarm_sim.exploration;
 
 import java.awt.Color;
 
@@ -6,7 +6,7 @@ import repast.simphony.context.Context;
 import swarm_sim.Agent;
 import swarm_sim.DefaultAgent;
 
-public class DefaultBlackboxAgent extends DefaultAgent {
+public class DefaultExplorationAgent extends DefaultAgent {
 
 	public enum agentState {
 		exploring, blackbox_found,
@@ -15,12 +15,8 @@ public class DefaultBlackboxAgent extends DefaultAgent {
 	protected agentState state = agentState.exploring;
 	protected agentState prevState = agentState.exploring;
 
-	protected BlackboxScenario bbScenario;
-
-	public DefaultBlackboxAgent(Context<Agent> context,
-			Context<Agent> rootContext) {
-		super(context, rootContext);
-		bbScenario = BlackboxScenario.getInstance();
+	public DefaultExplorationAgent(Context<Agent> context) {
+		super(context);
 	}
 	
 	public Color getColor() {

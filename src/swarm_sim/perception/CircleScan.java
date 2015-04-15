@@ -165,7 +165,6 @@ public class CircleScan {
 				return s.getRandomAngle();
 			}
 		}
-		System.err.println("No other choice :'(");
 		return -100;
 	}
 	

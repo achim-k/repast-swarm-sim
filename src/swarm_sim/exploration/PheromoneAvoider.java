@@ -1,4 +1,4 @@
-package swarm_sim.blackbox;
+package swarm_sim.exploration;
 
 import repast.simphony.context.Context;
 import repast.simphony.engine.environment.RunEnvironment;
@@ -15,7 +15,7 @@ import swarm_sim.ScanCircle.AttractionType;
 import swarm_sim.ScanCircle.DistributionType;
 import swarm_sim.ScanCircle.GrowingDirection;
 
-public class BB_PheromoneAvoider extends DefaultBlackboxAgent implements
+public class PheromoneAvoider extends DefaultExplorationAgent implements
 		Agent, DisplayAgent {
 
 	ScanCircle pheromones = new ScanCircle(8, 1, 4, 1, AttractionType.Repelling, DistributionType.Linear, GrowingDirection.Inner, scenario.maxMoveDistance,
@@ -24,6 +24,10 @@ public class BB_PheromoneAvoider extends DefaultBlackboxAgent implements
 			scenario.perceptionScope, 1, 2);
 	ScanCircle followDirection = new ScanCircle(8, 1, 1, AttractionType.Appealing, DistributionType.Linear, GrowingDirection.Inner, 0,
 			scenario.perceptionScope, 2, 2);
+	
+	public PheromoneAvoider(Context<Agent> context) {
+		super(context);
+	}
 
 	public void step() {
 		defaultStepStart();
@@ -31,13 +35,9 @@ public class BB_PheromoneAvoider extends DefaultBlackboxAgent implements
 		obstacles.clear();
 		followDirection.clear();
 		
+		scanEnv();
 		move();
-		
-		
-		if (scanEnv()) {
-			bbScenario.blackboxFound();
-			state = agentState.blackbox_found;
-		}
+
 		prevState = state;
 		defaultStepEnd();
 	}
@@ -45,31 +45,6 @@ public class BB_PheromoneAvoider extends DefaultBlackboxAgent implements
 	private void move() {
 		double speed = scenario.maxMoveDistance;
 
-		/* check for obstacles */
-		for (FieldDistancePair field : surroundingFields) {
-			if (field.fieldType == FieldType.Obstacle) {
-				double angle = SpatialMath.calcAngleFor2DMovement(space,
-						currentLocation, new NdPoint(field.x, field.y));
-				obstacles.add(obstacles.new InputPair(angle, field.distance));
-			}
-		}
-		
-		/* Pheromone scan */
-		ContinuousWithin<Agent> withinQuery = new ContinuousWithin<Agent>(
-				space, this, scenario.perceptionScope);
-		for (Agent agent : withinQuery.query()) {
-			switch (agent.getAgentType()) {
-			case Pheromone:
-				double angle = SpatialMath.calcAngleFor2DMovement(space,
-						currentLocation, space.getLocation(agent));
-				double distance = space.getDistance(space.getLocation(this),
-						space.getLocation(agent));
-				pheromones.add(angle, distance);
-				break;
-			default:
-				break;
-			}
-		}
 		
 		if (state == agentState.exploring) {
 			
@@ -80,7 +55,7 @@ public class BB_PheromoneAvoider extends DefaultBlackboxAgent implements
 			currentLocation = space
 					.moveByVector(this, speed, directionAngle, 0);
 			
-			if(consecutiveMoveCount % scenario.randomConsecutiveMoves == 0 && pheromones.getInputCount() == 0)
+			if(consecutiveMoveCount % scenario.rndConsecutiveMoves == 0 && pheromones.getInputCount() == 0)
 			{
 				Pheromone p = new Pheromone();
 				context.add(p);
@@ -110,21 +85,36 @@ public class BB_PheromoneAvoider extends DefaultBlackboxAgent implements
 		}
 	}
 
-	private boolean scanEnv() {
+	private void scanEnv() {
 
-		/* CHeck if bb in perception scope */
-		NdPoint baseLocation = space.getLocation(bbScenario.blackboxAgent);
-		if (space.getDistance(currentLocation, baseLocation) <= scenario.perceptionScope) {
-			System.out.println("bb found");
-			return true; /* Blackbox found */
+		/* check for obstacles */
+		for (FieldDistancePair field : surroundingFields) {
+			if (field.fieldType == FieldType.Obstacle) {
+				double angle = SpatialMath.calcAngleFor2DMovement(space,
+						currentLocation, new NdPoint(field.x, field.y));
+				obstacles.add(obstacles.new InputPair(angle, field.distance));
+			}
 		}
-		return false;
+		
+		/* Pheromone scan */
+		ContinuousWithin<Agent> withinQuery = new ContinuousWithin<Agent>(
+				space, this, scenario.perceptionScope);
+		for (Agent agent : withinQuery.query()) {
+			switch (agent.getAgentType()) {
+			case Pheromone:
+				double angle = SpatialMath.calcAngleFor2DMovement(space,
+						currentLocation, space.getLocation(agent));
+				double distance = space.getDistance(space.getLocation(this),
+						space.getLocation(agent));
+				pheromones.add(angle, distance);
+				break;
+			default:
+				break;
+			}
+		}
 	}
 
-	public BB_PheromoneAvoider(Context<Agent> context,
-			Context<Agent> rootContext) {
-		super(context, rootContext);
-	}
+
 
 	@Override
 	public String getName() {
@@ -133,7 +123,7 @@ public class BB_PheromoneAvoider extends DefaultBlackboxAgent implements
 
 	@Override
 	public AgentType getAgentType() {
-		return AgentType.BB_PheromoneAvoider;
+		return AgentType.EXPL_PheromoneAvoider;
 	}
 
 }

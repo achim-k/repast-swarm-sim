@@ -18,7 +18,7 @@ public class Scenario implements Agent {
 	public List<Agent> networkAgents = new ArrayList<>();
 	public List<AgentDistancePairs> agentDistancePairs = new ArrayList<>();
 	
-	public int randomConsecutiveMoves = 1;
+	public int rndConsecutiveMoves = 1;
 	
 	/* Data */
 	public int exploredAreaCount = 0;

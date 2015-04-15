@@ -37,13 +37,13 @@ public class DefaultAgent extends DefaultNetworkAgent implements Agent {
 	protected AngleFilter collisionAngleFilter = new AngleFilter(1);
 
 	@SuppressWarnings("unchecked")
-	public DefaultAgent(Context<Agent> context, Context<Agent> rootContext) {
+	public DefaultAgent(Context<Agent> context) {
 		this.context = context;
-		this.space = (ContinuousSpace<Agent>) rootContext.getProjection(
+		this.space = (ContinuousSpace<Agent>) context.getProjection(
 				ContinuousSpace.class, "space_continuous");
-		this.commNet = (Network<Agent>) rootContext.getProjection(
+		this.commNet = (Network<Agent>) context.getProjection(
 				Network.class, "network_comm");
-		this.exploredArea = (AdvancedGridValueLayer) rootContext
+		this.exploredArea = (AdvancedGridValueLayer) context
 				.getValueLayer("layer_explored");
 		this.scenario = Scenario.getInstance();
 		this.agentId = ++agentNo;
