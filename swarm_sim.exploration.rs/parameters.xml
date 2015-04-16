@@ -12,10 +12,10 @@
 	<parameter name="communication_scope" displayName="Communication scope [m]"
 		type="double" defaultValue="20.0" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter" />
-	<parameter name="blackbox_agent" displayName="Blackbox Agent"
-		type="java.lang.String" defaultValue="BB_Random" isReadOnly="false"
+	<parameter name="agent_type" displayName="Agent Type"
+		type="java.lang.String" defaultValue="EXPL_AvoidAppealMimicMemory" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter"
-		values="BB_Random BB_PheromoneAvoider BB_AgentAvoiderComm BB_AgentAvoiderMimicDirectionComm BB_MemoryComm" />
+		values="EXPL_Random EXPL_PheromoneAvoider EXPL_AgentRepell EXPL_AgentAvoidMimic EXPL_Memory EXPL_AvoidAppealMimicMemory" />
 	<parameter name="perception_scope" displayName="Perception scope [m]"
 		type="double" defaultValue="2" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter" />

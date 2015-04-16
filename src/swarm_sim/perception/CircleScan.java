@@ -110,7 +110,7 @@ public class CircleScan {
     }
 
     public void add(double angle) {
-	this.add(new AngleDistancePair(angle, 1));
+	this.add(new AngleDistancePair(angle, (innerCircleDistance + outerCircleDistance)/2));
     }
 
     public void add(double angle, double distance) {
@@ -178,7 +178,7 @@ public class CircleScan {
 	String ret = "";
 
 	for (DataAngleSegement s : segments) {
-	    ret += ", " + String.format("%.2f", s.value);
+	    ret += ", " + String.format("%.3f", s.value);
 	}
 	return ret;
     }
@@ -223,7 +223,7 @@ public class CircleScan {
 		if (maxValue > 0) {
 		    delta = (1 - segment.value) * value * exp;
 		} else {
-		    delta = -segment.value * value * exp;
+		    delta = segment.value * value * exp;
 		}
 		segment.value += delta;
 	    }
@@ -275,6 +275,7 @@ public class CircleScan {
 
 	}
 
+	merged.normalize();
 	merged.removeRandomNess(surpressRandom);
 	return merged;
     }

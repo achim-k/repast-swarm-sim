@@ -184,6 +184,16 @@ public class SectorMap {
 
 	return neighbors;
     }
+    
+    public NdPoint getCloseUnfilledSector() {
+	SectorMap s = getCloseUnfilledSector(posX, posY);
+	if(s != null) {
+	    double x = s.x * dims.getWidth() / sectorsX;
+	    double y = s.y * dims.getHeight() / sectorsY;
+	    return new NdPoint(x, y);
+	}
+	return null;
+    }
 
     private SectorMap getCloseUnfilledSector(int secX, int secY) {
 	List<SectorMap> neighbors = null;

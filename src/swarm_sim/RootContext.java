@@ -52,7 +52,7 @@ public class RootContext {
 	exploredArea = new AdvancedGridValueLayer("layer_explored", 0.0, false,
 		spaceWidth, spaceHeight);
 	context.addValueLayer(exploredArea);
-	readMapFromImage(exploredArea, "data/map_obstacles.png");
+	readMapFromImage(exploredArea, "data/map.png");
 
 	/* Create continuous space */
 	ContinuousSpaceFactory spaceFactory = ContinuousSpaceFactoryFinder

@@ -17,7 +17,7 @@ import swarm_sim.communication.MsgBlackboxFound;
 import swarm_sim.communication.MsgCurrentDirection;
 import swarm_sim.communication.NetworkAgent;
 
-public class AgentAvoiderMimicDirectionComm extends DefaultExplorationAgent
+public class AgentAvoiderMimic extends DefaultExplorationAgent
 	implements Agent, DisplayAgent {
 
     ScanCircle agentRepellingScan = new ScanCircle(8, 1, 1,
@@ -34,7 +34,7 @@ public class AgentAvoiderMimicDirectionComm extends DefaultExplorationAgent
 	    DistributionType.Linear, GrowingDirection.Inner, 0,
 	    scenario.perceptionScope, 2, 2);
 
-    public AgentAvoiderMimicDirectionComm(Context<Agent> context) {
+    public AgentAvoiderMimic(Context<Agent> context) {
 	super(context);
     }
 
@@ -149,7 +149,7 @@ public class AgentAvoiderMimicDirectionComm extends DefaultExplorationAgent
 	for (Agent agent : commNet.getAdjacent(this)) {
 
 	    switch (agent.getAgentType()) {
-	    case EXPL_AgentAvoiderMimicDirectionComm:
+	    case EXPL_AgentAvoiderMimic:
 		double angle = SpatialMath.calcAngleFor2DMovement(space,
 			currentLocation, space.getLocation(agent));
 		double distance = space.getDistance(space.getLocation(this),
@@ -173,7 +173,7 @@ public class AgentAvoiderMimicDirectionComm extends DefaultExplorationAgent
 
     @Override
     public AgentType getAgentType() {
-	return AgentType.EXPL_AgentAvoiderMimicDirectionComm;
+	return AgentType.EXPL_AgentAvoiderMimic;
     }
 
 }

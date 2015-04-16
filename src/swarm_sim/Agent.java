@@ -16,9 +16,10 @@ public interface Agent {
 	/* Exploration agents */
 	EXPL_Random,
 	EXPL_PheromoneAvoider,
-	EXPL_AgentAvoiderComm,
-	EXPL_AgentAvoiderMimicDirectionComm,
-	EXPL_MemoryComm,
+	EXPL_AgentRepell,
+	EXPL_AgentAvoiderMimic,
+	EXPL_Memory,
+	EXPL_AvoidAppealMimicMemory,
     }
 
     AgentType getAgentType();

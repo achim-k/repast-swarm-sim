@@ -12,12 +12,12 @@ import swarm_sim.communication.MsgBlackboxFound;
 import swarm_sim.communication.MsgSectorValues;
 import swarm_sim.communication.NetworkAgent;
 
-public class MemoryComm extends DefaultExplorationAgent implements Agent,
+public class Memory extends DefaultExplorationAgent implements Agent,
 	DisplayAgent {
 
-    SectorMap sectors = new SectorMap(space.getDimensions(), 40, 40, 1);
+    SectorMap map = new SectorMap(space.getDimensions(), 40, 40, 1);
 
-    public MemoryComm(Context<Agent> context) {
+    public Memory(Context<Agent> context) {
 	super(context);
     }
 
@@ -35,8 +35,8 @@ public class MemoryComm extends DefaultExplorationAgent implements Agent,
 	double speed = scenario.maxMoveDistance;
 
 	if (state == agentState.exploring) {
-	    sectors.setPosition(currentLocation);
-	    directionAngle = sectors.getNewMoveAngle();
+	    map.setPosition(currentLocation);
+	    directionAngle = map.getNewMoveAngle();
 
 	    currentLocation = space
 		    .moveByVector(this, speed, directionAngle, 0);
@@ -73,14 +73,14 @@ public class MemoryComm extends DefaultExplorationAgent implements Agent,
 	    case SectorMap:
 		Object data[] = (Object[]) msg.getData();
 		SectorMap s = (SectorMap) data[0];
-		sectors.merge(s);
+		map.merge(s);
 		SectorMap targetSector = (SectorMap) data[2];
-		if (targetSector.equals(sectors.getTargetSector())) {
+		if (targetSector.equals(map.getTargetSector())) {
 		    NdPoint targetSectorCenter = s
 			    .getSectorCenter(targetSector);
 		    if (space.getDistance(currentLocation, targetSectorCenter) > space
 			    .getDistance((NdPoint) data[1], targetSectorCenter))
-			sectors.chooseNewTargetSector();
+			map.chooseNewTargetSector();
 		}
 		break;
 	    case Current_Direction:
@@ -106,9 +106,9 @@ public class MemoryComm extends DefaultExplorationAgent implements Agent,
 			null));
 	    else {
 		Object data[] = new Object[3];
-		data[0] = sectors;
+		data[0] = map;
 		data[1] = currentLocation;
-		data[2] = sectors.getTargetSector();
+		data[2] = map.getTargetSector();
 		netAgent.addToMessageQueue(new MsgSectorValues(this, agent,
 			data));
 	    }
@@ -123,6 +123,6 @@ public class MemoryComm extends DefaultExplorationAgent implements Agent,
 
     @Override
     public AgentType getAgentType() {
-	return AgentType.EXPL_MemoryComm;
+	return AgentType.EXPL_Memory;
     }
 }

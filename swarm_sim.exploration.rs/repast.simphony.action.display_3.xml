@@ -7,7 +7,19 @@
       <string>swarm_sim.AgentStyle</string>
     </entry>
     <entry>
-      <string>swarm_sim.exploration.MemoryComm</string>
+      <string>swarm_sim.exploration.AvoidAppealMimicMemory</string>
+      <string>swarm_sim.AgentStyle</string>
+    </entry>
+    <entry>
+      <string>swarm_sim.exploration.Memory</string>
+      <string>swarm_sim.AgentStyle</string>
+    </entry>
+    <entry>
+      <string>swarm_sim.exploration.AgentAvoiderMimic</string>
+      <string>swarm_sim.AgentStyle</string>
+    </entry>
+    <entry>
+      <string>swarm_sim.exploration.AgentRepell</string>
       <string>swarm_sim.AgentStyle</string>
     </entry>
     <entry>
@@ -21,7 +33,19 @@
       <null/>
     </entry>
     <entry>
-      <string>swarm_sim.exploration.MemoryComm</string>
+      <string>swarm_sim.exploration.AvoidAppealMimicMemory</string>
+      <null/>
+    </entry>
+    <entry>
+      <string>swarm_sim.exploration.Memory</string>
+      <null/>
+    </entry>
+    <entry>
+      <string>swarm_sim.exploration.AgentAvoiderMimic</string>
+      <null/>
+    </entry>
+    <entry>
+      <string>swarm_sim.exploration.AgentRepell</string>
       <null/>
     </entry>
     <entry>
@@ -32,13 +56,13 @@
   <netStyles>
     <entry>
       <string>network_comm</string>
-      <string>repast.simphony.visualizationOGL2D.DefaultEdgeStyleOGL2D</string>
+      <string>repast.simphony.visualization.editedStyle.EditedEdgeStyle2D</string>
     </entry>
   </netStyles>
   <editedNetStyles>
     <entry>
       <string>network_comm</string>
-      <null/>
+      <string>network_comm.style_2.xml</string>
     </entry>
   </editedNetStyles>
   <frequency>ON_MOVE</frequency>
@@ -57,15 +81,27 @@
   <layerOrder>
     <entry>
       <string>swarm_sim.exploration.Random</string>
+      <int>5</int>
+    </entry>
+    <entry>
+      <string>swarm_sim.exploration.AvoidAppealMimicMemory</string>
       <int>2</int>
     </entry>
     <entry>
-      <string>swarm_sim.exploration.MemoryComm</string>
-      <int>1</int>
+      <string>swarm_sim.exploration.Memory</string>
+      <int>4</int>
+    </entry>
+    <entry>
+      <string>swarm_sim.exploration.AgentAvoiderMimic</string>
+      <int>3</int>
+    </entry>
+    <entry>
+      <string>swarm_sim.exploration.AgentRepell</string>
+      <int>0</int>
     </entry>
     <entry>
       <string>swarm_sim.Base</string>
-      <int>0</int>
+      <int>1</int>
     </entry>
   </layerOrder>
   <projections>
