@@ -76,19 +76,19 @@ public class AvoidAppealMimicMemory extends DefaultExplorationAgent implements
 	    double angle = SpatialMath.calcAngleFor2DMovement(space, currentLocation, p);
 	    double distance = space.getDistance(currentLocation, p);
 	    scenario.movebins[ScanCircle.movementAngleToBin(angle, 8)]++;
-	    System.out.println(angle + "\t" + distance);
+//	    System.out.println(angle + "\t" + distance);
 	    memoryFollow.add(angle, distance);
 	}
 	
 	memoryFollow.setValidSegments(moveCircleFree);
 	memoryFollow.calculateDirectionDistribution();
 	memoryFollow.normalize();
-	System.out.println(memoryFollow.getPrintable());
+//	System.out.println(memoryFollow.getPrintable());
 	
 
 	CircleScan res = CircleScan.merge(binCount, 0.12, moveCircleFree,
 		memoryFollow, agentRepell, agentAppeal);
-	System.out.println(res.getPrintable());
+//	System.out.println(res.getPrintable());
 	directionAngle = res.getMovementAngle();
 	if (directionAngle > -10) {
 	    currentLocation = space.moveByVector(this,
