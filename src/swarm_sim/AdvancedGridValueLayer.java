@@ -16,6 +16,8 @@ public class AdvancedGridValueLayer extends GridValueLayer {
     public static final double ObstaclePixelValue = 0;
 
     protected DoubleMatrix1D fieldTypeMatrix;
+    
+    private int obstacleCount = 0;
 
     public enum FieldType {
 	Default, Obstacle
@@ -72,6 +74,9 @@ public class AdvancedGridValueLayer extends GridValueLayer {
 	    throw new SpatialException("Invalid number coordinates");
 	int index = getIndex(getTransformedLocation(coordinate));
 	fieldTypeMatrix.set(index, fieldType.ordinal());
+	
+	if(fieldType == FieldType.Obstacle)
+	    obstacleCount++;
     }
 
     public FieldType getFieldType(double... coordinates) {
@@ -201,6 +206,10 @@ public class AdvancedGridValueLayer extends GridValueLayer {
 	    index = index + (int) matrixPoint[i] * stride[i];
 	}
 	return index;
+    }
+    
+    public int getObstacleFieldCount() {
+	return obstacleCount;
     }
 
 }

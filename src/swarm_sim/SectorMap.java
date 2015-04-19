@@ -185,14 +185,25 @@ public class SectorMap {
 	return neighbors;
     }
     
-    public NdPoint getCloseUnfilledSector() {
-	SectorMap s = getCloseUnfilledSector(posX, posY);
-	if(s != null) {
-	    double x = s.x * dims.getWidth() / sectorsX;
-	    double y = s.y * dims.getHeight() / sectorsY;
-	    return new NdPoint(x, y);
+    public List<NdPoint> getCloseUnfilledSectors(int maxCount) {
+	List<SectorMap> sects = new ArrayList<>();
+	int depth = 1;
+	List<SectorMap> neighbors = null;
+	do {
+	    neighbors = getNeighboringSectors(posX, posY, depth++);
+	    for (SectorMap sectorMap : neighbors) {
+		if(!sectorMap.filled)
+		    sects.add(sectorMap);
+	    }
 	}
-	return null;
+	while(neighbors.size() > 0 && sects.size() < maxCount);
+	
+	List<NdPoint> points = new ArrayList<>();
+	for (SectorMap sectorMap : sects) {
+	    points.add(getSectorCenter(sectorMap));
+	}
+	    
+	return points;
     }
 
     private SectorMap getCloseUnfilledSector(int secX, int secY) {

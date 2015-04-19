@@ -9,7 +9,8 @@ public interface Agent {
 
 	Scenario,
 	Base,
-
+	GeneticAlgorithm,
+	
 	/* Foraging */
 	Resource,
 
@@ -20,6 +21,7 @@ public interface Agent {
 	EXPL_AgentAvoiderMimic,
 	EXPL_Memory,
 	EXPL_AvoidAppealMimicMemory,
+	
     }
 
     AgentType getAgentType();

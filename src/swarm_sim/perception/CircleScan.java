@@ -306,4 +306,8 @@ public class CircleScan {
 	    }
 	}
     }
+    
+    public void setMergeWeight(double mergeWeight) {
+	this.mergeWeight = mergeWeight;
+    }
 }

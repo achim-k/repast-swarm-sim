@@ -12,24 +12,30 @@ public class ControllerAgent implements Agent {
     protected AdvancedGridValueLayer exploredArea;
 
     private Scenario scenario;
+    IsSimFinishedFunction simFinishedFunc;
 
-    public ControllerAgent(Context<Agent> context, Scenario scenario) {
+    public ControllerAgent(Context<Agent> context, IsSimFinishedFunction simFinishedFunc) {
 	this.context = context;
 	this.commNet = context.getProjection(CommNet.class, "network_comm");
 	this.space = (ContinuousSpace<Agent>) context.getProjection(
 		ContinuousSpace.class, "space_continuous");
-	this.scenario = scenario;
+	this.scenario = Scenario.getInstance();
 	this.exploredArea = (AdvancedGridValueLayer) context
 		.getValueLayer("layer_explored");
+	this.simFinishedFunc = simFinishedFunc;
     }
 
     public void step() {
-	// for (int i = 0; i < scenario.movebins.length; i++) {
-	// System.out.print(scenario.movebins[i] + ", ");
-	// }
-	// System.out.println();
+//	 for (int i = 0; i < scenario.movebins.length; i++) {
+//	 System.out.print(scenario.movebins[i] + ", ");
+//	 }
+//	 System.out.println();
+	
+	/* Check if Simulation is done */
+	if(simFinishedFunc.isSimFinished(context, exploredArea))
+	    RunEnvironment.getInstance().endRun();
 
-	if (scenario.agentDistancePairs.size() == 0)
+	if (!scenario.isInitiated())
 	    scenario.init();
 
 	int tick = (int) RunEnvironment.getInstance().getCurrentSchedule()
@@ -54,6 +60,8 @@ public class ControllerAgent implements Agent {
 			    space.getLocation(agentPair.target)))
 		commNet.addEdge(agentPair.source, agentPair.target);
 	}
+	
+	
 
     }
 

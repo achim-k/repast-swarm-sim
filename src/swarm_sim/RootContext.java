@@ -30,7 +30,7 @@ public class RootContext {
     protected ContinuousSpace<Agent> space;
     protected CommNet<Agent> commNet;
 
-    protected Context<Agent> build(Context<Agent> context) {
+    protected Context<Agent> build(Context<Agent> context, IsSimFinishedFunction simFinishedFunc) {
 	/* Set context id */
 	context.setId("root");
 
@@ -38,6 +38,7 @@ public class RootContext {
 	RunEnvironment runEnv = RunEnvironment.getInstance();
 	Parameters params = runEnv.getParameters();
 	Scenario scenario = Scenario.getInstance();
+	scenario.reset();
 
 	/* Do not run more than 30k ticks */
 	runEnv.endAt(30000);
@@ -47,6 +48,7 @@ public class RootContext {
 	scenario.commScope = params.getDouble("communication_scope");
 	scenario.rndConsecutiveMoves = params
 		.getInteger("random_consecutive_move");
+	scenario.useGA = params.getBoolean("use_ga");
 
 	/* Value layer to track explored area, default: 0.0 */
 	exploredArea = new AdvancedGridValueLayer("layer_explored", 0.0, false,
@@ -82,11 +84,20 @@ public class RootContext {
 	/* add controller agent */
 	scheduleParams = ScheduleParameters.createRepeating(1, 1,
 		ScheduleParameters.FIRST_PRIORITY);
-	ControllerAgent controller = new ControllerAgent(context, scenario);
+	ControllerAgent controller = new ControllerAgent(context, simFinishedFunc);
 	schedule.schedule(scheduleParams, controller, "step");
 	context.add(controller);
+	
+	/* schedule action which is called at end of simulation */
+	scheduleParams = scheduleParams
+		.createAtEnd(ScheduleParameters.LAST_PRIORITY);
+	schedule.schedule(scheduleParams, this, "endAction");
 
 	return context;
+    }
+    
+    protected void endAction() {
+	System.out.println("Simulation has ended");
     }
 
     private void readMapFromImage(AdvancedGridValueLayer exploredArea,

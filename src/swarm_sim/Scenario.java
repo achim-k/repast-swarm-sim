@@ -9,15 +9,22 @@ import repast.simphony.util.ContextUtils;
 
 public class Scenario implements Agent {
 
+    /* Params */
     public int agentCount;
     public double perceptionScope;
     public double commScope;
+    public int rndConsecutiveMoves = 1;
+    public Boolean useGA = false;
+    
+
+    /* Other stuff */
     public double maxMoveDistance = 1.0;
     public Base baseAgent;
     public List<Agent> networkAgents = new ArrayList<>();
     public List<AgentDistancePairs> agentDistancePairs = new ArrayList<>();
-
-    public int rndConsecutiveMoves = 1;
+    private static Scenario instance = null;
+    boolean isInitiated = false;
+    
 
     /* Data */
     public int exploredAreaCount = 0;
@@ -26,7 +33,8 @@ public class Scenario implements Agent {
 
     public int[] movebins = new int[8];
 
-    private static Scenario instance = null;
+
+    
 
     protected Scenario() {
     }
@@ -52,16 +60,18 @@ public class Scenario implements Agent {
 	return AgentType.Scenario;
     }
 
-    private void reset() {
+    public void reset() {
 	agentDistancePairs.clear();
+	networkAgents.clear();
 	exploredAreaCount = 0;
 	redundantExploredAreaCount = 0;
 	messagesSent = 0;
+	isInitiated = false;
     }
 
     public void init() {
-	reset();
-
+	agentDistancePairs.clear();
+	
 	Context<Agent> context = ContextUtils.getContext(this);
 	ContinuousSpace<Agent> space = (ContinuousSpace<Agent>) context
 		.getProjection(ContinuousSpace.class, "space_continuous");
@@ -77,6 +87,7 @@ public class Scenario implements Agent {
 			distance));
 	    }
 	}
+	isInitiated = true;
     }
 
     public class AgentDistancePairs {
@@ -90,6 +101,10 @@ public class Scenario implements Agent {
 	    this.distance = distance;
 	    this.lastTimeChecked = 0;
 	}
+    }
+
+    public boolean isInitiated() {
+	return isInitiated;
     }
 
 }
