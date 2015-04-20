@@ -310,4 +310,12 @@ public class CircleScan {
     public void setMergeWeight(double mergeWeight) {
 	this.mergeWeight = mergeWeight;
     }
+    
+    public void setInnerCircleRadius(double radius) {
+	this.innerCircleDistance = radius;
+    }
+    
+    public void setOuterCircleRadius(double radius) {
+	this.outerCircleDistance = radius;
+    }
 }

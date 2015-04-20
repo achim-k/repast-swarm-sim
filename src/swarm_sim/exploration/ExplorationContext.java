@@ -130,7 +130,7 @@ public class ExplorationContext extends RootContext implements
 	if(scen.exploredAreaCount >= 0.999 * (space.getDimensions().getHeight()*space.getDimensions().getWidth() - l.getObstacleFieldCount())) {
 	    if(scen.useGA) {
 		GA ga = GA.getInstance();
-		ga.currentFitness = 30000 - (int)RunEnvironment.getInstance().getCurrentSchedule().getTickCount();
+		ga.currentFitness = 20000 - (int)RunEnvironment.getInstance().getCurrentSchedule().getTickCount() + 1;
 	    }
 	    return true;
 	}   

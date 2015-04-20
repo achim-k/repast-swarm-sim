@@ -40,8 +40,8 @@ public class RootContext {
 	Scenario scenario = Scenario.getInstance();
 	scenario.reset();
 
-	/* Do not run more than 30k ticks */
-	runEnv.endAt(30000);
+	/* Do not run more than 20k ticks */
+	runEnv.endAt(20000);
 
 	scenario.agentCount = params.getInteger("agent_count");
 	scenario.perceptionScope = params.getDouble("perception_scope");

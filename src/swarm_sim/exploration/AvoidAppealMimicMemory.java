@@ -33,7 +33,7 @@ public class AvoidAppealMimicMemory extends DefaultExplorationAgent implements
     CircleScan agentAppeal = new CircleScan(binCount, 1, 1, 100, 1, 1, 0,
 	    0.8 * scenario.commScope, 1 * scenario.commScope);
     CircleScan agentMimic = new CircleScan(binCount, 1, 1, 100, 1, 1, 0,
-	    0.8 * scenario.commScope, 1 * scenario.commScope);
+	    0.6 * scenario.commScope, 1 * scenario.commScope);
 
     CircleScan memoryFollow = new CircleScan(binCount, 2, 1, 1000, 1, 1, 2, 0,
 	    80);
@@ -50,6 +50,10 @@ public class AvoidAppealMimicMemory extends DefaultExplorationAgent implements
 	agentAppeal.setMergeWeight((double)genes[GA.AppealIndex].getAllele());
 	agentMimic.setMergeWeight((double)genes[GA.MimicIndex].getAllele());
 	memoryFollow.setMergeWeight((double)genes[GA.MemoryIndex].getAllele());
+	
+	double repellAppealBorderRadius = (double)genes[GA.AppealRepellBorderIndex].getAllele();
+	agentRepell.setOuterCircleRadius(repellAppealBorderRadius * scenario.commScope);
+	agentAppeal.setInnerCircleRadius(repellAppealBorderRadius * scenario.commScope);
     }
 
     public void step() {
