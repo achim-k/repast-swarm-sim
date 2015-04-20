@@ -30,7 +30,9 @@ public class AvoidAppealMimicMemory extends DefaultExplorationAgent implements
     
     CircleScan agentRepell = new CircleScan(binCount, 2, 1, 10000, 1, 0, -1, 0,
 	    0.8 * scenario.commScope);
-    CircleScan agentAppeal = new CircleScan(binCount, 1, 1, 1, 1, 1, 0,
+    CircleScan agentAppeal = new CircleScan(binCount, 1, 1, 100, 1, 1, 0,
+	    0.8 * scenario.commScope, 1 * scenario.commScope);
+    CircleScan agentMimic = new CircleScan(binCount, 1, 1, 100, 1, 1, 0,
 	    0.8 * scenario.commScope, 1 * scenario.commScope);
 
     CircleScan memoryFollow = new CircleScan(binCount, 2, 1, 1000, 1, 1, 2, 0,
@@ -46,6 +48,7 @@ public class AvoidAppealMimicMemory extends DefaultExplorationAgent implements
 	Gene genes[] = c.getGenes();
 	agentRepell.setMergeWeight((double)genes[GA.RepellIndex].getAllele());
 	agentAppeal.setMergeWeight((double)genes[GA.AppealIndex].getAllele());
+	agentMimic.setMergeWeight((double)genes[GA.MimicIndex].getAllele());
 	memoryFollow.setMergeWeight((double)genes[GA.MemoryIndex].getAllele());
     }
 
@@ -71,23 +74,23 @@ public class AvoidAppealMimicMemory extends DefaultExplorationAgent implements
 	
 	
 	map.setPosition(currentLocation);
-	List<NdPoint> closeUnfilledSectors = map.getCloseUnfilledSectors(5);
-	for (NdPoint p : closeUnfilledSectors) {
-	    double angle = SpatialMath.calcAngleFor2DMovement(space, currentLocation, p);
-	    double distance = space.getDistance(currentLocation, p);
+	List<Integer[]> closeUnfilledSectors = map.getCloseUnfilledSectors(5);
+	for (Integer[] d : closeUnfilledSectors) {
+	    double angle = SpatialMath.angleFromDisplacement(d[0], d[1]);
+	    double distance = Math.sqrt(d[0]*d[0] + d[1]*d[1]);
 	    scenario.movebins[ScanCircle.movementAngleToBin(angle, 8)]++;
 //	    System.out.println(angle + "\t" + distance);
 	    memoryFollow.add(angle, distance);
 	}
 	
-	memoryFollow.setValidSegments(moveCircleFree);
-	memoryFollow.calculateDirectionDistribution();
-	memoryFollow.normalize();
+//	memoryFollow.setValidSegments(moveCircleFree);
+//	memoryFollow.calculateDirectionDistribution();
+//	memoryFollow.normalize();
 //	System.out.println(memoryFollow.getPrintable());
 	
 
 	CircleScan res = CircleScan.merge(binCount, 0.12, moveCircleFree,
-		memoryFollow, agentRepell, agentAppeal);
+		memoryFollow, agentRepell, agentAppeal, agentMimic);
 //	System.out.println(res.getPrintable());
 	directionAngle = res.getMovementAngle();
 	if (directionAngle > -10) {
@@ -136,6 +139,8 @@ public class AvoidAppealMimicMemory extends DefaultExplorationAgent implements
     }
     
     private void processMessageQueue() {
+	agentMimic.clear();
+	
 	Message msg = popMessage();
 	while (msg != null) {
 	    switch (msg.getType()) {
@@ -153,6 +158,9 @@ public class AvoidAppealMimicMemory extends DefaultExplorationAgent implements
 		}
 		break;
 	    case Current_Direction:
+		double distance = space.getDistance(currentLocation,
+			space.getLocation(msg.getSender()));
+		agentMimic.add((double) msg.getData(), distance);
 		break;
 	    case Location:
 		break;

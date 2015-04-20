@@ -15,7 +15,7 @@ import swarm_sim.communication.NetworkAgent;
 public class Memory extends DefaultExplorationAgent implements Agent,
 	DisplayAgent {
 
-    SectorMap map = new SectorMap(space.getDimensions(), 40, 40, 1);
+    SectorMap map = new SectorMap(space.getDimensions(), 60, 60, 1);
 
     public Memory(Context<Agent> context) {
 	super(context);

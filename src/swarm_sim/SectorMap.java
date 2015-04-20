@@ -89,8 +89,8 @@ public class SectorMap {
 	    return null;
 
 	if (degree - 1 == sector.degree) {
-	    double x = sector.x * dims.getWidth() / sectorsX;
-	    double y = sector.y * dims.getHeight() / sectorsY;
+	    double x = (sector.x + 0.5) * dims.getWidth() / sectorsX;
+	    double y = (sector.y + 0.5) * dims.getHeight() / sectorsY;
 	    return new NdPoint(x, y);
 	}
 
@@ -185,7 +185,7 @@ public class SectorMap {
 	return neighbors;
     }
     
-    public List<NdPoint> getCloseUnfilledSectors(int maxCount) {
+    public List<Integer[]> getCloseUnfilledSectors(int maxCount) {
 	List<SectorMap> sects = new ArrayList<>();
 	int depth = 1;
 	List<SectorMap> neighbors = null;
@@ -198,12 +198,16 @@ public class SectorMap {
 	}
 	while(neighbors.size() > 0 && sects.size() < maxCount);
 	
-	List<NdPoint> points = new ArrayList<>();
+	List<Integer[]> sectorDisplacements = new ArrayList<>();
 	for (SectorMap sectorMap : sects) {
-	    points.add(getSectorCenter(sectorMap));
+	    Integer displacement[] = new Integer[2];
+	    displacement[0] = sectorMap.x - posX;
+	    displacement[1] = sectorMap.y - posY;
+	    sectorDisplacements.add(displacement);
+//	    System.out.println(SpatialMath.angleFromDisplacement(displacement[0], displacement[1]));
 	}
 	    
-	return points;
+	return sectorDisplacements;
     }
 
     private SectorMap getCloseUnfilledSector(int secX, int secY) {

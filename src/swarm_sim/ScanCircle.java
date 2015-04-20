@@ -247,10 +247,14 @@ public class ScanCircle {
     }
 
     public int movementAngleToBin(double angle) {
+	if(angle == Math.PI)
+	    return bins-1;
 	return (int) ((angle + Math.PI) / (2 * Math.PI / bins));
     }
 
     public static int movementAngleToBin(double angle, int bins) {
+	if(angle == Math.PI)
+	    return bins-1;
 	return (int) ((angle + Math.PI) / (2 * Math.PI / bins));
     }
 

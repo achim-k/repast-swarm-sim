@@ -127,7 +127,7 @@ public class ExplorationContext extends RootContext implements
     public boolean isSimFinished(Context<Agent> c, AdvancedGridValueLayer l) {
 	Scenario scen = Scenario.getInstance();
 	
-	if(scen.exploredAreaCount >= 0.95 * (100*100 - l.getObstacleFieldCount())) {
+	if(scen.exploredAreaCount >= 0.999 * (space.getDimensions().getHeight()*space.getDimensions().getWidth() - l.getObstacleFieldCount())) {
 	    if(scen.useGA) {
 		GA ga = GA.getInstance();
 		ga.currentFitness = 30000 - (int)RunEnvironment.getInstance().getCurrentSchedule().getTickCount();

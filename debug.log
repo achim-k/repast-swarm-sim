@@ -592,3 +592,105 @@ INFO  [AWT-EventQueue-0] 2015-04-19 11:10:59,156 repast.simphony.batch.gui.Batch
 INFO  [AWT-EventQueue-0] 2015-04-19 11:10:59,386 repast.simphony.batch.gui.BatchConfigMediator - Unrolling batch parameter file:
 	/home/achim/workspace/swarm_sim/batch/batch_params.xml to
 	/tmp/unrolledParamFile.txt
+INFO  [AWT-EventQueue-0] 2015-04-20 09:27:32,731 repast.simphony.batch.gui.BatchConfigMediator - Writing batch run config file to: /home/achim/workspace/swarm_sim/output/config.props
+INFO  [AWT-EventQueue-0] 2015-04-20 09:27:33,188 repast.simphony.batch.gui.BatchConfigMediator - Unrolling batch parameter file:
+	/home/achim/workspace/swarm_sim/batch/batch_params.xml to
+	/tmp/unrolledParamFile.txt
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-20 09:27:43,687 repast.simphony.batch.ssh.LocalSession - 
+	Copying locally /tmp/achim_localhost3721724275921582802.zip to 
+/tmp/simphony_model_1429514861180 ...
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-20 09:27:43,805 repast.simphony.batch.ssh.LocalSession - Copying Finished.
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-20 09:27:43,920 repast.simphony.batch.ssh.SessionsDriver - Initialization Time: 0.0437
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-20 09:27:43,921 repast.simphony.batch.ssh.LocalSession - Unzipping model /tmp/simphony_model_1429514861180/achim_localhost3721724275921582802.zip
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-20 09:27:44,363 repast.simphony.batch.ssh.LocalSession - Running model on localhost ...
+INFO  [Thread-4] 2015-04-20 09:28:01,717 repast.simphony.batch.ssh.LocalSession - 
+INFO  [Thread-4] 2015-04-20 09:28:01,717 repast.simphony.batch.ssh.LocalSession - Exploration context loaded
+INFO  [Thread-4] 2015-04-20 09:28:01,717 repast.simphony.batch.ssh.LocalSession - -----------------------------------
+INFO  [Thread-4] 2015-04-20 09:28:01,717 repast.simphony.batch.ssh.LocalSession - Number of Agents:	10
+INFO  [Thread-4] 2015-04-20 09:28:01,718 repast.simphony.batch.ssh.LocalSession - Type of Agents:  	EXPL_Random
+INFO  [Thread-4] 2015-04-20 09:28:01,718 repast.simphony.batch.ssh.LocalSession - Perception-Scope:	2.0
+INFO  [Thread-4] 2015-04-20 09:28:01,718 repast.simphony.batch.ssh.LocalSession - Communic.-Scope: 	20.0
+INFO  [Thread-4] 2015-04-20 09:28:01,718 repast.simphony.batch.ssh.LocalSession - Consecutive moves:	1
+INFO  [Thread-4] 2015-04-20 09:28:01,718 repast.simphony.batch.ssh.LocalSession - Use Genetic Alg.:	false
+INFO  [Thread-4] 2015-04-20 09:28:03,389 repast.simphony.batch.ssh.LocalSession - Exploration Simulation has ended after 6150.0 ticks
+INFO  [Thread-4] 2015-04-20 09:28:03,390 repast.simphony.batch.ssh.LocalSession - ####################################
+INFO  [AWT-EventQueue-0] 2015-04-20 09:28:54,161 repast.simphony.batch.gui.BatchConfigMediator - Writing batch run config file to: /home/achim/workspace/swarm_sim/output/config.props
+INFO  [AWT-EventQueue-0] 2015-04-20 09:28:54,586 repast.simphony.batch.gui.BatchConfigMediator - Unrolling batch parameter file:
+	/home/achim/workspace/swarm_sim/batch/batch_params.xml to
+	/tmp/unrolledParamFile.txt
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-20 09:29:04,137 repast.simphony.batch.ssh.LocalSession - 
+	Copying locally /tmp/achim_localhost2365140234739566221.zip to 
+/tmp/simphony_model_1429514941669 ...
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-20 09:29:04,337 repast.simphony.batch.ssh.LocalSession - Copying Finished.
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-20 09:29:04,338 repast.simphony.batch.ssh.SessionsDriver - Initialization Time: 0.0445
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-20 09:29:04,339 repast.simphony.batch.ssh.LocalSession - Unzipping model /tmp/simphony_model_1429514941669/achim_localhost2365140234739566221.zip
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-20 09:29:04,773 repast.simphony.batch.ssh.LocalSession - Running model on localhost ...
+INFO  [AWT-EventQueue-0] 2015-04-20 09:31:32,726 repast.simphony.batch.gui.BatchConfigMediator - Writing batch run config file to: /home/achim/workspace/swarm_sim/output/config.props
+INFO  [AWT-EventQueue-0] 2015-04-20 09:31:33,127 repast.simphony.batch.gui.BatchConfigMediator - Unrolling batch parameter file:
+	/home/achim/workspace/swarm_sim/batch/batch_params.xml to
+	/tmp/unrolledParamFile.txt
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-20 09:31:42,626 repast.simphony.batch.ssh.LocalSession - 
+	Copying locally /tmp/achim_localhost8966444032021241707.zip to 
+/tmp/simphony_model_1429515100148 ...
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-20 09:31:42,758 repast.simphony.batch.ssh.LocalSession - Copying Finished.
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-20 09:31:42,759 repast.simphony.batch.ssh.SessionsDriver - Initialization Time: 0.0435
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-20 09:31:42,760 repast.simphony.batch.ssh.LocalSession - Unzipping model /tmp/simphony_model_1429515100148/achim_localhost8966444032021241707.zip
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-20 09:31:43,241 repast.simphony.batch.ssh.LocalSession - Running model on localhost ...
+INFO  [Thread-4] 2015-04-20 09:31:59,907 repast.simphony.batch.ssh.LocalSession - 
+INFO  [Thread-4] 2015-04-20 09:31:59,908 repast.simphony.batch.ssh.LocalSession - Exploration context loaded
+INFO  [Thread-4] 2015-04-20 09:31:59,908 repast.simphony.batch.ssh.LocalSession - -----------------------------------
+INFO  [Thread-4] 2015-04-20 09:31:59,908 repast.simphony.batch.ssh.LocalSession - Number of Agents:	10
+INFO  [Thread-4] 2015-04-20 09:31:59,908 repast.simphony.batch.ssh.LocalSession - Type of Agents:  	EXPL_Random
+INFO  [Thread-4] 2015-04-20 09:31:59,909 repast.simphony.batch.ssh.LocalSession - Perception-Scope:	2.0
+INFO  [Thread-4] 2015-04-20 09:31:59,909 repast.simphony.batch.ssh.LocalSession - Communic.-Scope: 	20.0
+INFO  [Thread-4] 2015-04-20 09:31:59,909 repast.simphony.batch.ssh.LocalSession - Consecutive moves:	1
+INFO  [Thread-4] 2015-04-20 09:31:59,909 repast.simphony.batch.ssh.LocalSession - Use Genetic Alg.:	false
+INFO  [Thread-4] 2015-04-20 09:32:01,343 repast.simphony.batch.ssh.LocalSession - Exploration Simulation has ended after 4560.0 ticks
+INFO  [Thread-4] 2015-04-20 09:32:01,344 repast.simphony.batch.ssh.LocalSession - ####################################
+INFO  [pool-2-thread-1] 2015-04-20 09:32:43,270 repast.simphony.batch.ssh.LocalDonePoller - Polled /tmp/simphony_model_1429515100148 for DONE:  yes
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-20 09:32:43,274 repast.simphony.batch.ssh.SessionsDriver - Run Time: 1.0085
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-20 09:32:43,331 repast.simphony.batch.ssh.LocalSession - Finding output on localhost in /tmp/simphony_model_1429515100148
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-20 09:32:43,362 repast.simphony.batch.ssh.SessionsDriver - Aggregating output into /home/achim/workspace/swarm_sim/output
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-20 09:32:43,370 repast.simphony.batch.ssh.SessionsDriver - Get Output Time: 0.0016
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-20 09:32:43,371 repast.simphony.batch.ssh.SessionsDriver - Finished. Elapsed Time: 1.0539
+INFO  [AWT-EventQueue-0] 2015-04-20 09:32:59,109 repast.simphony.batch.gui.BatchConfigMediator - Writing batch run config file to: /home/achim/workspace/swarm_sim/output/config.props
+INFO  [AWT-EventQueue-0] 2015-04-20 09:32:59,123 repast.simphony.batch.gui.BatchConfigMediator - Unrolling batch parameter file:
+	/home/achim/workspace/swarm_sim/batch/batch_params.xml to
+	/tmp/unrolledParamFile.txt
+INFO  [SwingWorker-pool-1-thread-2] 2015-04-20 09:33:06,402 repast.simphony.batch.ssh.LocalSession - 
+	Copying locally /tmp/achim_localhost7291740167289407450.zip to 
+/tmp/simphony_model_1429515183949 ...
+INFO  [SwingWorker-pool-1-thread-2] 2015-04-20 09:33:06,603 repast.simphony.batch.ssh.LocalSession - Copying Finished.
+INFO  [SwingWorker-pool-1-thread-2] 2015-04-20 09:33:06,604 repast.simphony.batch.ssh.SessionsDriver - Initialization Time: 0.0443
+INFO  [SwingWorker-pool-1-thread-2] 2015-04-20 09:33:06,604 repast.simphony.batch.ssh.LocalSession - Unzipping model /tmp/simphony_model_1429515183949/achim_localhost7291740167289407450.zip
+INFO  [SwingWorker-pool-1-thread-2] 2015-04-20 09:33:06,968 repast.simphony.batch.ssh.LocalSession - Running model on localhost ...
+INFO  [AWT-EventQueue-0] 2015-04-20 09:35:14,981 repast.simphony.batch.gui.BatchConfigMediator - Writing batch run config file to: /home/achim/workspace/swarm_sim/output/config.props
+INFO  [AWT-EventQueue-0] 2015-04-20 09:35:15,393 repast.simphony.batch.gui.BatchConfigMediator - Unrolling batch parameter file:
+	/home/achim/workspace/swarm_sim/batch/batch_params.xml to
+	/tmp/unrolledParamFile.txt
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-20 09:35:24,711 repast.simphony.batch.ssh.LocalSession - 
+	Copying locally /tmp/achim_localhost8361896382729637495.zip to 
+/tmp/simphony_model_1429515322321 ...
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-20 09:35:24,913 repast.simphony.batch.ssh.LocalSession - Copying Finished.
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-20 09:35:24,916 repast.simphony.batch.ssh.SessionsDriver - Initialization Time: 0.0432
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-20 09:35:24,916 repast.simphony.batch.ssh.LocalSession - Unzipping model /tmp/simphony_model_1429515322321/achim_localhost8361896382729637495.zip
+INFO  [SwingWorker-pool-1-thread-1] 2015-04-20 09:35:25,345 repast.simphony.batch.ssh.LocalSession - Running model on localhost ...
+FATAL [Thread-6] 2015-04-20 16:29:02,106 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (1.0)
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:129)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.lang.reflect.InvocationTargetException
+	at swarm_sim.exploration.AvoidAppealMimicMemory$$FastClassByCGLIB$$8f59e371.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:127)
+	... 6 more
+Caused by: java.lang.ArrayIndexOutOfBoundsException: 8
+	at swarm_sim.exploration.AvoidAppealMimicMemory.move(AvoidAppealMimicMemory.java:81)
+	at swarm_sim.exploration.AvoidAppealMimicMemory.step(AvoidAppealMimicMemory.java:59)
+	... 9 more
