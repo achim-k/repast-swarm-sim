@@ -3,28 +3,12 @@
   <type>2D</type>
   <styles>
     <entry>
-      <string>swarm_sim.exploration.Random</string>
-      <string>swarm_sim.AgentStyle</string>
-    </entry>
-    <entry>
-      <string>swarm_sim.exploration.AvoidAppealMimicMemory</string>
-      <string>swarm_sim.AgentStyle</string>
-    </entry>
-    <entry>
-      <string>swarm_sim.exploration.Memory</string>
-      <string>swarm_sim.AgentStyle</string>
-    </entry>
-    <entry>
-      <string>swarm_sim.exploration.AgentAvoiderMimic</string>
+      <string>swarm_sim.foraging.Random</string>
       <string>swarm_sim.AgentStyle</string>
     </entry>
     <entry>
       <string>swarm_sim.foraging.Resource</string>
-      <string>repast.simphony.visualizationOGL2D.DefaultStyleOGL2D</string>
-    </entry>
-    <entry>
-      <string>swarm_sim.exploration.AgentRepell</string>
-      <string>swarm_sim.AgentStyle</string>
+      <string>repast.simphony.visualization.editedStyle.EditedStyle2D</string>
     </entry>
     <entry>
       <string>swarm_sim.Base</string>
@@ -33,24 +17,12 @@
   </styles>
   <editedStyles>
     <entry>
-      <string>swarm_sim.exploration.Random</string>
+      <string>swarm_sim.foraging.Random</string>
       <null/>
     </entry>
     <entry>
-      <string>swarm_sim.exploration.AvoidAppealMimicMemory</string>
-      <null/>
-    </entry>
-    <entry>
-      <string>swarm_sim.exploration.Memory</string>
-      <null/>
-    </entry>
-    <entry>
-      <string>swarm_sim.exploration.AgentAvoiderMimic</string>
-      <null/>
-    </entry>
-    <entry>
-      <string>swarm_sim.exploration.AgentRepell</string>
-      <null/>
+      <string>swarm_sim.foraging.Resource</string>
+      <string>swarm_sim.foraging.Resource.style_0.xml</string>
     </entry>
     <entry>
       <string>swarm_sim.Base</string>
@@ -84,28 +56,12 @@
   <layoutInterval>0</layoutInterval>
   <layerOrder>
     <entry>
-      <string>swarm_sim.exploration.Random</string>
-      <int>6</int>
-    </entry>
-    <entry>
-      <string>swarm_sim.exploration.AvoidAppealMimicMemory</string>
-      <int>3</int>
-    </entry>
-    <entry>
-      <string>swarm_sim.exploration.Memory</string>
-      <int>5</int>
-    </entry>
-    <entry>
-      <string>swarm_sim.exploration.AgentAvoiderMimic</string>
-      <int>4</int>
+      <string>swarm_sim.foraging.Random</string>
+      <int>1</int>
     </entry>
     <entry>
       <string>swarm_sim.foraging.Resource</string>
       <int>0</int>
-    </entry>
-    <entry>
-      <string>swarm_sim.exploration.AgentRepell</string>
-      <int>1</int>
     </entry>
     <entry>
       <string>swarm_sim.Base</string>

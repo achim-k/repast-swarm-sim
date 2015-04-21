@@ -13,6 +13,7 @@ public interface Agent {
 	
 	/* Foraging */
 	Resource,
+	FAGN_Random,
 
 	/* Exploration agents */
 	EXPL_Random,

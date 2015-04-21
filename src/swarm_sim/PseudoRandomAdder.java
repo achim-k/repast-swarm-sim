@@ -8,6 +8,7 @@ import repast.simphony.random.RandomHelper;
 import repast.simphony.space.Dimensions;
 import repast.simphony.space.continuous.ContinuousAdder;
 import repast.simphony.space.continuous.ContinuousSpace;
+import repast.simphony.space.continuous.NdPoint;
 import swarm_sim.AdvancedGridValueLayer.FieldType;
 
 /**
@@ -23,6 +24,11 @@ public class PseudoRandomAdder<T> implements ContinuousAdder<T> {
     List<Class> randomAddClasses = new ArrayList<>();
     List<T> addQueue = new ArrayList<>();
     AdvancedGridValueLayer exploredArea;
+    private int resourceNests;
+    private Class resourceAdderSaveClass;
+    double variance = 1;
+
+    NdPoint resourceNestLocations[];
 
     public PseudoRandomAdder(AdvancedGridValueLayer exploredArea) {
 	this.exploredArea = exploredArea;
@@ -44,6 +50,10 @@ public class PseudoRandomAdder<T> implements ContinuousAdder<T> {
 		space.moveTo(o, savedLocation);
 	    }
 
+	} else if (obj.getClass() == resourceAdderSaveClass) {
+	    addRandomClose(space, obj,
+		    resourceNestLocations[RandomHelper.nextIntFromTo(0,
+			    resourceNests - 1)]);
 	} else if (randomAddClasses.contains(obj.getClass())) {
 	    addRandom(space, obj);
 	} else {
@@ -52,6 +62,17 @@ public class PseudoRandomAdder<T> implements ContinuousAdder<T> {
 		return;
 	    }
 	    space.moveTo(obj, savedLocation);
+	}
+    }
+
+    private void addRandomClose(ContinuousSpace<T> space, T obj, NdPoint ndPoint) {
+	/* add object close to ndPoint */
+	Dimensions dims = space.getDimensions();
+	double[] location = new double[dims.size()];
+	findLocationClose(location, dims, ndPoint);
+	while (!space.moveTo(obj, location)
+		|| exploredArea.getFieldType(location[0], location[1]) == FieldType.Obstacle) {
+	    findLocationClose(location, dims, ndPoint);
 	}
     }
 
@@ -79,6 +100,23 @@ public class PseudoRandomAdder<T> implements ContinuousAdder<T> {
 	randomAddSaveClass = c;
     }
 
+    public void setResourceAdderSaveClass(Class c, int nestCount, double variance,
+	    ContinuousSpace<T> space) {
+	resourceAdderSaveClass = c;
+	this.resourceNests = nestCount;
+	this.variance = variance;
+	Dimensions dims = space.getDimensions();
+
+	resourceNestLocations = new NdPoint[nestCount];
+	for (int i = 0; i < nestCount; i++) {
+	    double[] location = new double[dims.size()];
+	    findLocation(location, dims);
+	    while (exploredArea.getFieldType(location[0], location[1]) == FieldType.Obstacle)
+		findLocation(location, dims);
+	    resourceNestLocations[i] = new NdPoint(location);
+	}
+    }
+
     private void findLocation(double[] location, Dimensions dims) {
 	double[] origin = dims.originToDoubleArray(null);
 	for (int i = 0; i < location.length; i++) {
@@ -90,5 +128,19 @@ public class PseudoRandomAdder<T> implements ContinuousAdder<T> {
 
 	    }
 	}
+    }
+
+    private void findLocationClose(double[] location, Dimensions dims,
+	    NdPoint closeToPoint) {
+	do {
+	    for (int i = 0; i < location.length; i++) {
+		try {
+		    location[i] = RandomHelper.createNormal(closeToPoint.getCoord(i), variance).nextDouble();
+		} catch (Exception e) {
+
+		}
+	    }
+	} while (location[0] > dims.getWidth() || location[0] < 0
+		|| location[1] < 0 || location[1] > dims.getHeight());
     }
 }

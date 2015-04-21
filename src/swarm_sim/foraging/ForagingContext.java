@@ -1,4 +1,4 @@
-package swarm_sim.exploration;
+package swarm_sim.foraging;
 
 import repast.simphony.context.Context;
 import repast.simphony.dataLoader.ContextBuilder;
@@ -17,7 +17,7 @@ import swarm_sim.PseudoRandomAdder;
 import swarm_sim.RootContext;
 import swarm_sim.Scenario;
 
-public class ExplorationContext extends RootContext implements
+public class ForagingContext extends RootContext implements
 	ContextBuilder<Agent>, IsSimFinishedFunction {
 
     public Context<Agent> build(Context<Agent> context) {
@@ -32,7 +32,17 @@ public class ExplorationContext extends RootContext implements
 	PseudoRandomAdder<Agent> adder = new PseudoRandomAdder<Agent>(
 		exploredArea);
 	adder.setRandomAdderSaveClass(Base.class);
+	
+	int resourceNestCount = params.getInteger("resource_nest_count");
+	adder.setResourceAdderSaveClass(Resource.class, resourceNestCount, 1, space);
 	space.setAdder(adder);
+	
+	int resourceCount = params.getInteger("resource_count");
+	
+	/* add Resources */
+	for (int i = 0; i < resourceCount; i++) {
+	    context.add(new Resource());
+	}
 	
 	/* spawn base */
 	ISchedule schedule = runEnv.getCurrentSchedule();
@@ -47,8 +57,8 @@ public class ExplorationContext extends RootContext implements
 	String bb_agent = params.getString("agent_type");
 	AgentType agentType = AgentType.EXPL_Random;
 
-	if (bb_agent.equalsIgnoreCase("EXPL_Random"))
-	    agentType = AgentType.EXPL_Random;
+	if (bb_agent.equalsIgnoreCase("FAGN_Random"))
+	    agentType = AgentType.FAGN_Random;
 	else if (bb_agent.equalsIgnoreCase("EXPL_PheromoneAvoider"))
 	    agentType = AgentType.EXPL_PheromoneAvoider;
 	else if (bb_agent.equalsIgnoreCase("EXPL_AgentRepell"))
@@ -68,43 +78,41 @@ public class ExplorationContext extends RootContext implements
 	for (int i = 0; i < scenario.agentCount; i++) {
 	    Agent agent = null;
 	    switch (agentType) {
-	    case EXPL_Random:
+	    case FAGN_Random:
 		agent = new Random(context);
 		break;
-	    case EXPL_PheromoneAvoider:
-		agent = new PheromoneAvoider(context);
-		break;
-	    case EXPL_AgentRepell:
-		agent = new AgentRepell(context);
-		scenario.networkAgents.add(agent);
-		break;
-	    case EXPL_AgentAvoiderMimic:
-		agent = new AgentAvoiderMimic(context);
-		scenario.networkAgents.add(agent);
-		break;
-	    case EXPL_Memory:
-		agent = new Memory(context);
-		scenario.networkAgents.add(agent);
-		break;
-	    case EXPL_AvoidAppealMimicMemory:
-		if(scenario.useGA)
-		    agent = new AvoidAppealMimicMemory(context, ga.currentChromosome);
-		else
-		    agent = new AvoidAppealMimicMemory(context);
-		scenario.networkAgents.add(agent);
-		break;
+//	    case EXPL_PheromoneAvoider:
+//		agent = new PheromoneAvoider(context);
+//		break;
+//	    case EXPL_AgentRepell:
+//		agent = new AgentRepell(context);
+//		scenario.networkAgents.add(agent);
+//		break;
+//	    case EXPL_AgentAvoiderMimic:
+//		agent = new AgentAvoiderMimic(context);
+//		scenario.networkAgents.add(agent);
+//		break;
+//	    case EXPL_Memory:
+//		agent = new Memory(context);
+//		scenario.networkAgents.add(agent);
+//		break;
+//	    case EXPL_AvoidAppealMimicMemory:
+//		if(scenario.useGA)
+//		    agent = new AvoidAppealMimicMemory(context, ga.currentChromosome);
+//		else
+//		    agent = new AvoidAppealMimicMemory(context);
+//		scenario.networkAgents.add(agent);
+//		break;
 	    default:
+		System.err.println("Agent type not found");
 		break;
 	    }
 	    schedule.schedule(scheduleParams, agent, "step");
 	    context.add(agent);
 	}
 	
-	
-	
-	
 	System.out.println();
-	System.out.println("Exploration context loaded");
+	System.out.println("Foraging context loaded");
 	System.out.println("-----------------------------------");
 	System.out.println("Number of Agents:\t" + scenario.agentCount);
 	System.out.println("Type of Agents:  \t" + agentType);
