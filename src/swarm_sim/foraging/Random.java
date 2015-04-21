@@ -88,6 +88,7 @@ public class Random extends DefaultForagingAgent implements Agent, DisplayAgent 
     
     private double getAcquireDirection(List<AngleSegment> moveCircleFree) {
 	CircleScan res = CircleScan.merge(segmentCount, 0.12, moveCircleFree, resourceScan);
+	System.out.println(res.getPrintable());
 	return res.getMovementAngle();
     }
     
@@ -118,16 +119,17 @@ public class Random extends DefaultForagingAgent implements Agent, DisplayAgent 
 	    case Resource:
 		double resDistance = space.getDistance(space.getLocation(this),
 			space.getLocation(agent));
-		if (state == agentState.wander) {
+		if (state == agentState.wander || state == agentState.acquire) {
 		    state = agentState.acquire;
 
 		    if (resDistance > 0) {
 			double angle = SpatialMath.calcAngleFor2DMovement(
 				space, currentLocation,
 				space.getLocation(agent));
-			resourceScan.add(resDistance, angle);
+			resourceScan.add(angle, resDistance);
 		    }
-		} else if (state == agentState.acquire && resDistance <= 0.5 * scenario.maxMoveDistance) {
+		}
+		if (state == agentState.acquire && resDistance <= 0.5 * scenario.maxMoveDistance) {
 		    state = agentState.deliver;
 		    context.remove(agent);
 		}
@@ -136,8 +138,11 @@ public class Random extends DefaultForagingAgent implements Agent, DisplayAgent 
 		if(state == agentState.deliver) {
 		    double baseDistance = space.getDistance(space.getLocation(this),
 				space.getLocation(agent));
-		    if(baseDistance <= 0.5 * scenario.maxMoveDistance)
+		    if(baseDistance <= 0.5 * scenario.maxMoveDistance) {
 			state = agentState.wander;
+			scenario.deliveredResources++;
+		    }
+			
 		}
 	    default:
 		break;

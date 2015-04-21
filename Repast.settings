@@ -12,6 +12,6 @@
     <string>SettingsRegistryId</string>
     <string>Repast.registry</string>
     <string>LastLoadedScenario</string>
-    <string>/home/achim/workspace/swarm_sim/swarm_sim.foraging.rs</string>
+    <string>/home/achim/workspace/swarm_sim/swarm_sim.exploration.rs</string>
   </hashtable>
 </simphony.settings.SettingsRegistry>

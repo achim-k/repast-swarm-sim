@@ -37,10 +37,10 @@ public class ForagingContext extends RootContext implements
 	adder.setResourceAdderSaveClass(Resource.class, resourceNestCount, 1, space);
 	space.setAdder(adder);
 	
-	int resourceCount = params.getInteger("resource_count");
+	scenario.resourceCount = params.getInteger("resource_count");
 	
 	/* add Resources */
-	for (int i = 0; i < resourceCount; i++) {
+	for (int i = 0; i < scenario.resourceCount; i++) {
 	    context.add(new Resource());
 	}
 	
@@ -139,15 +139,9 @@ public class ForagingContext extends RootContext implements
     public boolean isSimFinished(Context<Agent> c, AdvancedGridValueLayer l) {
 	Scenario scen = Scenario.getInstance();
 	
-	if(scen.exploredAreaCount >= 0.999 * (space.getDimensions().getHeight()*space.getDimensions().getWidth() - l.getObstacleFieldCount())) {
-	    if(scen.useGA) {
-		GA ga = GA.getInstance();
-		ga.currentFitness = 20000 - (int)RunEnvironment.getInstance().getCurrentSchedule().getTickCount() + 1;
-	    }
-	    return true;
-	}   
+	return scen.deliveredResources >= scen.resourceCount;
 	
-	return false;
+	//TODO GA!
     };
 
 }

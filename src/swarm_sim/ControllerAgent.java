@@ -3,11 +3,13 @@ package swarm_sim;
 import repast.simphony.context.Context;
 import repast.simphony.engine.environment.RunEnvironment;
 import repast.simphony.space.continuous.ContinuousSpace;
+import repast.simphony.space.graph.Network;
 import swarm_sim.Scenario.AgentDistancePairs;
 
 public class ControllerAgent implements Agent {
     private Context<Agent> context;
-    private CommNet<Agent> commNet;
+    private Network<Agent> commNet;
+    
     private ContinuousSpace<Agent> space;
     protected AdvancedGridValueLayer exploredArea;
 
@@ -16,7 +18,7 @@ public class ControllerAgent implements Agent {
 
     public ControllerAgent(Context<Agent> context, IsSimFinishedFunction simFinishedFunc) {
 	this.context = context;
-	this.commNet = context.getProjection(CommNet.class, "network_comm");
+	this.commNet = context.getProjection(Network.class, "network_comm");
 	this.space = (ContinuousSpace<Agent>) context.getProjection(
 		ContinuousSpace.class, "space_continuous");
 	this.scenario = Scenario.getInstance();

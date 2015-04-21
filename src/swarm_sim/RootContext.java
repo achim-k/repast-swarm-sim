@@ -6,12 +6,14 @@ import java.io.File;
 import repast.simphony.context.Context;
 import repast.simphony.context.space.continuous.ContinuousSpaceFactory;
 import repast.simphony.context.space.continuous.ContinuousSpaceFactoryFinder;
+import repast.simphony.context.space.graph.NetworkBuilder;
 import repast.simphony.engine.environment.RunEnvironment;
 import repast.simphony.engine.schedule.ISchedule;
 import repast.simphony.engine.schedule.ScheduleParameters;
 import repast.simphony.parameter.Parameters;
 import repast.simphony.space.continuous.ContinuousSpace;
 import repast.simphony.space.continuous.RandomCartesianAdder;
+import repast.simphony.space.graph.Network;
 import swarm_sim.AdvancedGridValueLayer.FieldType;
 
 /**
@@ -28,9 +30,9 @@ public class RootContext {
 
     protected AdvancedGridValueLayer exploredArea;
     protected ContinuousSpace<Agent> space;
-    protected CommNet<Agent> commNet;
 
-    protected Context<Agent> build(Context<Agent> context, IsSimFinishedFunction simFinishedFunc) {
+    protected Context<Agent> build(Context<Agent> context,
+	    IsSimFinishedFunction simFinishedFunc) {
 	/* Set context id */
 	context.setId("root");
 
@@ -71,8 +73,9 @@ public class RootContext {
 	 * Create comm network (holds only edges of agents which are within
 	 * communication range
 	 */
-	commNet = new CommNet<>("network_comm", context);
-	context.addProjection(commNet);
+	NetworkBuilder builder = new NetworkBuilder("network_comm", context,
+		true);
+	builder.buildNetwork();
 
 	/* init scenario */
 	ISchedule schedule = runEnv.getCurrentSchedule();
@@ -84,18 +87,19 @@ public class RootContext {
 	/* add controller agent */
 	scheduleParams = ScheduleParameters.createRepeating(1, 1,
 		ScheduleParameters.FIRST_PRIORITY);
-	ControllerAgent controller = new ControllerAgent(context, simFinishedFunc);
+	ControllerAgent controller = new ControllerAgent(context,
+		simFinishedFunc);
 	schedule.schedule(scheduleParams, controller, "step");
 	context.add(controller);
-	
+
 	/* schedule action which is called at end of simulation */
-	scheduleParams = scheduleParams
+	scheduleParams = ScheduleParameters
 		.createAtEnd(ScheduleParameters.LAST_PRIORITY);
 	schedule.schedule(scheduleParams, this, "endAction");
 
 	return context;
     }
-    
+
     protected void endAction() {
 	System.out.println("Simulation has ended");
     }

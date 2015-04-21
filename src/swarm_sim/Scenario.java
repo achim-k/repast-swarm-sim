@@ -15,6 +15,7 @@ public class Scenario implements Agent {
     public double commScope;
     public int rndConsecutiveMoves = 1;
     public Boolean useGA = false;
+    public int resourceCount;
     
 
     /* Other stuff */
@@ -28,6 +29,7 @@ public class Scenario implements Agent {
 
     /* Data */
     public int exploredAreaCount = 0;
+    public int deliveredResources = 0;
     public int redundantExploredAreaCount = 0;
     public int messagesSent = 0;
 
@@ -65,6 +67,7 @@ public class Scenario implements Agent {
 	networkAgents.clear();
 	exploredAreaCount = 0;
 	redundantExploredAreaCount = 0;
+	deliveredResources = 0;
 	messagesSent = 0;
 	isInitiated = false;
     }
