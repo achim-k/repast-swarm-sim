@@ -16,7 +16,6 @@ public class Scenario implements Agent {
     public int rndConsecutiveMoves = 1;
     public Boolean useGA = false;
     public int resourceCount;
-    
 
     /* Other stuff */
     public double maxMoveDistance = 1.0;
@@ -25,7 +24,6 @@ public class Scenario implements Agent {
     public List<AgentDistancePairs> agentDistancePairs = new ArrayList<>();
     private static Scenario instance = null;
     boolean isInitiated = false;
-    
 
     /* Data */
     public int exploredAreaCount = 0;
@@ -34,9 +32,6 @@ public class Scenario implements Agent {
     public int messagesSent = 0;
 
     public int[] movebins = new int[8];
-
-
-    
 
     protected Scenario() {
     }
@@ -58,7 +53,6 @@ public class Scenario implements Agent {
 
     @Override
     public AgentType getAgentType() {
-	// TODO Auto-generated method stub
 	return AgentType.Scenario;
     }
 
@@ -74,7 +68,7 @@ public class Scenario implements Agent {
 
     public void init() {
 	agentDistancePairs.clear();
-	
+
 	Context<Agent> context = ContextUtils.getContext(this);
 	ContinuousSpace<Agent> space = (ContinuousSpace<Agent>) context
 		.getProjection(ContinuousSpace.class, "space_continuous");

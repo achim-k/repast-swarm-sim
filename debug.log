@@ -1194,3 +1194,66 @@ java.lang.IllegalArgumentException: Duplicate projections added.
 	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:146)
 	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:138)
 	at java.awt.EventDispatchThread.run(EventDispatchThread.java:91)
+FATAL [Thread-6] 2015-04-22 13:54:57,255 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (55.0)
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:129)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.lang.reflect.InvocationTargetException
+	at swarm_sim.foraging.Random$$FastClassByCGLIB$$4c162800.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:127)
+	... 6 more
+Caused by: java.lang.NullPointerException
+	at repast.simphony.space.continuous.AbstractContinuousSpace.getDistanceSq(AbstractContinuousSpace.java:418)
+	at repast.simphony.space.continuous.AbstractContinuousSpace.getDistance(AbstractContinuousSpace.java:404)
+	at swarm_sim.foraging.Random.determineState(Random.java:138)
+	at swarm_sim.foraging.Random.step(Random.java:44)
+	... 9 more
+FATAL [Thread-6] 2015-04-22 13:55:52,942 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (16.0)
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:129)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.lang.reflect.InvocationTargetException
+	at swarm_sim.foraging.Random$$FastClassByCGLIB$$4c162800.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:127)
+	... 6 more
+Caused by: java.lang.NullPointerException
+	at repast.simphony.space.continuous.AbstractContinuousSpace.getDistanceSq(AbstractContinuousSpace.java:418)
+	at repast.simphony.space.continuous.AbstractContinuousSpace.getDistance(AbstractContinuousSpace.java:404)
+	at swarm_sim.foraging.Random.determineState(Random.java:138)
+	at swarm_sim.foraging.Random.step(Random.java:44)
+	... 9 more
+FATAL [Thread-6] 2015-04-22 13:58:01,002 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (91.0)
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:129)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.lang.Thread.run(Thread.java:745)
+Caused by: java.lang.reflect.InvocationTargetException
+	at swarm_sim.foraging.Random$$FastClassByCGLIB$$4c162800.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.CallBackAction.execute(CallBackAction.java:127)
+	... 6 more
+Caused by: java.lang.NullPointerException
+	at repast.simphony.space.continuous.AbstractContinuousSpace.getDistanceSq(AbstractContinuousSpace.java:418)
+	at repast.simphony.space.continuous.AbstractContinuousSpace.getDistance(AbstractContinuousSpace.java:404)
+	at swarm_sim.foraging.Random.determineState(Random.java:138)
+	at swarm_sim.foraging.Random.step(Random.java:44)
+	... 9 more

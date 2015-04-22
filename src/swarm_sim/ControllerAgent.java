@@ -62,9 +62,6 @@ public class ControllerAgent implements Agent {
 			    space.getLocation(agentPair.target)))
 		commNet.addEdge(agentPair.source, agentPair.target);
 	}
-	
-	
-
     }
 
     @Override

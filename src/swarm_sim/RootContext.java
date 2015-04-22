@@ -13,7 +13,6 @@ import repast.simphony.engine.schedule.ScheduleParameters;
 import repast.simphony.parameter.Parameters;
 import repast.simphony.space.continuous.ContinuousSpace;
 import repast.simphony.space.continuous.RandomCartesianAdder;
-import repast.simphony.space.graph.Network;
 import swarm_sim.AdvancedGridValueLayer.FieldType;
 
 /**
@@ -73,8 +72,8 @@ public class RootContext {
 	 * Create comm network (holds only edges of agents which are within
 	 * communication range
 	 */
-	NetworkBuilder builder = new NetworkBuilder("network_comm", context,
-		true);
+	NetworkBuilder<Agent> builder = new NetworkBuilder<>("network_comm",
+		context, true);
 	builder.buildNetwork();
 
 	/* init scenario */
