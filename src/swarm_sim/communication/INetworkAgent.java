@@ -1,5 +1,5 @@
 package swarm_sim.communication;
 
-public interface NetworkAgent {
+public interface INetworkAgent {
     public void addToMessageQueue(Message msg);
 }

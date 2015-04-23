@@ -28,10 +28,10 @@ public class RootContext {
     protected int spaceHeight = 100;
 
     protected AdvancedGridValueLayer exploredArea;
-    protected ContinuousSpace<Agent> space;
+    protected ContinuousSpace<IAgent> space;
 
-    protected Context<Agent> build(Context<Agent> context,
-	    IsSimFinishedFunction simFinishedFunc) {
+    protected Context<IAgent> build(Context<IAgent> context,
+	    IIsSimFinishedFunction simFinishedFunc) {
 	/* Set context id */
 	context.setId("root");
 
@@ -62,7 +62,7 @@ public class RootContext {
 		.createContinuousSpaceFactory(null);
 
 	space = spaceFactory.createContinuousSpace("space_continuous", context,
-		new RandomCartesianAdder<Agent>(),
+		new RandomCartesianAdder<IAgent>(),
 		new repast.simphony.space.continuous.BouncyBorders(),
 		spaceWidth, spaceWidth);
 
@@ -72,7 +72,7 @@ public class RootContext {
 	 * Create comm network (holds only edges of agents which are within
 	 * communication range
 	 */
-	NetworkBuilder<Agent> builder = new NetworkBuilder<>("network_comm",
+	NetworkBuilder<IAgent> builder = new NetworkBuilder<>("network_comm",
 		context, true);
 	builder.buildNetwork();
 

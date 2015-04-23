@@ -9,18 +9,18 @@ public class AgentStyle extends DefaultStyleOGL2D {
 
     @Override
     public String getLabel(Object agent) {
-	return ((DisplayAgent) agent).getName();
+	return ((IDisplayAgent) agent).getName();
     }
 
     @Override
     public Color getColor(Object agent) {
-	return ((DisplayAgent) agent).getColor();
+	return ((IDisplayAgent) agent).getColor();
     }
 
     @Override
     public VSpatial getVSpatial(Object agent, VSpatial spatial) {
 	if (spatial == null) {
-	    spatial = ((DisplayAgent) agent).getShape(shapeFactory);
+	    spatial = ((IDisplayAgent) agent).getShape(shapeFactory);
 	}
 	return spatial;
     }

@@ -4,12 +4,12 @@ import java.awt.Color;
 
 import repast.simphony.context.Context;
 import repast.simphony.space.continuous.NdPoint;
-import swarm_sim.Agent;
 import swarm_sim.DefaultAgent;
+import swarm_sim.IAgent;
 
 public class DefaultForagingAgent extends DefaultAgent {
 
-    public enum agentState {
+    public enum AgentState {
 	wander, acquire, deliver
     }
     
@@ -24,10 +24,10 @@ public class DefaultForagingAgent extends DefaultAgent {
 	}
     }
 
-    protected agentState state = agentState.wander;
-    protected agentState prevState = agentState.wander;
+    protected AgentState state = AgentState.wander;
+    protected AgentState prevState = AgentState.wander;
 
-    public DefaultForagingAgent(Context<Agent> context) {
+    public DefaultForagingAgent(Context<IAgent> context) {
 	super(context);
     }
 

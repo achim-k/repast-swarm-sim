@@ -7,20 +7,19 @@ import repast.simphony.engine.schedule.ISchedule;
 import repast.simphony.engine.schedule.ScheduleParameters;
 import repast.simphony.parameter.Parameters;
 import swarm_sim.AdvancedGridValueLayer;
-import swarm_sim.Agent;
-import swarm_sim.Agent.AgentType;
-import swarm_sim.foraging.Resource;
-import swarm_sim.learning.GA;
 import swarm_sim.Base;
-import swarm_sim.IsSimFinishedFunction;
+import swarm_sim.IAgent;
+import swarm_sim.IAgent.AgentType;
+import swarm_sim.IIsSimFinishedFunction;
 import swarm_sim.PseudoRandomAdder;
 import swarm_sim.RootContext;
 import swarm_sim.Scenario;
+import swarm_sim.learning.GA;
 
 public class ForagingContext extends RootContext implements
-	ContextBuilder<Agent>, IsSimFinishedFunction {
+	ContextBuilder<IAgent>, IIsSimFinishedFunction {
 
-    public Context<Agent> build(Context<Agent> context) {
+    public Context<IAgent> build(Context<IAgent> context) {
 	context = super.build(context, this);
 
 	/* Get scenario parameters */
@@ -29,7 +28,7 @@ public class ForagingContext extends RootContext implements
 	Scenario scenario = Scenario.getInstance();
 
 	
-	PseudoRandomAdder<Agent> adder = new PseudoRandomAdder<Agent>(
+	PseudoRandomAdder<IAgent> adder = new PseudoRandomAdder<IAgent>(
 		exploredArea);
 	adder.setRandomAdderSaveClass(Base.class);
 	
@@ -76,33 +75,12 @@ public class ForagingContext extends RootContext implements
 	scheduleParams = ScheduleParameters.createRepeating(1, 1);
 
 	for (int i = 0; i < scenario.agentCount; i++) {
-	    Agent agent = null;
+	    IAgent agent = null;
 	    switch (agentType) {
 	    case FAGN_Random:
 		agent = new Random(context);
+		scenario.networkAgents.add(agent);
 		break;
-//	    case EXPL_PheromoneAvoider:
-//		agent = new PheromoneAvoider(context);
-//		break;
-//	    case EXPL_AgentRepell:
-//		agent = new AgentRepell(context);
-//		scenario.networkAgents.add(agent);
-//		break;
-//	    case EXPL_AgentAvoiderMimic:
-//		agent = new AgentAvoiderMimic(context);
-//		scenario.networkAgents.add(agent);
-//		break;
-//	    case EXPL_Memory:
-//		agent = new Memory(context);
-//		scenario.networkAgents.add(agent);
-//		break;
-//	    case EXPL_AvoidAppealMimicMemory:
-//		if(scenario.useGA)
-//		    agent = new AvoidAppealMimicMemory(context, ga.currentChromosome);
-//		else
-//		    agent = new AvoidAppealMimicMemory(context);
-//		scenario.networkAgents.add(agent);
-//		break;
 	    default:
 		System.err.println("Agent type not found");
 		break;
@@ -132,11 +110,10 @@ public class ForagingContext extends RootContext implements
 	
 	String out = String.format("Exploration Simulation has ended after %.1f ticks", runenv.getCurrentSchedule().getTickCount());       
 	System.out.println(out);
-	System.out.println("####################################");
     }
 
     @Override
-    public boolean isSimFinished(Context<Agent> c, AdvancedGridValueLayer l) {
+    public boolean isSimFinished(Context<IAgent> c, AdvancedGridValueLayer l) {
 	Scenario scen = Scenario.getInstance();
 	
 	return scen.deliveredResources >= scen.resourceCount;

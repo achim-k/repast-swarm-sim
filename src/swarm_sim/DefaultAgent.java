@@ -16,14 +16,14 @@ import swarm_sim.AdvancedGridValueLayer.FieldType;
 import swarm_sim.communication.DefaultNetworkAgent;
 import swarm_sim.perception.AngleFilter;
 
-public class DefaultAgent extends DefaultNetworkAgent implements Agent {
+public class DefaultAgent extends DefaultNetworkAgent implements IAgent {
 
     static int agentNo = 0;
 
     protected int agentId;
-    protected Context<Agent> context;
-    protected Network<Agent> commNet;
-    protected ContinuousSpace<Agent> space;
+    protected Context<IAgent> context;
+    protected Network<IAgent> commNet;
+    protected ContinuousSpace<IAgent> space;
     protected AdvancedGridValueLayer exploredArea;
     protected Scenario scenario;
     public NdPoint currentLocation;
@@ -35,11 +35,11 @@ public class DefaultAgent extends DefaultNetworkAgent implements Agent {
     protected AngleFilter collisionAngleFilter = new AngleFilter(1);
 
     @SuppressWarnings("unchecked")
-    public DefaultAgent(Context<Agent> context) {
+    public DefaultAgent(Context<IAgent> context) {
 	this.context = context;
-	this.space = (ContinuousSpace<Agent>) context.getProjection(
+	this.space = (ContinuousSpace<IAgent>) context.getProjection(
 		ContinuousSpace.class, "space_continuous");
-	this.commNet = (Network<Agent>) context.getProjection(Network.class,
+	this.commNet = (Network<IAgent>) context.getProjection(Network.class,
 		"network_comm");
 	this.exploredArea = (AdvancedGridValueLayer) context
 		.getValueLayer("layer_explored");

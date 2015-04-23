@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import repast.simphony.random.RandomHelper;
-import swarm_sim.foraging.Resource;
 
 public class CircleScan {
 

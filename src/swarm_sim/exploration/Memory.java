@@ -4,20 +4,19 @@ import repast.simphony.context.Context;
 import repast.simphony.engine.environment.RunEnvironment;
 import repast.simphony.space.SpatialMath;
 import repast.simphony.space.continuous.NdPoint;
-import swarm_sim.Agent;
-import swarm_sim.DisplayAgent;
+import swarm_sim.IAgent;
+import swarm_sim.IDisplayAgent;
 import swarm_sim.SectorMap;
+import swarm_sim.communication.INetworkAgent;
 import swarm_sim.communication.Message;
-import swarm_sim.communication.MsgBlackboxFound;
-import swarm_sim.communication.MsgSectorValues;
-import swarm_sim.communication.NetworkAgent;
+import swarm_sim.communication.Message.MessageType;
 
-public class Memory extends DefaultExplorationAgent implements Agent,
-	DisplayAgent {
+public class Memory extends DefaultExplorationAgent implements IAgent,
+	IDisplayAgent {
 
     SectorMap map = new SectorMap(space.getDimensions(), 60, 60, 1);
 
-    public Memory(Context<Agent> context) {
+    public Memory(Context<IAgent> context) {
 	super(context);
     }
 
@@ -87,9 +86,6 @@ public class Memory extends DefaultExplorationAgent implements Agent,
 		break;
 	    case Location:
 		break;
-	    case Blackbox_found:
-		/* This agent also knows where the blackbox is */
-		this.state = agentState.blackbox_found;
 	    default:
 		break;
 	    }
@@ -98,20 +94,14 @@ public class Memory extends DefaultExplorationAgent implements Agent,
     }
 
     private void sendMessages() {
-	for (Agent agent : commNet.getAdjacent(this)) {
-	    NetworkAgent netAgent = (NetworkAgent) agent;
+	for (IAgent agent : commNet.getAdjacent(this)) {
+	    INetworkAgent netAgent = (INetworkAgent) agent;
 
-	    if (state == agentState.blackbox_found)
-		netAgent.addToMessageQueue(new MsgBlackboxFound(this, agent,
-			null));
-	    else {
-		Object data[] = new Object[3];
-		data[0] = map;
-		data[1] = currentLocation;
-		data[2] = map.getTargetSector();
-		netAgent.addToMessageQueue(new MsgSectorValues(this, agent,
-			data));
-	    }
+	    Object data[] = new Object[3];
+	    data[0] = map;
+	    data[1] = currentLocation;
+	    data[2] = map.getTargetSector();
+	    netAgent.addToMessageQueue(new Message(MessageType.SectorMap, this, data));
 
 	}
     }

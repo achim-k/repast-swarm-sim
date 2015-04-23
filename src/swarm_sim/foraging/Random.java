@@ -7,9 +7,11 @@ import repast.simphony.context.Context;
 import repast.simphony.query.space.continuous.ContinuousWithin;
 import repast.simphony.space.SpatialMath;
 import repast.simphony.space.continuous.NdPoint;
-import swarm_sim.Agent;
-import swarm_sim.DisplayAgent;
-import swarm_sim.foraging.DefaultForagingAgent.ResourcesTarget;
+import swarm_sim.IAgent;
+import swarm_sim.IDisplayAgent;
+import swarm_sim.communication.INetworkAgent;
+import swarm_sim.communication.Message;
+import swarm_sim.communication.Message.MessageType;
 import swarm_sim.perception.AngleSegment;
 import swarm_sim.perception.CircleScan;
 
@@ -19,34 +21,37 @@ import swarm_sim.perception.CircleScan;
  * @author achim
  * 
  */
-public class Random extends DefaultForagingAgent implements Agent, DisplayAgent {
+public class Random extends DefaultForagingAgent implements IAgent, IDisplayAgent {
 
     int segmentCount = 8;
-
-    List<ResourcesTarget> resourceTargets = new ArrayList<>();
+    
     ResourcesTarget currentTarget;
 
     CircleScan resourceScan = new CircleScan(segmentCount, 1, 1, 10, 1, 0, 1,
 	    0, scenario.perceptionScope);
     CircleScan deliverDirection = new CircleScan(segmentCount, 1, 1, 10, 1, 1,
 	    1, 0, scenario.perceptionScope);
+    CircleScan agentFollow = new CircleScan(segmentCount, 1, 1, 10, 1, 1,
+	    1, 0, scenario.commScope);
 
-    public Random(Context<Agent> context) {
+    public Random(Context<IAgent> context) {
 	super(context);
     }
 
     public void step() {
-	
 	List<Resource> perceivedResources = new ArrayList<>();
+	List<IAgent> acquiringAgentsInRange = new ArrayList<>();
 	
 	defaultStepStart();
+	processMessageQueue(acquiringAgentsInRange);
 	scanEnv(perceivedResources);
-	determineState(perceivedResources, resourceTargets);
+	determineState(perceivedResources, acquiringAgentsInRange);
 	move();
+	sendMessages();
 	prevState = state;
 	defaultStepEnd();
     }
-
+    
     private void move() {
 	AngleSegment moveCircle = new AngleSegment(-Math.PI, Math.PI);
 	List<AngleSegment> moveCircleFree = moveCircle
@@ -99,7 +104,7 @@ public class Random extends DefaultForagingAgent implements Agent, DisplayAgent 
 	if(currentTarget != null)
 	    resourceScan.add(SpatialMath.calcAngleFor2DMovement(space, currentLocation, currentTarget.location));
 	CircleScan res = CircleScan.merge(segmentCount, 0.12, moveCircleFree,
-		resourceScan);
+		resourceScan, agentFollow);
 	return res.getMovementAngle();
     }
 
@@ -113,32 +118,38 @@ public class Random extends DefaultForagingAgent implements Agent, DisplayAgent 
 	return res.getMovementAngle();
     }
 
-    private void determineState(List<Resource> perceivedResources, List<ResourcesTarget> targets) {
+    private void determineState(List<Resource> perceivedResources, List<IAgent> acquiringAgentsInRange) {
+	agentFollow.clear();
+	
 	switch (state) {
 	case wander:
 	    for (Resource r : perceivedResources) {
-		state = agentState.acquire;
+		state = AgentState.acquire;
 		
 		NdPoint resLoc = space.getLocation(r);
 		double distance = space.getDistance(currentLocation, resLoc);
 		if(distance <= scenario.maxMoveDistance/2) {
 		    /* Pick it up*/
 		    context.remove(r);
-		    state = agentState.deliver;
+		    state = AgentState.deliver;
 		    return;
 		} else if(distance > 0)	{
 		    resourceScan.add(SpatialMath.calcAngleFor2DMovement(space, currentLocation, resLoc), distance);
 		}
 	    }
 	    
-	    if(perceivedResources.size() == 0 && targets.size() > 0) {
-		state = agentState.acquire;
-		currentTarget = targets.get(0);
+	    if(perceivedResources.size() == 0 && acquiringAgentsInRange.size() > 0) {
+		state = AgentState.acquire;
+		for (IAgent agent : acquiringAgentsInRange) {
+		    NdPoint agentLoc = space.getLocation(agent);
+		    double distance = space.getDistance(currentLocation, agentLoc);
+		    double angle = SpatialMath.calcAngleFor2DMovement(space, currentLocation, agentLoc);
+		    agentFollow.add(angle, distance);
+		}
 	    }
 	    break;
 	case acquire:
 	    if(currentTarget != null && space.getDistance(currentLocation, currentTarget.location) < scenario.maxMoveDistance/2) {
-		targets.remove(currentTarget);
 		currentTarget = null;
 	    }
 	    
@@ -148,7 +159,7 @@ public class Random extends DefaultForagingAgent implements Agent, DisplayAgent 
 		if(distance <= scenario.maxMoveDistance/2) {
 		    /* Pick it up*/
 		    context.remove(r);
-		    state = agentState.deliver;
+		    state = AgentState.deliver;
 		    return;
 		} else if(distance > 0)	{
 		    resourceScan.add(SpatialMath.calcAngleFor2DMovement(space, currentLocation, resLoc), distance);
@@ -156,27 +167,24 @@ public class Random extends DefaultForagingAgent implements Agent, DisplayAgent 
 	    }
 	    
 	    if(perceivedResources.size() == 0) {
-		if(targets.size() > 0)
-		    currentTarget = targets.get(0);
-		else
-		    state = agentState.wander;
+		if(currentTarget == null)
+		    state = AgentState.wander;
 	    }
 	    break;
 	case deliver:
 	    if(perceivedResources.size() > 0)
-		targets.add(new ResourcesTarget(perceivedResources.size(), currentLocation));
+		currentTarget = new ResourcesTarget(perceivedResources.size(), currentLocation);
 	    
 	    double distanceToBase = space.getDistance(currentLocation, space.getLocation(scenario.baseAgent));
 	    if(distanceToBase <= scenario.maxMoveDistance/2) {
 		/* Deliver the resource */
 		scenario.deliveredResources++;
 		
-		if(targets.size() > 0) {
-		    state = agentState.acquire;
-		    currentTarget = targets.get(0);
+		if(currentTarget != null) {
+		    state = AgentState.acquire;
 		}
 		else
-		    state = agentState.wander;
+		    state = AgentState.wander;
 	    }
 	    break;
 	default:
@@ -188,9 +196,9 @@ public class Random extends DefaultForagingAgent implements Agent, DisplayAgent 
     private void scanEnv(List<Resource> perceivedResources) {
 	resourceScan.clear();
 	/* scan environment for surrounding agents, pheromones, resources, ... */
-	ContinuousWithin<Agent> withinQuery = new ContinuousWithin<Agent>(
+	ContinuousWithin<IAgent> withinQuery = new ContinuousWithin<IAgent>(
 		space, this, scenario.perceptionScope);
-	for (Agent agent : withinQuery.query()) {
+	for (IAgent agent : withinQuery.query()) {
 	    switch (agent.getAgentType()) {
 	    case EXPL_Random:
 		double distance = space.getDistance(space.getLocation(this),
@@ -209,6 +217,33 @@ public class Random extends DefaultForagingAgent implements Agent, DisplayAgent 
 	    }
 	}
     }
+    
+    private void processMessageQueue(List<IAgent> acquiringAgentsInRange) {
+	Message msg = popMessage();
+	
+	
+	while (msg != null) {
+	    switch (msg.getType()) {
+	    case CurrentState:
+		AgentState s = (AgentState)msg.getData();
+		if(s == AgentState.acquire)
+		    acquiringAgentsInRange.add(msg.getSender());
+		break;
+	    default:
+		break;
+	    }
+	    msg = popMessage();
+	}
+    }
+
+    private void sendMessages() {
+	for (IAgent agent : commNet.getAdjacent(this)) {
+	    INetworkAgent netAgent = (INetworkAgent) agent;
+	    if(prevState == state)
+		netAgent.addToMessageQueue(new Message(MessageType.CurrentState, this, state));
+	}
+    }
+
 
     @Override
     public String getName() {

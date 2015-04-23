@@ -7,7 +7,7 @@ import repast.simphony.context.Context;
 import repast.simphony.space.continuous.ContinuousSpace;
 import repast.simphony.util.ContextUtils;
 
-public class Scenario implements Agent {
+public class Scenario implements IAgent {
 
     /* Params */
     public int agentCount;
@@ -20,7 +20,7 @@ public class Scenario implements Agent {
     /* Other stuff */
     public double maxMoveDistance = 1.0;
     public Base baseAgent;
-    public List<Agent> networkAgents = new ArrayList<>();
+    public List<IAgent> networkAgents = new ArrayList<>();
     public List<AgentDistancePairs> agentDistancePairs = new ArrayList<>();
     private static Scenario instance = null;
     boolean isInitiated = false;
@@ -69,15 +69,15 @@ public class Scenario implements Agent {
     public void init() {
 	agentDistancePairs.clear();
 
-	Context<Agent> context = ContextUtils.getContext(this);
-	ContinuousSpace<Agent> space = (ContinuousSpace<Agent>) context
+	Context<IAgent> context = ContextUtils.getContext(this);
+	ContinuousSpace<IAgent> space = (ContinuousSpace<IAgent>) context
 		.getProjection(ContinuousSpace.class, "space_continuous");
 	/* initialize agent network by calculating distance pairs */
 
 	for (int i = 0; i < networkAgents.size(); i++) {
-	    Agent source = networkAgents.get(i);
+	    IAgent source = networkAgents.get(i);
 	    for (int j = i + 1; j < networkAgents.size(); j++) {
-		Agent target = networkAgents.get(j);
+		IAgent target = networkAgents.get(j);
 		double distance = space.getDistance(space.getLocation(source),
 			space.getLocation(target));
 		agentDistancePairs.add(new AgentDistancePairs(source, target,
@@ -88,11 +88,11 @@ public class Scenario implements Agent {
     }
 
     public class AgentDistancePairs {
-	public Agent source, target;
+	public IAgent source, target;
 	public double distance = 0;
 	public int lastTimeChecked = 0;
 
-	public AgentDistancePairs(Agent source, Agent target, double distance) {
+	public AgentDistancePairs(IAgent source, IAgent target, double distance) {
 	    this.source = source;
 	    this.target = target;
 	    this.distance = distance;

@@ -3,8 +3,8 @@ package swarm_sim.exploration;
 import java.awt.Color;
 
 import repast.simphony.context.Context;
-import swarm_sim.Agent;
 import swarm_sim.DefaultAgent;
+import swarm_sim.IAgent;
 
 public class DefaultExplorationAgent extends DefaultAgent {
 
@@ -15,7 +15,7 @@ public class DefaultExplorationAgent extends DefaultAgent {
     protected agentState state = agentState.exploring;
     protected agentState prevState = agentState.exploring;
 
-    public DefaultExplorationAgent(Context<Agent> context) {
+    public DefaultExplorationAgent(Context<IAgent> context) {
 	super(context);
     }
 

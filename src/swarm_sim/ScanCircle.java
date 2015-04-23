@@ -3,6 +3,7 @@ package swarm_sim;
 import java.util.ArrayList;
 import java.util.List;
 
+@Deprecated
 public class ScanCircle {
     public enum AttractionType {
 	Appealing, Repelling

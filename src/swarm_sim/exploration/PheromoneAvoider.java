@@ -7,16 +7,16 @@ import repast.simphony.space.SpatialMath;
 import repast.simphony.space.continuous.NdPoint;
 import swarm_sim.AdvancedGridValueLayer.FieldDistancePair;
 import swarm_sim.AdvancedGridValueLayer.FieldType;
-import swarm_sim.Agent;
-import swarm_sim.DisplayAgent;
+import swarm_sim.IAgent;
+import swarm_sim.IDisplayAgent;
 import swarm_sim.Pheromone;
 import swarm_sim.ScanCircle;
 import swarm_sim.ScanCircle.AttractionType;
 import swarm_sim.ScanCircle.DistributionType;
 import swarm_sim.ScanCircle.GrowingDirection;
 
-public class PheromoneAvoider extends DefaultExplorationAgent implements Agent,
-	DisplayAgent {
+public class PheromoneAvoider extends DefaultExplorationAgent implements IAgent,
+	IDisplayAgent {
 
     ScanCircle pheromones = new ScanCircle(8, 1, 4, 1,
 	    AttractionType.Repelling, DistributionType.Linear,
@@ -29,7 +29,7 @@ public class PheromoneAvoider extends DefaultExplorationAgent implements Agent,
 	    AttractionType.Appealing, DistributionType.Linear,
 	    GrowingDirection.Inner, 0, scenario.perceptionScope, 2, 2);
 
-    public PheromoneAvoider(Context<Agent> context) {
+    public PheromoneAvoider(Context<IAgent> context) {
 	super(context);
     }
 
@@ -101,9 +101,9 @@ public class PheromoneAvoider extends DefaultExplorationAgent implements Agent,
 	}
 
 	/* Pheromone scan */
-	ContinuousWithin<Agent> withinQuery = new ContinuousWithin<Agent>(
+	ContinuousWithin<IAgent> withinQuery = new ContinuousWithin<IAgent>(
 		space, this, scenario.perceptionScope);
-	for (Agent agent : withinQuery.query()) {
+	for (IAgent agent : withinQuery.query()) {
 	    switch (agent.getAgentType()) {
 	    case Pheromone:
 		double angle = SpatialMath.calcAngleFor2DMovement(space,

@@ -9,25 +9,24 @@ import repast.simphony.context.Context;
 import repast.simphony.query.space.continuous.ContinuousWithin;
 import repast.simphony.space.SpatialMath;
 import repast.simphony.space.continuous.NdPoint;
-import swarm_sim.Agent;
-import swarm_sim.DisplayAgent;
+import swarm_sim.IAgent;
+import swarm_sim.IDisplayAgent;
 import swarm_sim.ScanCircle;
 import swarm_sim.SectorMap;
+import swarm_sim.communication.INetworkAgent;
 import swarm_sim.communication.Message;
-import swarm_sim.communication.MsgBlackboxFound;
-import swarm_sim.communication.MsgSectorValues;
-import swarm_sim.communication.NetworkAgent;
+import swarm_sim.communication.Message.MessageType;
 import swarm_sim.learning.GA;
 import swarm_sim.perception.AngleSegment;
 import swarm_sim.perception.CircleScan;
 
 public class AvoidAppealMimicMemory extends DefaultExplorationAgent implements
-	Agent, DisplayAgent {
+	IAgent, IDisplayAgent {
 
     int binCount = 8;
 
     SectorMap map = new SectorMap(space.getDimensions(), 40, 40, 1);
-    
+
     CircleScan agentRepell = new CircleScan(binCount, 2, 1, 10000, 1, 0, -1, 0,
 	    0.8 * scenario.commScope);
     CircleScan agentAppeal = new CircleScan(binCount, 1, 1, 100, 1, 1, 0,
@@ -38,22 +37,24 @@ public class AvoidAppealMimicMemory extends DefaultExplorationAgent implements
     CircleScan memoryFollow = new CircleScan(binCount, 2, 1, 1000, 1, 1, 2, 0,
 	    80);
 
-    public AvoidAppealMimicMemory(Context<Agent> context) {
+    public AvoidAppealMimicMemory(Context<IAgent> context) {
 	super(context);
     }
 
-    public AvoidAppealMimicMemory(Context<Agent> context,
-	    Chromosome c) {
+    public AvoidAppealMimicMemory(Context<IAgent> context, Chromosome c) {
 	super(context);
 	Gene genes[] = c.getGenes();
-	agentRepell.setMergeWeight((double)genes[GA.RepellIndex].getAllele());
-	agentAppeal.setMergeWeight((double)genes[GA.AppealIndex].getAllele());
-	agentMimic.setMergeWeight((double)genes[GA.MimicIndex].getAllele());
-	memoryFollow.setMergeWeight((double)genes[GA.MemoryIndex].getAllele());
-	
-	double repellAppealBorderRadius = (double)genes[GA.AppealRepellBorderIndex].getAllele();
-	agentRepell.setOuterCircleRadius(repellAppealBorderRadius * scenario.commScope);
-	agentAppeal.setInnerCircleRadius(repellAppealBorderRadius * scenario.commScope);
+	agentRepell.setMergeWeight((double) genes[GA.RepellIndex].getAllele());
+	agentAppeal.setMergeWeight((double) genes[GA.AppealIndex].getAllele());
+	agentMimic.setMergeWeight((double) genes[GA.MimicIndex].getAllele());
+	memoryFollow.setMergeWeight((double) genes[GA.MemoryIndex].getAllele());
+
+	double repellAppealBorderRadius = (double) genes[GA.AppealRepellBorderIndex]
+		.getAllele();
+	agentRepell.setOuterCircleRadius(repellAppealBorderRadius
+		* scenario.commScope);
+	agentAppeal.setInnerCircleRadius(repellAppealBorderRadius
+		* scenario.commScope);
     }
 
     public void step() {
@@ -71,31 +72,28 @@ public class AvoidAppealMimicMemory extends DefaultExplorationAgent implements
 	List<AngleSegment> moveCircleFree = moveCircle
 		.filterSegment(collisionAngleFilter.getFilterSegments());
 
-	
 	memoryFollow.clear();
-//	dir.add(0.2, 1);
-//	dir.add(-Math.PI + 0.2, 9);
-	
-	
+	// dir.add(0.2, 1);
+	// dir.add(-Math.PI + 0.2, 9);
+
 	map.setPosition(currentLocation);
 	List<Integer[]> closeUnfilledSectors = map.getCloseUnfilledSectors(5);
 	for (Integer[] d : closeUnfilledSectors) {
 	    double angle = SpatialMath.angleFromDisplacement(d[0], d[1]);
-	    double distance = Math.sqrt(d[0]*d[0] + d[1]*d[1]);
+	    double distance = Math.sqrt(d[0] * d[0] + d[1] * d[1]);
 	    scenario.movebins[ScanCircle.movementAngleToBin(angle, 8)]++;
-//	    System.out.println(angle + "\t" + distance);
+	    // System.out.println(angle + "\t" + distance);
 	    memoryFollow.add(angle, distance);
 	}
-	
-//	memoryFollow.setValidSegments(moveCircleFree);
-//	memoryFollow.calculateDirectionDistribution();
-//	memoryFollow.normalize();
-//	System.out.println(memoryFollow.getPrintable());
-	
+
+	// memoryFollow.setValidSegments(moveCircleFree);
+	// memoryFollow.calculateDirectionDistribution();
+	// memoryFollow.normalize();
+	// System.out.println(memoryFollow.getPrintable());
 
 	CircleScan res = CircleScan.merge(binCount, 0.12, moveCircleFree,
 		memoryFollow, agentRepell, agentAppeal, agentMimic);
-//	System.out.println(res.getPrintable());
+	// System.out.println(res.getPrintable());
 	directionAngle = res.getMovementAngle();
 	if (directionAngle > -10) {
 	    currentLocation = space.moveByVector(this,
@@ -107,7 +105,7 @@ public class AvoidAppealMimicMemory extends DefaultExplorationAgent implements
 	agentRepell.clear();
 	agentAppeal.clear();
 
-	for (Agent agent : commNet.getAdjacent(this)) {
+	for (IAgent agent : commNet.getAdjacent(this)) {
 	    switch (agent.getAgentType()) {
 	    case EXPL_AvoidAppealMimicMemory:
 		double angle = SpatialMath.calcAngleFor2DMovement(space,
@@ -123,9 +121,9 @@ public class AvoidAppealMimicMemory extends DefaultExplorationAgent implements
 	}
 
 	/* scan environment for surrounding agents, pheromones, resources, ... */
-	ContinuousWithin<Agent> withinQuery = new ContinuousWithin<Agent>(
+	ContinuousWithin<IAgent> withinQuery = new ContinuousWithin<IAgent>(
 		space, this, scenario.perceptionScope);
-	for (Agent agent : withinQuery.query()) {
+	for (IAgent agent : withinQuery.query()) {
 	    switch (agent.getAgentType()) {
 	    case EXPL_AvoidAppealMimicMemory:
 		double distance = space.getDistance(space.getLocation(this),
@@ -141,10 +139,10 @@ public class AvoidAppealMimicMemory extends DefaultExplorationAgent implements
 	    }
 	}
     }
-    
+
     private void processMessageQueue() {
 	agentMimic.clear();
-	
+
 	Message msg = popMessage();
 	while (msg != null) {
 	    switch (msg.getType()) {
@@ -168,9 +166,6 @@ public class AvoidAppealMimicMemory extends DefaultExplorationAgent implements
 		break;
 	    case Location:
 		break;
-	    case Blackbox_found:
-		/* This agent also knows where the blackbox is */
-		this.state = agentState.blackbox_found;
 	    default:
 		break;
 	    }
@@ -179,21 +174,14 @@ public class AvoidAppealMimicMemory extends DefaultExplorationAgent implements
     }
 
     private void sendMessages() {
-	for (Agent agent : commNet.getAdjacent(this)) {
-	    NetworkAgent netAgent = (NetworkAgent) agent;
+	for (IAgent agent : commNet.getAdjacent(this)) {
+	    INetworkAgent netAgent = (INetworkAgent) agent;
 
-	    if (state == agentState.blackbox_found)
-		netAgent.addToMessageQueue(new MsgBlackboxFound(this, agent,
-			null));
-	    else {
-		Object data[] = new Object[3];
-		data[0] = map;
-		data[1] = currentLocation;
-		data[2] = map.getTargetSector();
-		netAgent.addToMessageQueue(new MsgSectorValues(this, agent,
-			data));
-	    }
-
+	    Object data[] = new Object[3];
+	    data[0] = map;
+	    data[1] = currentLocation;
+	    data[2] = map.getTargetSector();
+	    netAgent.addToMessageQueue(new Message(MessageType.SectorMap, this, data));
 	}
     }
 

@@ -6,7 +6,7 @@ import java.util.List;
 import repast.simphony.engine.environment.RunEnvironment;
 import swarm_sim.Scenario;
 
-public class DefaultNetworkAgent implements NetworkAgent {
+public class DefaultNetworkAgent implements INetworkAgent {
 
     protected List<Message> messageQueue = new ArrayList<>();
     protected Scenario scenario;

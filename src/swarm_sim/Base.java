@@ -2,14 +2,13 @@ package swarm_sim;
 
 import java.awt.Color;
 
-import repast.simphony.engine.environment.RunEnvironment;
 import saf.v3d.ShapeFactory2D;
 import saf.v3d.scene.VSpatial;
 import swarm_sim.communication.DefaultNetworkAgent;
 import swarm_sim.communication.Message;
 import swarm_sim.exploration.DefaultExplorationAgent.agentState;
 
-public class Base extends DefaultNetworkAgent implements Agent, DisplayAgent {
+public class Base extends DefaultNetworkAgent implements IAgent, IDisplayAgent {
 
     private agentState state = agentState.exploring;
 
@@ -19,12 +18,6 @@ public class Base extends DefaultNetworkAgent implements Agent, DisplayAgent {
 	    switch (msg.getType()) {
 	    case Location:
 		break;
-	    case Blackbox_found:
-		/* Base got to know where BB is, end simulation */
-		state = agentState.blackbox_found;
-		RunEnvironment.getInstance().endRun();
-		System.out
-			.println("Base got aware of BB-Location, end of Simulation");
 	    default:
 		break;
 	    }

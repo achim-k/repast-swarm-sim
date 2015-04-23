@@ -5,19 +5,19 @@ import java.util.List;
 import repast.simphony.context.Context;
 import repast.simphony.query.space.continuous.ContinuousWithin;
 import repast.simphony.space.SpatialMath;
-import swarm_sim.Agent;
-import swarm_sim.DisplayAgent;
+import swarm_sim.IAgent;
+import swarm_sim.IDisplayAgent;
 import swarm_sim.perception.AngleSegment;
 import swarm_sim.perception.CircleScan;
 
 public class AgentRepell  extends DefaultExplorationAgent
-implements Agent, DisplayAgent {
+implements IAgent, IDisplayAgent {
 
     int binCount = 8;
     
     CircleScan agentRepell = new CircleScan(binCount, 1, 1, 10000, 1, -1, -2, 0, 1 * scenario.commScope);
     
-    public AgentRepell(Context<Agent> context) {
+    public AgentRepell(Context<IAgent> context) {
 	super(context);
     }
     
@@ -45,7 +45,7 @@ implements Agent, DisplayAgent {
     private void scanEnv() {
 	agentRepell.clear();
 	
-	for (Agent agent : commNet.getAdjacent(this)) {
+	for (IAgent agent : commNet.getAdjacent(this)) {
 	    switch (agent.getAgentType()) {
 	    case EXPL_AgentRepell:
 		double angle = SpatialMath.calcAngleFor2DMovement(space,
@@ -61,9 +61,9 @@ implements Agent, DisplayAgent {
 	}
 	
 	/* scan environment for surrounding agents, pheromones, resources, ... */
-	ContinuousWithin<Agent> withinQuery = new ContinuousWithin<Agent>(
+	ContinuousWithin<IAgent> withinQuery = new ContinuousWithin<IAgent>(
 		space, this, scenario.perceptionScope);
-	for (Agent agent : withinQuery.query()) {
+	for (IAgent agent : withinQuery.query()) {
 	    switch (agent.getAgentType()) {
 	    case EXPL_AgentRepell:
 		double distance = space.getDistance(space.getLocation(this),

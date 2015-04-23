@@ -6,19 +6,18 @@ import repast.simphony.space.SpatialMath;
 import repast.simphony.space.continuous.NdPoint;
 import swarm_sim.AdvancedGridValueLayer.FieldDistancePair;
 import swarm_sim.AdvancedGridValueLayer.FieldType;
-import swarm_sim.Agent;
-import swarm_sim.DisplayAgent;
+import swarm_sim.IAgent;
+import swarm_sim.IDisplayAgent;
 import swarm_sim.ScanCircle;
 import swarm_sim.ScanCircle.AttractionType;
 import swarm_sim.ScanCircle.DistributionType;
 import swarm_sim.ScanCircle.GrowingDirection;
+import swarm_sim.communication.INetworkAgent;
 import swarm_sim.communication.Message;
-import swarm_sim.communication.MsgBlackboxFound;
-import swarm_sim.communication.MsgCurrentDirection;
-import swarm_sim.communication.NetworkAgent;
+import swarm_sim.communication.Message.MessageType;
 
 public class AgentAvoiderMimic extends DefaultExplorationAgent
-	implements Agent, DisplayAgent {
+	implements IAgent, IDisplayAgent {
 
     ScanCircle agentRepellingScan = new ScanCircle(8, 1, 1,
 	    AttractionType.Repelling, DistributionType.Linear,
@@ -34,7 +33,7 @@ public class AgentAvoiderMimic extends DefaultExplorationAgent
 	    DistributionType.Linear, GrowingDirection.Inner, 0,
 	    scenario.perceptionScope, 2, 2);
 
-    public AgentAvoiderMimic(Context<Agent> context) {
+    public AgentAvoiderMimic(Context<IAgent> context) {
 	super(context);
     }
 
@@ -49,22 +48,12 @@ public class AgentAvoiderMimic extends DefaultExplorationAgent
 	scanEnv();
 	move();
 
-	if (state == agentState.blackbox_found) {
-	    /* tell others */
-	    for (Agent agent : commNet.getAdjacent(this)) {
-		NetworkAgent netAgent = (NetworkAgent) agent;
-		netAgent.addToMessageQueue(new MsgBlackboxFound(this, agent,
-			null));
-	    }
-
-	} else {
-	    /* tell others current direction */
-	    for (Agent agent : commNet.getAdjacent(this)) {
-		NetworkAgent netAgent = (NetworkAgent) agent;
-		netAgent.addToMessageQueue(new MsgCurrentDirection(this, agent,
+	    for (IAgent agent : commNet.getAdjacent(this)) {
+		INetworkAgent netAgent = (INetworkAgent) agent;
+		netAgent.addToMessageQueue(new Message(MessageType.Current_Direction, this,
 			directionAngle));
 	    }
-	}
+
 	prevState = state;
 	defaultStepEnd();
     }
@@ -79,9 +68,6 @@ public class AgentAvoiderMimic extends DefaultExplorationAgent
 		break;
 	    case Location:
 		break;
-	    case Blackbox_found:
-		/* This agent also knows where the blackbox is */
-		this.state = agentState.blackbox_found;
 	    default:
 		break;
 	    }
@@ -146,7 +132,7 @@ public class AgentAvoiderMimic extends DefaultExplorationAgent
 	exploredArea.getFieldsRadial(currentLocation, scenario.perceptionScope);
 	/* Pheromone scan */
 
-	for (Agent agent : commNet.getAdjacent(this)) {
+	for (IAgent agent : commNet.getAdjacent(this)) {
 
 	    switch (agent.getAgentType()) {
 	    case EXPL_AgentAvoiderMimic:

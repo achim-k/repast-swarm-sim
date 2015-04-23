@@ -1,6 +1,6 @@
 package swarm_sim;
 
-public interface Agent {
+public interface IAgent {
 
     public enum AgentType {
 	SwarmAgent,

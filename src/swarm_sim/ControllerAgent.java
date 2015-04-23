@@ -6,20 +6,20 @@ import repast.simphony.space.continuous.ContinuousSpace;
 import repast.simphony.space.graph.Network;
 import swarm_sim.Scenario.AgentDistancePairs;
 
-public class ControllerAgent implements Agent {
-    private Context<Agent> context;
-    private Network<Agent> commNet;
+public class ControllerAgent implements IAgent {
+    private Context<IAgent> context;
+    private Network<IAgent> commNet;
     
-    private ContinuousSpace<Agent> space;
+    private ContinuousSpace<IAgent> space;
     protected AdvancedGridValueLayer exploredArea;
 
     private Scenario scenario;
-    IsSimFinishedFunction simFinishedFunc;
+    IIsSimFinishedFunction simFinishedFunc;
 
-    public ControllerAgent(Context<Agent> context, IsSimFinishedFunction simFinishedFunc) {
+    public ControllerAgent(Context<IAgent> context, IIsSimFinishedFunction simFinishedFunc) {
 	this.context = context;
 	this.commNet = context.getProjection(Network.class, "network_comm");
-	this.space = (ContinuousSpace<Agent>) context.getProjection(
+	this.space = (ContinuousSpace<IAgent>) context.getProjection(
 		ContinuousSpace.class, "space_continuous");
 	this.scenario = Scenario.getInstance();
 	this.exploredArea = (AdvancedGridValueLayer) context
@@ -67,6 +67,6 @@ public class ControllerAgent implements Agent {
     @Override
     public AgentType getAgentType() {
 	// TODO Auto-generated method stub
-	return Agent.AgentType.ControllerAgent;
+	return IAgent.AgentType.ControllerAgent;
     }
 }

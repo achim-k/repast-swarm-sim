@@ -1,7 +1,7 @@
 package swarm_sim;
 
 
-public class Pheromone implements Agent {
+public class Pheromone implements IAgent {
 
     public Pheromone() {
     }

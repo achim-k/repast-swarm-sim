@@ -5,8 +5,8 @@ import java.util.List;
 import repast.simphony.context.Context;
 import repast.simphony.query.space.continuous.ContinuousWithin;
 import repast.simphony.space.SpatialMath;
-import swarm_sim.Agent;
-import swarm_sim.DisplayAgent;
+import swarm_sim.IAgent;
+import swarm_sim.IDisplayAgent;
 import swarm_sim.perception.AngleSegment;
 import swarm_sim.perception.CircleScan;
 
@@ -16,12 +16,12 @@ import swarm_sim.perception.CircleScan;
  * @author achim
  * 
  */
-public class Random extends DefaultExplorationAgent implements Agent,
-	DisplayAgent {
+public class Random extends DefaultExplorationAgent implements IAgent,
+	IDisplayAgent {
 
     int binCount = 8;
 
-    public Random(Context<Agent> context) {
+    public Random(Context<IAgent> context) {
 	super(context);
     }
 
@@ -67,9 +67,9 @@ public class Random extends DefaultExplorationAgent implements Agent,
 
     private void scanEnv() {
 	/* scan environment for surrounding agents, pheromones, resources, ... */
-	ContinuousWithin<Agent> withinQuery = new ContinuousWithin<Agent>(
+	ContinuousWithin<IAgent> withinQuery = new ContinuousWithin<IAgent>(
 		space, this, scenario.perceptionScope);
-	for (Agent agent : withinQuery.query()) {
+	for (IAgent agent : withinQuery.query()) {
 	    switch (agent.getAgentType()) {
 	    case EXPL_Random:
 		double distance = space.getDistance(space.getLocation(this),

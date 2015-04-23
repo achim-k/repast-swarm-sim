@@ -1,18 +1,42 @@
 package swarm_sim.communication;
 
-import swarm_sim.Agent;
+import repast.simphony.engine.environment.RunEnvironment;
+import swarm_sim.IAgent;
 
-public interface Message {
-
-    MessageType getType();
-
-    Agent getSender();
-
-    Object getData();
-
-    int getTick();
+public class Message {
 
     public enum MessageType {
-	Location, Blackbox_found, Current_Direction, SectorMap,
+	Location, Current_Direction, SectorMap, CurrentState
     }
+
+    MessageType type;
+    IAgent sender;
+    Object data;
+    int tick;
+
+    public Message(MessageType type, IAgent sender, Object data) {
+	super();
+	this.type = type;
+	this.sender = sender;
+	this.data = data;
+	this.tick = (int) RunEnvironment.getInstance().getCurrentSchedule()
+		.getTickCount();
+    }
+
+    public MessageType getType() {
+	return type;
+    }
+
+    public IAgent getSender() {
+	return sender;
+    }
+
+    public Object getData() {
+	return data;
+    }
+
+    public int getTick() {
+	return tick;
+    }
+
 }
