@@ -105,6 +105,7 @@ public class AvoidAppealMimicMemory extends DefaultExplorationAgent implements
 	agentRepell.clear();
 	agentAppeal.clear();
 
+	/* TODO: That doesn't really belong in scanEvn, rather in rcvMessages */
 	for (IAgent agent : commNet.getAdjacent(this)) {
 	    switch (agent.getAgentType()) {
 	    case EXPL_AvoidAppealMimicMemory:
@@ -181,7 +182,7 @@ public class AvoidAppealMimicMemory extends DefaultExplorationAgent implements
 	    data[0] = map;
 	    data[1] = currentLocation;
 	    data[2] = map.getTargetSector();
-	    netAgent.addToMessageQueue(new Message(MessageType.SectorMap, this, data));
+	    netAgent.pushMessage(new Message(MessageType.SectorMap, this, data));
 	}
     }
 

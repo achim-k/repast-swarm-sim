@@ -3,6 +3,10 @@
   <type>2D</type>
   <styles>
     <entry>
+      <string>swarm_sim.Agent</string>
+      <string>swarm_sim.AgentStyle</string>
+    </entry>
+    <entry>
       <string>swarm_sim.exploration.Random</string>
       <string>swarm_sim.AgentStyle</string>
     </entry>
@@ -33,6 +37,10 @@
   </styles>
   <editedStyles>
     <entry>
+      <string>swarm_sim.Agent</string>
+      <null/>
+    </entry>
+    <entry>
       <string>swarm_sim.exploration.Random</string>
       <null/>
     </entry>
@@ -46,6 +54,10 @@
     </entry>
     <entry>
       <string>swarm_sim.exploration.AgentAvoiderMimic</string>
+      <null/>
+    </entry>
+    <entry>
+      <string>swarm_sim.foraging.Resource</string>
       <null/>
     </entry>
     <entry>
@@ -84,32 +96,36 @@
   <layoutInterval>0</layoutInterval>
   <layerOrder>
     <entry>
-      <string>swarm_sim.exploration.Random</string>
-      <int>6</int>
-    </entry>
-    <entry>
-      <string>swarm_sim.exploration.AvoidAppealMimicMemory</string>
-      <int>3</int>
-    </entry>
-    <entry>
-      <string>swarm_sim.exploration.Memory</string>
-      <int>5</int>
-    </entry>
-    <entry>
-      <string>swarm_sim.exploration.AgentAvoiderMimic</string>
-      <int>4</int>
-    </entry>
-    <entry>
-      <string>swarm_sim.foraging.Resource</string>
+      <string>swarm_sim.Agent</string>
       <int>0</int>
     </entry>
     <entry>
-      <string>swarm_sim.exploration.AgentRepell</string>
+      <string>swarm_sim.exploration.Random</string>
+      <int>7</int>
+    </entry>
+    <entry>
+      <string>swarm_sim.exploration.AvoidAppealMimicMemory</string>
+      <int>4</int>
+    </entry>
+    <entry>
+      <string>swarm_sim.exploration.Memory</string>
+      <int>6</int>
+    </entry>
+    <entry>
+      <string>swarm_sim.exploration.AgentAvoiderMimic</string>
+      <int>5</int>
+    </entry>
+    <entry>
+      <string>swarm_sim.foraging.Resource</string>
       <int>1</int>
     </entry>
     <entry>
-      <string>swarm_sim.Base</string>
+      <string>swarm_sim.exploration.AgentRepell</string>
       <int>2</int>
+    </entry>
+    <entry>
+      <string>swarm_sim.Base</string>
+      <int>3</int>
     </entry>
   </layerOrder>
   <projections>

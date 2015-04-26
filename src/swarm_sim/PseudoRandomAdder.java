@@ -100,8 +100,8 @@ public class PseudoRandomAdder<T> implements ContinuousAdder<T> {
 	randomAddSaveClass = c;
     }
 
-    public void setResourceAdderSaveClass(Class c, int nestCount, double variance,
-	    ContinuousSpace<T> space) {
+    public void setResourceAdderSaveClass(Class c, int nestCount,
+	    double variance, ContinuousSpace<T> space) {
 	resourceAdderSaveClass = c;
 	this.resourceNests = nestCount;
 	this.variance = variance;
@@ -135,7 +135,8 @@ public class PseudoRandomAdder<T> implements ContinuousAdder<T> {
 	do {
 	    for (int i = 0; i < location.length; i++) {
 		try {
-		    location[i] = RandomHelper.createNormal(closeToPoint.getCoord(i), variance).nextDouble();
+		    location[i] = RandomHelper.createNormal(
+			    closeToPoint.getCoord(i), variance).nextDouble();
 		} catch (Exception e) {
 
 		}

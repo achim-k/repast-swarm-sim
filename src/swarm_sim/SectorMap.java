@@ -184,7 +184,7 @@ public class SectorMap {
 
 	return neighbors;
     }
-    
+
     public List<Integer[]> getCloseUnfilledSectors(int maxCount) {
 	List<SectorMap> sects = new ArrayList<>();
 	int depth = 1;
@@ -192,21 +192,21 @@ public class SectorMap {
 	do {
 	    neighbors = getNeighboringSectors(posX, posY, depth++);
 	    for (SectorMap sectorMap : neighbors) {
-		if(!sectorMap.filled)
+		if (!sectorMap.filled)
 		    sects.add(sectorMap);
 	    }
-	}
-	while(neighbors.size() > 0 && sects.size() < maxCount);
-	
+	} while (neighbors.size() > 0 && sects.size() < maxCount);
+
 	List<Integer[]> sectorDisplacements = new ArrayList<>();
 	for (SectorMap sectorMap : sects) {
 	    Integer displacement[] = new Integer[2];
 	    displacement[0] = sectorMap.x - posX;
 	    displacement[1] = sectorMap.y - posY;
 	    sectorDisplacements.add(displacement);
-//	    System.out.println(SpatialMath.angleFromDisplacement(displacement[0], displacement[1]));
+	    // System.out.println(SpatialMath.angleFromDisplacement(displacement[0],
+	    // displacement[1]));
 	}
-	    
+
 	return sectorDisplacements;
     }
 

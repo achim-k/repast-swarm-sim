@@ -15,8 +15,8 @@ import swarm_sim.ScanCircle.AttractionType;
 import swarm_sim.ScanCircle.DistributionType;
 import swarm_sim.ScanCircle.GrowingDirection;
 
-public class PheromoneAvoider extends DefaultExplorationAgent implements IAgent,
-	IDisplayAgent {
+public class PheromoneAvoider extends DefaultExplorationAgent implements
+	IAgent, IDisplayAgent {
 
     ScanCircle pheromones = new ScanCircle(8, 1, 4, 1,
 	    AttractionType.Repelling, DistributionType.Linear,

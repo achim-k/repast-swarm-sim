@@ -7,6 +7,10 @@
       <string>swarm_sim.AgentStyle</string>
     </entry>
     <entry>
+      <string>swarm_sim.Agent</string>
+      <string>swarm_sim.AgentStyle</string>
+    </entry>
+    <entry>
       <string>swarm_sim.foraging.Resource</string>
       <string>repast.simphony.visualization.editedStyle.EditedStyle2D</string>
     </entry>
@@ -18,6 +22,10 @@
   <editedStyles>
     <entry>
       <string>swarm_sim.foraging.Random</string>
+      <null/>
+    </entry>
+    <entry>
+      <string>swarm_sim.Agent</string>
       <null/>
     </entry>
     <entry>
@@ -56,7 +64,7 @@
   <layoutInterval>0</layoutInterval>
   <layerOrder>
     <entry>
-      <string>swarm_sim.foraging.Random</string>
+      <string>swarm_sim.Agent</string>
       <int>1</int>
     </entry>
     <entry>

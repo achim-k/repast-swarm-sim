@@ -16,8 +16,8 @@ import swarm_sim.communication.INetworkAgent;
 import swarm_sim.communication.Message;
 import swarm_sim.communication.Message.MessageType;
 
-public class AgentAvoiderMimic extends DefaultExplorationAgent
-	implements IAgent, IDisplayAgent {
+public class AgentAvoiderMimic extends DefaultExplorationAgent implements
+	IAgent, IDisplayAgent {
 
     ScanCircle agentRepellingScan = new ScanCircle(8, 1, 1,
 	    AttractionType.Repelling, DistributionType.Linear,
@@ -48,11 +48,11 @@ public class AgentAvoiderMimic extends DefaultExplorationAgent
 	scanEnv();
 	move();
 
-	    for (IAgent agent : commNet.getAdjacent(this)) {
-		INetworkAgent netAgent = (INetworkAgent) agent;
-		netAgent.addToMessageQueue(new Message(MessageType.Current_Direction, this,
-			directionAngle));
-	    }
+	for (IAgent agent : commNet.getAdjacent(this)) {
+	    INetworkAgent netAgent = (INetworkAgent) agent;
+	    netAgent.pushMessage(new Message(MessageType.Current_Direction,
+		    this, directionAngle));
+	}
 
 	prevState = state;
 	defaultStepEnd();

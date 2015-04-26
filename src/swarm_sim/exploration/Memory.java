@@ -101,7 +101,7 @@ public class Memory extends DefaultExplorationAgent implements IAgent,
 	    data[0] = map;
 	    data[1] = currentLocation;
 	    data[2] = map.getTargetSector();
-	    netAgent.addToMessageQueue(new Message(MessageType.SectorMap, this, data));
+	    netAgent.pushMessage(new Message(MessageType.SectorMap, this, data));
 
 	}
     }

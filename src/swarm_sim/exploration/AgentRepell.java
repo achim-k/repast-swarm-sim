@@ -10,17 +10,18 @@ import swarm_sim.IDisplayAgent;
 import swarm_sim.perception.AngleSegment;
 import swarm_sim.perception.CircleScan;
 
-public class AgentRepell  extends DefaultExplorationAgent
-implements IAgent, IDisplayAgent {
+public class AgentRepell extends DefaultExplorationAgent implements IAgent,
+	IDisplayAgent {
 
     int binCount = 8;
-    
-    CircleScan agentRepell = new CircleScan(binCount, 1, 1, 10000, 1, -1, -2, 0, 1 * scenario.commScope);
-    
+
+    CircleScan agentRepell = new CircleScan(binCount, 1, 1, 10000, 1, -1, -2,
+	    0, 1 * scenario.commScope);
+
     public AgentRepell(Context<IAgent> context) {
 	super(context);
     }
-    
+
     public void step() {
 	defaultStepStart();
 	scanEnv();
@@ -28,23 +29,24 @@ implements IAgent, IDisplayAgent {
 	prevState = state;
 	defaultStepEnd();
     }
-    
+
     public void move() {
 	AngleSegment moveCircle = new AngleSegment(-Math.PI, Math.PI);
 	List<AngleSegment> moveCircleFree = moveCircle
 		.filterSegment(collisionAngleFilter.getFilterSegments());
-	
-	CircleScan res = CircleScan.merge(binCount, 0.12, moveCircleFree, agentRepell);
+
+	CircleScan res = CircleScan.merge(binCount, 0.12, moveCircleFree,
+		agentRepell);
 	directionAngle = res.getMovementAngle();
 	if (directionAngle > -10) {
 	    currentLocation = space.moveByVector(this,
 		    scenario.maxMoveDistance, directionAngle, 0);
 	}
     }
-    
+
     private void scanEnv() {
 	agentRepell.clear();
-	
+
 	for (IAgent agent : commNet.getAdjacent(this)) {
 	    switch (agent.getAgentType()) {
 	    case EXPL_AgentRepell:
@@ -52,14 +54,14 @@ implements IAgent, IDisplayAgent {
 			currentLocation, space.getLocation(agent));
 		double distance = space.getDistance(space.getLocation(this),
 			space.getLocation(agent));
-		if(distance > 0)
+		if (distance > 0)
 		    agentRepell.add(angle, distance);
 		break;
 	    default:
 		break;
 	    }
 	}
-	
+
 	/* scan environment for surrounding agents, pheromones, resources, ... */
 	ContinuousWithin<IAgent> withinQuery = new ContinuousWithin<IAgent>(
 		space, this, scenario.perceptionScope);
@@ -84,9 +86,9 @@ implements IAgent, IDisplayAgent {
     public String getName() {
 	return "Repell" + agentId;
     }
-    
+
     @Override
     public AgentType getAgentType() {
-        return AgentType.EXPL_AgentRepell;
+	return AgentType.EXPL_AgentRepell;
     }
 }

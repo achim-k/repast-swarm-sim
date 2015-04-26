@@ -27,12 +27,11 @@ public class ExplorationContext extends RootContext implements
 	Parameters params = runEnv.getParameters();
 	Scenario scenario = Scenario.getInstance();
 
-	
 	PseudoRandomAdder<IAgent> adder = new PseudoRandomAdder<IAgent>(
 		exploredArea);
 	adder.setRandomAdderSaveClass(Base.class);
 	space.setAdder(adder);
-	
+
 	/* spawn base */
 	ISchedule schedule = runEnv.getCurrentSchedule();
 	ScheduleParameters scheduleParams = ScheduleParameters.createRepeating(
@@ -58,13 +57,14 @@ public class ExplorationContext extends RootContext implements
 	    agentType = AgentType.EXPL_Memory;
 	else if (bb_agent.equalsIgnoreCase("EXPL_AvoidAppealMimicMemory"))
 	    agentType = AgentType.EXPL_AvoidAppealMimicMemory;
-	
+
 	GA ga = GA.getInstance();
 
 	/* Create agents */
 	scheduleParams = ScheduleParameters.createRepeating(1, 1);
 
 	for (int i = 0; i < scenario.agentCount; i++) {
+
 	    IAgent agent = null;
 	    switch (agentType) {
 	    case EXPL_Random:
@@ -86,8 +86,9 @@ public class ExplorationContext extends RootContext implements
 		scenario.networkAgents.add(agent);
 		break;
 	    case EXPL_AvoidAppealMimicMemory:
-		if(scenario.useGA)
-		    agent = new AvoidAppealMimicMemory(context, ga.currentChromosome);
+		if (scenario.useGA)
+		    agent = new AvoidAppealMimicMemory(context,
+			    ga.currentChromosome);
 		else
 		    agent = new AvoidAppealMimicMemory(context);
 		scenario.networkAgents.add(agent);
@@ -95,13 +96,11 @@ public class ExplorationContext extends RootContext implements
 	    default:
 		break;
 	    }
+
 	    schedule.schedule(scheduleParams, agent, "step");
 	    context.add(agent);
 	}
-	
-	
-	
-	
+
 	System.out.println();
 	System.out.println("Exploration context loaded");
 	System.out.println("-----------------------------------");
@@ -109,34 +108,40 @@ public class ExplorationContext extends RootContext implements
 	System.out.println("Type of Agents:  \t" + agentType);
 	System.out.println("Perception-Scope:\t" + scenario.perceptionScope);
 	System.out.println("Communic.-Scope: \t" + scenario.commScope);
-	System.out.println("Consecutive moves:\t" + scenario.rndConsecutiveMoves);
+	System.out.println("Consecutive moves:\t"
+		+ scenario.rndConsecutiveMoves);
 	System.out.println("Use Genetic Alg.:\t" + scenario.useGA);
-	if(scenario.useGA)
+	if (scenario.useGA)
 	    System.out.println("Chromosomes:     \t:" + ga.currentChromosome);
-	
+
 	return context;
     }
-    
+
     @Override
     public void endAction() {
 	RunEnvironment runenv = RunEnvironment.getInstance();
-	
-	String out = String.format("Exploration Simulation has ended after %.1f ticks", runenv.getCurrentSchedule().getTickCount());       
+
+	String out = String.format(
+		"Exploration Simulation has ended after %.1f ticks", runenv
+			.getCurrentSchedule().getTickCount());
 	System.out.println(out);
     }
 
     @Override
     public boolean isSimFinished(Context<IAgent> c, AdvancedGridValueLayer l) {
 	Scenario scen = Scenario.getInstance();
-	
-	if(scen.exploredAreaCount >= 0.999 * (space.getDimensions().getHeight()*space.getDimensions().getWidth() - l.getObstacleFieldCount())) {
-	    if(scen.useGA) {
+
+	if (scen.exploredAreaCount >= 0.999 * (space.getDimensions()
+		.getHeight() * space.getDimensions().getWidth() - l
+		    .getObstacleFieldCount())) {
+	    if (scen.useGA) {
 		GA ga = GA.getInstance();
-		ga.currentFitness = 20000 - (int)RunEnvironment.getInstance().getCurrentSchedule().getTickCount() + 1;
+		ga.currentFitness = 20000 - (int) RunEnvironment.getInstance()
+			.getCurrentSchedule().getTickCount() + 1;
 	    }
 	    return true;
-	}   
-	
+	}
+
 	return false;
     };
 

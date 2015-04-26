@@ -110,7 +110,8 @@ public class CircleScan {
     }
 
     public void add(double angle) {
-	this.add(new AngleDistancePair(angle, (innerCircleDistance + outerCircleDistance)/2));
+	this.add(new AngleDistancePair(angle,
+		(innerCircleDistance + outerCircleDistance) / 2));
     }
 
     public void add(double angle, double distance) {
@@ -306,15 +307,15 @@ public class CircleScan {
 	    }
 	}
     }
-    
+
     public void setMergeWeight(double mergeWeight) {
 	this.mergeWeight = mergeWeight;
     }
-    
+
     public void setInnerCircleRadius(double radius) {
 	this.innerCircleDistance = radius;
     }
-    
+
     public void setOuterCircleRadius(double radius) {
 	this.outerCircleDistance = radius;
     }

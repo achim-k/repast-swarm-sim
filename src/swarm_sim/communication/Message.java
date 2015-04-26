@@ -1,7 +1,6 @@
 package swarm_sim.communication;
 
 import repast.simphony.engine.environment.RunEnvironment;
-import swarm_sim.IAgent;
 
 public class Message {
 
@@ -10,11 +9,11 @@ public class Message {
     }
 
     MessageType type;
-    IAgent sender;
+    INetworkAgent sender;
     Object data;
     int tick;
 
-    public Message(MessageType type, IAgent sender, Object data) {
+    public Message(MessageType type, INetworkAgent sender, Object data) {
 	super();
 	this.type = type;
 	this.sender = sender;
@@ -27,7 +26,7 @@ public class Message {
 	return type;
     }
 
-    public IAgent getSender() {
+    public INetworkAgent getSender() {
 	return sender;
     }
 

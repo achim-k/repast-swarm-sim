@@ -16,7 +16,7 @@ public class DefaultNetworkAgent implements INetworkAgent {
     }
 
     @Override
-    public void addToMessageQueue(Message msg) {
+    public void pushMessage(Message msg) {
 	messageQueue.add(msg);
 	scenario.messagesSent++;
     }
