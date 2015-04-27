@@ -7,12 +7,27 @@ import org.jgap.Chromosome;
 import repast.simphony.context.Context;
 import repast.simphony.space.continuous.ContinuousSpace;
 import swarm_sim.Agent.AgentState;
+import swarm_sim.communication.CommunicationType;
 import swarm_sim.communication.INetworkAgent;
 import swarm_sim.communication.Message;
+import swarm_sim.communication.Message.MessageType;
 import swarm_sim.perception.AngleSegment;
 
 public abstract class Strategy {
-    protected Scenario scenario;
+
+    public class MessageTypeRegisterPair {
+	public MessageType msgType;
+	public AgentState states[];
+
+	public MessageTypeRegisterPair(MessageType msgType, AgentState[] states) {
+	    super();
+	    this.msgType = msgType;
+	    this.states = states;
+	}
+    }
+
+    protected Configuration config;
+    protected DataCollection data;
     protected Chromosome chrom;
     protected ContinuousSpace<IAgent> space;
     protected Context<IAgent> context;
@@ -25,21 +40,25 @@ public abstract class Strategy {
 	this.context = context;
 	this.space = (ContinuousSpace<IAgent>) context.getProjection(
 		ContinuousSpace.class, "space_continuous");
-	this.scenario = Scenario.getInstance();
+	this.config = Configuration.getInstance();
+	this.data = DataCollection.getInstance();
 	this.controllingAgent = controllingAgent;
     }
 
-    protected abstract AgentState processMessage(Message msg,
-	    AgentState currentState);
+    protected abstract List<MessageTypeRegisterPair> getMessageTypesToRegister(
+	    CommunicationType allowedCommTypes[]);
 
-    protected abstract void sendMessage(INetworkAgent agentInRange,
-	    AgentState currentState);
+    protected abstract AgentState processMessage(AgentState prevState,
+	    AgentState currentState, Message msg, boolean isLast);
 
-    protected abstract AgentState processPerceivedAgent(IAgent agent,
-	    boolean isLast);
+    protected abstract void sendMessage(AgentState prevState,
+	    AgentState currentState, INetworkAgent agentInRange);
 
-    protected abstract double makeDirectionDecision(
-	    List<AngleSegment> collisionFreeSegments);
+    protected abstract AgentState processPerceivedAgent(AgentState prevState,
+	    AgentState currentState, IAgent agent, boolean isLast);
+
+    protected abstract double makeDirectionDecision(AgentState prevState,
+	    AgentState currentState, List<AngleSegment> collisionFreeSegments);
 
     protected abstract void clear(); // After each step
 

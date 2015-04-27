@@ -1,28 +1,29 @@
 package swarm_sim.exploration;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.jgap.Chromosome;
 
 import repast.simphony.context.Context;
-import repast.simphony.random.RandomHelper;
+import repast.simphony.space.continuous.NdPoint;
 import swarm_sim.Agent;
 import swarm_sim.Agent.AgentState;
 import swarm_sim.IAgent;
 import swarm_sim.IAgent.AgentType;
+import swarm_sim.SectorMap;
+import swarm_sim.Strategy;
 import swarm_sim.communication.CommunicationType;
 import swarm_sim.communication.INetworkAgent;
 import swarm_sim.communication.Message;
+import swarm_sim.communication.Message.MessageType;
 import swarm_sim.perception.AngleSegment;
-import swarm_sim.perception.CircleScan;
 
-public class RandomEXPLStrategy extends ExplorationStrategy {
+public class MemoryComplexExplStrategy extends ExplorationStrategy {
 
-    int segmentCount = 8;
-    int consecutiveMoveCount = 0;
-    double directionAngle = RandomHelper.nextDoubleFromTo(-Math.PI, Math.PI);
+    SectorMap map = new SectorMap(space.getDimensions(), 60, 60, 1);
 
-    public RandomEXPLStrategy(Chromosome chrom, Context<IAgent> context,
+    public MemoryComplexExplStrategy(Chromosome chrom, Context<IAgent> context,
 	    Agent controllingAgent) {
 	super(chrom, context, controllingAgent);
     }
@@ -30,7 +31,11 @@ public class RandomEXPLStrategy extends ExplorationStrategy {
     @Override
     protected AgentState processMessage(AgentState prevState,
 	    AgentState currentState, Message msg, boolean isLast) {
-	// No Communication here
+	if (isLast)
+	    return currentState;
+
+	if (msg.getType() == MessageType.SectorMap)
+	    map.merge((SectorMap) msg.getData());
 
 	return currentState;
     }
@@ -38,7 +43,8 @@ public class RandomEXPLStrategy extends ExplorationStrategy {
     @Override
     protected void sendMessage(AgentState prevState, AgentState currentState,
 	    INetworkAgent agentInRange) {
-	// No Communication here
+	agentInRange.pushMessage(new Message(MessageType.SectorMap,
+		controllingAgent, map));
     }
 
     @Override
@@ -53,43 +59,37 @@ public class RandomEXPLStrategy extends ExplorationStrategy {
     @Override
     protected double makeDirectionDecision(AgentState prevState,
 	    AgentState currentState, List<AngleSegment> collisionFreeSegments) {
-
-	if (consecutiveMoveCount < config.rndConsecutiveMoves) {
-	    // Continue to go in same direction, if possible
-	    boolean moveAllowed = false;
-	    for (AngleSegment as : collisionFreeSegments) {
-		if (as.start <= directionAngle && as.end >= directionAngle) {
-		    moveAllowed = true;
-		    break;
-		}
-	    }
-
-	    if (moveAllowed) {
-		consecutiveMoveCount++;
-		return directionAngle;
-	    }
-	}
-
-	/* Choose random direction */
-	consecutiveMoveCount = 0;
-	CircleScan res = CircleScan.merge(segmentCount, 0,
-		collisionFreeSegments);
-	directionAngle = res.getMovementAngle();
-	return directionAngle;
-    }
-
-    @Override
-    protected void reset() {
-	consecutiveMoveCount = 0;
+	NdPoint currentLocation = space.getLocation(controllingAgent);
+	map.setPosition(currentLocation);
+	return map.getNewMoveAngle();
     }
 
     @Override
     protected void clear() {
+	// N/A here
+    }
+
+    @Override
+    protected void reset() {
+	map.setCurrentSectorUnfilled();
     }
 
     @Override
     protected List<MessageTypeRegisterPair> getMessageTypesToRegister(
-	    CommunicationType allowedCommTypes[]) {
-	return null;
+	    CommunicationType[] allowedCommTypes) {
+	List<MessageTypeRegisterPair> ret = new ArrayList<Strategy.MessageTypeRegisterPair>();
+	for (CommunicationType commType : allowedCommTypes) {
+	    switch (commType) {
+	    case MapOrTargets:
+		AgentState states[] = new AgentState[] { AgentState.wander };
+		ret.add(new MessageTypeRegisterPair(MessageType.SectorMap,
+			states));
+		break;
+	    default:
+		break;
+	    }
+	}
+	return ret;
     }
+
 }

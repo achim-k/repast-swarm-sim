@@ -20,10 +20,14 @@ import saf.v3d.ShapeFactory2D;
 import saf.v3d.scene.VSpatial;
 import swarm_sim.AdvancedGridValueLayer.FieldDistancePair;
 import swarm_sim.AdvancedGridValueLayer.FieldType;
+import swarm_sim.Strategy.MessageTypeRegisterPair;
+import swarm_sim.communication.CommunicationType;
 import swarm_sim.communication.INetworkAgent;
 import swarm_sim.communication.Message;
 import swarm_sim.exploration.ExplorationStrategy;
+import swarm_sim.exploration.MemoryComplexExplStrategy;
 import swarm_sim.exploration.RandomEXPLStrategy;
+import swarm_sim.foraging.ForagingStrategy;
 import swarm_sim.foraging.StateCommFAStrategy;
 import swarm_sim.perception.AngleFilter;
 import swarm_sim.perception.AngleSegment;
@@ -48,7 +52,9 @@ public class Agent implements IAgent, IDisplayAgent, INetworkAgent {
     AngleFilter collisionAngleFilter = new AngleFilter(1);
 
     /* General */
-    Scenario scenario;
+    Configuration config;
+    DataCollection data;
+    
     Context<IAgent> context;
     Network<IAgent> commNet;
     ContinuousSpace<IAgent> space;
@@ -60,6 +66,8 @@ public class Agent implements IAgent, IDisplayAgent, INetworkAgent {
     /* Exploration + Foraging strategies */
     ExplorationStrategy explStrategy;
     ForagingStrategy faStrategy;
+
+    List<MessageTypeRegisterPair> faStrategyMessages, explStrategyMessages;
 
     /* Communication */
     protected List<Message> messageQueue = new ArrayList<>();
@@ -76,12 +84,26 @@ public class Agent implements IAgent, IDisplayAgent, INetworkAgent {
 		"network_comm");
 	this.exploredArea = (AdvancedGridValueLayer) context
 		.getValueLayer("layer_explored");
-	this.scenario = Scenario.getInstance();
+	this.config = Configuration.getInstance();
+	this.data = DataCollection.getInstance();
 	this.agentId = ++agentCount;
 
-	/* TODO: Set exploration and foraging strategy */
-	explStrategy = new RandomEXPLStrategy(chrom, context, this);
-	faStrategy = new StateCommFAStrategy(chrom, context, this);
+	/* Set exploration and foraging strategy */
+	if(config.explStrat.equalsIgnoreCase("Random"))
+	    this.explStrategy = new RandomEXPLStrategy(chrom, context, this);
+	else if(config.explStrat.equalsIgnoreCase("MemoryComm"))
+	    this.explStrategy = new MemoryComplexExplStrategy(chrom, context, this);
+	
+	if(config.foragingStrat.equalsIgnoreCase("StateCommunication"))
+	    this.faStrategy = new StateCommFAStrategy(chrom, context, this);
+	
+	CommunicationType allowedCommunicationTypes[] = new CommunicationType[] {
+		CommunicationType.State, CommunicationType.MapOrTargets };
+
+	faStrategyMessages = faStrategy
+		.getMessageTypesToRegister(allowedCommunicationTypes);
+	explStrategyMessages = explStrategy
+		.getMessageTypesToRegister(allowedCommunicationTypes);
     }
 
     public void step() {
@@ -110,16 +132,50 @@ public class Agent implements IAgent, IDisplayAgent, INetworkAgent {
 	Message msg = popMessage();
 
 	while (msg != null) {
-	    state = explStrategy.processMessage(msg, state);
-	    state = faStrategy.processMessage(msg, state);
+	    for (MessageTypeRegisterPair mrp : explStrategyMessages) {
+		if (msg.getType() == mrp.msgType) {
+		    for (AgentState as : mrp.states) {
+			if (state == as) {
+			    state = explStrategy.processMessage(prevState,
+				    state, msg, msg == null);
+			    break;
+			}
+		    }
+		    break;
+		}
+	    }
+
+	    for (MessageTypeRegisterPair mrp : faStrategyMessages) {
+		if (msg.getType() == mrp.msgType) {
+		    for (AgentState as : mrp.states) {
+			if (state == as) {
+			    state = faStrategy.processMessage(prevState, state,
+				    msg, msg == null);
+			    break;
+			}
+		    }
+		    break;
+		}
+	    }
 	    msg = popMessage();
 	}
+
+	state = explStrategy.processMessage(prevState, state, null, true);
+	state = faStrategy.processMessage(prevState, state, null, true);
     }
 
     private void sendMessages() {
-	for (IAgent netAgent : commNet.getAdjacent(this)) {
-	    explStrategy.sendMessage((INetworkAgent) netAgent, state);
-	    faStrategy.sendMessage((INetworkAgent) netAgent, state);
+	int x = (int) RunEnvironment.getInstance().getCurrentSchedule()
+		.getTickCount()
+		% config.commFreq;
+
+	if (x == 0) {
+	    for (IAgent netAgent : commNet.getAdjacent(this)) {
+		explStrategy.sendMessage(prevState, state,
+			(INetworkAgent) netAgent);
+		faStrategy.sendMessage(prevState, state,
+			(INetworkAgent) netAgent);
+	    }
 	}
     }
 
@@ -127,7 +183,7 @@ public class Agent implements IAgent, IDisplayAgent, INetworkAgent {
 	collisionAngleFilter.clear();
 
 	surroundingFields = exploredArea.getFieldsRadial(currentLocation,
-		scenario.perceptionScope);
+		config.perceptionScope);
 
 	/*
 	 * loop through surrounding fields and check for obstacles/set field as
@@ -135,7 +191,7 @@ public class Agent implements IAgent, IDisplayAgent, INetworkAgent {
 	 */
 	for (FieldDistancePair field : surroundingFields) {
 	    if (field.fieldType == FieldType.Obstacle) {
-		if (field.distance <= scenario.maxMoveDistance + 1
+		if (field.distance <= config.maxMoveDistance + .5
 			&& field.distance > 0) {
 		    double angle = SpatialMath.calcAngleFor2DMovement(space,
 			    currentLocation, new NdPoint(field.x + .5,
@@ -144,16 +200,16 @@ public class Agent implements IAgent, IDisplayAgent, INetworkAgent {
 		}
 	    } else {
 		if (field.value == 0)
-		    scenario.exploredAreaCount++;
+		    data.fieldsExplored++;
 		else
-		    scenario.redundantExploredAreaCount++;
+		    data.fieldsRedundantlyExplored++;
 	    }
 	    exploredArea.set(field.value + 1, field.x, field.y);
 	}
 
 	/* scan environment for surrounding agents, pheromones, resources, ... */
 	ContinuousWithin<IAgent> withinQuery = new ContinuousWithin<IAgent>(
-		space, this, scenario.perceptionScope);
+		space, this, config.perceptionScope);
 	Iterator<IAgent> agentIter = withinQuery.query().iterator();
 
 	while (agentIter.hasNext()) {
@@ -164,7 +220,7 @@ public class Agent implements IAgent, IDisplayAgent, INetworkAgent {
 
 		double distance = space.getDistance(space.getLocation(this),
 			space.getLocation(agent));
-		if (distance > 0 && distance <= scenario.maxMoveDistance + 1) {
+		if (distance > 0 && distance <= config.maxMoveDistance + 1) {
 		    double angle = SpatialMath.calcAngleFor2DMovement(space,
 			    currentLocation, space.getLocation(agent));
 		    collisionAngleFilter.add(distance, angle);
@@ -172,20 +228,20 @@ public class Agent implements IAgent, IDisplayAgent, INetworkAgent {
 	    }
 
 	    if (state == AgentState.wander)
-		state = explStrategy.processPerceivedAgent(agent,
-			!agentIter.hasNext());
+		state = explStrategy.processPerceivedAgent(prevState, state,
+			agent, !agentIter.hasNext());
 
 	    /*
 	     * not in else statement, so perceived agent can be processed even
 	     * when state changed
 	     */
 	    if (state != AgentState.wander)
-		state = faStrategy.processPerceivedAgent(agent,
-			!agentIter.hasNext());
+		state = faStrategy.processPerceivedAgent(prevState, state,
+			agent, !agentIter.hasNext());
 	}
 
 	if (state != AgentState.wander)
-	    state = faStrategy.checkState();
+	    state = faStrategy.checkState(prevState, state);
     }
 
     public void move() {
@@ -194,16 +250,16 @@ public class Agent implements IAgent, IDisplayAgent, INetworkAgent {
 		.filterSegment(collisionAngleFilter.getFilterSegments());
 
 	if (state == AgentState.wander) {
-	    directionAngle = explStrategy
-		    .makeDirectionDecision(collisionFreeSegments);
+	    directionAngle = explStrategy.makeDirectionDecision(prevState,
+		    state, collisionFreeSegments);
 	} else {
-	    directionAngle = faStrategy
-		    .makeDirectionDecision(collisionFreeSegments);
+	    directionAngle = faStrategy.makeDirectionDecision(prevState, state,
+		    collisionFreeSegments);
 	}
 
 	if (directionAngle >= -Math.PI)
 	    currentLocation = space.moveByVector(this,
-		    scenario.maxMoveDistance, directionAngle, 0);
+		    config.maxMoveDistance, directionAngle, 0);
     }
 
     @Override
@@ -244,7 +300,7 @@ public class Agent implements IAgent, IDisplayAgent, INetworkAgent {
     @Override
     public void pushMessage(Message msg) {
 	messageQueue.add(msg);
-	scenario.messagesSent++;
+	data.messageCount++;
     }
 
     private Message popMessage() {

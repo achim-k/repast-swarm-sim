@@ -268,4 +268,8 @@ public class SectorMap {
     public SectorMap getTargetSector() {
 	return map[targetX][targetY];
     }
+
+    public void setCurrentSectorUnfilled() {
+	map[posX][posY].filled = false;
+    }
 }

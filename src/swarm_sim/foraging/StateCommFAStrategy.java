@@ -1,5 +1,6 @@
 package swarm_sim.foraging;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.jgap.Chromosome;
@@ -10,9 +11,10 @@ import repast.simphony.space.SpatialMath;
 import repast.simphony.space.continuous.NdPoint;
 import swarm_sim.Agent;
 import swarm_sim.Agent.AgentState;
-import swarm_sim.ForagingStrategy;
 import swarm_sim.IAgent;
 import swarm_sim.IAgent.AgentType;
+import swarm_sim.Strategy;
+import swarm_sim.communication.CommunicationType;
 import swarm_sim.communication.INetworkAgent;
 import swarm_sim.communication.Message;
 import swarm_sim.communication.Message.MessageType;
@@ -26,12 +28,14 @@ public class StateCommFAStrategy extends ForagingStrategy {
 
     ResourcesTarget currentTarget;
 
-    CircleScan resourceScan = new CircleScan(segmentCount, 1, 1, 10, 1, 0, 1,
-	    0, scenario.perceptionScope);
-    CircleScan deliverDirection = new CircleScan(segmentCount, 1, 1, 10, 1, 1,
-	    1, 0, scenario.perceptionScope);
-    CircleScan agentFollow = new CircleScan(segmentCount, 1, 1, 10, 1, 1, 1, 0,
-	    scenario.commScope);
+    CircleScan resourceScan = new CircleScan(segmentCount, 1, 1, 100, 1, 0, 1,
+	    0, config.perceptionScope);
+    CircleScan deliverDirection = new CircleScan(segmentCount, 1, 1, 100, 1, 1,
+	    1, 0, config.perceptionScope);
+    CircleScan agentFollow = new CircleScan(segmentCount, 1, 1, 3, 1, 1, 1, 0,
+	    config.commScope);
+    CircleScan agentRepulsion = new CircleScan(segmentCount, 2, 4, 100, 1, -1,
+	    -2, 0, 0.5 * config.commScope);
 
     public StateCommFAStrategy(Chromosome chrom, Context<IAgent> context,
 	    Agent controllingAgent) {
@@ -39,49 +43,78 @@ public class StateCommFAStrategy extends ForagingStrategy {
     }
 
     @Override
-    protected AgentState processMessage(Message msg, AgentState currentState) {
+    protected AgentState processMessage(AgentState prevState,
+	    AgentState currentState, Message msg, boolean isLast) {
+
+	if (isLast) {
+	    /* */
+	    if (currentState == AgentState.wander && agentFollow.isValid()) {
+		return AgentState.acquire;
+	    }
+	    return currentState;
+	}
 
 	if (msg.getType() == MessageType.CurrentState) {
 	    AgentState netAgentState = (AgentState) msg.getData();
 
-	    if (currentState == AgentState.wander
-		    && netAgentState == AgentState.acquire) {
-		NdPoint agentLoc = space.getLocation(msg.getSender());
-		NdPoint currentLocation = space.getLocation(controllingAgent);
-		double distance = space.getDistance(currentLocation, agentLoc);
-		double angle = SpatialMath.calcAngleFor2DMovement(space,
-			currentLocation, agentLoc);
-		agentFollow.add(angle, distance);
+	    if (netAgentState == AgentState.acquire) {
+
+		if (currentState == AgentState.wander
+			|| (currentState == AgentState.acquire && currentTarget == null)) {
+		    NdPoint agentLoc = space.getLocation(msg.getSender());
+		    NdPoint currentLocation = space
+			    .getLocation(controllingAgent);
+		    double distance = space.getDistance(currentLocation,
+			    agentLoc);
+		    double angle = SpatialMath.calcAngleFor2DMovement(space,
+			    currentLocation, agentLoc);
+		    agentFollow.add(angle, distance);
+		}
+
 	    }
 	}
 
+	if (currentState == AgentState.acquire) {
+	    NdPoint agentLoc = space.getLocation(msg.getSender());
+	    NdPoint currentLocation = space.getLocation(controllingAgent);
+	    double distance = space.getDistance(currentLocation, agentLoc);
+	    double angle = SpatialMath.calcAngleFor2DMovement(space,
+		    currentLocation, agentLoc);
+	    agentRepulsion.add(angle, distance);
+	}
 	return currentState;
     }
 
     @Override
-    protected void sendMessage(INetworkAgent agentInRange,
-	    AgentState currentState) {
-	if (currentState == AgentState.acquire)
-	    agentInRange.pushMessage(new Message(MessageType.CurrentState,
-		    controllingAgent, state));
+    protected void sendMessage(AgentState prevState, AgentState currentState,
+	    INetworkAgent agentInRange) {
+	return;
+	// if (currentState == AgentState.acquire && currentTarget != null)
+	// agentInRange.pushMessage(new Message(MessageType.CurrentState,
+	// controllingAgent, currentState));
+	// else if(currentState == AgentState.wander || currentState ==
+	// AgentState.deliver);
+	// agentInRange.pushMessage(new Message(MessageType.CurrentState,
+	// controllingAgent, currentState));
     }
 
     @Override
-    protected AgentState processPerceivedAgent(IAgent agent, boolean isLast) {
+    protected AgentState processPerceivedAgent(AgentState prevState,
+	    AgentState currentState, IAgent agent, boolean isLast) {
 	NdPoint currentLocation = space.getLocation(controllingAgent);
 
-	if (state == AgentState.acquire) {
+	if (currentState == AgentState.acquire) {
 	    if (agent.getAgentType() == AgentType.Resource) {
 		perceivedResourceCount++;
 		double distance = space.getDistance(currentLocation,
 			space.getLocation(agent));
 
-		if (distance <= scenario.maxMoveDistance / 2) {
+		if (distance <= config.maxMoveDistance / 2) {
 		    /* pick up that resource */
 		    context.remove(agent);
-		    state = AgentState.deliver;
+		    currentState = AgentState.deliver;
 		    perceivedResourceCount--;
-		    return state;
+		    return currentState;
 		}
 
 		double angle = SpatialMath.calcAngleFor2DMovement(space,
@@ -90,7 +123,7 @@ public class StateCommFAStrategy extends ForagingStrategy {
 	    }
 	}
 
-	if (state == AgentState.deliver) {
+	if (currentState == AgentState.deliver) {
 	    if (agent.getAgentType() == AgentType.Resource) {
 		perceivedResourceCount++;
 		if (currentTarget == null)
@@ -99,86 +132,110 @@ public class StateCommFAStrategy extends ForagingStrategy {
 		    currentTarget.resourceCount++;
 	    } else if (agent.getAgentType() == AgentType.Base) {
 		double distance = space.getDistance(currentLocation,
-			space.getLocation(scenario.baseAgent));
+			space.getLocation(config.baseAgent));
 
-		if (distance <= scenario.maxMoveDistance / 2) {
+		if (distance <= config.maxMoveDistance / 2) {
 		    /* Deliver the resource */
-		    scenario.deliveredResources++;
+		    data.deliveredResources++;
 
 		    if (currentTarget != null) {
-			state = AgentState.acquire;
+			currentState = AgentState.acquire;
 		    } else
-			state = AgentState.wander;
+			currentState = AgentState.wander;
 		}
 	    }
 	}
-	return state;
+	return currentState;
     }
 
     @Override
-    protected AgentState checkState() {
-	if (state == AgentState.acquire) {
+    public AgentState checkState(AgentState prevState,
+	    AgentState currentState) {
+	if (currentState == AgentState.acquire) {
 	    NdPoint currentLocation = space.getLocation(controllingAgent);
 
 	    /* Unset currentTarget, when it has been reached */
 	    if (currentTarget != null
 		    && space.getDistance(currentLocation,
-			    currentTarget.location) <= scenario.maxMoveDistance / 2) {
+			    currentTarget.location) <= config.maxMoveDistance / 2) {
 		currentTarget = null;
 	    }
 
 	    /*
-	     * If no resources have been perceived and no targets there → wander
+	     * If no resources have been perceived and no targets there and no
+	     * agent to follow → wander
 	     */
-	    if (perceivedResourceCount == 0 && currentTarget == null) {
-		state = AgentState.wander;
+	    if (perceivedResourceCount == 0 && currentTarget == null
+		    && !agentFollow.isValid()) {
+		currentState = AgentState.wander;
 	    }
 	}
-	return state;
+	return currentState;
     }
 
     @Override
-    protected double makeDirectionDecision(
-	    List<AngleSegment> collisionFreeSegments) {
+    protected double makeDirectionDecision(AgentState prevState,
+	    AgentState currentState, List<AngleSegment> collisionFreeSegments) {
 
-	if (state == AgentState.acquire) {
+	if (currentState == AgentState.acquire) {
 	    if (currentTarget != null)
 		resourceScan.add(SpatialMath.calcAngleFor2DMovement(space,
 			space.getLocation(controllingAgent),
 			currentTarget.location));
 	    CircleScan res = CircleScan.merge(segmentCount, 0.12,
-		    collisionFreeSegments, resourceScan, agentFollow);
+		    collisionFreeSegments, resourceScan, agentFollow,
+		    agentRepulsion);
 	    directionAngle = res.getMovementAngle();
 	    return directionAngle;
-	} else if (state == AgentState.deliver) {
+	} else if (currentState == AgentState.deliver) {
 	    deliverDirection.clear();
 	    double moveAngleToBase = SpatialMath.calcAngleFor2DMovement(space,
 		    space.getLocation(controllingAgent),
-		    space.getLocation(scenario.baseAgent));
+		    space.getLocation(config.baseAgent));
 	    deliverDirection.add(moveAngleToBase);
 	    CircleScan resDel = CircleScan.merge(segmentCount, 0.12,
 		    collisionFreeSegments, deliverDirection);
 	    directionAngle = resDel.getMovementAngle();
 	    return directionAngle;
 	} else {
-	    System.err.println("ERROR: State → " + state);
+	    System.err.println("ERROR: State → " + currentState);
 	}
 
 	return -100;
     }
 
     @Override
-    protected void reset() {
+    public void reset() {
 	super.reset();
 	this.clear();
 	currentTarget = null;
     }
 
     @Override
-    protected void clear() {
+    public void clear() {
 	super.clear();
+	agentRepulsion.clear();
 	resourceScan.clear();
 	deliverDirection.clear();
 	agentFollow.clear();
+    }
+
+    @Override
+    protected List<MessageTypeRegisterPair> getMessageTypesToRegister(
+	    CommunicationType allowedCommTypes[]) {
+	List<MessageTypeRegisterPair> ret = new ArrayList<Strategy.MessageTypeRegisterPair>();
+	for (CommunicationType commType : allowedCommTypes) {
+	    switch (commType) {
+	    case State:
+		AgentState states[] = new AgentState[] { AgentState.wander,
+			AgentState.acquire };
+		ret.add(new MessageTypeRegisterPair(MessageType.CurrentState,
+			states));
+		break;
+	    default:
+		break;
+	    }
+	}
+	return ret;
     }
 }

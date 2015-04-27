@@ -1,16 +1,21 @@
 package swarm_sim;
 
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
 
+import repast.simphony.engine.environment.RunEnvironment;
 import saf.v3d.ShapeFactory2D;
 import saf.v3d.scene.VSpatial;
-import swarm_sim.communication.DefaultNetworkAgent;
+import swarm_sim.communication.INetworkAgent;
 import swarm_sim.communication.Message;
 import swarm_sim.exploration.DefaultExplorationAgent.agentState;
 
-public class Base extends DefaultNetworkAgent implements IAgent, IDisplayAgent {
+public class Base implements IAgent, IDisplayAgent, INetworkAgent {
 
     private agentState state = agentState.exploring;
+    private List<Message> messageQueue = new ArrayList<>();
+    private DataCollection data = DataCollection.getInstance();
 
     private void processMessageQueue() {
 	Message msg = popMessage();
@@ -31,25 +36,36 @@ public class Base extends DefaultNetworkAgent implements IAgent, IDisplayAgent {
 
     @Override
     public String getName() {
-	// TODO Auto-generated method stub
 	return "Base";
     }
 
     @Override
     public AgentType getAgentType() {
-	// TODO Auto-generated method stub
 	return AgentType.Base;
     }
 
     @Override
     public Color getColor() {
-	switch (state) {
-	case blackbox_found:
-	    return Color.RED;
-	default:
-	    return Color.GREEN;
-	}
+	return Color.GREEN;
+    }
+    
+    @Override
+    public void pushMessage(Message msg) {
+	messageQueue.add(msg);
+	data.messageCount++;
+    }
 
+    private Message popMessage() {
+	if (messageQueue.size() <= 0)
+	    return null;
+	else {
+	    Message msg = messageQueue.get(0);
+	    if (msg.getTick() >= (int) RunEnvironment.getInstance()
+		    .getCurrentSchedule().getTickCount())
+		return null;
+	    messageQueue.remove(0);
+	    return msg;
+	}
     }
 
     public VSpatial getShape(ShapeFactory2D shapeFactory) {

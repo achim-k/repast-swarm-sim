@@ -1,9 +1,12 @@
-package swarm_sim;
+package swarm_sim.foraging;
 
 import org.jgap.Chromosome;
 
 import repast.simphony.context.Context;
 import repast.simphony.space.continuous.NdPoint;
+import swarm_sim.Agent;
+import swarm_sim.IAgent;
+import swarm_sim.Strategy;
 import swarm_sim.Agent.AgentState;
 
 public abstract class ForagingStrategy extends Strategy {
@@ -19,7 +22,6 @@ public abstract class ForagingStrategy extends Strategy {
 	}
     }
 
-    protected AgentState state = AgentState.acquire;
     protected int perceivedResourceCount = 0;
 
     public ForagingStrategy(Chromosome chrom, Context<IAgent> context,
@@ -27,15 +29,15 @@ public abstract class ForagingStrategy extends Strategy {
 	super(chrom, context, controllingAgent);
     }
 
-    protected abstract AgentState checkState();
+    public abstract AgentState checkState(AgentState prevState,
+	    AgentState currentState);
 
     @Override
-    protected void clear() {
+    public void clear() {
 	perceivedResourceCount = 0;
     }
 
     @Override
-    protected void reset() {
-	state = AgentState.acquire;
+    public void reset() {
     }
 }

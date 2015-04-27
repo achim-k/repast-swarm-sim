@@ -1,5 +1,0 @@
-<context id="root" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://repast.org/scenario/context">
-  	<projection type="continuous space" id="space_continuous"/>
-  	<projection type="network" id="network_comm"/>
-  	<projection type="value layer" id="layer_explored"/>
-</context>

@@ -175,6 +175,10 @@ public class CircleScan {
 	    }
     }
 
+    public boolean isValid() {
+	return isValid;
+    }
+
     public String getPrintable() {
 	String ret = "";
 

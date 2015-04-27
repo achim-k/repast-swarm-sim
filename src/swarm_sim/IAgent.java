@@ -5,7 +5,7 @@ public interface IAgent {
     public enum AgentType {
 	SwarmAgent,
 	Pheromone,
-	ControllerAgent,
+	SimulationControl,
 
 	Scenario,
 	Base,

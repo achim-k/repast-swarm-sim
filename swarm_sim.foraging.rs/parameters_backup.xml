@@ -24,23 +24,41 @@
 						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
 									
 		/>
+				<parameter name="expl_strategy" displayName="Exploration Strategy" type="java.lang.String" 
+						defaultValue="Random" 
+						isReadOnly="false" 
+						converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter"
+									values="Random MemoryComm "
+						
+		/>
 				<parameter name="communication_scope" displayName="Communication scope [m]" type="double" 
 						defaultValue="20.0" 
 						isReadOnly="false" 
 						converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter"
 									
 		/>
-				<parameter name="agent_type" displayName="Agent Type" type="java.lang.String" 
-						defaultValue="FAGN_Random" 
+				<parameter name="comm_frequency" displayName="Communication Frequency" type="int" 
+						defaultValue="2" 
 						isReadOnly="false" 
-						converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter"
-									values="FAGN_Random "
-						
+						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
+									
+		/>
+				<parameter name="resource_nest_count" displayName="Number of resource nests" type="int" 
+						defaultValue="6" 
+						isReadOnly="false" 
+						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
+									
 		/>
 				<parameter name="perception_scope" displayName="Perception scope [m]" type="double" 
 						defaultValue="2.0" 
 						isReadOnly="false" 
 						converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter"
+									
+		/>
+				<parameter name="space_dimensions" displayName="Space dimensions" type="java.lang.String" 
+						defaultValue="100,100" 
+						isReadOnly="false" 
+						converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter"
 									
 		/>
 				<parameter name="use_ga" displayName="Use GA" type="boolean" 
