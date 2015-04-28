@@ -43,6 +43,7 @@ public class RootContext implements ContextBuilder<IAgent> {
 	
 	config.reset();
 	data.reset();
+	context.add(data);
 
 	/* Do not run more than 20k ticks */
 	config.maxTicks = 20000;
@@ -175,16 +176,19 @@ public class RootContext implements ContextBuilder<IAgent> {
 	if (config.useGA)
 	    System.out.println("Chromosomes:       	\t:" + ga.currentChromosome);
 
-
 	return context;
     }
 
     public void endAction() {
 	RunEnvironment runenv = RunEnvironment.getInstance();
+	DataCollection data = DataCollection.getInstance();
 
 	String out = String.format(
 		"Simulation has ended after %.1f ticks", runenv
 			.getCurrentSchedule().getTickCount());
+	System.out.println(out);
+	out = String.format(
+		"Simulation took %.1f s", data.getTotalExecTime()/1E9);
 	System.out.println(out);
     }
 

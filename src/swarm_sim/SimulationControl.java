@@ -54,6 +54,8 @@ public class SimulationControl implements IAgent {
      * initialize agent network by calculating distance pairs
      */
     public void init() {
+	data.startTime = System.nanoTime();
+	
 	agentDistancePairs.clear();
 
 	for (int i = 0; i < networkAgents.size(); i++) {
@@ -73,6 +75,7 @@ public class SimulationControl implements IAgent {
 	if(!isInitiated)
 	    init();
 	
+	long start = System.nanoTime();
 	int tick = (int) RunEnvironment.getInstance().getCurrentSchedule()
 		.getTickCount();
 
@@ -95,6 +98,8 @@ public class SimulationControl implements IAgent {
 			    space.getLocation(agentPair.target)))
 		commNet.addEdge(agentPair.source, agentPair.target);
 	}
+	
+	data.execTimeNetworkCalculation += System.nanoTime() - start;
     }
     
     /**
@@ -113,7 +118,7 @@ public class SimulationControl implements IAgent {
 			.getObstacleFieldCount()))
 		RunEnvironment.getInstance().endRun();
 	}
-
+	
 	if (config.useGA) {
 	    GA ga = GA.getInstance();
 	    ga.currentFitness = config.maxTicks

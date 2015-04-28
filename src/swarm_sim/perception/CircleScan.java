@@ -48,6 +48,7 @@ public class CircleScan {
     int lowerValidLImit = 1;
     int upperValidLimit = 1000;
     boolean isValid = false;
+    boolean isFluidSize = false; /* Max and min radius are defined by inputs */
 
     double mergeWeight = 1;
     double minValue = 1;
@@ -96,8 +97,38 @@ public class CircleScan {
 	}
     }
 
+    public CircleScan(int segmentCount, double mergeWeight,
+	    int lowerValidLImit, int upperValidLimit, double variance,
+	    double minValue, double maxValue) {
+	super();
+	this.segmentCount = segmentCount;
+	this.mergeWeight = mergeWeight;
+	this.lowerValidLImit = lowerValidLImit;
+	this.upperValidLimit = upperValidLimit;
+	this.variance = variance;
+	this.minValue = minValue;
+	this.maxValue = maxValue;
+
+	this.isFluidSize = true;
+
+	for (int segmentNo = 0; segmentNo < segmentCount; segmentNo++) {
+	    double startAngle = -Math.PI + segmentNo * 2 * Math.PI
+		    / segmentCount;
+	    double endAngle = startAngle + 2 * Math.PI / segmentCount;
+	    DataAngleSegement s = new DataAngleSegement(startAngle, endAngle,
+		    0.5);
+	    segments.add(s);
+	}
+    }
+
     public void add(AngleDistancePair input) {
-	if (input.distance > outerCircleDistance
+	if (isFluidSize) {
+	    if(input.distance < innerCircleDistance)
+		innerCircleDistance = input.distance;
+	    if(input.distance > outerCircleDistance)
+		outerCircleDistance = input.distance;
+	    
+	} else if (input.distance > outerCircleDistance
 		|| input.distance < innerCircleDistance)
 	    return;
 
@@ -125,6 +156,11 @@ public class CircleScan {
 	for (DataAngleSegement s : segments) {
 	    s.allowedSegments.clear();
 	    s.value = 0.5;
+	}
+	
+	if(isFluidSize) {
+	    innerCircleDistance = 1E5;
+	    outerCircleDistance = 0;
 	}
     }
 

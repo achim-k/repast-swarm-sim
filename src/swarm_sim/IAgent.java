@@ -22,6 +22,7 @@ public interface IAgent {
 	EXPL_AgentAvoiderMimic,
 	EXPL_Memory,
 	EXPL_AvoidAppealMimicMemory,
+	DataCollection,
 
     }
 

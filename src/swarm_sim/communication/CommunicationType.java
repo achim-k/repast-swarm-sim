@@ -3,7 +3,7 @@ package swarm_sim.communication;
 public enum CommunicationType {
     Pheromone,
     Presence,
-    CurrentLocation,
+    Location,
     State,
     TargetOrDirection,
     MapOrTargets,

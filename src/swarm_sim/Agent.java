@@ -24,10 +24,14 @@ import swarm_sim.Strategy.MessageTypeRegisterPair;
 import swarm_sim.communication.CommunicationType;
 import swarm_sim.communication.INetworkAgent;
 import swarm_sim.communication.Message;
+import swarm_sim.exploration.ComplexCommStrategy;
+import swarm_sim.exploration.ComplexMemoryCommStrategy;
 import swarm_sim.exploration.ExplorationStrategy;
-import swarm_sim.exploration.MemoryComplexExplStrategy;
+import swarm_sim.exploration.MemoryCommStrategy;
+import swarm_sim.exploration.MemoryComplexStrategy;
 import swarm_sim.exploration.RandomEXPLStrategy;
 import swarm_sim.foraging.ForagingStrategy;
+import swarm_sim.foraging.NoCommFAStrategy;
 import swarm_sim.foraging.StateCommFAStrategy;
 import swarm_sim.perception.AngleFilter;
 import swarm_sim.perception.AngleSegment;
@@ -91,14 +95,22 @@ public class Agent implements IAgent, IDisplayAgent, INetworkAgent {
 	/* Set exploration and foraging strategy */
 	if(config.explStrat.equalsIgnoreCase("Random"))
 	    this.explStrategy = new RandomEXPLStrategy(chrom, context, this);
-	else if(config.explStrat.equalsIgnoreCase("MemoryComm"))
-	    this.explStrategy = new MemoryComplexExplStrategy(chrom, context, this);
+	else if(config.explStrat.equalsIgnoreCase("MemoryComplex"))
+	    this.explStrategy = new MemoryComplexStrategy(chrom, context, this);
+	else if(config.explStrat.equalsIgnoreCase("MemoryCommunication"))
+	    this.explStrategy = new MemoryCommStrategy(chrom, context, this);
+	else if(config.explStrat.equalsIgnoreCase("ComplexCommunication"))
+	    this.explStrategy = new ComplexCommStrategy(chrom, context, this);
+	else if(config.explStrat.equalsIgnoreCase("ComplexMemoryCommunication"))
+	    this.explStrategy = new ComplexMemoryCommStrategy(chrom, context, this);
 	
 	if(config.foragingStrat.equalsIgnoreCase("StateCommunication"))
 	    this.faStrategy = new StateCommFAStrategy(chrom, context, this);
+	else if(config.foragingStrat.equalsIgnoreCase("NoCommunication"))
+	    this.faStrategy = new NoCommFAStrategy(chrom, context, this);
 	
 	CommunicationType allowedCommunicationTypes[] = new CommunicationType[] {
-		CommunicationType.State, CommunicationType.MapOrTargets };
+		CommunicationType.State, CommunicationType.MapOrTargets, CommunicationType.Location};
 
 	faStrategyMessages = faStrategy
 		.getMessageTypesToRegister(allowedCommunicationTypes);
@@ -109,12 +121,23 @@ public class Agent implements IAgent, IDisplayAgent, INetworkAgent {
     public void step() {
 	if (currentLocation == null)
 	    currentLocation = space.getLocation(this);
-
+	
+	long start = System.nanoTime();
 	rcvMessages();
+	data.execTimeProcessMessages += System.nanoTime() - start;
+	
+	start = System.nanoTime();
 	scanEnv();
+	data.execTimeScanEnv += System.nanoTime() - start;
+	
+	start = System.nanoTime();
 	move();
+	data.execTimeMoveDecision += System.nanoTime() - start;
+	
+	start = System.nanoTime();
 	sendMessages();
-
+	data.execTimeSendMessages += System.nanoTime() - start;
+	
 	faStrategy.clear();
 	explStrategy.clear();
 
@@ -126,6 +149,20 @@ public class Agent implements IAgent, IDisplayAgent, INetworkAgent {
 	}
 
 	prevState = state;
+	
+	switch (state) {
+	case wander:
+	    data.wanderingAgents++;
+	    break;
+	case acquire:
+	    data.acquiringAgents++;
+	    break;
+	case deliver:
+	    data.deliveringAgents++;
+	    break;
+	default:
+	    break;
+	}
     }
 
     private void rcvMessages() {
@@ -257,9 +294,11 @@ public class Agent implements IAgent, IDisplayAgent, INetworkAgent {
 		    collisionFreeSegments);
 	}
 
-	if (directionAngle >= -Math.PI)
+	if (directionAngle >= -Math.PI) {
 	    currentLocation = space.moveByVector(this,
 		    config.maxMoveDistance, directionAngle, 0);
+	    data.moveCount++;
+	}
     }
 
     @Override

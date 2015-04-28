@@ -1,6 +1,13 @@
 package swarm_sim;
 
-public class DataCollection {
+/**
+ * Singleton class which stores the data of the simulation run. Needs to implement IAgent interface in order
+ * to be added to the context (needed for repast data sink mechanism)
+ * 
+ * @author achim
+ *
+ */
+public class DataCollection implements IAgent {
 
     private static DataCollection instance = null;
 
@@ -18,7 +25,8 @@ public class DataCollection {
     public double execTimeMoveDecision = 0;
     public double execTimeScanEnv = 0;
     public double execTimeNetworkCalculation = 0;
-    public double totalExecTime = 0;
+
+    public long startTime;
 
     private DataCollection() {
     };
@@ -44,7 +52,7 @@ public class DataCollection {
 	execTimeMoveDecision = 0;
 	execTimeScanEnv = 0;
 	execTimeNetworkCalculation = 0;
-	totalExecTime = 0;
+	startTime = System.nanoTime();
     }
 
     public int getFieldsExplored() {
@@ -68,38 +76,59 @@ public class DataCollection {
     }
 
     public int getWanderingAgents() {
-	return wanderingAgents;
+	int tmp = wanderingAgents;
+	wanderingAgents = 0;
+	return tmp;
     }
 
     public int getAcquiringAgents() {
-	return acquiringAgents;
+	int tmp = acquiringAgents;
+	acquiringAgents = 0;
+	return tmp;
     }
 
     public int getDeliveringAgents() {
-	return deliveringAgents;
+	int tmp = deliveringAgents;
+	deliveringAgents = 0;
+	return tmp;
     }
 
     public double getExecTimeProcessMessages() {
-	return execTimeProcessMessages;
+	double tmp = execTimeProcessMessages;
+	execTimeProcessMessages = 0;
+	return tmp;
     }
 
     public double getExecTimeSendMessages() {
-	return execTimeSendMessages;
+	double tmp = execTimeSendMessages;
+	execTimeSendMessages = 0;
+	return tmp;
     }
 
     public double getExecTimeMoveDecision() {
-	return execTimeMoveDecision;
+	double tmp = execTimeMoveDecision;
+	execTimeMoveDecision = 0;
+	return tmp;
     }
 
     public double getExecTimeScanEnv() {
-	return execTimeScanEnv;
+	double tmp = execTimeScanEnv;
+	execTimeScanEnv = 0;
+	return tmp;
     }
 
     public double getExecTimeNetworkCalculation() {
-	return execTimeNetworkCalculation;
+	double tmp = execTimeNetworkCalculation;
+	execTimeNetworkCalculation = 0;
+	return tmp;
     }
 
     public double getTotalExecTime() {
-	return totalExecTime;
+	return System.nanoTime() - startTime;
+    }
+
+    @Override
+    public AgentType getAgentType() {
+	return AgentType.DataCollection;
     }
 }

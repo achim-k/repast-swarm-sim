@@ -13,11 +13,11 @@
 		type="int" defaultValue="__NULL__" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
 	<parameter name="expl_strategy" displayName="Exploration Strategy"
-		type="java.lang.String" defaultValue="Random" isReadOnly="false"
+		type="java.lang.String" defaultValue="ComplexMemoryCommunication" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter"
-		values="Random MemoryComm " />
+		values="Random MemoryComplex MemoryCommunication ComplexCommunication ComplexMemoryCommunication " />
 	<parameter name="communication_scope" displayName="Communication scope [m]"
-		type="double" defaultValue="20.0" isReadOnly="false"
+		type="double" defaultValue="15.0" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter" />
 	<parameter name="comm_frequency" displayName="Communication Frequency"
 		type="int" defaultValue="2" isReadOnly="false"
@@ -37,7 +37,7 @@
 	<parameter name="foraging_strategy" displayName="Foraging Strategy"
 		type="java.lang.String" defaultValue="StateCommunication" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter"
-		values="StateCommunication " />
+		values="NoCommunication StateCommunication " />
 </parameters>
 
 

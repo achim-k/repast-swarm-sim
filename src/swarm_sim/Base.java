@@ -9,11 +9,9 @@ import saf.v3d.ShapeFactory2D;
 import saf.v3d.scene.VSpatial;
 import swarm_sim.communication.INetworkAgent;
 import swarm_sim.communication.Message;
-import swarm_sim.exploration.DefaultExplorationAgent.agentState;
 
 public class Base implements IAgent, IDisplayAgent, INetworkAgent {
 
-    private agentState state = agentState.exploring;
     private List<Message> messageQueue = new ArrayList<>();
     private DataCollection data = DataCollection.getInstance();
 
