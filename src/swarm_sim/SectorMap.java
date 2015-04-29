@@ -268,6 +268,15 @@ public class SectorMap {
     public SectorMap getTargetSector() {
 	return map[targetX][targetY];
     }
+    
+    public SectorMap getCurrentSector(NdPoint position) {
+	setPosition(position);
+	return map[posX][posY];
+    }
+    
+    public double getDirectionToSector(SectorMap targetSector) {
+	return SpatialMath.angleFromDisplacement(targetSector.x - x, targetSector.y - y);
+    }
 
     public void setCurrentSectorUnfilled() {
 	map[posX][posY].filled = false;

@@ -29,10 +29,11 @@ import swarm_sim.exploration.ComplexMemoryCommStrategy;
 import swarm_sim.exploration.ExplorationStrategy;
 import swarm_sim.exploration.MemoryCommStrategy;
 import swarm_sim.exploration.MemoryComplexStrategy;
-import swarm_sim.exploration.RandomEXPLStrategy;
+import swarm_sim.exploration.RandomStrategy;
 import swarm_sim.foraging.ForagingStrategy;
-import swarm_sim.foraging.NoCommFAStrategy;
-import swarm_sim.foraging.StateCommFAStrategy;
+import swarm_sim.foraging.GoalCommunication;
+import swarm_sim.foraging.NoCommStrategy;
+import swarm_sim.foraging.StateCommStrategy;
 import swarm_sim.perception.AngleFilter;
 import swarm_sim.perception.AngleSegment;
 
@@ -58,7 +59,7 @@ public class Agent implements IAgent, IDisplayAgent, INetworkAgent {
     /* General */
     Configuration config;
     DataCollection data;
-    
+
     Context<IAgent> context;
     Network<IAgent> commNet;
     ContinuousSpace<IAgent> space;
@@ -93,24 +94,31 @@ public class Agent implements IAgent, IDisplayAgent, INetworkAgent {
 	this.agentId = ++agentCount;
 
 	/* Set exploration and foraging strategy */
-	if(config.explStrat.equalsIgnoreCase("Random"))
-	    this.explStrategy = new RandomEXPLStrategy(chrom, context, this);
-	else if(config.explStrat.equalsIgnoreCase("MemoryComplex"))
+	if (config.explStrat.equalsIgnoreCase("Random"))
+	    this.explStrategy = new RandomStrategy(chrom, context, this);
+	else if (config.explStrat.equalsIgnoreCase("MemoryComplex"))
 	    this.explStrategy = new MemoryComplexStrategy(chrom, context, this);
-	else if(config.explStrat.equalsIgnoreCase("MemoryCommunication"))
+	else if (config.explStrat.equalsIgnoreCase("MemoryCommunication"))
 	    this.explStrategy = new MemoryCommStrategy(chrom, context, this);
-	else if(config.explStrat.equalsIgnoreCase("ComplexCommunication"))
+	else if (config.explStrat.equalsIgnoreCase("ComplexCommunication"))
 	    this.explStrategy = new ComplexCommStrategy(chrom, context, this);
-	else if(config.explStrat.equalsIgnoreCase("ComplexMemoryCommunication"))
-	    this.explStrategy = new ComplexMemoryCommStrategy(chrom, context, this);
-	
-	if(config.foragingStrat.equalsIgnoreCase("StateCommunication"))
-	    this.faStrategy = new StateCommFAStrategy(chrom, context, this);
-	else if(config.foragingStrat.equalsIgnoreCase("NoCommunication"))
-	    this.faStrategy = new NoCommFAStrategy(chrom, context, this);
-	
+	else if (config.explStrat
+		.equalsIgnoreCase("ComplexMemoryCommunication"))
+	    this.explStrategy = new ComplexMemoryCommStrategy(chrom, context,
+		    this);
+
+	if (config.foragingStrat.equalsIgnoreCase("NoCommunication"))
+	    this.faStrategy = new NoCommStrategy(chrom, context, this);
+	else if (config.foragingStrat.equalsIgnoreCase("StateCommunication"))
+	    this.faStrategy = new StateCommStrategy(chrom, context, this);
+	else if (config.foragingStrat.equalsIgnoreCase("GoalCommunication"))
+	    this.faStrategy = new GoalCommunication(chrom, context, this);
+
 	CommunicationType allowedCommunicationTypes[] = new CommunicationType[] {
-		CommunicationType.State, CommunicationType.MapOrTargets, CommunicationType.Location};
+		CommunicationType.State, CommunicationType.MapOrTargets,
+		CommunicationType.Location,
+		CommunicationType.TargetOrDirection,
+		CommunicationType.Presence, CommunicationType.Pheromone };
 
 	faStrategyMessages = faStrategy
 		.getMessageTypesToRegister(allowedCommunicationTypes);
@@ -121,23 +129,23 @@ public class Agent implements IAgent, IDisplayAgent, INetworkAgent {
     public void step() {
 	if (currentLocation == null)
 	    currentLocation = space.getLocation(this);
-	
+
 	long start = System.nanoTime();
 	rcvMessages();
 	data.execTimeProcessMessages += System.nanoTime() - start;
-	
+
 	start = System.nanoTime();
 	scanEnv();
 	data.execTimeScanEnv += System.nanoTime() - start;
-	
+
 	start = System.nanoTime();
 	move();
 	data.execTimeMoveDecision += System.nanoTime() - start;
-	
+
 	start = System.nanoTime();
 	sendMessages();
 	data.execTimeSendMessages += System.nanoTime() - start;
-	
+
 	faStrategy.clear();
 	explStrategy.clear();
 
@@ -149,7 +157,7 @@ public class Agent implements IAgent, IDisplayAgent, INetworkAgent {
 	}
 
 	prevState = state;
-	
+
 	switch (state) {
 	case wander:
 	    data.wanderingAgents++;
@@ -295,8 +303,8 @@ public class Agent implements IAgent, IDisplayAgent, INetworkAgent {
 	}
 
 	if (directionAngle >= -Math.PI) {
-	    currentLocation = space.moveByVector(this,
-		    config.maxMoveDistance, directionAngle, 0);
+	    currentLocation = space.moveByVector(this, config.maxMoveDistance,
+		    directionAngle, 0);
 	    data.moveCount++;
 	}
     }

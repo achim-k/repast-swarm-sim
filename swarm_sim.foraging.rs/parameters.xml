@@ -35,9 +35,9 @@
 		defaultValue="false" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$BooleanConverter" />
 	<parameter name="foraging_strategy" displayName="Foraging Strategy"
-		type="java.lang.String" defaultValue="StateCommunication" isReadOnly="false"
+		type="java.lang.String" defaultValue="GoalCommunication" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter"
-		values="NoCommunication StateCommunication " />
+		values="NoCommunication StateCommunication GoalCommunication " />
 </parameters>
 
 

@@ -5,7 +5,7 @@ import repast.simphony.engine.environment.RunEnvironment;
 public class Message {
 
     public enum MessageType {
-	Location, Direction, SectorMap, CurrentState
+	Location, Direction, SectorMap, CurrentState, ResourceLocation
     }
 
     MessageType type;

@@ -1,5 +1,6 @@
 package swarm_sim.exploration;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.jgap.Chromosome;
@@ -16,13 +17,13 @@ import swarm_sim.communication.Message;
 import swarm_sim.perception.AngleSegment;
 import swarm_sim.perception.CircleScan;
 
-public class RandomEXPLStrategy extends ExplorationStrategy {
+public class RandomStrategy extends ExplorationStrategy {
 
     int segmentCount = 8;
     int consecutiveMoveCount = 0;
     double directionAngle = RandomHelper.nextDoubleFromTo(-Math.PI, Math.PI);
 
-    public RandomEXPLStrategy(Chromosome chrom, Context<IAgent> context,
+    public RandomStrategy(Chromosome chrom, Context<IAgent> context,
 	    Agent controllingAgent) {
 	super(chrom, context, controllingAgent);
     }
@@ -90,6 +91,6 @@ public class RandomEXPLStrategy extends ExplorationStrategy {
     @Override
     protected List<MessageTypeRegisterPair> getMessageTypesToRegister(
 	    CommunicationType allowedCommTypes[]) {
-	return null;
+	return new ArrayList<MessageTypeRegisterPair>();
     }
 }
