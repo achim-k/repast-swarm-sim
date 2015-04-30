@@ -1,0 +1,20 @@
+<repast.simphony.data2.engine.FileSinkDescriptor>
+  <name>EndOnly</name>
+  <dataSet>EndOnly</dataSet>
+  <delimiter>,</delimiter>
+  <format>TABULAR</format>
+  <sourceIds class="linked-hash-set">
+    <string>tick</string>
+    <string>TotalExecTime</string>
+    <string>DeliveredResources</string>
+    <string>FieldsExplored</string>
+    <string>FieldsRedundantlyExplored</string>
+    <string>MoveCount</string>
+    <string>MessageCount</string>
+    <string>WanderingAgents</string>
+    <string>AcquiringAgents</string>
+    <string>DeliveringAgents</string>
+  </sourceIds>
+  <fileName>output/endOnly.csv</fileName>
+  <addTimeStamp>true</addTimeStamp>
+</repast.simphony.data2.engine.FileSinkDescriptor>

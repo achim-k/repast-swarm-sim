@@ -45,8 +45,8 @@ public class RootContext implements ContextBuilder<IAgent> {
 	data.reset();
 	context.add(data);
 
-	/* Do not run more than 20k ticks */
-	config.maxTicks = 20000;
+	/* Do not run more than 7.5k ticks */
+	config.maxTicks = 7500;
 	runEnv.endAt(config.maxTicks);
 
 	/* Read params */
@@ -56,7 +56,7 @@ public class RootContext implements ContextBuilder<IAgent> {
 	config.useGA = params.getBoolean("use_ga");
 	config.commFreq = params.getInteger("comm_frequency");
 
-	String dimensions[] = params.getString("space_dimensions").split(",");
+	String dimensions[] = params.getString("space_dimensions").split(":");
 
 	config.spaceWidth = Integer.parseInt(dimensions[0]);
 	config.spaceHeight = Integer.parseInt(dimensions[1]);

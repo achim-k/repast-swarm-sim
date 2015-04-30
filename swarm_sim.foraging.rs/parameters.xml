@@ -28,8 +28,8 @@
 	<parameter name="perception_scope" displayName="Perception scope [m]"
 		type="double" defaultValue="2.0" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter" />
-	<parameter name="space_dimensions" displayName="Space dimensions (W,H)"
-		type="java.lang.String" defaultValue="100,100" isReadOnly="false"
+	<parameter name="space_dimensions" displayName="Space dimensions (W:H)"
+		type="java.lang.String" defaultValue="100:100" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter" />
 	<parameter name="use_ga" displayName="Use GA" type="boolean"
 		defaultValue="false" isReadOnly="false"
