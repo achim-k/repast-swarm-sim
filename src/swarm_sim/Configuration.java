@@ -1,13 +1,7 @@
 package swarm_sim;
 
-import java.util.ArrayList;
-import java.util.List;
 
-import repast.simphony.context.Context;
-import repast.simphony.space.continuous.ContinuousSpace;
-import repast.simphony.util.ContextUtils;
-
-public class Configuration {
+public class Configuration implements IAgent {
 
     /* Params */
     public int agentCount;
@@ -29,7 +23,6 @@ public class Configuration {
     public int[] movebins = new int[8];
     public int spaceWidth, spaceHeight;
     
-    
     private static Configuration instance = null;
 
     private Configuration() {
@@ -45,4 +38,75 @@ public class Configuration {
     public void reset() {
 	movebins = new int[8];
     }
+
+    @Override
+    public AgentType getAgentType() {
+	return AgentType.Configuration;
+    }
+
+    public int getAgentCount() {
+        return agentCount;
+    }
+
+    public double getPerceptionScope() {
+        return perceptionScope;
+    }
+
+    public double getCommScope() {
+        return commScope;
+    }
+
+    public int getRndConsecutiveMoves() {
+        return rndConsecutiveMoves;
+    }
+
+    public boolean isUseGA() {
+        return useGA;
+    }
+
+    public int getResourceCount() {
+        return resourceCount;
+    }
+
+    public int getResourceNestCount() {
+        return resourceNestCount;
+    }
+
+    public int getCommFreq() {
+        return commFreq;
+    }
+
+    public String getExplStrat() {
+        return explStrat;
+    }
+
+    public String getForagingStrat() {
+        return foragingStrat;
+    }
+
+    public int getMaxTicks() {
+        return maxTicks;
+    }
+
+    public double getMaxMoveDistance() {
+        return maxMoveDistance;
+    }
+
+    public Base getBaseAgent() {
+        return baseAgent;
+    }
+
+    public int[] getMovebins() {
+        return movebins;
+    }
+
+    public int getSpaceWidth() {
+        return spaceWidth;
+    }
+
+    public int getSpaceHeight() {
+        return spaceHeight;
+    }
+    
+    
 }

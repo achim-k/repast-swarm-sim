@@ -1,20 +1,25 @@
 <repast.simphony.data2.engine.FileSinkDescriptor>
-  <name>EndOnly</name>
-  <dataSet>EndOnly</dataSet>
+  <name>DuringSim</name>
+  <dataSet>DuringSimData</dataSet>
   <delimiter>,</delimiter>
   <format>TABULAR</format>
   <sourceIds class="linked-hash-set">
     <string>tick</string>
-    <string>TotalExecTime</string>
     <string>DeliveredResources</string>
     <string>FieldsExplored</string>
     <string>FieldsRedundantlyExplored</string>
-    <string>MoveCount</string>
     <string>MessageCount</string>
+    <string>MoveCount</string>
+    <string>TotalExecTime</string>
     <string>WanderingAgents</string>
     <string>AcquiringAgents</string>
     <string>DeliveringAgents</string>
+    <string>DeltaExecTimeMoveDecision</string>
+    <string>DeltaExecTimeNetworkCalculation</string>
+    <string>DeltaExecTimeProcessMessages</string>
+    <string>DeltaExecTimeScanEnv</string>
+    <string>DeltaExecTimeSendMessages</string>
   </sourceIds>
-  <fileName>output/endOnly.csv</fileName>
+  <fileName>output/duringSim.csv</fileName>
   <addTimeStamp>true</addTimeStamp>
 </repast.simphony.data2.engine.FileSinkDescriptor>

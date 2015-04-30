@@ -3,6 +3,10 @@
   <type>2D</type>
   <styles>
     <entry>
+      <string>swarm_sim.Pheromone</string>
+      <string>repast.simphony.visualizationOGL2D.DefaultStyleOGL2D</string>
+    </entry>
+    <entry>
       <string>swarm_sim.Agent</string>
       <string>swarm_sim.AgentStyle</string>
     </entry>
@@ -17,12 +21,16 @@
   </styles>
   <editedStyles>
     <entry>
+      <string>swarm_sim.Pheromone</string>
+      <null/>
+    </entry>
+    <entry>
       <string>swarm_sim.Agent</string>
       <null/>
     </entry>
     <entry>
       <string>swarm_sim.foraging.Resource</string>
-      <string>swarm_sim.foraging.Resource.style_0.xml</string>
+      <string>swarm_sim.foraging.Resource.style_1.xml</string>
     </entry>
     <entry>
       <string>swarm_sim.Base</string>
@@ -38,30 +46,34 @@
   <editedNetStyles>
     <entry>
       <string>network_comm</string>
-      <string>network_comm.style_2.xml</string>
+      <string>network_comm.style_3.xml</string>
     </entry>
   </editedNetStyles>
   <frequency>ON_MOVE</frequency>
   <schedParams>
-    <start>1.0</start>
+    <start>0.0</start>
     <interval>20.0</interval>
     <priority>-Infinity</priority>
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>962242860</hashCode>
+    <hashCode>-487373708</hashCode>
   </schedParams>
   <layoutClassName>foo.bar.baz</layoutClassName>
   <layoutProjection>space_continuous</layoutProjection>
   <layoutInterval>0</layoutInterval>
   <layerOrder>
     <entry>
+      <string>swarm_sim.Pheromone</string>
+      <int>0</int>
+    </entry>
+    <entry>
       <string>swarm_sim.Agent</string>
-      <int>1</int>
+      <int>3</int>
     </entry>
     <entry>
       <string>swarm_sim.foraging.Resource</string>
-      <int>0</int>
+      <int>1</int>
     </entry>
     <entry>
       <string>swarm_sim.Base</string>
@@ -91,24 +103,6 @@
         <props>
           <entry>
             <string>repast.simphony.visualization.continuous.ContinuousDecorator</string>
-            <map>
-              <entry>
-                <string>UNIT_SIZE</string>
-                <float>15.0</float>
-              </entry>
-              <entry>
-                <string>SHOW</string>
-                <boolean>true</boolean>
-              </entry>
-              <entry>
-                <string>COLOR</string>
-                <int>-1</int>
-              </entry>
-            </map>
-          </entry>
-          <entry>
-            <string>repast.simphony.visualization.continuous.ContinuousDecorator
-						</string>
             <map>
               <entry>
                 <string>UNIT_SIZE</string>

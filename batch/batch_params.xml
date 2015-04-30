@@ -1,1 +1,25 @@
-<?xml version="1.0" ?><sweep runs="1"><parameter name="resource_count" type="constant" constant_type="int" value="100"></parameter><parameter name="random_consecutive_move" type="constant" constant_type="int" value="2"></parameter><parameter name="communication_scope" type="constant" constant_type="double" value="20"></parameter><parameter name="comm_frequency" type="constant" constant_type="int" value="5"></parameter><parameter name="resource_nest_count" type="constant" constant_type="int" value="6"></parameter><parameter name="perception_scope" type="constant" constant_type="double" value="2"></parameter><parameter name="space_dimensions" type="constant" constant_type="java.lang.String" value="100:100"></parameter><parameter name="use_ga" type="constant" constant_type="boolean" value="false"></parameter><parameter name="foraging_strategy" type="constant" constant_type="java.lang.String" value="NoCommunication"></parameter><parameter name="agent_count" type="number" number_type="int" start="10" end="100" step="10"><parameter name="randomSeed" type="list" value_type="int" values="1 2 3 4"><parameter name="expl_strategy" type="list" value_type="java.lang.String" values="Random MemoryComplex MemoryCommunication ComplexCommunication ComplexMemoryCommunication"></parameter></parameter></parameter></sweep>
+<?xml version="1.0" ?>
+<sweep runs="3">
+	<parameter name="resource_count" type="constant"
+		constant_type="int" value="100"></parameter>
+	<parameter name="random_consecutive_move" type="constant"
+		constant_type="int" value="2"></parameter>
+	<parameter name="expl_strategy" type="constant"
+		constant_type="java.lang.String" value="Random"></parameter>
+	<parameter name="communication_scope" type="constant"
+		constant_type="double" value="20"></parameter>
+	<parameter name="comm_frequency" type="constant"
+		constant_type="int" value="5"></parameter>
+	<parameter name="resource_nest_count" type="constant"
+		constant_type="int" value="6"></parameter>
+	<parameter name="perception_scope" type="constant"
+		constant_type="double" value="2"></parameter>
+	<parameter name="space_dimensions" type="constant"
+		constant_type="java.lang.String" value="100:100"></parameter>
+	<parameter name="use_ga" type="constant" constant_type="boolean"
+		value="false"></parameter>
+	<parameter name="foraging_strategy" type="constant"
+		constant_type="java.lang.String" value="GoalCommunication"></parameter>
+	<parameter name="agent_count" type="number" number_type="int"
+		start="10" end="200" step="10"></parameter>
+</sweep>

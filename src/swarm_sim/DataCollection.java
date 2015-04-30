@@ -1,11 +1,12 @@
 package swarm_sim;
 
 /**
- * Singleton class which stores the data of the simulation run. Needs to implement IAgent interface in order
- * to be added to the context (needed for repast data sink mechanism)
+ * Singleton class which stores the data of the simulation run. Needs to
+ * implement IAgent interface in order to be added to the context (needed for
+ * repast data sink mechanism)
  * 
  * @author achim
- *
+ * 
  */
 public class DataCollection implements IAgent {
 
@@ -20,11 +21,12 @@ public class DataCollection implements IAgent {
     public int wanderingAgents = 0;
     public int acquiringAgents = 0;
     public int deliveringAgents = 0;
-    public double execTimeProcessMessages = 0;
-    public double execTimeSendMessages = 0;
-    public double execTimeMoveDecision = 0;
-    public double execTimeScanEnv = 0;
-    public double execTimeNetworkCalculation = 0;
+    public double execTimeProcessMessages = 0, prevExecTimeProcessMessages = 0;
+    public double execTimeSendMessages = 0, prevExecTimeSendMessages = 0;
+    public double execTimeMoveDecision = 0, prevExecTimeMoveDecision = 0;
+    public double execTimeScanEnv = 0, prevexecTimeScanEnv = 0;
+    public double execTimeNetworkCalculation = 0,
+	    prevExecTimeNetworkCalculation = 0;
 
     public long startTime;
 
@@ -53,6 +55,13 @@ public class DataCollection implements IAgent {
 	execTimeScanEnv = 0;
 	execTimeNetworkCalculation = 0;
 	startTime = System.nanoTime();
+
+	prevExecTimeProcessMessages = 0;
+	prevExecTimeSendMessages = 0;
+	prevExecTimeMoveDecision = 0;
+	prevexecTimeScanEnv = 0;
+	prevExecTimeNetworkCalculation = 0;
+
     }
 
     public int getFieldsExplored() {
@@ -93,34 +102,54 @@ public class DataCollection implements IAgent {
 	return tmp;
     }
 
-    public double getExecTimeProcessMessages() {
-	double tmp = execTimeProcessMessages;
-	execTimeProcessMessages = 0;
-	return tmp;
+    public double getDeltaExecTimeProcessMessages() {
+	double ret = execTimeProcessMessages - prevExecTimeProcessMessages;
+	prevExecTimeProcessMessages = execTimeProcessMessages;
+	return ret;
     }
 
-    public double getExecTimeSendMessages() {
-	double tmp = execTimeSendMessages;
-	execTimeSendMessages = 0;
-	return tmp;
+    public double getDeltaExecTimeSendMessages() {
+	double ret = execTimeSendMessages - prevExecTimeSendMessages;
+	prevExecTimeSendMessages = execTimeSendMessages;
+	return ret;
     }
 
-    public double getExecTimeMoveDecision() {
-	double tmp = execTimeMoveDecision;
-	execTimeMoveDecision = 0;
-	return tmp;
+    public double getDeltaExecTimeMoveDecision() {
+	double ret = execTimeMoveDecision - prevExecTimeMoveDecision;
+	prevExecTimeMoveDecision = execTimeMoveDecision;
+	return ret;
     }
 
-    public double getExecTimeScanEnv() {
-	double tmp = execTimeScanEnv;
-	execTimeScanEnv = 0;
-	return tmp;
+    public double getDeltaExecTimeScanEnv() {
+	double ret = execTimeScanEnv - prevexecTimeScanEnv;
+	prevexecTimeScanEnv = execTimeScanEnv;
+	return ret;
     }
 
-    public double getExecTimeNetworkCalculation() {
-	double tmp = execTimeNetworkCalculation;
-	execTimeNetworkCalculation = 0;
-	return tmp;
+    public double getDeltaExecTimeNetworkCalculation() {
+	double ret = execTimeNetworkCalculation - prevExecTimeNetworkCalculation;
+	prevExecTimeNetworkCalculation = execTimeNetworkCalculation;
+	return ret;
+    }
+    
+    public double getTotalExecTimeProcessMessages() {
+        return execTimeProcessMessages;
+    }
+
+    public double getTotalExecTimeSendMessages() {
+        return execTimeSendMessages;
+    }
+
+    public double getTotalExecTimeMoveDecision() {
+        return execTimeMoveDecision;
+    }
+
+    public double getTotalExecTimeScanEnv() {
+        return execTimeScanEnv;
+    }
+
+    public double getTotalExecTimeNetworkCalculation() {
+        return execTimeNetworkCalculation;
     }
 
     public double getTotalExecTime() {

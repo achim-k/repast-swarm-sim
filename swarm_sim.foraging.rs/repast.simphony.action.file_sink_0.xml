@@ -1,6 +1,6 @@
 <repast.simphony.data2.engine.FileSinkDescriptor>
-  <name>All</name>
-  <dataSet>All</dataSet>
+  <name>End</name>
+  <dataSet>EndData</dataSet>
   <delimiter>,</delimiter>
   <format>TABULAR</format>
   <sourceIds class="linked-hash-set">
@@ -8,18 +8,15 @@
     <string>DeliveredResources</string>
     <string>FieldsExplored</string>
     <string>FieldsRedundantlyExplored</string>
-    <string>MoveCount</string>
     <string>MessageCount</string>
-    <string>WanderingAgents</string>
-    <string>AcquiringAgents</string>
-    <string>DeliveringAgents</string>
-    <string>ExecTimeProcessMessages</string>
-    <string>ExecTimeScanEnv</string>
-    <string>ExecTimeMoveDecision</string>
-    <string>ExecTimeSendMessages</string>
-    <string>ExecTimeNetworkCalculation</string>
+    <string>MoveCount</string>
     <string>TotalExecTime</string>
+    <string>TotalExecTimeMoveDecision</string>
+    <string>TotalExecTimeNetworkCalculation</string>
+    <string>TotalExecTimeProcessMessages</string>
+    <string>TotalExecTimeScanEnv</string>
+    <string>TotalExecTimeSendMessages</string>
   </sourceIds>
-  <fileName>output/ModelOutput.txt</fileName>
+  <fileName>output/endData.csv</fileName>
   <addTimeStamp>true</addTimeStamp>
 </repast.simphony.data2.engine.FileSinkDescriptor>

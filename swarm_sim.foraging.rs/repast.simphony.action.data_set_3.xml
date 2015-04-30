@@ -1,29 +1,21 @@
 <repast.simphony.data2.engine.DataSetDescriptor>
-  <name>EndOnly</name>
+  <name>DuringSimData</name>
   <type>NON_AGGREGATE</type>
   <sourceType>swarm_sim.DataCollection</sourceType>
   <inclTick>true</inclTick>
   <inclBatchRun>false</inclBatchRun>
   <inclRandomSeed>false</inclRandomSeed>
   <scheduleParams>
-    <start>50000.0</start>
-    <interval>0.0</interval>
+    <start>0.0</start>
+    <interval>25.0</interval>
     <priority>-Infinity</priority>
     <pType>LAST</pType>
     <duration>-1.0</duration>
-    <frequency>ONE_TIME</frequency>
-    <hashCode>1517312208</hashCode>
+    <frequency>REPEAT</frequency>
+    <hashCode>-1665646226</hashCode>
   </scheduleParams>
   <atEnd>true</atEnd>
   <methodDataSources class="linked-hash-map">
-    <entry>
-      <string>TotalExecTime</string>
-      <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>TotalExecTime</id>
-        <className>swarm_sim.DataCollection</className>
-        <methodName>getTotalExecTime</methodName>
-      </repast.simphony.data2.engine.MethodDataSourceDefinition>
-    </entry>
     <entry>
       <string>DeliveredResources</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
@@ -49,6 +41,14 @@
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
+      <string>MessageCount</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>MessageCount</id>
+        <className>swarm_sim.DataCollection</className>
+        <methodName>getMessageCount</methodName>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
       <string>MoveCount</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
         <id>MoveCount</id>
@@ -57,11 +57,11 @@
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>MessageCount</string>
+      <string>TotalExecTime</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>MessageCount</id>
+        <id>TotalExecTime</id>
         <className>swarm_sim.DataCollection</className>
-        <methodName>getMessageCount</methodName>
+        <methodName>getTotalExecTime</methodName>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
@@ -86,6 +86,46 @@
         <id>DeliveringAgents</id>
         <className>swarm_sim.DataCollection</className>
         <methodName>getDeliveringAgents</methodName>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>DeltaExecTimeMoveDecision</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>DeltaExecTimeMoveDecision</id>
+        <className>swarm_sim.DataCollection</className>
+        <methodName>getDeltaExecTimeMoveDecision</methodName>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>DeltaExecTimeNetworkCalculation</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>DeltaExecTimeNetworkCalculation</id>
+        <className>swarm_sim.DataCollection</className>
+        <methodName>getDeltaExecTimeNetworkCalculation</methodName>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>DeltaExecTimeProcessMessages</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>DeltaExecTimeProcessMessages</id>
+        <className>swarm_sim.DataCollection</className>
+        <methodName>getDeltaExecTimeProcessMessages</methodName>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>DeltaExecTimeScanEnv</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>DeltaExecTimeScanEnv</id>
+        <className>swarm_sim.DataCollection</className>
+        <methodName>getDeltaExecTimeScanEnv</methodName>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>DeltaExecTimeSendMessages</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>DeltaExecTimeSendMessages</id>
+        <className>swarm_sim.DataCollection</className>
+        <methodName>getDeltaExecTimeSendMessages</methodName>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
   </methodDataSources>
