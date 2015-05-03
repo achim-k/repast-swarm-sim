@@ -145,11 +145,20 @@ public class ComplexMemoryCommStrategy extends ExplorationStrategy {
 	    memoryFollow.add(angle, distance);
 	}
 
-	// continuousMove.add(prevDirection);
+	if(prevDirection >= -Math.PI)
+	    continuousMove.add(prevDirection);
 
-	CircleScan res = CircleScan.merge(segmentCount, 0.12,
-		collisionFreeSegments, agentRepell, agentAppeal, agentMimic,
-		continuousMove, memoryFollow);
+	CircleScan res;
+	
+	if (memoryFollow.isValid()) {
+	    res = CircleScan.merge(segmentCount, 0.12,
+		    collisionFreeSegments, agentRepell, agentAppeal,
+		    agentMimic, continuousMove, memoryFollow);
+	} else {
+	    res = CircleScan.merge(segmentCount, 0.12,
+		    collisionFreeSegments, agentRepell,
+		    continuousMove);
+	}
 
 	prevDirection = res.getMovementAngle();
 	return prevDirection;

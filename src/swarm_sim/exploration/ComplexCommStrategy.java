@@ -27,13 +27,13 @@ public class ComplexCommStrategy extends ExplorationStrategy {
 
     double prevDirection = RandomHelper.nextDoubleFromTo(-Math.PI, Math.PI);
 
-    CircleScan agentRepell = new CircleScan(segmentCount, 2, 1, 10000, 1, 0,
-	    -1, 0, 0.8 * config.commScope);
+    CircleScan agentRepell = new CircleScan(segmentCount, 2, 1, 10000, 1, -1,
+	    -8, 0, 0.8 * config.commScope);
     CircleScan agentAppeal = new CircleScan(segmentCount, 1, 1, 100, 1, 1, 0,
 	    0.8 * config.commScope, 1 * config.commScope);
     CircleScan continuousMove = new CircleScan(segmentCount, 1, 1, 100, 1, 1,
 	    1, 1, 1 * config.commScope);
-    CircleScan agentMimic = new CircleScan(segmentCount, 1, 1, 100, 1, 1, 0,
+    CircleScan agentMimic = new CircleScan(segmentCount, 1, 1, 100, 1, 10, 0,
 	    0.6 * config.commScope, 1 * config.commScope);
 
     public ComplexCommStrategy(Chromosome chrom, Context<IAgent> context,
@@ -75,8 +75,14 @@ public class ComplexCommStrategy extends ExplorationStrategy {
 	    double distance = space.getDistance(currentLoc, agentLoc);
 	    double angle = SpatialMath.calcAngleFor2DMovement(space,
 		    currentLoc, agentLoc);
-	    agentRepell.add(angle, distance);
-	    agentAppeal.add(angle, distance);
+//	    agentAppeal.add(angle, distance);
+	    
+	    double delta[] = space.getDisplacement(agentLoc, currentLoc);
+	    double p[] = new double[] { currentLoc.getX() + delta[0], currentLoc.getY() + delta[1] };
+	    
+	    if(p[0] <= config.spaceWidth && p[0] >= 0 && p[1] >= 0 && p[1] <= config.spaceHeight)
+		agentRepell.add(angle, distance);
+	    
 	}
 	
 	if(msg.getType() == MessageType.Direction) {
@@ -123,7 +129,7 @@ public class ComplexCommStrategy extends ExplorationStrategy {
 
 	continuousMove.add(prevDirection);
 
-	CircleScan res = CircleScan.merge(segmentCount, 0.12,
+	CircleScan res = CircleScan.merge(segmentCount, 0.0,
 		collisionFreeSegments, agentRepell, agentAppeal, agentMimic,
 		continuousMove);
 

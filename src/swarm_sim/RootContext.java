@@ -126,7 +126,7 @@ public class RootContext implements ContextBuilder<IAgent> {
 		.createRepeating(0, 1);
 
 	List<IAgent> networkAgents = new ArrayList<>();
-	networkAgents.add(base);
+//	networkAgents.add(base);
 	
 	GA ga = GA.getInstance();
 
