@@ -25,6 +25,7 @@ public class ScanMoveDecision {
     private double distanceFactor;
     private VonMises vonMises;
     private double centerDelta;
+    private double initProbability;
 
     public ScanMoveDecision(int segmentCount, double vonMisesDegree,
 	    double distanceFactor, double initProb) {
@@ -32,6 +33,7 @@ public class ScanMoveDecision {
 	this.segmentCount = segmentCount;
 	this.segments = new CircleSegment[segmentCount];
 	this.distanceFactor = distanceFactor;
+	this.initProbability = initProb;
 
 	vonMises = new VonMises(vonMisesDegree);
 
@@ -65,13 +67,22 @@ public class ScanMoveDecision {
 
     private void addScanInputProb(ScanInput input, double mergeFactor) {
 	double distanceValue = 1 + (distanceFactor - 1) * input.distanceRatio;
-	for (CircleSegment cs : segments) {
-	    if(!cs.isValid)
+
+	int inputSegIndex = angleToSegmentIndex(input.angle, segmentCount);
+	
+	int startIndex = inputSegIndex - segmentCount/4;
+	int endIndex = inputSegIndex + segmentCount/4;
+	for (int index = startIndex; index <= endIndex; index++) {
+	    int correctedIndex = index % segmentCount;
+	    if(correctedIndex < 0)
+		correctedIndex += segmentCount;
+	    
+	    if(!segments[correctedIndex].isValid)
 		continue;
 	    
 	    double vonMisesValue = vonMises.getValue(input.angle,
-		    cs.centerAngle);
-	    cs.probability += vonMisesValue * distanceValue * mergeFactor;
+		    segments[correctedIndex].centerAngle);
+	    segments[correctedIndex].probability += vonMisesValue * distanceValue * mergeFactor;
 	}
     }
 
@@ -92,6 +103,9 @@ public class ScanMoveDecision {
 	double rnd = Math.random();
 
 	for (CircleSegment cs : segments) {
+	    if(!cs.isValid)
+		continue;
+	    
 	    rndSum += cs.probability;
 	    if (rndSum >= rnd) {
 		return RandomHelper.nextDoubleFromTo(cs.centerAngle
@@ -108,12 +122,12 @@ public class ScanMoveDecision {
     public void normalize() {
 	double segmentProbSum = 0;
 	for (CircleSegment cs : segments) {
-	    if(cs.isValid)
+	    if (cs.isValid)
 		segmentProbSum += cs.probability;
 	}
 
 	for (CircleSegment cs : segments) {
-	    if(cs.isValid)
+	    if (cs.isValid)
 		cs.probability /= segmentProbSum;
 	}
     }
@@ -123,7 +137,7 @@ public class ScanMoveDecision {
 	    int startIndex = angleToSegmentIndex(as.start, segmentCount);
 	    int endIndex = angleToSegmentIndex(as.end, segmentCount);
 
-	    for (int i = startIndex; i <= endIndex; i++) {
+	    for (int i = startIndex; i <= endIndex && i < segmentCount; i++) {
 		segments[i].isValid = true;
 	    }
 	}
@@ -133,6 +147,13 @@ public class ScanMoveDecision {
 	    if (!cs.isValid) {
 		cs.probability = 0;
 	    }
+	}
+    }
+
+    public void clear() {
+	for (CircleSegment cs : segments) {
+	    cs.isValid = false;
+	    cs.probability = initProbability;
 	}
     }
 }

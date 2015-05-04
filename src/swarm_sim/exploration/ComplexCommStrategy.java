@@ -20,6 +20,10 @@ import swarm_sim.communication.Message;
 import swarm_sim.communication.Message.MessageType;
 import swarm_sim.perception.AngleSegment;
 import swarm_sim.perception.CircleScan;
+import swarm_sim.perception.Scan;
+import swarm_sim.perception.Scan.AttractionType;
+import swarm_sim.perception.Scan.GrowingDirection;
+import swarm_sim.perception.ScanMoveDecision;
 
 public class ComplexCommStrategy extends ExplorationStrategy {
 
@@ -27,14 +31,20 @@ public class ComplexCommStrategy extends ExplorationStrategy {
 
     double prevDirection = RandomHelper.nextDoubleFromTo(-Math.PI, Math.PI);
 
-    CircleScan agentRepell = new CircleScan(segmentCount, 2, 1, 10000, 1, -1,
-	    -8, 0, 0.8 * config.commScope);
-    CircleScan agentAppeal = new CircleScan(segmentCount, 1, 1, 100, 1, 1, 0,
-	    0.8 * config.commScope, 1 * config.commScope);
-    CircleScan continuousMove = new CircleScan(segmentCount, 1, 1, 100, 1, 1,
-	    1, 1, 1 * config.commScope);
-    CircleScan agentMimic = new CircleScan(segmentCount, 1, 1, 100, 1, 10, 0,
-	    0.6 * config.commScope, 1 * config.commScope);
+    Scan scanAgentRepell = new Scan(AttractionType.Repelling,
+	    GrowingDirection.Inwards, 2, false, 0, 0.7 * config.commScope, 1,
+	    1000);
+    Scan scanAgentAppeal = new Scan(AttractionType.Attracting,
+	    GrowingDirection.Outwards, 0.2, false, 0.8 * config.commScope,
+	    config.commScope, 1, 1);
+    Scan scanAgentMimic = new Scan(AttractionType.Attracting,
+	    GrowingDirection.Inwards, 1, true, 0,
+	    config.commScope, 1, 1000);
+    Scan scanPrevDirection = new Scan(AttractionType.Attracting,
+	    GrowingDirection.Inwards, 1, true, 0,
+	    1000, 1, 1000);
+    
+    ScanMoveDecision smd = new ScanMoveDecision(8, 6, 10, 0.125);
 
     public ComplexCommStrategy(Chromosome chrom, Context<IAgent> context,
 	    Agent controllingAgent) {
@@ -75,21 +85,23 @@ public class ComplexCommStrategy extends ExplorationStrategy {
 	    double distance = space.getDistance(currentLoc, agentLoc);
 	    double angle = SpatialMath.calcAngleFor2DMovement(space,
 		    currentLoc, agentLoc);
-//	    agentAppeal.add(angle, distance);
-	    
+	    scanAgentAppeal.addInput(angle, distance);
+
 	    double delta[] = space.getDisplacement(agentLoc, currentLoc);
-	    double p[] = new double[] { currentLoc.getX() + delta[0], currentLoc.getY() + delta[1] };
-	    
-	    if(p[0] <= config.spaceWidth && p[0] >= 0 && p[1] >= 0 && p[1] <= config.spaceHeight)
-		agentRepell.add(angle, distance);
-	    
+	    double p[] = new double[] { currentLoc.getX() + delta[0],
+		    currentLoc.getY() + delta[1] };
+
+	    if (p[0] <= config.spaceWidth && p[0] >= 0 && p[1] >= 0
+		    && p[1] <= config.spaceHeight)
+		scanAgentRepell.addInput(angle, distance);
+
 	}
-	
-	if(msg.getType() == MessageType.Direction) {
+
+	if (msg.getType() == MessageType.Direction) {
 	    NdPoint currentLoc = space.getLocation(controllingAgent);
 	    NdPoint agentLoc = space.getLocation(msg.getSender());
 	    double distance = space.getDistance(currentLoc, agentLoc);
-	    agentMimic.add((double)msg.getData(), distance);
+	    scanAgentMimic.addInput((double) msg.getData(), distance);
 	}
 
 	return currentState;
@@ -117,7 +129,7 @@ public class ComplexCommStrategy extends ExplorationStrategy {
 	    double distance = space.getDistance(currentLoc, agentLoc);
 	    double angle = SpatialMath.calcAngleFor2DMovement(space,
 		    currentLoc, agentLoc);
-	    agentRepell.add(angle, distance);
+	    scanAgentRepell.addInput(angle, distance);
 	}
 
 	return AgentState.wander;
@@ -126,24 +138,25 @@ public class ComplexCommStrategy extends ExplorationStrategy {
     @Override
     protected double makeDirectionDecision(AgentState prevState,
 	    AgentState currentState, List<AngleSegment> collisionFreeSegments) {
+	
+	scanPrevDirection.addInput(prevDirection);
 
-	continuousMove.add(prevDirection);
+	smd.setValidSegments(collisionFreeSegments);
+	smd.calcProbDist(scanAgentAppeal, scanAgentRepell, scanAgentMimic, scanPrevDirection);
+	smd.normalize();
 
-	CircleScan res = CircleScan.merge(segmentCount, 0.0,
-		collisionFreeSegments, agentRepell, agentAppeal, agentMimic,
-		continuousMove);
-
-	prevDirection = res.getMovementAngle();
+	prevDirection = smd.getMovementAngle();
+	
 	return prevDirection;
     }
 
     @Override
     protected void clear() {
-	agentRepell.clear();
-	agentAppeal.clear();
-	agentMimic.clear();
-	continuousMove.clear();
-
+	scanAgentAppeal.clear();
+	scanAgentRepell.clear();
+	scanAgentMimic.clear();
+	scanPrevDirection.clear();
+	smd.clear();
     }
 
     @Override

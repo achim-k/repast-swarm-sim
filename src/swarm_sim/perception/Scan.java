@@ -24,7 +24,6 @@ public class Scan {
 	Inwards, Outwards
     }
 
-    private boolean hasHardBorders = true;
     private double shortestDistance;
     private double hardInnerDistanceBorder, hardOuterDistanceBorder;
 
@@ -85,9 +84,6 @@ public class Scan {
     }
 
     public void addInput(double angle) {
-	if (hasHardBorders)
-	    throw new InvalidParameterException("Distance has to be given");
-
 	addInput(angle, shortestDistance);
     }
 
