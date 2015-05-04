@@ -5,15 +5,17 @@ import java.util.List;
 
 import org.jgap.IChromosome;
 
+import com.l2fprod.common.model.HasId;
+
 import repast.simphony.context.Context;
 import repast.simphony.random.RandomHelper;
 import repast.simphony.space.SpatialMath;
 import repast.simphony.space.continuous.NdPoint;
 import swarm_sim.Agent;
-import swarm_sim.Agent.AgentState;
 import swarm_sim.IAgent;
-import swarm_sim.IAgent.AgentType;
 import swarm_sim.Strategy;
+import swarm_sim.Agent.AgentState;
+import swarm_sim.IAgent.AgentType;
 import swarm_sim.communication.CommunicationType;
 import swarm_sim.communication.INetworkAgent;
 import swarm_sim.communication.Message;
@@ -25,25 +27,27 @@ import swarm_sim.perception.Scan.GrowingDirection;
 import swarm_sim.perception.ScanMoveDecision;
 
 public class ComplexCommStrategy extends ExplorationStrategy {
+    
+    private static final int INFINITY = 99999999;
 
-    int segmentCount = 8;
+    private int segmentCount = 8;
+    private double prevDirection = RandomHelper.nextDoubleFromTo(-Math.PI, Math.PI);
+    private int consecutiveMoveCount = INFINITY;
 
-    double prevDirection = RandomHelper.nextDoubleFromTo(-Math.PI, Math.PI);
-
-    Scan scanAgentRepell = new Scan(AttractionType.Repelling,
+    private Scan scanAgentRepell = new Scan(AttractionType.Repelling,
 	    GrowingDirection.Inwards, 2, false, 0, 0.7 * config.commScope, 1,
 	    1000);
-    Scan scanAgentAppeal = new Scan(AttractionType.Attracting,
+    private Scan scanAgentAppeal = new Scan(AttractionType.Attracting,
 	    GrowingDirection.Outwards, 0.2, false, 0.8 * config.commScope,
 	    config.commScope, 1, 1);
-    Scan scanAgentMimic = new Scan(AttractionType.Attracting,
+    private Scan scanAgentMimic = new Scan(AttractionType.Attracting,
 	    GrowingDirection.Inwards, 1, true, 0,
 	    config.commScope, 1, 1000);
-    Scan scanPrevDirection = new Scan(AttractionType.Attracting,
+    private Scan scanPrevDirection = new Scan(AttractionType.Attracting,
 	    GrowingDirection.Inwards, 1, true, 0,
 	    1000, 1, 1000);
     
-    ScanMoveDecision smd = new ScanMoveDecision(8, 6, 10, 0.125);
+    private ScanMoveDecision smd = new ScanMoveDecision(8, 6, 10, 0.125);
 
     public ComplexCommStrategy(IChromosome chrom, Context<IAgent> context,
 	    Agent controllingAgent) {
@@ -85,15 +89,17 @@ public class ComplexCommStrategy extends ExplorationStrategy {
 	    double angle = SpatialMath.calcAngleFor2DMovement(space,
 		    currentLoc, agentLoc);
 	    scanAgentAppeal.addInput(angle, distance);
+	    consecutiveMoveCount = INFINITY;
 
 	    double delta[] = space.getDisplacement(agentLoc, currentLoc);
 	    double p[] = new double[] { currentLoc.getX() + delta[0],
 		    currentLoc.getY() + delta[1] };
 
 	    if (p[0] <= config.spaceWidth && p[0] >= 0 && p[1] >= 0
-		    && p[1] <= config.spaceHeight)
+		    && p[1] <= config.spaceHeight) {
 		scanAgentRepell.addInput(angle, distance);
-
+	    	consecutiveMoveCount = INFINITY;
+	    }
 	}
 
 	if (msg.getType() == MessageType.Direction) {
@@ -101,6 +107,7 @@ public class ComplexCommStrategy extends ExplorationStrategy {
 	    NdPoint agentLoc = space.getLocation(msg.getSender());
 	    double distance = space.getDistance(currentLoc, agentLoc);
 	    scanAgentMimic.addInput((double) msg.getData(), distance);
+	    consecutiveMoveCount = INFINITY;
 	}
 
 	return currentState;
@@ -129,6 +136,7 @@ public class ComplexCommStrategy extends ExplorationStrategy {
 	    double angle = SpatialMath.calcAngleFor2DMovement(space,
 		    currentLoc, agentLoc);
 	    scanAgentRepell.addInput(angle, distance);
+	    consecutiveMoveCount = INFINITY;
 	}
 
 	return AgentState.wander;
@@ -138,11 +146,28 @@ public class ComplexCommStrategy extends ExplorationStrategy {
     protected double makeDirectionDecision(AgentState prevState,
 	    AgentState currentState, List<AngleSegment> collisionFreeSegments) {
 	
+	if (consecutiveMoveCount < config.consecutiveMoves) {
+	    /* use same direction distribution, if possible */
+	    if(collisionFreeSegments.size() == 1 && collisionFreeSegments.get(0).start == -Math.PI) {
+		/* free to go in any direction */
+		consecutiveMoveCount++;
+		if(smd.hasInputs()) /* Only use previous prob distribution if it is not uniformly */
+		    prevDirection = smd.getMovementAngle();
+		
+		return prevDirection;
+	    }
+	}
+	
+	/* not able to go into same direction, or consecutiveMoveCount too high */
+	consecutiveMoveCount = 0;
+	smd.clear();
+	
 	scanPrevDirection.addInput(prevDirection);
 
 	smd.setValidSegments(collisionFreeSegments);
 	smd.calcProbDist(scanAgentAppeal, scanAgentRepell, scanAgentMimic, scanPrevDirection);
 	smd.normalize();
+	smd.printProbabilities(null);
 
 	prevDirection = smd.getMovementAngle();
 	
@@ -155,12 +180,14 @@ public class ComplexCommStrategy extends ExplorationStrategy {
 	scanAgentRepell.clear();
 	scanAgentMimic.clear();
 	scanPrevDirection.clear();
-	smd.clear();
+	//smd is cleared in makemovedecision
     }
 
     @Override
     protected void reset() {
 	prevDirection = RandomHelper.nextDoubleFromTo(-Math.PI, Math.PI);
+	smd.clear();
+	consecutiveMoveCount = INFINITY;
     }
 
 }

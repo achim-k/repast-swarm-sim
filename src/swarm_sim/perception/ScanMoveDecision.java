@@ -26,6 +26,7 @@ public class ScanMoveDecision {
     private VonMises vonMises;
     private double centerDelta;
     private double initProbability;
+    private boolean hasInputs = false;
 
     public ScanMoveDecision(int segmentCount, double vonMisesDegree,
 	    double distanceFactor, double initProb) {
@@ -66,6 +67,7 @@ public class ScanMoveDecision {
     }
 
     private void addScanInputProb(ScanInput input, double mergeFactor) {
+	hasInputs = true;
 	double distanceValue = 1 + (distanceFactor - 1) * input.distanceRatio;
 
 	int inputSegIndex = angleToSegmentIndex(input.angle, segmentCount);
@@ -121,6 +123,7 @@ public class ScanMoveDecision {
 
     public void normalize() {
 	double segmentProbSum = 0;
+	
 	for (CircleSegment cs : segments) {
 	    if (cs.isValid)
 		segmentProbSum += cs.probability;
@@ -151,9 +154,14 @@ public class ScanMoveDecision {
     }
 
     public void clear() {
+	hasInputs = false;
 	for (CircleSegment cs : segments) {
 	    cs.isValid = false;
 	    cs.probability = initProbability;
 	}
+    }
+    
+    public boolean hasInputs() {
+	return hasInputs;
     }
 }

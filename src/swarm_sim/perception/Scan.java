@@ -50,7 +50,7 @@ public class Scan {
 	this.inputValidUpperBound = inputValidUpperBound;
 
 	if (hasFluidBorders) {
-	    shortestDistance = 1E5;
+	    shortestDistance = hardOuterDistanceBorder;
 	} else {
 	    shortestDistance = hardInnerDistanceBorder;
 	    if (shortestDistance <= 0)
@@ -117,7 +117,7 @@ public class Scan {
 	isValid = false;
 	
 	if (hasFluidBorders) {
-	    shortestDistance = 1E5;
+	    shortestDistance = hardOuterDistanceBorder;
 	} else {
 	    shortestDistance = hardInnerDistanceBorder;
 	    if (shortestDistance <= 0)

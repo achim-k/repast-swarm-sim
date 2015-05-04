@@ -51,8 +51,8 @@ public class RootContext implements ContextBuilder<IAgent> {
 
 	/* Read params */
 	config.agentCount = params.getInteger("agent_count");
-	config.rndConsecutiveMoves = params
-		.getInteger("random_consecutive_move");
+	config.consecutiveMoves = params
+		.getInteger("consecutive_move");
 	config.useGA = params.getBoolean("use_ga");
 	config.commFreq = params.getInteger("comm_frequency");
 
@@ -171,7 +171,7 @@ public class RootContext implements ContextBuilder<IAgent> {
 	System.out.println("Perception-Scope:      \t" + config.perceptionScope);
 	System.out.println("Communic.-Scope:       \t" + config.commScope);
 	System.out.println("Communic.-Frequency:   \t" + config.commFreq);
-	System.out.println("Consecutive moves:     \t" + config.rndConsecutiveMoves);
+	System.out.println("Consecutive moves:     \t" + config.consecutiveMoves);
 	System.out.println("Use Genetic Alg.:      \t" + config.useGA);
 	if (config.useGA)
 	    System.out.println("Chromosomes:       	\t:" + ga.currentChromosome);

@@ -10,11 +10,11 @@ import repast.simphony.random.RandomHelper;
 import repast.simphony.space.SpatialMath;
 import repast.simphony.space.continuous.NdPoint;
 import swarm_sim.Agent;
-import swarm_sim.Agent.AgentState;
 import swarm_sim.IAgent;
-import swarm_sim.IAgent.AgentType;
 import swarm_sim.SectorMap;
 import swarm_sim.Strategy;
+import swarm_sim.Agent.AgentState;
+import swarm_sim.IAgent.AgentType;
 import swarm_sim.communication.CommunicationType;
 import swarm_sim.communication.INetworkAgent;
 import swarm_sim.communication.Message;
@@ -30,7 +30,7 @@ public class GoalCommunication extends ForagingStrategy {
     int segmentCount = 8;
     double directionAngle = RandomHelper.nextDoubleFromTo(-Math.PI, Math.PI);
 
-    SectorMap map = new SectorMap(space.getDimensions(), 100, 100, 1);
+    SectorMap map;
 
     ResourceTarget currentTarget;
 
@@ -48,6 +48,15 @@ public class GoalCommunication extends ForagingStrategy {
 	    Agent controllingAgent) {
 	super(chrom, context, controllingAgent);
 
+	int sectorsX = (int) (config.spaceWidth / config.perceptionScope);
+	int sectorsY = (int) (config.spaceHeight / config.perceptionScope);
+
+	if (sectorsX > config.spaceWidth)
+	    sectorsX = config.spaceWidth;
+	if (sectorsY > config.spaceHeight)
+	    sectorsY = config.spaceHeight;
+
+	map = new SectorMap(space.getDimensions(), sectorsX, sectorsY, 1);
     }
 
     @Override

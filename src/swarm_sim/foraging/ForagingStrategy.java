@@ -4,8 +4,8 @@ import org.jgap.IChromosome;
 
 import repast.simphony.context.Context;
 import repast.simphony.space.continuous.NdPoint;
-import swarm_sim.Agent;
 import swarm_sim.Agent.AgentState;
+import swarm_sim.Agent;
 import swarm_sim.IAgent;
 import swarm_sim.SectorMap;
 import swarm_sim.Strategy;

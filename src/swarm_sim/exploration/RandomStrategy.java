@@ -8,8 +8,8 @@ import org.jgap.IChromosome;
 import repast.simphony.context.Context;
 import repast.simphony.random.RandomHelper;
 import swarm_sim.Agent;
-import swarm_sim.Agent.AgentState;
 import swarm_sim.IAgent;
+import swarm_sim.Agent.AgentState;
 import swarm_sim.IAgent.AgentType;
 import swarm_sim.communication.CommunicationType;
 import swarm_sim.communication.INetworkAgent;
@@ -57,7 +57,7 @@ public class RandomStrategy extends ExplorationStrategy {
     protected double makeDirectionDecision(AgentState prevState,
 	    AgentState currentState, List<AngleSegment> collisionFreeSegments) {
 
-	if (consecutiveMoveCount < config.rndConsecutiveMoves) {
+	if (consecutiveMoveCount < config.consecutiveMoves) {
 	    // Continue to go in same direction, if possible
 	    boolean moveAllowed = false;
 	    for (AngleSegment as : collisionFreeSegments) {

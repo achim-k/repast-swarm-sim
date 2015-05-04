@@ -1,5 +1,6 @@
 package swarm_sim;
 
+
 /**
  * Singleton class which stores the data of the simulation run. Needs to
  * implement IAgent interface in order to be added to the context (needed for

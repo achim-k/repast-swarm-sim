@@ -1,13 +1,14 @@
 package swarm_sim;
 
 
+
 public class Configuration implements IAgent {
 
     /* Params */
     public int agentCount;
     public double perceptionScope;
     public double commScope;
-    public int rndConsecutiveMoves = 1;
+    public int consecutiveMoves = 1;
     public boolean useGA = false;
     public int resourceCount;
     public int resourceNestCount;
@@ -57,7 +58,7 @@ public class Configuration implements IAgent {
     }
 
     public int getRndConsecutiveMoves() {
-        return rndConsecutiveMoves;
+        return consecutiveMoves;
     }
 
     public boolean isUseGA() {

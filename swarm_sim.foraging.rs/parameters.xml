@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <parameters>
 	<parameter name="resource_count" displayName="Number of resources"
-		type="int" defaultValue="100" isReadOnly="false"
+		type="int" defaultValue="0" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
 	<parameter name="agent_count" displayName="Number of Agents"
 		type="int" defaultValue="20" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
-	<parameter name="random_consecutive_move" displayName="random_consecutive_move"
-		type="int" defaultValue="1" isReadOnly="false"
+	<parameter name="consecutive_move" displayName="Consecutive moves"
+		type="int" defaultValue="5" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
 	<parameter name="randomSeed" displayName="Default Random Seed"
 		type="int" defaultValue="__NULL__" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
 	<parameter name="expl_strategy" displayName="Exploration Strategy"
-		type="java.lang.String" defaultValue="Random" isReadOnly="false"
+		type="java.lang.String" defaultValue="ComplexCommunication" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter"
 		values="Random MemoryComplex MemoryCommunication ComplexCommunication ComplexMemoryCommunication " />
 	<parameter name="communication_scope" displayName="Communication scope [m]"
