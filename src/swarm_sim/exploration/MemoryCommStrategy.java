@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jgap.Chromosome;
+import org.jgap.IChromosome;
 
 import repast.simphony.context.Context;
 import repast.simphony.space.SpatialMath;
@@ -20,17 +21,37 @@ import swarm_sim.communication.Message;
 import swarm_sim.communication.Message.MessageType;
 import swarm_sim.perception.AngleSegment;
 import swarm_sim.perception.CircleScan;
+import swarm_sim.perception.Scan;
+import swarm_sim.perception.ScanMoveDecision;
+import swarm_sim.perception.Scan.AttractionType;
+import swarm_sim.perception.Scan.GrowingDirection;
 
 public class MemoryCommStrategy extends ExplorationStrategy {
 
     int segmentCount = 8;
 
-    SectorMap map = new SectorMap(space.getDimensions(), 60, 60, 1);
-    CircleScan memoryFollow = new CircleScan(segmentCount, 1, 1, 1000, 1, 1, 2);
+    
+    SectorMap map;
+    
+    Scan scanUnknownSectors = new Scan(AttractionType.Attracting,
+	    GrowingDirection.Inwards, 1, true, 0,
+	    10000, 1, 1000);
+    
+    ScanMoveDecision smd = new ScanMoveDecision(8, 6, 10, 0.05);
 
-    public MemoryCommStrategy(Chromosome chrom, Context<IAgent> context,
+    public MemoryCommStrategy(IChromosome chrom, Context<IAgent> context,
 	    Agent controllingAgent) {
 	super(chrom, context, controllingAgent);
+	
+	int sectorsX = (int) (config.spaceWidth / config.perceptionScope);
+	int sectorsY = (int) (config.spaceHeight / config.perceptionScope);
+	
+	if(sectorsX > config.spaceWidth)
+	    sectorsX = config.spaceWidth;
+	if(sectorsY > config.spaceHeight)
+	    sectorsY = config.spaceHeight;
+	
+	map = new SectorMap(space.getDimensions(), sectorsX, sectorsY, 1);
     }
 
     @Override
@@ -68,22 +89,26 @@ public class MemoryCommStrategy extends ExplorationStrategy {
 	    AgentState currentState, List<AngleSegment> collisionFreeSegments) {
 	NdPoint currentLocation = space.getLocation(controllingAgent);
 
+	/* Look for close unexplored sectors */
 	map.setPosition(currentLocation);
-	List<Integer[]> closeUnfilledSectors = map.getCloseUnfilledSectors(5);
+	List<Integer[]> closeUnfilledSectors = map.getCloseUnfilledSectors(3);
 	for (Integer[] d : closeUnfilledSectors) {
 	    double angle = SpatialMath.angleFromDisplacement(d[0], d[1]);
 	    double distance = Math.sqrt(d[0] * d[0] + d[1] * d[1]);
-	    memoryFollow.add(angle, distance);
+	    scanUnknownSectors.addInput(angle, distance);
 	}
 
-	CircleScan res = CircleScan.merge(segmentCount, 0.12,
-		collisionFreeSegments, memoryFollow);
-	return res.getMovementAngle();
+	smd.setValidSegments(collisionFreeSegments);
+	smd.calcProbDist(scanUnknownSectors);
+	smd.normalize();
+	
+	return smd.getMovementAngle();
     }
 
     @Override
     protected void clear() {
-	memoryFollow.clear();
+	scanUnknownSectors.clear();
+	smd.clear();
     }
 
     @Override

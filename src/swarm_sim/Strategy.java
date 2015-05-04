@@ -2,7 +2,7 @@ package swarm_sim;
 
 import java.util.List;
 
-import org.jgap.Chromosome;
+import org.jgap.IChromosome;
 
 import repast.simphony.context.Context;
 import repast.simphony.space.continuous.ContinuousSpace;
@@ -28,12 +28,12 @@ public abstract class Strategy {
 
     protected Configuration config;
     protected DataCollection data;
-    protected Chromosome chrom;
+    protected IChromosome chrom;
     protected ContinuousSpace<IAgent> space;
     protected Context<IAgent> context;
     protected Agent controllingAgent;
 
-    public Strategy(Chromosome chrom, Context<IAgent> context,
+    public Strategy(IChromosome chrom, Context<IAgent> context,
 	    Agent controllingAgent) {
 	super();
 	this.chrom = chrom;

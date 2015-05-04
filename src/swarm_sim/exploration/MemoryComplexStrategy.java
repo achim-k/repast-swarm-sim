@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jgap.Chromosome;
+import org.jgap.IChromosome;
 
 import repast.simphony.context.Context;
 import repast.simphony.space.continuous.NdPoint;
@@ -23,7 +24,7 @@ public class MemoryComplexStrategy extends ExplorationStrategy {
 
     SectorMap map = new SectorMap(space.getDimensions(), 60, 60, 1);
 
-    public MemoryComplexStrategy(Chromosome chrom, Context<IAgent> context,
+    public MemoryComplexStrategy(IChromosome chrom, Context<IAgent> context,
 	    Agent controllingAgent) {
 	super(chrom, context, controllingAgent);
     }

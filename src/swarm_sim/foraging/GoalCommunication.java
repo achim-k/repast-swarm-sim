@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jgap.Chromosome;
+import org.jgap.IChromosome;
 
 import repast.simphony.context.Context;
 import repast.simphony.random.RandomHelper;
@@ -40,7 +41,7 @@ public class GoalCommunication extends ForagingStrategy {
     CircleScan agentRepulsion = new CircleScan(segmentCount, 2, 4, 100, 1, -1,
 	    -2, 0, 0.5 * config.commScope);
 
-    public GoalCommunication(Chromosome chrom, Context<IAgent> context,
+    public GoalCommunication(IChromosome chrom, Context<IAgent> context,
 	    Agent controllingAgent) {
 	super(chrom, context, controllingAgent);
 

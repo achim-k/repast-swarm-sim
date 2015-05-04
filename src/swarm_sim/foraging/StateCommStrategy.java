@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jgap.Chromosome;
+import org.jgap.IChromosome;
 
 import repast.simphony.context.Context;
 import repast.simphony.random.RandomHelper;
@@ -19,7 +20,10 @@ import swarm_sim.communication.INetworkAgent;
 import swarm_sim.communication.Message;
 import swarm_sim.communication.Message.MessageType;
 import swarm_sim.perception.AngleSegment;
-import swarm_sim.perception.CircleScan;
+import swarm_sim.perception.Scan;
+import swarm_sim.perception.ScanMoveDecision;
+import swarm_sim.perception.Scan.AttractionType;
+import swarm_sim.perception.Scan.GrowingDirection;
 
 public class StateCommStrategy extends ForagingStrategy {
 
@@ -28,16 +32,19 @@ public class StateCommStrategy extends ForagingStrategy {
 
     ResourceTarget currentTarget;
 
-    CircleScan resourceScan = new CircleScan(segmentCount, 1, 1, 100, 1, 0, 1,
-	    0, config.perceptionScope);
-    CircleScan deliverDirection = new CircleScan(segmentCount, 1, 1, 100, 1, 1,
-	    1, 0, config.perceptionScope);
-    CircleScan agentFollow = new CircleScan(segmentCount, 1, 1, 3, 1, 1, 1, 0,
-	    config.commScope);
-    CircleScan agentRepulsion = new CircleScan(segmentCount, 2, 4, 100, 1, -1,
-	    -2, 0, 0.5 * config.commScope);
+    Scan scanResources = new Scan(AttractionType.Attracting,
+	    GrowingDirection.Inwards, 1, true, 0, config.perceptionScope, 1,
+	    100);
+    Scan scanDeliverDirection = new Scan(AttractionType.Attracting,
+	    GrowingDirection.Inwards, 1, true, 0, 1E8, 1, 10);
+    Scan scanCurrentTarget = new Scan(AttractionType.Attracting,
+	    GrowingDirection.Inwards, 1, true, 0, 1E8, 1, 10);
+    Scan scanAgentFollow = new Scan(AttractionType.Attracting,
+	    GrowingDirection.Inwards, 1, true, 0, config.commScope, 1, 10);
 
-    public StateCommStrategy(Chromosome chrom, Context<IAgent> context,
+    ScanMoveDecision smd = new ScanMoveDecision(8, 6, 10, 0.05);
+
+    public StateCommStrategy(IChromosome chrom, Context<IAgent> context,
 	    Agent controllingAgent) {
 	super(chrom, context, controllingAgent);
     }
@@ -48,7 +55,7 @@ public class StateCommStrategy extends ForagingStrategy {
 
 	if (isLast) {
 	    /* */
-	    if (currentState == AgentState.wander && agentFollow.isValid()) {
+	    if (currentState == AgentState.wander && scanAgentFollow.isValid()) {
 		return AgentState.acquire;
 	    }
 	    return currentState;
@@ -68,20 +75,21 @@ public class StateCommStrategy extends ForagingStrategy {
 			    agentLoc);
 		    double angle = SpatialMath.calcAngleFor2DMovement(space,
 			    currentLocation, agentLoc);
-		    agentFollow.add(angle, distance);
+		    scanAgentFollow.addInput(angle, distance);
 		}
 
 	    }
 	}
 
-	if (currentState == AgentState.acquire) {
-	    NdPoint agentLoc = space.getLocation(msg.getSender());
-	    NdPoint currentLocation = space.getLocation(controllingAgent);
-	    double distance = space.getDistance(currentLocation, agentLoc);
-	    double angle = SpatialMath.calcAngleFor2DMovement(space,
-		    currentLocation, agentLoc);
-	    agentRepulsion.add(angle, distance);
-	}
+	// TODO
+	// if (currentState == AgentState.acquire) {
+	// NdPoint agentLoc = space.getLocation(msg.getSender());
+	// NdPoint currentLocation = space.getLocation(controllingAgent);
+	// double distance = space.getDistance(currentLocation, agentLoc);
+	// double angle = SpatialMath.calcAngleFor2DMovement(space,
+	// currentLocation, agentLoc);
+	// // agentRepulsion.add(angle, distance);
+	// }
 	return currentState;
     }
 
@@ -92,11 +100,11 @@ public class StateCommStrategy extends ForagingStrategy {
 	if (currentState == AgentState.acquire && currentTarget != null)
 	    agentInRange.pushMessage(new Message(MessageType.CurrentState,
 		    controllingAgent, currentState));
-//	else if (currentState == AgentState.wander
-//		|| currentState == AgentState.deliver)
-//	    ;
-//	agentInRange.pushMessage(new Message(MessageType.CurrentState,
-//		controllingAgent, currentState));
+	// else if (currentState == AgentState.wander
+	// || currentState == AgentState.deliver)
+	// ;
+	// agentInRange.pushMessage(new Message(MessageType.CurrentState,
+	// controllingAgent, currentState));
     }
 
     @Override
@@ -120,7 +128,7 @@ public class StateCommStrategy extends ForagingStrategy {
 
 		double angle = SpatialMath.calcAngleFor2DMovement(space,
 			currentLocation, space.getLocation(agent));
-		resourceScan.add(angle, distance);
+		scanResources.addInput(angle, distance);
 	    }
 	}
 
@@ -166,7 +174,7 @@ public class StateCommStrategy extends ForagingStrategy {
 	     * agent to follow → wander
 	     */
 	    if (perceivedResourceCount == 0 && currentTarget == null
-		    && !agentFollow.isValid()) {
+		    && !scanAgentFollow.isValid()) {
 		currentState = AgentState.wander;
 	    }
 	}
@@ -177,31 +185,30 @@ public class StateCommStrategy extends ForagingStrategy {
     protected double makeDirectionDecision(AgentState prevState,
 	    AgentState currentState, List<AngleSegment> collisionFreeSegments) {
 
+	smd.setValidSegments(collisionFreeSegments);
+
 	if (currentState == AgentState.acquire) {
-	    if (currentTarget != null)
-		resourceScan.add(SpatialMath.calcAngleFor2DMovement(space,
-			space.getLocation(controllingAgent),
+	    if (currentTarget != null) {
+		scanCurrentTarget.addInput(SpatialMath.calcAngleFor2DMovement(
+			space, space.getLocation(controllingAgent),
 			currentTarget.location));
-	    CircleScan res = CircleScan.merge(segmentCount, 0.12,
-		    collisionFreeSegments, resourceScan, agentFollow,
-		    agentRepulsion);
-	    directionAngle = res.getMovementAngle();
-	    return directionAngle;
+	    }
+	    smd.calcProbDist(scanResources, scanCurrentTarget, scanAgentFollow);
+
 	} else if (currentState == AgentState.deliver) {
-	    deliverDirection.clear();
 	    double moveAngleToBase = SpatialMath.calcAngleFor2DMovement(space,
 		    space.getLocation(controllingAgent),
 		    space.getLocation(config.baseAgent));
-	    deliverDirection.add(moveAngleToBase);
-	    CircleScan resDel = CircleScan.merge(segmentCount, 0.12,
-		    collisionFreeSegments, deliverDirection);
-	    directionAngle = resDel.getMovementAngle();
-	    return directionAngle;
+	    scanDeliverDirection.addInput(moveAngleToBase);
+	    smd.calcProbDist(scanDeliverDirection);
 	} else {
-	    System.err.println("ERROR: State → " + currentState);
+	    System.err.println("state not existing: " + currentState);
 	}
 
-	return -100;
+	smd.normalize();
+	directionAngle = smd.getMovementAngle();
+
+	return directionAngle;
     }
 
     @Override
@@ -214,10 +221,11 @@ public class StateCommStrategy extends ForagingStrategy {
     @Override
     public void clear() {
 	super.clear();
-	agentRepulsion.clear();
-	resourceScan.clear();
-	deliverDirection.clear();
-	agentFollow.clear();
+	scanAgentFollow.clear();
+	scanResources.clear();
+	scanCurrentTarget.clear();
+	scanDeliverDirection.clear();
+	smd.clear();
     }
 
     @Override

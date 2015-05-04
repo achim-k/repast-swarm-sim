@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jgap.Chromosome;
+import org.jgap.IChromosome;
 
 import repast.simphony.context.Context;
 import repast.simphony.random.RandomHelper;
@@ -23,7 +24,7 @@ public class RandomStrategy extends ExplorationStrategy {
     int consecutiveMoveCount = 0;
     double directionAngle = RandomHelper.nextDoubleFromTo(-Math.PI, Math.PI);
 
-    public RandomStrategy(Chromosome chrom, Context<IAgent> context,
+    public RandomStrategy(IChromosome chrom, Context<IAgent> context,
 	    Agent controllingAgent) {
 	super(chrom, context, controllingAgent);
     }

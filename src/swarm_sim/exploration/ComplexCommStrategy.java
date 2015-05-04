@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jgap.Chromosome;
+import org.jgap.IChromosome;
 
 import repast.simphony.context.Context;
 import repast.simphony.random.RandomHelper;
@@ -46,7 +47,7 @@ public class ComplexCommStrategy extends ExplorationStrategy {
     
     ScanMoveDecision smd = new ScanMoveDecision(8, 6, 10, 0.125);
 
-    public ComplexCommStrategy(Chromosome chrom, Context<IAgent> context,
+    public ComplexCommStrategy(IChromosome chrom, Context<IAgent> context,
 	    Agent controllingAgent) {
 	super(chrom, context, controllingAgent);
     }

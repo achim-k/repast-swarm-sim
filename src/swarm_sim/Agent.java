@@ -5,7 +5,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.jgap.Chromosome;
+import org.jgap.IChromosome;
+
 
 import repast.simphony.context.Context;
 import repast.simphony.engine.environment.RunEnvironment;
@@ -66,7 +67,7 @@ public class Agent implements IAgent, IDisplayAgent, INetworkAgent {
     AdvancedGridValueLayer exploredArea;
 
     /* Learning */
-    Chromosome chrom;
+    IChromosome chrom;
 
     /* Exploration + Foraging strategies */
     ExplorationStrategy explStrategy;
@@ -78,9 +79,9 @@ public class Agent implements IAgent, IDisplayAgent, INetworkAgent {
     protected List<Message> messageQueue = new ArrayList<>();
 
     @SuppressWarnings("unchecked")
-    public Agent(Context<IAgent> context, Chromosome chrom) {
+    public Agent(Context<IAgent> context, IChromosome chrom) {
 	this.chrom = chrom;
-
+	
 	/* Get context, network, value layer etc. */
 	this.context = ContextUtils.getContext(this);
 	this.space = (ContinuousSpace<IAgent>) context.getProjection(
@@ -129,7 +130,7 @@ public class Agent implements IAgent, IDisplayAgent, INetworkAgent {
     public void step() {
 	if (currentLocation == null)
 	    currentLocation = space.getLocation(this);
-
+	
 	long start = System.nanoTime();
 	rcvMessages();
 	data.execTimeProcessMessages += System.nanoTime() - start;

@@ -1,6 +1,6 @@
 package swarm_sim.foraging;
 
-import org.jgap.Chromosome;
+import org.jgap.IChromosome;
 
 import repast.simphony.context.Context;
 import repast.simphony.space.continuous.NdPoint;
@@ -29,7 +29,7 @@ public abstract class ForagingStrategy extends Strategy {
 
     protected int perceivedResourceCount = 0;
 
-    public ForagingStrategy(Chromosome chrom, Context<IAgent> context,
+    public ForagingStrategy(IChromosome chrom, Context<IAgent> context,
 	    Agent controllingAgent) {
 	super(chrom, context, controllingAgent);
     }

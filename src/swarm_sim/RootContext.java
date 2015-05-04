@@ -82,7 +82,7 @@ public class RootContext implements ContextBuilder<IAgent> {
 	exploredArea = new AdvancedGridValueLayer("layer_explored", 0.0, false,
 		config.spaceWidth, config.spaceHeight);
 	context.addValueLayer(exploredArea);
-	readMapFromImage(exploredArea, "data/map.png");
+//	readMapFromImage(exploredArea, "data/map.png");
 
 	/* Create continuous space */
 	ContinuousSpaceFactory spaceFactory = ContinuousSpaceFactoryFinder

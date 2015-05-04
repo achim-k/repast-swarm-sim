@@ -1,16 +1,17 @@
 package swarm_sim.learning;
 
-import org.jgap.Chromosome;
+import org.jgap.IChromosome;
 
 public class GA {
 
-    public static final int RepellIndex = 0;
-    public static final int AppealIndex = 1;
-    public static final int AppealRepellBorderIndex = 2;
-    public static final int MimicIndex = 3;
-    public static final int MemoryIndex = 4;
+    public int RepellIndex = 0;
+    public int AppealIndex = 1;
+    public int AppealRepellBorderIndex = 2;
+    public int MimicIndex = 3;
+    public int MemoryIndex = 4;
+    public int PrevDirectionIndex = 5;
 
-    public Chromosome currentChromosome;
+    public IChromosome currentChromosome;
     public int currentFitness;
 
     static GA instance;

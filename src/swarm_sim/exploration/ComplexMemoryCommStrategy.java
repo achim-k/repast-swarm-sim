@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jgap.Chromosome;
+import org.jgap.IChromosome;
 
 import repast.simphony.context.Context;
 import repast.simphony.random.RandomHelper;
@@ -20,8 +21,13 @@ import swarm_sim.communication.CommunicationType;
 import swarm_sim.communication.INetworkAgent;
 import swarm_sim.communication.Message;
 import swarm_sim.communication.Message.MessageType;
+import swarm_sim.learning.GA;
 import swarm_sim.perception.AngleSegment;
 import swarm_sim.perception.CircleScan;
+import swarm_sim.perception.Scan;
+import swarm_sim.perception.ScanMoveDecision;
+import swarm_sim.perception.Scan.AttractionType;
+import swarm_sim.perception.Scan.GrowingDirection;
 
 public class ComplexMemoryCommStrategy extends ExplorationStrategy {
 
@@ -29,21 +35,50 @@ public class ComplexMemoryCommStrategy extends ExplorationStrategy {
 
     double prevDirection = RandomHelper.nextDoubleFromTo(-Math.PI, Math.PI);
 
-    SectorMap map = new SectorMap(space.getDimensions(), 40, 40, 1);
-    CircleScan agentRepell = new CircleScan(segmentCount, 2, 1, 10000, 1, 0,
-	    -1, 0, 0.8 * config.commScope);
-    CircleScan agentAppeal = new CircleScan(segmentCount, 1, 1, 100, 1, 1, 0,
-	    0.8 * config.commScope, 1 * config.commScope);
-    CircleScan continuousMove = new CircleScan(segmentCount, 1, 1, 100, 1, 1,
-	    1, 1, 1 * config.commScope);
-    CircleScan agentMimic = new CircleScan(segmentCount, 1, 1, 100, 1, 1, 0,
-	    0.6 * config.commScope, 1 * config.commScope);
+    SectorMap map;
 
-    CircleScan memoryFollow = new CircleScan(segmentCount, 1, 1, 1000, 1, 0, 1);
+    Scan scanAgentRepell = new Scan(AttractionType.Repelling,
+	    GrowingDirection.Inwards, 2, false, 0, 0.8 * config.commScope, 1,
+	    1000);
+    Scan scanAgentAppeal = new Scan(AttractionType.Attracting,
+	    GrowingDirection.Outwards, 0.2, false, 0.8 * config.commScope,
+	    config.commScope, 1, 1);
+    Scan scanAgentMimic = new Scan(AttractionType.Attracting,
+	    GrowingDirection.Inwards, 1, true, 0, config.commScope, 1, 5);
+    Scan scanPrevDirection = new Scan(AttractionType.Attracting,
+	    GrowingDirection.Inwards, 1, true, 0, 1000, 1, 1000);
+    Scan scanUnknownSectors = new Scan(AttractionType.Attracting,
+	    GrowingDirection.Inwards, 1, true, 0, 10000, 1, 1000);
 
-    public ComplexMemoryCommStrategy(Chromosome chrom, Context<IAgent> context,
+    ScanMoveDecision smd = new ScanMoveDecision(8, 6, 10, 0.05);
+
+    public ComplexMemoryCommStrategy(IChromosome chrom, Context<IAgent> context,
 	    Agent controllingAgent) {
 	super(chrom, context, controllingAgent);
+
+	int sectorsX = (int) (config.spaceWidth / config.perceptionScope);
+	int sectorsY = (int) (config.spaceHeight / config.perceptionScope);
+
+	if (sectorsX > config.spaceWidth)
+	    sectorsX = config.spaceWidth;
+	if (sectorsY > config.spaceHeight)
+	    sectorsY = config.spaceHeight;
+
+	map = new SectorMap(space.getDimensions(), sectorsX, sectorsY, 1);
+	
+	if(config.useGA) {
+	    GA ga = GA.getInstance();
+	    
+	    scanAgentRepell.setMergeWeight((double)chrom.getGene(ga.RepellIndex).getAllele());
+	    scanAgentAppeal.setMergeWeight((double)chrom.getGene(ga.AppealIndex).getAllele());
+	    scanAgentMimic.setMergeWeight((double)chrom.getGene(ga.MimicIndex).getAllele());
+	    scanUnknownSectors.setMergeWeight((double)chrom.getGene(ga.MemoryIndex).getAllele());
+	    scanPrevDirection.setMergeWeight((double)chrom.getGene(ga.PrevDirectionIndex).getAllele());
+	    
+	    double repellAppealBorder = config.commScope * (double)chrom.getGene(ga.AppealRepellBorderIndex).getAllele();
+	    scanAgentRepell.setOuterBorderRadius(repellAppealBorder);
+	    scanAgentAppeal.setInnerBorderRadius(repellAppealBorder);
+	}
     }
 
     @Override
@@ -86,14 +121,14 @@ public class ComplexMemoryCommStrategy extends ExplorationStrategy {
 	    double distance = space.getDistance(currentLoc, agentLoc);
 	    double angle = SpatialMath.calcAngleFor2DMovement(space,
 		    currentLoc, agentLoc);
-	    agentRepell.add(angle, distance);
-	    agentAppeal.add(angle, distance);
+	    scanAgentRepell.addInput(angle, distance);
+	    scanAgentAppeal.addInput(angle, distance);
 
 	} else if (msg.getType() == MessageType.Direction) {
 	    NdPoint currentLoc = space.getLocation(controllingAgent);
 	    NdPoint agentLoc = space.getLocation(msg.getSender());
 	    double distance = space.getDistance(currentLoc, agentLoc);
-	    agentMimic.add((double) msg.getData(), distance);
+	    scanAgentMimic.addInput((double) msg.getData(), distance);
 
 	} else if (msg.getType() == MessageType.SectorMap) {
 	    map.merge((SectorMap) msg.getData());
@@ -126,7 +161,7 @@ public class ComplexMemoryCommStrategy extends ExplorationStrategy {
 	    double distance = space.getDistance(currentLoc, agentLoc);
 	    double angle = SpatialMath.calcAngleFor2DMovement(space,
 		    currentLoc, agentLoc);
-	    agentRepell.add(angle, distance);
+	    scanAgentRepell.addInput(angle, distance);
 	}
 
 	return AgentState.wander;
@@ -142,35 +177,34 @@ public class ComplexMemoryCommStrategy extends ExplorationStrategy {
 	for (Integer[] d : closeUnfilledSectors) {
 	    double angle = SpatialMath.angleFromDisplacement(d[0], d[1]);
 	    double distance = Math.sqrt(d[0] * d[0] + d[1] * d[1]);
-	    memoryFollow.add(angle, distance);
+	    scanUnknownSectors.addInput(angle, distance);
 	}
 
-	if(prevDirection >= -Math.PI)
-	    continuousMove.add(prevDirection);
+	if (prevDirection >= -Math.PI)
+	    scanPrevDirection.addInput(prevDirection);
 
-	CircleScan res;
-	
-	if (memoryFollow.isValid()) {
-	    res = CircleScan.merge(segmentCount, 0.12,
-		    collisionFreeSegments, agentRepell, agentAppeal,
-		    agentMimic, continuousMove, memoryFollow);
+	smd.setValidSegments(collisionFreeSegments);
+
+	if (scanUnknownSectors.isValid()) {
+	    smd.calcProbDist(scanAgentAppeal, scanAgentRepell, scanAgentMimic,
+		    scanPrevDirection, scanUnknownSectors);
 	} else {
-	    res = CircleScan.merge(segmentCount, 0.12,
-		    collisionFreeSegments, agentRepell,
-		    continuousMove);
+	    smd.calcProbDist(scanAgentRepell, scanPrevDirection);
 	}
 
-	prevDirection = res.getMovementAngle();
+	smd.normalize();
+	prevDirection = smd.getMovementAngle();
 	return prevDirection;
     }
 
     @Override
     protected void clear() {
-	agentRepell.clear();
-	agentAppeal.clear();
-	agentMimic.clear();
-	continuousMove.clear();
-	memoryFollow.clear();
+	scanAgentRepell.clear();
+	scanAgentAppeal.clear();
+	scanAgentMimic.clear();
+	scanPrevDirection.clear();
+	scanUnknownSectors.clear();
+	smd.clear();
     }
 
     @Override

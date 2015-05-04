@@ -1,6 +1,5 @@
 package swarm_sim.perception;
 
-import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +49,7 @@ public class Scan {
 	this.inputValidLowerBound = inputValidLowerBound;
 	this.inputValidUpperBound = inputValidUpperBound;
 
-	if (hasFluidSoftBorders) {
+	if (hasFluidBorders) {
 	    shortestDistance = 1E5;
 	} else {
 	    shortestDistance = hardInnerDistanceBorder;
@@ -115,6 +114,23 @@ public class Scan {
 
     public void clear() {
 	inputs.clear();
+	isValid = false;
+	
+	if (hasFluidBorders) {
+	    shortestDistance = 1E5;
+	} else {
+	    shortestDistance = hardInnerDistanceBorder;
+	    if (shortestDistance <= 0)
+		shortestDistance = 1;
+	}
+    }
+    
+    public void setInnerBorderRadius(double innerBorderRadius) {
+	this.hardInnerDistanceBorder = innerBorderRadius;
+    }
+    
+    public void setOuterBorderRadius(double outerBorderRadius) {
+	this.hardOuterDistanceBorder = outerBorderRadius;
     }
 
     public static double normAngle(double angle) {
@@ -127,6 +143,10 @@ public class Scan {
 
     public double getMergeWeight() {
 	return mergeWeight;
+    }
+    
+    public void setMergeWeight(double mergeWeight) {
+	this.mergeWeight = mergeWeight;
     }
 
     public boolean isValid() {
