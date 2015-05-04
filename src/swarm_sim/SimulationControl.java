@@ -121,7 +121,7 @@ public class SimulationControl implements IAgent {
 	
 	if (config.useGA) {
 	    GA ga = GA.getInstance();
-	    ga.currentFitness = 1.0/(int) RunEnvironment.getInstance().getCurrentSchedule()
+	    ga.currentFitness = 10000.0/(int) RunEnvironment.getInstance().getCurrentSchedule()
 			    .getTickCount();
 	}
     }
