@@ -12,7 +12,7 @@ public class GA {
     public int PrevDirectionIndex = 5;
 
     public IChromosome currentChromosome;
-    public int currentFitness;
+    public double currentFitness;
 
     static GA instance;
 

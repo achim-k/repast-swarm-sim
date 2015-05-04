@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.jgap.IChromosome;
 
-
 import repast.simphony.context.Context;
 import repast.simphony.engine.environment.RunEnvironment;
 import repast.simphony.query.space.continuous.ContinuousWithin;

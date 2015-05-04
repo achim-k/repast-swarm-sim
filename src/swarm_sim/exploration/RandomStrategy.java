@@ -3,7 +3,6 @@ package swarm_sim.exploration;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jgap.Chromosome;
 import org.jgap.IChromosome;
 
 import repast.simphony.context.Context;
@@ -16,13 +15,15 @@ import swarm_sim.communication.CommunicationType;
 import swarm_sim.communication.INetworkAgent;
 import swarm_sim.communication.Message;
 import swarm_sim.perception.AngleSegment;
-import swarm_sim.perception.CircleScan;
+import swarm_sim.perception.ScanMoveDecision;
 
 public class RandomStrategy extends ExplorationStrategy {
 
     int segmentCount = 8;
     int consecutiveMoveCount = 0;
     double directionAngle = RandomHelper.nextDoubleFromTo(-Math.PI, Math.PI);
+    
+    ScanMoveDecision smd = new ScanMoveDecision(8, 6, 10, 1.0d/8);
 
     public RandomStrategy(IChromosome chrom, Context<IAgent> context,
 	    Agent controllingAgent) {
@@ -74,9 +75,10 @@ public class RandomStrategy extends ExplorationStrategy {
 
 	/* Choose random direction */
 	consecutiveMoveCount = 0;
-	CircleScan res = CircleScan.merge(segmentCount, 0,
-		collisionFreeSegments);
-	directionAngle = res.getMovementAngle();
+	smd.setValidSegments(collisionFreeSegments);
+//	smd.calcProbDist();
+	smd.normalize();
+	directionAngle = smd.getMovementAngle();
 	return directionAngle;
     }
 
@@ -87,6 +89,7 @@ public class RandomStrategy extends ExplorationStrategy {
 
     @Override
     protected void clear() {
+	smd.clear();
     }
 
     @Override

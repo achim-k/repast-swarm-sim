@@ -3,7 +3,6 @@ package swarm_sim.foraging;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jgap.Chromosome;
 import org.jgap.IChromosome;
 
 import repast.simphony.context.Context;

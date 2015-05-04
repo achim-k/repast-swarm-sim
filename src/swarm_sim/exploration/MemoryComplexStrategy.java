@@ -3,7 +3,6 @@ package swarm_sim.exploration;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jgap.Chromosome;
 import org.jgap.IChromosome;
 
 import repast.simphony.context.Context;
@@ -17,7 +16,6 @@ import swarm_sim.Strategy;
 import swarm_sim.communication.CommunicationType;
 import swarm_sim.communication.INetworkAgent;
 import swarm_sim.communication.Message;
-import swarm_sim.communication.Message.MessageType;
 import swarm_sim.perception.AngleSegment;
 
 public class MemoryComplexStrategy extends ExplorationStrategy {

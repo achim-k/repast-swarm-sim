@@ -3,7 +3,6 @@ package swarm_sim.foraging;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jgap.Chromosome;
 import org.jgap.IChromosome;
 
 import repast.simphony.context.Context;
@@ -21,9 +20,9 @@ import swarm_sim.communication.Message;
 import swarm_sim.communication.Message.MessageType;
 import swarm_sim.perception.AngleSegment;
 import swarm_sim.perception.Scan;
-import swarm_sim.perception.ScanMoveDecision;
 import swarm_sim.perception.Scan.AttractionType;
 import swarm_sim.perception.Scan.GrowingDirection;
+import swarm_sim.perception.ScanMoveDecision;
 
 public class StateCommStrategy extends ForagingStrategy {
 

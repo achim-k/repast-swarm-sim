@@ -3,7 +3,6 @@ package swarm_sim.foraging;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jgap.Chromosome;
 import org.jgap.IChromosome;
 
 import repast.simphony.context.Context;
@@ -11,19 +10,20 @@ import repast.simphony.random.RandomHelper;
 import repast.simphony.space.SpatialMath;
 import repast.simphony.space.continuous.NdPoint;
 import swarm_sim.Agent;
+import swarm_sim.Agent.AgentState;
+import swarm_sim.IAgent;
+import swarm_sim.IAgent.AgentType;
 import swarm_sim.SectorMap;
 import swarm_sim.Strategy;
-import swarm_sim.Agent.AgentState;
-import swarm_sim.IAgent.AgentType;
-import swarm_sim.IAgent;
-import swarm_sim.Strategy.MessageTypeRegisterPair;
 import swarm_sim.communication.CommunicationType;
 import swarm_sim.communication.INetworkAgent;
 import swarm_sim.communication.Message;
 import swarm_sim.communication.Message.MessageType;
-import swarm_sim.foraging.ForagingStrategy.ResourceTarget;
 import swarm_sim.perception.AngleSegment;
-import swarm_sim.perception.CircleScan;
+import swarm_sim.perception.Scan;
+import swarm_sim.perception.Scan.AttractionType;
+import swarm_sim.perception.Scan.GrowingDirection;
+import swarm_sim.perception.ScanMoveDecision;
 
 public class GoalCommunication extends ForagingStrategy {
 
@@ -34,12 +34,15 @@ public class GoalCommunication extends ForagingStrategy {
 
     ResourceTarget currentTarget;
 
-    CircleScan resourceScan = new CircleScan(segmentCount, 1, 1, 100, 1, 0, 1,
-	    0, config.perceptionScope);
-    CircleScan deliverDirection = new CircleScan(segmentCount, 1, 1, 100, 1, 1,
-	    1, 0, config.perceptionScope);
-    CircleScan agentRepulsion = new CircleScan(segmentCount, 2, 4, 100, 1, -1,
-	    -2, 0, 0.5 * config.commScope);
+    Scan scanResources = new Scan(AttractionType.Attracting,
+	    GrowingDirection.Inwards, 1, true, 0, config.perceptionScope, 1,
+	    100);
+    Scan scanDeliverDirection = new Scan(AttractionType.Attracting,
+	    GrowingDirection.Inwards, 1, true, 0, 1E8, 1, 10);
+    Scan scanCurrentTarget = new Scan(AttractionType.Attracting,
+	    GrowingDirection.Inwards, 1, true, 0, 1E8, 1, 10);
+
+    ScanMoveDecision smd = new ScanMoveDecision(8, 6, 10, 0.05);
 
     public GoalCommunication(IChromosome chrom, Context<IAgent> context,
 	    Agent controllingAgent) {
@@ -150,7 +153,7 @@ public class GoalCommunication extends ForagingStrategy {
 
 		double angle = SpatialMath.calcAngleFor2DMovement(space,
 			currentLocation, space.getLocation(agent));
-		resourceScan.add(angle, distance);
+		scanResources.addInput(angle, distance);
 	    }
 	}
 
@@ -184,34 +187,32 @@ public class GoalCommunication extends ForagingStrategy {
     protected double makeDirectionDecision(AgentState prevState,
 	    AgentState currentState, List<AngleSegment> collisionFreeSegments) {
 
+	smd.setValidSegments(collisionFreeSegments);
+
 	if (currentState == AgentState.acquire) {
 	    if (currentTarget != null) {
 		SectorMap currentSector = map.getCurrentSector(space
 			.getLocation(controllingAgent));
 		double direction = currentSector
 			.getDirectionToSector(currentTarget.sector);
-		resourceScan.add(direction);
+		scanCurrentTarget.addInput(direction);
 	    }
+	    smd.calcProbDist(scanResources, scanCurrentTarget);
 
-	    CircleScan res = CircleScan.merge(segmentCount, 0.12,
-		    collisionFreeSegments, resourceScan, agentRepulsion);
-	    directionAngle = res.getMovementAngle();
-	    return directionAngle;
 	} else if (currentState == AgentState.deliver) {
-	    deliverDirection.clear();
 	    double moveAngleToBase = SpatialMath.calcAngleFor2DMovement(space,
 		    space.getLocation(controllingAgent),
 		    space.getLocation(config.baseAgent));
-	    deliverDirection.add(moveAngleToBase);
-	    CircleScan resDel = CircleScan.merge(segmentCount, 0.12,
-		    collisionFreeSegments, deliverDirection);
-	    directionAngle = resDel.getMovementAngle();
-	    return directionAngle;
+	    scanDeliverDirection.addInput(moveAngleToBase);
+	    smd.calcProbDist(scanDeliverDirection);
 	} else {
-	    System.err.println("ERROR: State → " + currentState);
+	    System.err.println("state not existing: " + currentState);
 	}
 
-	return -100;
+	smd.normalize();
+	directionAngle = smd.getMovementAngle();
+
+	return directionAngle;
     }
 
     @Override
@@ -224,10 +225,10 @@ public class GoalCommunication extends ForagingStrategy {
     @Override
     public void clear() {
 	super.clear();
-	agentRepulsion.clear();
-	resourceScan.clear();
-	deliverDirection.clear();
-	// agentFollow.clear();
+	scanCurrentTarget.clear();
+	scanDeliverDirection.clear();
+	scanResources.clear();
+	smd.clear();
     }
 
 }
