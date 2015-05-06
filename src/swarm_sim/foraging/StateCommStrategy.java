@@ -39,7 +39,12 @@ public class StateCommStrategy extends ForagingStrategy {
     Scan scanCurrentTarget = new Scan(AttractionType.Attracting,
 	    GrowingDirection.Inwards, 1, true, 0, 1E8, 1, 10);
     Scan scanAgentFollow = new Scan(AttractionType.Attracting,
-	    GrowingDirection.Inwards, 1, true, 0, config.commScope, 1, 10);
+	    GrowingDirection.Inwards, 1, true, 0, config.commScope, 1, 1);
+    Scan scanAgentRepell = new Scan(AttractionType.Repelling,
+	    GrowingDirection.Inwards, 1.5, true, 0, 0.6 * config.commScope, 1,
+	    10000);
+    
+    int perceivedAgentCount = 0;
 
     ScanMoveDecision smd = new ScanMoveDecision(8, 6, 10, 0.05);
 
@@ -75,20 +80,21 @@ public class StateCommStrategy extends ForagingStrategy {
 		    double angle = SpatialMath.calcAngleFor2DMovement(space,
 			    currentLocation, agentLoc);
 		    scanAgentFollow.addInput(angle, distance);
+
 		}
 
 	    }
 	}
 
-	// TODO
-	// if (currentState == AgentState.acquire) {
-	// NdPoint agentLoc = space.getLocation(msg.getSender());
-	// NdPoint currentLocation = space.getLocation(controllingAgent);
-	// double distance = space.getDistance(currentLocation, agentLoc);
-	// double angle = SpatialMath.calcAngleFor2DMovement(space,
-	// currentLocation, agentLoc);
-	// // agentRepulsion.add(angle, distance);
-	// }
+	if (currentState == AgentState.acquire) {
+	    NdPoint agentLoc = space.getLocation(msg.getSender());
+	    NdPoint currentLocation = space.getLocation(controllingAgent);
+	    double distance = space.getDistance(currentLocation, agentLoc);
+	    double angle = SpatialMath.calcAngleFor2DMovement(space,
+		    currentLocation, agentLoc);
+	    scanAgentRepell.addInput(angle, distance);
+	    perceivedAgentCount++;
+	}
 	return currentState;
     }
 
@@ -128,6 +134,13 @@ public class StateCommStrategy extends ForagingStrategy {
 		double angle = SpatialMath.calcAngleFor2DMovement(space,
 			currentLocation, space.getLocation(agent));
 		scanResources.addInput(angle, distance);
+	    } else if(agent.getAgentType() == controllingAgent.getAgentType()) {
+		perceivedAgentCount++;
+		double distance = space.getDistance(currentLocation,
+			space.getLocation(agent));
+		double angle = SpatialMath.calcAngleFor2DMovement(space,
+			currentLocation, space.getLocation(agent));
+		scanAgentRepell.addInput(angle, distance);
 	    }
 	}
 
@@ -172,10 +185,16 @@ public class StateCommStrategy extends ForagingStrategy {
 	     * If no resources have been perceived and no targets there and no
 	     * agent to follow → wander
 	     */
-	    if (perceivedResourceCount == 0 && currentTarget == null
-		    && !scanAgentFollow.isValid()) {
-		currentState = AgentState.wander;
+	    if (perceivedResourceCount == 0 && currentTarget == null) {
+		if(scanAgentFollow.isValid()) {
+		    double wanderProbability = 1/(perceivedAgentCount + 1);
+		    if(Math.random() >= wanderProbability)
+			currentState = AgentState.wander;
+		} else
+		    currentState = AgentState.wander;
 	    }
+	    
+	    
 	}
 	return currentState;
     }
@@ -192,14 +211,14 @@ public class StateCommStrategy extends ForagingStrategy {
 			space, space.getLocation(controllingAgent),
 			currentTarget.location));
 	    }
-	    smd.calcProbDist(scanResources, scanCurrentTarget, scanAgentFollow);
+	    smd.calcProbDist(scanResources, scanCurrentTarget, scanAgentFollow, scanAgentRepell);
 
 	} else if (currentState == AgentState.deliver) {
 	    double moveAngleToBase = SpatialMath.calcAngleFor2DMovement(space,
 		    space.getLocation(controllingAgent),
 		    space.getLocation(config.baseAgent));
 	    scanDeliverDirection.addInput(moveAngleToBase);
-	    smd.calcProbDist(scanDeliverDirection);
+	    smd.calcProbDist(scanDeliverDirection, scanAgentRepell);
 	} else {
 	    System.err.println("state not existing: " + currentState);
 	}
@@ -224,7 +243,9 @@ public class StateCommStrategy extends ForagingStrategy {
 	scanResources.clear();
 	scanCurrentTarget.clear();
 	scanDeliverDirection.clear();
+	scanAgentRepell.clear();
 	smd.clear();
+	perceivedAgentCount = 0;
     }
 
     @Override

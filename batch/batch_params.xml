@@ -1,17 +1,17 @@
 <?xml version="1.0" ?>
-<sweep runs="1">
+<sweep runs="100">
 	<parameter name="resource_count" type="constant"
 		constant_type="int" value="0"></parameter>
 	<parameter name="agent_count" type="constant" constant_type="int"
 		value="20"></parameter>
-	<parameter name="random_consecutive_move" type="constant"
-		constant_type="int" value="2"></parameter>
+	<parameter name="consecutive_move" type="constant"
+		constant_type="int" value="0"></parameter>
 	<parameter name="expl_strategy" type="constant"
-		constant_type="java.lang.String" value="ComplexMemoryCommunication"></parameter>
+		constant_type="java.lang.String" value="ComplexCommunication"></parameter>
 	<parameter name="communication_scope" type="constant"
 		constant_type="double" value="15"></parameter>
 	<parameter name="comm_frequency" type="constant"
-		constant_type="int" value="2"></parameter>
+		constant_type="int" value="10"></parameter>
 	<parameter name="resource_nest_count" type="constant"
 		constant_type="int" value="6"></parameter>
 	<parameter name="perception_scope" type="constant"
@@ -19,7 +19,7 @@
 	<parameter name="space_dimensions" type="constant"
 		constant_type="java.lang.String" value="100:100"></parameter>
 	<parameter name="use_ga" type="constant" constant_type="boolean"
-		value="true"></parameter>
+		value="false"></parameter>
 	<parameter name="foraging_strategy" type="list" value_type="java.lang.String"
 		values="NoCommunication"></parameter>
 </sweep>

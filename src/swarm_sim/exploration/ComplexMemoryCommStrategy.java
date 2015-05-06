@@ -28,29 +28,32 @@ import swarm_sim.perception.ScanMoveDecision;
 
 public class ComplexMemoryCommStrategy extends ExplorationStrategy {
 
-    int segmentCount = 8;
+    private static final int INFINITY = 99999999;
 
-    double prevDirection = RandomHelper.nextDoubleFromTo(-Math.PI, Math.PI);
+    private int consecutiveMoveCount = INFINITY;
 
-    SectorMap map;
+    private double prevDirection = RandomHelper.nextDoubleFromTo(-Math.PI,
+	    Math.PI);
 
-    Scan scanAgentRepell = new Scan(AttractionType.Repelling,
+    private SectorMap map;
+
+    private Scan scanAgentRepell = new Scan(AttractionType.Repelling,
 	    GrowingDirection.Inwards, 2, false, 0, 0.8 * config.commScope, 1,
 	    1000);
-    Scan scanAgentAppeal = new Scan(AttractionType.Attracting,
+    private Scan scanAgentAppeal = new Scan(AttractionType.Attracting,
 	    GrowingDirection.Outwards, 0.2, false, 0.8 * config.commScope,
 	    config.commScope, 1, 1);
-    Scan scanAgentMimic = new Scan(AttractionType.Attracting,
+    private Scan scanAgentMimic = new Scan(AttractionType.Attracting,
 	    GrowingDirection.Inwards, 1, true, 0, config.commScope, 1, 5);
-    Scan scanPrevDirection = new Scan(AttractionType.Attracting,
+    private Scan scanPrevDirection = new Scan(AttractionType.Attracting,
 	    GrowingDirection.Inwards, 1, true, 0, 1000, 1, 1000);
-    Scan scanUnknownSectors = new Scan(AttractionType.Attracting,
+    private Scan scanUnknownSectors = new Scan(AttractionType.Attracting,
 	    GrowingDirection.Inwards, 1, true, 0, 10000, 1, 1000);
 
-    ScanMoveDecision smd = new ScanMoveDecision(8, 6, 10, 0.05);
+    private ScanMoveDecision smd = new ScanMoveDecision(8, 6, 10, 0.05);
 
-    public ComplexMemoryCommStrategy(IChromosome chrom, Context<IAgent> context,
-	    Agent controllingAgent) {
+    public ComplexMemoryCommStrategy(IChromosome chrom,
+	    Context<IAgent> context, Agent controllingAgent) {
 	super(chrom, context, controllingAgent);
 
 	int sectorsX = (int) (config.spaceWidth / config.perceptionScope);
@@ -62,17 +65,24 @@ public class ComplexMemoryCommStrategy extends ExplorationStrategy {
 	    sectorsY = config.spaceHeight;
 
 	map = new SectorMap(space.getDimensions(), sectorsX, sectorsY, 1);
-	
-	if(config.useGA) {
+
+	if (config.useGA) {
 	    GA ga = GA.getInstance();
-	    
-	    scanAgentRepell.setMergeWeight((double)chrom.getGene(ga.RepellIndex).getAllele());
-	    scanAgentAppeal.setMergeWeight((double)chrom.getGene(ga.AppealIndex).getAllele());
-	    scanAgentMimic.setMergeWeight((double)chrom.getGene(ga.MimicIndex).getAllele());
-	    scanUnknownSectors.setMergeWeight((double)chrom.getGene(ga.MemoryIndex).getAllele());
-	    scanPrevDirection.setMergeWeight((double)chrom.getGene(ga.PrevDirectionIndex).getAllele());
-	    
-	    double repellAppealBorder = config.commScope * (double)chrom.getGene(ga.AppealRepellBorderIndex).getAllele();
+
+	    scanAgentRepell.setMergeWeight((double) chrom.getGene(
+		    ga.RepellIndex).getAllele());
+	    scanAgentAppeal.setMergeWeight((double) chrom.getGene(
+		    ga.AppealIndex).getAllele());
+	    scanAgentMimic.setMergeWeight((double) chrom.getGene(ga.MimicIndex)
+		    .getAllele());
+	    scanUnknownSectors.setMergeWeight((double) chrom.getGene(
+		    ga.MemoryIndex).getAllele());
+	    scanPrevDirection.setMergeWeight((double) chrom.getGene(
+		    ga.PrevDirectionIndex).getAllele());
+
+	    double repellAppealBorder = config.commScope
+		    * (double) chrom.getGene(ga.AppealRepellBorderIndex)
+			    .getAllele();
 	    scanAgentRepell.setOuterBorderRadius(repellAppealBorder);
 	    scanAgentAppeal.setInnerBorderRadius(repellAppealBorder);
 	}
@@ -120,15 +130,18 @@ public class ComplexMemoryCommStrategy extends ExplorationStrategy {
 		    currentLoc, agentLoc);
 	    scanAgentRepell.addInput(angle, distance);
 	    scanAgentAppeal.addInput(angle, distance);
+	    consecutiveMoveCount = INFINITY;
 
 	} else if (msg.getType() == MessageType.Direction) {
 	    NdPoint currentLoc = space.getLocation(controllingAgent);
 	    NdPoint agentLoc = space.getLocation(msg.getSender());
 	    double distance = space.getDistance(currentLoc, agentLoc);
 	    scanAgentMimic.addInput((double) msg.getData(), distance);
+	    consecutiveMoveCount = INFINITY;
 
 	} else if (msg.getType() == MessageType.SectorMap) {
 	    map.merge((SectorMap) msg.getData());
+	    consecutiveMoveCount = INFINITY;
 	}
 
 	return currentState;
@@ -159,6 +172,7 @@ public class ComplexMemoryCommStrategy extends ExplorationStrategy {
 	    double angle = SpatialMath.calcAngleFor2DMovement(space,
 		    currentLoc, agentLoc);
 	    scanAgentRepell.addInput(angle, distance);
+	    consecutiveMoveCount = INFINITY;
 	}
 
 	return AgentState.wander;
@@ -169,6 +183,21 @@ public class ComplexMemoryCommStrategy extends ExplorationStrategy {
 	    AgentState currentState, List<AngleSegment> collisionFreeSegments) {
 	NdPoint currentLocation = space.getLocation(controllingAgent);
 
+	if (consecutiveMoveCount < config.consecutiveMoves) {
+	    /* use same direction distribution, if possible */
+	    if(collisionFreeSegments.size() == 1 && collisionFreeSegments.get(0).start == -Math.PI) {
+		/* free to go in any direction */
+		consecutiveMoveCount++;
+		if(smd.hasInputs()) /* Only use previous prob distribution if it is not uniformly */
+		    prevDirection = smd.getMovementAngle();
+		
+		return prevDirection;
+	    }
+	}
+	
+	consecutiveMoveCount = INFINITY;
+	smd.clear();
+	
 	map.setPosition(currentLocation);
 	List<Integer[]> closeUnfilledSectors = map.getCloseUnfilledSectors(5);
 	for (Integer[] d : closeUnfilledSectors) {
@@ -201,13 +230,15 @@ public class ComplexMemoryCommStrategy extends ExplorationStrategy {
 	scanAgentMimic.clear();
 	scanPrevDirection.clear();
 	scanUnknownSectors.clear();
-	smd.clear();
+//	smd.clear(); // is cleared in make move decision
     }
 
     @Override
     protected void reset() {
 	prevDirection = RandomHelper.nextDoubleFromTo(-Math.PI, Math.PI);
 	map.setCurrentSectorUnfilled();
+	smd.clear();
+	consecutiveMoveCount = INFINITY;
     }
 
 }

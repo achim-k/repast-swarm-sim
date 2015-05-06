@@ -20,6 +20,7 @@ import swarm_sim.communication.CommunicationType;
 import swarm_sim.communication.INetworkAgent;
 import swarm_sim.communication.Message;
 import swarm_sim.communication.Message.MessageType;
+import swarm_sim.learning.GA;
 import swarm_sim.perception.AngleSegment;
 import swarm_sim.perception.Scan;
 import swarm_sim.perception.Scan.AttractionType;
@@ -27,11 +28,11 @@ import swarm_sim.perception.Scan.GrowingDirection;
 import swarm_sim.perception.ScanMoveDecision;
 
 public class ComplexCommStrategy extends ExplorationStrategy {
-    
+
     private static final int INFINITY = 99999999;
 
-    private int segmentCount = 8;
-    private double prevDirection = RandomHelper.nextDoubleFromTo(-Math.PI, Math.PI);
+    private double prevDirection = RandomHelper.nextDoubleFromTo(-Math.PI,
+	    Math.PI);
     private int consecutiveMoveCount = INFINITY;
 
     private Scan scanAgentRepell = new Scan(AttractionType.Repelling,
@@ -41,17 +42,54 @@ public class ComplexCommStrategy extends ExplorationStrategy {
 	    GrowingDirection.Outwards, 0.2, false, 0.8 * config.commScope,
 	    config.commScope, 1, 1);
     private Scan scanAgentMimic = new Scan(AttractionType.Attracting,
-	    GrowingDirection.Inwards, 1, true, 0,
-	    config.commScope, 1, 1000);
+	    GrowingDirection.Inwards, 1, true, 0, config.commScope, 1, 1000);
     private Scan scanPrevDirection = new Scan(AttractionType.Attracting,
-	    GrowingDirection.Inwards, 1, true, 0,
-	    1000, 1, 1000);
-    
+	    GrowingDirection.Inwards, 1, true, 0, 1000, 1, 1000);
+
     private ScanMoveDecision smd = new ScanMoveDecision(8, 6, 10, 0.125);
 
     public ComplexCommStrategy(IChromosome chrom, Context<IAgent> context,
 	    Agent controllingAgent) {
 	super(chrom, context, controllingAgent);
+
+	if (config.useGA) {
+	    GA ga = GA.getInstance();
+
+	    scanAgentRepell.setMergeWeight((double) chrom.getGene(
+		    ga.RepellIndex).getAllele());
+	    scanAgentAppeal.setMergeWeight((double) chrom.getGene(
+		    ga.AppealIndex).getAllele());
+	    scanAgentMimic.setMergeWeight((double) chrom.getGene(ga.MimicIndex)
+		    .getAllele());
+	    scanPrevDirection.setMergeWeight((double) chrom.getGene(
+		    ga.PrevDirectionIndex).getAllele());
+
+	    double repellAppealBorder = config.commScope
+		    * (double) chrom.getGene(ga.AppealRepellBorderIndex)
+			    .getAllele();
+	    scanAgentRepell.setOuterBorderRadius(repellAppealBorder);
+	    scanAgentAppeal.setInnerBorderRadius(repellAppealBorder);
+	} else {
+	    
+	    double winningGenes[] = new double[] { 0.94, 0.36, 0.99, 0.00, 0.76 };
+	    GA ga = GA.getInstance();
+	    
+	    ga.RepellIndex = 0;
+	    ga.AppealIndex = 1;
+	    ga.AppealRepellBorderIndex = 2;
+	    ga.MimicIndex = 3;
+	    ga.PrevDirectionIndex = 4;
+
+	    scanAgentRepell.setMergeWeight(winningGenes[0]);
+	    scanAgentAppeal.setMergeWeight(winningGenes[1]);
+	    scanAgentMimic.setMergeWeight(winningGenes[3]);
+	    scanPrevDirection.setMergeWeight(winningGenes[4]);
+
+	    double repellAppealBorder = config.commScope
+		    * winningGenes[2];
+	    scanAgentRepell.setOuterBorderRadius(repellAppealBorder);
+	    scanAgentAppeal.setInnerBorderRadius(repellAppealBorder);
+	}
     }
 
     @Override
@@ -98,7 +136,7 @@ public class ComplexCommStrategy extends ExplorationStrategy {
 	    if (p[0] <= config.spaceWidth && p[0] >= 0 && p[1] >= 0
 		    && p[1] <= config.spaceHeight) {
 		scanAgentRepell.addInput(angle, distance);
-	    	consecutiveMoveCount = INFINITY;
+		consecutiveMoveCount = INFINITY;
 	    }
 	}
 
@@ -145,32 +183,37 @@ public class ComplexCommStrategy extends ExplorationStrategy {
     @Override
     protected double makeDirectionDecision(AgentState prevState,
 	    AgentState currentState, List<AngleSegment> collisionFreeSegments) {
-	
+
 	if (consecutiveMoveCount < config.consecutiveMoves) {
 	    /* use same direction distribution, if possible */
-	    if(collisionFreeSegments.size() == 1 && collisionFreeSegments.get(0).start == -Math.PI) {
+	    if (collisionFreeSegments.size() == 1
+		    && collisionFreeSegments.get(0).start == -Math.PI) {
 		/* free to go in any direction */
 		consecutiveMoveCount++;
-		if(smd.hasInputs()) /* Only use previous prob distribution if it is not uniformly */
+		if (smd.hasInputs()) /*
+				      * Only use previous prob distribution if
+				      * it is not uniformly
+				      */
 		    prevDirection = smd.getMovementAngle();
-		
+
 		return prevDirection;
 	    }
 	}
-	
+
 	/* not able to go into same direction, or consecutiveMoveCount too high */
 	consecutiveMoveCount = 0;
 	smd.clear();
-	
+
 	scanPrevDirection.addInput(prevDirection);
 
 	smd.setValidSegments(collisionFreeSegments);
-	smd.calcProbDist(scanAgentAppeal, scanAgentRepell, scanAgentMimic, scanPrevDirection);
+	smd.calcProbDist(scanAgentAppeal, scanAgentRepell, scanAgentMimic,
+		scanPrevDirection);
 	smd.normalize();
-	smd.printProbabilities(null);
+	// smd.printProbabilities(null);
 
 	prevDirection = smd.getMovementAngle();
-	
+
 	return prevDirection;
     }
 
@@ -180,7 +223,7 @@ public class ComplexCommStrategy extends ExplorationStrategy {
 	scanAgentRepell.clear();
 	scanAgentMimic.clear();
 	scanPrevDirection.clear();
-	//smd is cleared in makemovedecision
+	// smd is cleared in makemovedecision
     }
 
     @Override

@@ -7,7 +7,7 @@
 		type="int" defaultValue="20" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
 	<parameter name="consecutive_move" displayName="Consecutive moves"
-		type="int" defaultValue="5" isReadOnly="false"
+		type="int" defaultValue="0" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
 	<parameter name="randomSeed" displayName="Default Random Seed"
 		type="int" defaultValue="__NULL__" isReadOnly="false"
@@ -20,7 +20,7 @@
 		type="double" defaultValue="15.0" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter" />
 	<parameter name="comm_frequency" displayName="Communication Frequency"
-		type="int" defaultValue="10" isReadOnly="false"
+		type="int" defaultValue="1" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
 	<parameter name="resource_nest_count" displayName="Number of resource nests"
 		type="int" defaultValue="6" isReadOnly="false"
@@ -35,7 +35,7 @@
 		defaultValue="false" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$BooleanConverter" />
 	<parameter name="foraging_strategy" displayName="Foraging Strategy"
-		type="java.lang.String" defaultValue="NoCommunication" isReadOnly="false"
+		type="java.lang.String" defaultValue="StateCommunication" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter"
 		values="NoCommunication StateCommunication GoalCommunication " />
 </parameters>
