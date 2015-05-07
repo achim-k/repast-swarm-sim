@@ -228,7 +228,8 @@ public class GoalCommunication extends ForagingStrategy {
     public void reset() {
 	super.reset();
 	this.clear();
-	currentTarget = null;
+	if(currentTarget != null)
+	    currentTarget.validity = false;
     }
 
     @Override

@@ -85,6 +85,20 @@ public class ComplexMemoryCommStrategy extends ExplorationStrategy {
 			    .getAllele();
 	    scanAgentRepell.setOuterBorderRadius(repellAppealBorder);
 	    scanAgentAppeal.setInnerBorderRadius(repellAppealBorder);
+	} else {
+	    double winningOutput[] = new double[] { 0.15, 0.92, 0.69, 0.04, 0.99, 0.33};
+
+	    scanAgentRepell.setMergeWeight(winningOutput[0]);
+	    scanAgentAppeal.setMergeWeight(winningOutput[1]);
+	    scanAgentMimic.setMergeWeight(winningOutput[3]);
+	    scanUnknownSectors.setMergeWeight(winningOutput[4]);
+	    scanPrevDirection.setMergeWeight(winningOutput[5]);
+
+	    double repellAppealBorder = config.commScope
+		    * winningOutput[2];
+	    scanAgentRepell.setOuterBorderRadius(repellAppealBorder);
+	    scanAgentAppeal.setInnerBorderRadius(repellAppealBorder);
+	    
 	}
     }
 

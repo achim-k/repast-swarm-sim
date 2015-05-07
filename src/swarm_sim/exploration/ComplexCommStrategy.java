@@ -5,8 +5,6 @@ import java.util.List;
 
 import org.jgap.IChromosome;
 
-import com.l2fprod.common.model.HasId;
-
 import repast.simphony.context.Context;
 import repast.simphony.random.RandomHelper;
 import repast.simphony.space.SpatialMath;
@@ -71,7 +69,8 @@ public class ComplexCommStrategy extends ExplorationStrategy {
 	    scanAgentAppeal.setInnerBorderRadius(repellAppealBorder);
 	} else {
 	    
-	    double winningGenes[] = new double[] { 0.94, 0.36, 0.99, 0.00, 0.76 };
+//	    double winningGenes2[] = new double[] { 0.43, 0.06, 0.94, 0.03, 0.71 }; → 1030 avg after 50
+	    double winningGenes[] = new double[] { 0.94, 0.36, 0.99, 0.00, 0.76 }; // → 981 avg after 50
 	    GA ga = GA.getInstance();
 	    
 	    ga.RepellIndex = 0;

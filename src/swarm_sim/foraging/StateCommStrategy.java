@@ -187,9 +187,9 @@ public class StateCommStrategy extends ForagingStrategy {
 	     */
 	    if (perceivedResourceCount == 0 && currentTarget == null) {
 		if(scanAgentFollow.isValid()) {
-		    double wanderProbability = 1/(perceivedAgentCount + 1);
-		    if(Math.random() >= wanderProbability)
-			currentState = AgentState.wander;
+//		    double wanderProbability = 1/(perceivedAgentCount + 1);
+//		    if(Math.random() >= wanderProbability)
+//			currentState = AgentState.wander;
 		} else
 		    currentState = AgentState.wander;
 	    }
@@ -204,7 +204,7 @@ public class StateCommStrategy extends ForagingStrategy {
 	    AgentState currentState, List<AngleSegment> collisionFreeSegments) {
 
 	smd.setValidSegments(collisionFreeSegments);
-
+	
 	if (currentState == AgentState.acquire) {
 	    if (currentTarget != null) {
 		scanCurrentTarget.addInput(SpatialMath.calcAngleFor2DMovement(

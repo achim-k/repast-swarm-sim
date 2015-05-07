@@ -18,12 +18,26 @@ public abstract class ForagingStrategy extends Strategy {
 	public SectorMap sector;
 	public boolean validity;
 
-	public ResourceTarget(int resouceCount, NdPoint location, SectorMap sector) {
+	public ResourceTarget(int resouceCount, NdPoint location,
+		SectorMap sector) {
 	    super();
 	    this.resourceCount = resouceCount;
 	    this.location = location;
 	    this.sector = sector;
 	    this.validity = true;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+	    if (obj.getClass() != ResourceTarget.class)
+		return false;
+
+	    ResourceTarget t = (ResourceTarget) obj;
+
+	    if (t.sector.equals(this.sector) && t.resourceCount == this.resourceCount)
+		return true;
+	    
+	    return false;
 	}
     }
 
@@ -40,10 +54,11 @@ public abstract class ForagingStrategy extends Strategy {
     @Override
     public void clear() {
 	perceivedResourceCount = 0;
-	
+
     }
 
     @Override
     public void reset() {
     }
+
 }

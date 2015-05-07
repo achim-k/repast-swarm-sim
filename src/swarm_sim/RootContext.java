@@ -40,21 +40,21 @@ public class RootContext implements ContextBuilder<IAgent> {
 	Parameters params = runEnv.getParameters();
 	Configuration config = Configuration.getInstance();
 	DataCollection data = DataCollection.getInstance();
-	
+
 	config.reset();
 	data.reset();
 	context.add(data);
-	
+
 	/* Do not run more than XXXX ticks */
 	config.maxTicks = 6000;
 	runEnv.endAt(config.maxTicks);
 
 	/* Read params */
 	config.agentCount = params.getInteger("agent_count");
-	config.consecutiveMoves = params
-		.getInteger("consecutive_move");
+	config.consecutiveMoves = params.getInteger("consecutive_move");
 	config.useGA = params.getBoolean("use_ga");
 	config.commFreq = params.getInteger("comm_frequency");
+	config.printConfig = params.getBoolean("print_params");
 
 	String dimensions[] = params.getString("space_dimensions").split(":");
 
@@ -78,12 +78,6 @@ public class RootContext implements ContextBuilder<IAgent> {
 	config.resourceNestCount = params.getInteger("resource_nest_count");
 	config.resourceCount = params.getInteger("resource_count");
 
-	/* Value layer to track explored area, default: 0.0 */
-	exploredArea = new AdvancedGridValueLayer("layer_explored", 0.0, false,
-		config.spaceWidth, config.spaceHeight);
-	context.addValueLayer(exploredArea);
-//	readMapFromImage(exploredArea, "data/map.png");
-
 	/* Create continuous space */
 	ContinuousSpaceFactory spaceFactory = ContinuousSpaceFactoryFinder
 		.createContinuousSpaceFactory(null);
@@ -91,7 +85,13 @@ public class RootContext implements ContextBuilder<IAgent> {
 	space = spaceFactory.createContinuousSpace("space_continuous", context,
 		new RandomCartesianAdder<IAgent>(),
 		new repast.simphony.space.continuous.BouncyBorders(),
-		config.spaceWidth, config.spaceWidth);
+		config.spaceWidth, config.spaceHeight);
+
+	/* Value layer to track explored area, default: 0.0 */
+	exploredArea = new AdvancedGridValueLayer("layer_explored", 0.0, false,
+		config.spaceWidth, config.spaceHeight);
+	context.addValueLayer(exploredArea);
+	// readMapFromImage(exploredArea, "data/map.png");
 
 	PseudoRandomAdder<IAgent> adder = new PseudoRandomAdder<IAgent>(
 		exploredArea);
@@ -100,7 +100,7 @@ public class RootContext implements ContextBuilder<IAgent> {
 	adder.setResourceAdderSaveClass(Resource.class,
 		config.resourceNestCount, 1, space);
 	space.setAdder(adder);
-	
+
 	/* add Resources */
 	for (int i = 0; i < config.resourceCount; i++) {
 	    context.add(new Resource());
@@ -109,8 +109,8 @@ public class RootContext implements ContextBuilder<IAgent> {
 	/* spawn base */
 	ISchedule schedule = runEnv.getCurrentSchedule();
 	Base base = new Base();
-	schedule.schedule(ScheduleParameters.createRepeating(
-		1, 1, ScheduleParameters.LAST_PRIORITY), base, "step");
+	schedule.schedule(ScheduleParameters.createRepeating(1, 1,
+		ScheduleParameters.LAST_PRIORITY), base, "step");
 	context.add(base);
 	config.baseAgent = base;
 
@@ -126,18 +126,18 @@ public class RootContext implements ContextBuilder<IAgent> {
 		.createRepeating(0, 1);
 
 	List<IAgent> networkAgents = new ArrayList<>();
-//	networkAgents.add(base);
-	
+	// networkAgents.add(base);
+
 	GA ga = GA.getInstance();
 
 	/* add agents */
 	for (int i = 0; i < config.agentCount; i++) {
 	    IAgent agent;
-	    if(config.useGA)
+	    if (config.useGA)
 		agent = new Agent(context, ga.currentChromosome);
 	    else
 		agent = new Agent(context, null);
-	    
+
 	    networkAgents.add(agent);
 	    schedule.schedule(agentScheduleParams, agent, "step");
 	    context.add(agent);
@@ -158,23 +158,31 @@ public class RootContext implements ContextBuilder<IAgent> {
 	schedule.schedule(ScheduleParameters
 		.createAtEnd(ScheduleParameters.LAST_PRIORITY), this,
 		"endAction");
-	
-	/* Print config */
-	System.out.println();
-	System.out.println("Foraging context loaded");
-	System.out.println("-----------------------------------");
-	System.out.println("Number of Agents:      \t" + config.agentCount);
-	System.out.println("Exploration Strategy:  \t" + config.explStrat);
-	System.out.println("Foraging Strategy:     \t" + config.foragingStrat);
-	System.out.println("Dimensions:            \t" + config.spaceWidth + "," + config.spaceHeight);
-	System.out.println("Resources/Nests:       \t" + config.resourceCount + "/" + config.resourceNestCount);
-	System.out.println("Perception-Scope:      \t" + config.perceptionScope);
-	System.out.println("Communic.-Scope:       \t" + config.commScope);
-	System.out.println("Communic.-Frequency:   \t" + config.commFreq);
-	System.out.println("Consecutive moves:     \t" + config.consecutiveMoves);
-	System.out.println("Use Genetic Alg.:      \t" + config.useGA);
-	if (config.useGA)
-	    System.out.println("Chromosomes:       	\t:" + ga.currentChromosome);
+
+	if (config.printConfig) {
+	    /* Print config */
+	    System.out.println();
+	    System.out.println("Foraging context loaded");
+	    System.out.println("-----------------------------------");
+	    System.out.println("Number of Agents:      \t" + config.agentCount);
+	    System.out.println("Exploration Strategy:  \t" + config.explStrat);
+	    System.out.println("Foraging Strategy:     \t"
+		    + config.foragingStrat);
+	    System.out.println("Dimensions:            \t" + config.spaceWidth
+		    + "," + config.spaceHeight);
+	    System.out.println("Resources/Nests:       \t"
+		    + config.resourceCount + "/" + config.resourceNestCount);
+	    System.out.println("Perception-Scope:      \t"
+		    + config.perceptionScope);
+	    System.out.println("Communic.-Scope:       \t" + config.commScope);
+	    System.out.println("Communic.-Frequency:   \t" + config.commFreq);
+	    System.out.println("Consecutive moves:     \t"
+		    + config.consecutiveMoves);
+	    System.out.println("Use Genetic Alg.:      \t" + config.useGA);
+	    if (config.useGA)
+		System.out.println("Chromosomes:       	\t:"
+			+ ga.currentChromosome);
+	}
 
 	return context;
     }
@@ -183,12 +191,9 @@ public class RootContext implements ContextBuilder<IAgent> {
 	RunEnvironment runenv = RunEnvironment.getInstance();
 	DataCollection data = DataCollection.getInstance();
 
-	String out = String.format(
-		"Simulation has ended after %.1f ticks", runenv
-			.getCurrentSchedule().getTickCount());
-	System.out.println(out);
-	out = String.format(
-		"Simulation took %.1f s", data.getTotalExecTime()/1E9);
+	String out = String.format("Took %d ticks (%.1f s)", (int) runenv
+		.getCurrentSchedule().getTickCount(),
+		data.getTotalExecTime() / 1E9);
 	System.out.println(out);
     }
 

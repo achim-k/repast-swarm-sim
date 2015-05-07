@@ -23,6 +23,7 @@ public class Configuration implements IAgent {
     
     public int[] movebins = new int[8];
     public int spaceWidth, spaceHeight;
+    public boolean printConfig = true;
     
     private static Configuration instance = null;
 
