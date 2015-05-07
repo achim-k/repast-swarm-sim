@@ -13,10 +13,10 @@
 									
 		/>
 				<parameter name="expl_strategy" displayName="Exploration Strategy" type="java.lang.String" 
-						defaultValue="ComplexCommunication" 
+						defaultValue="QuadTree" 
 						isReadOnly="false" 
 						converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter"
-									values="Random MemoryComplex MemoryCommunication ComplexCommunication ComplexMemoryCommunication "
+									values="Random MemoryComplex MemoryCommunication ComplexCommunication ComplexMemoryCommunication QuadTree"
 						
 		/>
 				<parameter name="comm_frequency" displayName="Communication Frequency" type="int" 
@@ -45,7 +45,7 @@
 									
 		/>
 				<parameter name="resource_count" displayName="Number of resources" type="int" 
-						defaultValue="100" 
+						defaultValue="0" 
 						isReadOnly="false" 
 						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
 									

@@ -10,10 +10,10 @@ import repast.simphony.random.RandomHelper;
 import repast.simphony.space.SpatialMath;
 import repast.simphony.space.continuous.NdPoint;
 import swarm_sim.Agent;
-import swarm_sim.IAgent;
-import swarm_sim.Strategy;
 import swarm_sim.Agent.AgentState;
+import swarm_sim.IAgent;
 import swarm_sim.IAgent.AgentType;
+import swarm_sim.Strategy;
 import swarm_sim.communication.CommunicationType;
 import swarm_sim.communication.INetworkAgent;
 import swarm_sim.communication.Message;
@@ -29,19 +29,17 @@ public class NoCommStrategy extends ForagingStrategy {
     double directionAngle = RandomHelper.nextDoubleFromTo(-Math.PI, Math.PI);
 
     ResourceTarget currentTarget;
-    
+
     Scan scanResources = new Scan(AttractionType.Attracting,
 	    GrowingDirection.Inwards, 1, true, 0, config.perceptionScope, 1,
 	    100);
     Scan scanDeliverDirection = new Scan(AttractionType.Attracting,
-	    GrowingDirection.Inwards, 1, true, 0,
-	    1E8, 1, 10);
+	    GrowingDirection.Inwards, 1, true, 0, 1E8, 1, 10);
     Scan scanCurrentTarget = new Scan(AttractionType.Attracting,
-	    GrowingDirection.Inwards, 1, true, 0,
-	    1E8, 1, 10);
+	    GrowingDirection.Inwards, 1, true, 0, 1E8, 1, 10);
 
     ScanMoveDecision smd = new ScanMoveDecision(8, 6, 10, 0.05);
-    
+
     public NoCommStrategy(IChromosome chrom, Context<IAgent> context,
 	    Agent controllingAgent) {
 	super(chrom, context, controllingAgent);
@@ -94,7 +92,7 @@ public class NoCommStrategy extends ForagingStrategy {
     protected AgentState processPerceivedAgent(AgentState prevState,
 	    AgentState currentState, IAgent agent, boolean isLast) {
 	NdPoint currentLocation = space.getLocation(controllingAgent);
-	
+
 	if (currentState == AgentState.acquire) {
 	    if (agent.getAgentType() == AgentType.Resource) {
 		perceivedResourceCount++;
@@ -143,17 +141,17 @@ public class NoCommStrategy extends ForagingStrategy {
     @Override
     protected double makeDirectionDecision(AgentState prevState,
 	    AgentState currentState, List<AngleSegment> collisionFreeSegments) {
-	
+
 	smd.setValidSegments(collisionFreeSegments);
-	
-	if(currentState == AgentState.acquire) {
-	    if(currentTarget != null) {
-		scanCurrentTarget.addInput(SpatialMath.calcAngleFor2DMovement(space,
-			space.getLocation(controllingAgent),
+
+	if (currentState == AgentState.acquire) {
+	    if (currentTarget != null) {
+		scanCurrentTarget.addInput(SpatialMath.calcAngleFor2DMovement(
+			space, space.getLocation(controllingAgent),
 			currentTarget.location));
 	    }
 	    smd.calcProbDist(scanResources, scanCurrentTarget);
-	    
+
 	} else if (currentState == AgentState.deliver) {
 	    double moveAngleToBase = SpatialMath.calcAngleFor2DMovement(space,
 		    space.getLocation(controllingAgent),
@@ -161,22 +159,22 @@ public class NoCommStrategy extends ForagingStrategy {
 	    scanDeliverDirection.addInput(moveAngleToBase);
 	    smd.calcProbDist(scanDeliverDirection);
 	} else {
-	    System.err.println("state not existing: "+ currentState);
+	    System.err.println("state not existing: " + currentState);
 	}
-	    
+
 	smd.normalize();
 	directionAngle = smd.getMovementAngle();
-	
+
 	return directionAngle;
     }
-    
+
     @Override
     public void reset() {
 	super.reset();
 	this.clear();
 	currentTarget = null;
     }
-    
+
     @Override
     public void clear() {
 	super.clear();

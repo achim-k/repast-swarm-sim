@@ -46,7 +46,7 @@ public class RootContext implements ContextBuilder<IAgent> {
 	context.add(data);
 
 	/* Do not run more than XXXX ticks */
-	config.maxTicks = 6000;
+	config.maxTicks = 60000;
 	runEnv.endAt(config.maxTicks);
 
 	/* Read params */

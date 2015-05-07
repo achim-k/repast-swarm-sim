@@ -29,6 +29,7 @@ import swarm_sim.exploration.ComplexMemoryCommStrategy;
 import swarm_sim.exploration.ExplorationStrategy;
 import swarm_sim.exploration.MemoryCommStrategy;
 import swarm_sim.exploration.MemoryComplexStrategy;
+import swarm_sim.exploration.QuadTreeMemoryComplexStrategy;
 import swarm_sim.exploration.RandomStrategy;
 import swarm_sim.foraging.ForagingStrategy;
 import swarm_sim.foraging.GoalCommunication;
@@ -80,7 +81,7 @@ public class Agent implements IAgent, IDisplayAgent, INetworkAgent {
     @SuppressWarnings("unchecked")
     public Agent(Context<IAgent> context, IChromosome chrom) {
 	this.chrom = chrom;
-	
+
 	/* Get context, network, value layer etc. */
 	this.context = ContextUtils.getContext(this);
 	this.space = (ContinuousSpace<IAgent>) context.getProjection(
@@ -106,6 +107,9 @@ public class Agent implements IAgent, IDisplayAgent, INetworkAgent {
 		.equalsIgnoreCase("ComplexMemoryCommunication"))
 	    this.explStrategy = new ComplexMemoryCommStrategy(chrom, context,
 		    this);
+	else if (config.explStrat.equalsIgnoreCase("QuadTree"))
+	    this.explStrategy = new QuadTreeMemoryComplexStrategy(chrom,
+		    context, this);
 
 	if (config.foragingStrat.equalsIgnoreCase("NoCommunication"))
 	    this.faStrategy = new NoCommStrategy(chrom, context, this);
@@ -124,12 +128,13 @@ public class Agent implements IAgent, IDisplayAgent, INetworkAgent {
 		.getMessageTypesToRegister(allowedCommunicationTypes);
 	explStrategyMessages = explStrategy
 		.getMessageTypesToRegister(allowedCommunicationTypes);
+
     }
 
     public void step() {
 	if (currentLocation == null)
 	    currentLocation = space.getLocation(this);
-	
+
 	long start = System.nanoTime();
 	rcvMessages();
 	data.execTimeProcessMessages += System.nanoTime() - start;

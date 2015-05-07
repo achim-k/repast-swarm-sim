@@ -10,10 +10,10 @@ import repast.simphony.random.RandomHelper;
 import repast.simphony.space.SpatialMath;
 import repast.simphony.space.continuous.NdPoint;
 import swarm_sim.Agent;
-import swarm_sim.IAgent;
-import swarm_sim.Strategy;
 import swarm_sim.Agent.AgentState;
+import swarm_sim.IAgent;
 import swarm_sim.IAgent.AgentType;
+import swarm_sim.Strategy;
 import swarm_sim.communication.CommunicationType;
 import swarm_sim.communication.INetworkAgent;
 import swarm_sim.communication.Message;
@@ -43,7 +43,7 @@ public class StateCommStrategy extends ForagingStrategy {
     Scan scanAgentRepell = new Scan(AttractionType.Repelling,
 	    GrowingDirection.Inwards, 1.5, true, 0, 0.6 * config.commScope, 1,
 	    10000);
-    
+
     int perceivedAgentCount = 0;
 
     ScanMoveDecision smd = new ScanMoveDecision(8, 6, 10, 0.05);
@@ -134,7 +134,7 @@ public class StateCommStrategy extends ForagingStrategy {
 		double angle = SpatialMath.calcAngleFor2DMovement(space,
 			currentLocation, space.getLocation(agent));
 		scanResources.addInput(angle, distance);
-	    } else if(agent.getAgentType() == controllingAgent.getAgentType()) {
+	    } else if (agent.getAgentType() == controllingAgent.getAgentType()) {
 		perceivedAgentCount++;
 		double distance = space.getDistance(currentLocation,
 			space.getLocation(agent));
@@ -186,15 +186,14 @@ public class StateCommStrategy extends ForagingStrategy {
 	     * agent to follow → wander
 	     */
 	    if (perceivedResourceCount == 0 && currentTarget == null) {
-		if(scanAgentFollow.isValid()) {
-//		    double wanderProbability = 1/(perceivedAgentCount + 1);
-//		    if(Math.random() >= wanderProbability)
-//			currentState = AgentState.wander;
+		if (scanAgentFollow.isValid()) {
+		    // double wanderProbability = 1/(perceivedAgentCount + 1);
+		    // if(Math.random() >= wanderProbability)
+		    // currentState = AgentState.wander;
 		} else
 		    currentState = AgentState.wander;
 	    }
-	    
-	    
+
 	}
 	return currentState;
     }
@@ -204,14 +203,15 @@ public class StateCommStrategy extends ForagingStrategy {
 	    AgentState currentState, List<AngleSegment> collisionFreeSegments) {
 
 	smd.setValidSegments(collisionFreeSegments);
-	
+
 	if (currentState == AgentState.acquire) {
 	    if (currentTarget != null) {
 		scanCurrentTarget.addInput(SpatialMath.calcAngleFor2DMovement(
 			space, space.getLocation(controllingAgent),
 			currentTarget.location));
 	    }
-	    smd.calcProbDist(scanResources, scanCurrentTarget, scanAgentFollow, scanAgentRepell);
+	    smd.calcProbDist(scanResources, scanCurrentTarget, scanAgentFollow,
+		    scanAgentRepell);
 
 	} else if (currentState == AgentState.deliver) {
 	    double moveAngleToBase = SpatialMath.calcAngleFor2DMovement(space,

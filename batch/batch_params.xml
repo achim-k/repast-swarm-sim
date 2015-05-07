@@ -1,9 +1,9 @@
 <?xml version="1.0" ?>
-<sweep runs="50">
+<sweep runs="100">
 	<parameter name="print_params" type="constant" constant_type="boolean"
 		value="false"></parameter>
 	<parameter name="expl_strategy" type="constant"
-		constant_type="java.lang.String" value="ComplexCommunication"></parameter>
+		constant_type="java.lang.String" value="QuadTree"></parameter>
 	<parameter name="comm_frequency" type="constant"
 		constant_type="int" value="1"></parameter>
 	<parameter name="perception_scope" type="constant"

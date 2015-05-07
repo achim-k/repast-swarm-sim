@@ -1,6 +1,5 @@
 package swarm_sim;
 
-
 /**
  * Singleton class which stores the data of the simulation run. Needs to
  * implement IAgent interface in order to be added to the context (needed for
@@ -128,29 +127,30 @@ public class DataCollection implements IAgent {
     }
 
     public double getDeltaExecTimeNetworkCalculation() {
-	double ret = execTimeNetworkCalculation - prevExecTimeNetworkCalculation;
+	double ret = execTimeNetworkCalculation
+		- prevExecTimeNetworkCalculation;
 	prevExecTimeNetworkCalculation = execTimeNetworkCalculation;
 	return ret;
     }
-    
+
     public double getTotalExecTimeProcessMessages() {
-        return execTimeProcessMessages;
+	return execTimeProcessMessages;
     }
 
     public double getTotalExecTimeSendMessages() {
-        return execTimeSendMessages;
+	return execTimeSendMessages;
     }
 
     public double getTotalExecTimeMoveDecision() {
-        return execTimeMoveDecision;
+	return execTimeMoveDecision;
     }
 
     public double getTotalExecTimeScanEnv() {
-        return execTimeScanEnv;
+	return execTimeScanEnv;
     }
 
     public double getTotalExecTimeNetworkCalculation() {
-        return execTimeNetworkCalculation;
+	return execTimeNetworkCalculation;
     }
 
     public double getTotalExecTime() {

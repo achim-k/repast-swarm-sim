@@ -8,11 +8,11 @@ import org.jgap.IChromosome;
 import repast.simphony.context.Context;
 import repast.simphony.space.continuous.NdPoint;
 import swarm_sim.Agent;
+import swarm_sim.Agent.AgentState;
 import swarm_sim.IAgent;
+import swarm_sim.IAgent.AgentType;
 import swarm_sim.SectorMap;
 import swarm_sim.Strategy;
-import swarm_sim.Agent.AgentState;
-import swarm_sim.IAgent.AgentType;
 import swarm_sim.communication.CommunicationType;
 import swarm_sim.communication.INetworkAgent;
 import swarm_sim.communication.Message;
@@ -73,20 +73,21 @@ public class MemoryComplexStrategy extends ExplorationStrategy {
 	List<MessageTypeRegisterPair> ret = new ArrayList<Strategy.MessageTypeRegisterPair>();
 	/* No communication here */
 	return ret;
-	
-//	List<MessageTypeRegisterPair> ret = new ArrayList<Strategy.MessageTypeRegisterPair>();
-//	for (CommunicationType commType : allowedCommTypes) {
-//	    switch (commType) {
-//	    case MapOrTargets:
-//		AgentState states[] = new AgentState[] { AgentState.wander };
-//		ret.add(new MessageTypeRegisterPair(MessageType.SectorMap,
-//			states));
-//		break;
-//	    default:
-//		break;
-//	    }
-//	}
-//	return ret;
+
+	// List<MessageTypeRegisterPair> ret = new
+	// ArrayList<Strategy.MessageTypeRegisterPair>();
+	// for (CommunicationType commType : allowedCommTypes) {
+	// switch (commType) {
+	// case MapOrTargets:
+	// AgentState states[] = new AgentState[] { AgentState.wander };
+	// ret.add(new MessageTypeRegisterPair(MessageType.SectorMap,
+	// states));
+	// break;
+	// default:
+	// break;
+	// }
+	// }
+	// return ret;
     }
 
 }

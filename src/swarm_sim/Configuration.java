@@ -1,7 +1,5 @@
 package swarm_sim;
 
-
-
 public class Configuration implements IAgent {
 
     /* Params */
@@ -20,11 +18,11 @@ public class Configuration implements IAgent {
     public int maxTicks;
     public double maxMoveDistance = 1.0;
     public Base baseAgent;
-    
+
     public int[] movebins = new int[8];
     public int spaceWidth, spaceHeight;
     public boolean printConfig = true;
-    
+
     private static Configuration instance = null;
 
     private Configuration() {
@@ -36,7 +34,7 @@ public class Configuration implements IAgent {
 	}
 	return instance;
     }
-    
+
     public void reset() {
 	movebins = new int[8];
     }
@@ -47,68 +45,67 @@ public class Configuration implements IAgent {
     }
 
     public int getAgentCount() {
-        return agentCount;
+	return agentCount;
     }
 
     public double getPerceptionScope() {
-        return perceptionScope;
+	return perceptionScope;
     }
 
     public double getCommScope() {
-        return commScope;
+	return commScope;
     }
 
     public int getRndConsecutiveMoves() {
-        return consecutiveMoves;
+	return consecutiveMoves;
     }
 
     public boolean isUseGA() {
-        return useGA;
+	return useGA;
     }
 
     public int getResourceCount() {
-        return resourceCount;
+	return resourceCount;
     }
 
     public int getResourceNestCount() {
-        return resourceNestCount;
+	return resourceNestCount;
     }
 
     public int getCommFreq() {
-        return commFreq;
+	return commFreq;
     }
 
     public String getExplStrat() {
-        return explStrat;
+	return explStrat;
     }
 
     public String getForagingStrat() {
-        return foragingStrat;
+	return foragingStrat;
     }
 
     public int getMaxTicks() {
-        return maxTicks;
+	return maxTicks;
     }
 
     public double getMaxMoveDistance() {
-        return maxMoveDistance;
+	return maxMoveDistance;
     }
 
     public Base getBaseAgent() {
-        return baseAgent;
+	return baseAgent;
     }
 
     public int[] getMovebins() {
-        return movebins;
+	return movebins;
     }
 
     public int getSpaceWidth() {
-        return spaceWidth;
+	return spaceWidth;
     }
 
     public int getSpaceHeight() {
-        return spaceHeight;
+	return spaceHeight;
     }
-    
-    
+
 }

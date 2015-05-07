@@ -10,10 +10,10 @@ import repast.simphony.random.RandomHelper;
 import repast.simphony.space.SpatialMath;
 import repast.simphony.space.continuous.NdPoint;
 import swarm_sim.Agent;
-import swarm_sim.IAgent;
-import swarm_sim.Strategy;
 import swarm_sim.Agent.AgentState;
+import swarm_sim.IAgent;
 import swarm_sim.IAgent.AgentType;
+import swarm_sim.Strategy;
 import swarm_sim.communication.CommunicationType;
 import swarm_sim.communication.INetworkAgent;
 import swarm_sim.communication.Message;
@@ -68,11 +68,16 @@ public class ComplexCommStrategy extends ExplorationStrategy {
 	    scanAgentRepell.setOuterBorderRadius(repellAppealBorder);
 	    scanAgentAppeal.setInnerBorderRadius(repellAppealBorder);
 	} else {
-	    
-//	    double winningGenes2[] = new double[] { 0.43, 0.06, 0.94, 0.03, 0.71 }; → 1030 avg after 50
-	    double winningGenes[] = new double[] { 0.94, 0.36, 0.99, 0.00, 0.76 }; // → 981 avg after 50
+
+	    // double winningGenes2[] = new double[] { 0.43, 0.06, 0.94, 0.03,
+	    // 0.71 }; → 1030 avg after 50
+	    double winningGenes[] = new double[] { 0.94, 0.36, 0.99, 0.00, 0.76 }; // →
+										   // 981
+										   // avg
+										   // after
+										   // 50
 	    GA ga = GA.getInstance();
-	    
+
 	    ga.RepellIndex = 0;
 	    ga.AppealIndex = 1;
 	    ga.AppealRepellBorderIndex = 2;
@@ -84,8 +89,7 @@ public class ComplexCommStrategy extends ExplorationStrategy {
 	    scanAgentMimic.setMergeWeight(winningGenes[3]);
 	    scanPrevDirection.setMergeWeight(winningGenes[4]);
 
-	    double repellAppealBorder = config.commScope
-		    * winningGenes[2];
+	    double repellAppealBorder = config.commScope * winningGenes[2];
 	    scanAgentRepell.setOuterBorderRadius(repellAppealBorder);
 	    scanAgentAppeal.setInnerBorderRadius(repellAppealBorder);
 	}

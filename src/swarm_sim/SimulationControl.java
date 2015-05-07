@@ -10,7 +10,7 @@ import repast.simphony.space.graph.Network;
 import swarm_sim.learning.GA;
 
 public class SimulationControl implements IAgent {
-    
+
     public class AgentDistancePairs {
 	public IAgent source, target;
 	public double distance = 0;
@@ -23,20 +23,19 @@ public class SimulationControl implements IAgent {
 	    this.lastTimeChecked = 0;
 	}
     }
-    
+
     Context<IAgent> context;
     Network<IAgent> commNet;
 
     ContinuousSpace<IAgent> space;
     AdvancedGridValueLayer exploredArea;
-    
+
     Configuration config;
     DataCollection data;
 
     List<IAgent> networkAgents;
     List<AgentDistancePairs> agentDistancePairs = new ArrayList<>();
     boolean isInitiated = false;
- 
 
     public SimulationControl(Context<IAgent> context, List<IAgent> networkAgents) {
 	this.context = context;
@@ -55,7 +54,7 @@ public class SimulationControl implements IAgent {
      */
     public void init() {
 	data.startTime = System.nanoTime();
-	
+
 	agentDistancePairs.clear();
 
 	for (int i = 0; i < networkAgents.size(); i++) {
@@ -70,11 +69,11 @@ public class SimulationControl implements IAgent {
 	}
 	isInitiated = true;
     }
-    
+
     public void recalculateNetworkEdges() {
-	if(!isInitiated)
+	if (!isInitiated)
 	    init();
-	
+
 	long start = System.nanoTime();
 	int tick = (int) RunEnvironment.getInstance().getCurrentSchedule()
 		.getTickCount();
@@ -98,10 +97,10 @@ public class SimulationControl implements IAgent {
 			    space.getLocation(agentPair.target)))
 		commNet.addEdge(agentPair.source, agentPair.target);
 	}
-	
+
 	data.execTimeNetworkCalculation += System.nanoTime() - start;
     }
-    
+
     /**
      * End the simulation when the scenario task has been finished.
      */
@@ -118,11 +117,11 @@ public class SimulationControl implements IAgent {
 			.getObstacleFieldCount()))
 		RunEnvironment.getInstance().endRun();
 	}
-	
+
 	if (config.useGA) {
 	    GA ga = GA.getInstance();
-	    ga.currentFitness = 10000.0/(int) RunEnvironment.getInstance().getCurrentSchedule()
-			    .getTickCount();
+	    ga.currentFitness = 10000.0 / (int) RunEnvironment.getInstance()
+		    .getCurrentSchedule().getTickCount();
 	}
     }
 

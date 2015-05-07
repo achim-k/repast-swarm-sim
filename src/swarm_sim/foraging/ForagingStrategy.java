@@ -4,8 +4,8 @@ import org.jgap.IChromosome;
 
 import repast.simphony.context.Context;
 import repast.simphony.space.continuous.NdPoint;
-import swarm_sim.Agent.AgentState;
 import swarm_sim.Agent;
+import swarm_sim.Agent.AgentState;
 import swarm_sim.IAgent;
 import swarm_sim.SectorMap;
 import swarm_sim.Strategy;
@@ -34,9 +34,10 @@ public abstract class ForagingStrategy extends Strategy {
 
 	    ResourceTarget t = (ResourceTarget) obj;
 
-	    if (t.sector.equals(this.sector) && t.resourceCount == this.resourceCount)
+	    if (t.sector.equals(this.sector)
+		    && t.resourceCount == this.resourceCount)
 		return true;
-	    
+
 	    return false;
 	}
     }

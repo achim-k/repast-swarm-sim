@@ -10,11 +10,11 @@ import repast.simphony.random.RandomHelper;
 import repast.simphony.space.SpatialMath;
 import repast.simphony.space.continuous.NdPoint;
 import swarm_sim.Agent;
+import swarm_sim.Agent.AgentState;
 import swarm_sim.IAgent;
+import swarm_sim.IAgent.AgentType;
 import swarm_sim.SectorMap;
 import swarm_sim.Strategy;
-import swarm_sim.Agent.AgentState;
-import swarm_sim.IAgent.AgentType;
 import swarm_sim.communication.CommunicationType;
 import swarm_sim.communication.INetworkAgent;
 import swarm_sim.communication.Message;
@@ -86,7 +86,8 @@ public class ComplexMemoryCommStrategy extends ExplorationStrategy {
 	    scanAgentRepell.setOuterBorderRadius(repellAppealBorder);
 	    scanAgentAppeal.setInnerBorderRadius(repellAppealBorder);
 	} else {
-	    double winningOutput[] = new double[] { 0.15, 0.92, 0.69, 0.04, 0.99, 0.33};
+	    double winningOutput[] = new double[] { 0.15, 0.92, 0.69, 0.04,
+		    0.99, 0.33 };
 
 	    scanAgentRepell.setMergeWeight(winningOutput[0]);
 	    scanAgentAppeal.setMergeWeight(winningOutput[1]);
@@ -94,11 +95,10 @@ public class ComplexMemoryCommStrategy extends ExplorationStrategy {
 	    scanUnknownSectors.setMergeWeight(winningOutput[4]);
 	    scanPrevDirection.setMergeWeight(winningOutput[5]);
 
-	    double repellAppealBorder = config.commScope
-		    * winningOutput[2];
+	    double repellAppealBorder = config.commScope * winningOutput[2];
 	    scanAgentRepell.setOuterBorderRadius(repellAppealBorder);
 	    scanAgentAppeal.setInnerBorderRadius(repellAppealBorder);
-	    
+
 	}
     }
 
@@ -199,19 +199,23 @@ public class ComplexMemoryCommStrategy extends ExplorationStrategy {
 
 	if (consecutiveMoveCount < config.consecutiveMoves) {
 	    /* use same direction distribution, if possible */
-	    if(collisionFreeSegments.size() == 1 && collisionFreeSegments.get(0).start == -Math.PI) {
+	    if (collisionFreeSegments.size() == 1
+		    && collisionFreeSegments.get(0).start == -Math.PI) {
 		/* free to go in any direction */
 		consecutiveMoveCount++;
-		if(smd.hasInputs()) /* Only use previous prob distribution if it is not uniformly */
+		if (smd.hasInputs()) /*
+				      * Only use previous prob distribution if
+				      * it is not uniformly
+				      */
 		    prevDirection = smd.getMovementAngle();
-		
+
 		return prevDirection;
 	    }
 	}
-	
+
 	consecutiveMoveCount = INFINITY;
 	smd.clear();
-	
+
 	map.setPosition(currentLocation);
 	List<Integer[]> closeUnfilledSectors = map.getCloseUnfilledSectors(5);
 	for (Integer[] d : closeUnfilledSectors) {
@@ -244,7 +248,7 @@ public class ComplexMemoryCommStrategy extends ExplorationStrategy {
 	scanAgentMimic.clear();
 	scanPrevDirection.clear();
 	scanUnknownSectors.clear();
-//	smd.clear(); // is cleared in make move decision
+	// smd.clear(); // is cleared in make move decision
     }
 
     @Override

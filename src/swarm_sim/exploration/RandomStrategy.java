@@ -8,8 +8,8 @@ import org.jgap.IChromosome;
 import repast.simphony.context.Context;
 import repast.simphony.random.RandomHelper;
 import swarm_sim.Agent;
-import swarm_sim.IAgent;
 import swarm_sim.Agent.AgentState;
+import swarm_sim.IAgent;
 import swarm_sim.IAgent.AgentType;
 import swarm_sim.communication.CommunicationType;
 import swarm_sim.communication.INetworkAgent;
@@ -22,8 +22,8 @@ public class RandomStrategy extends ExplorationStrategy {
     int segmentCount = 8;
     int consecutiveMoveCount = 0;
     double directionAngle = RandomHelper.nextDoubleFromTo(-Math.PI, Math.PI);
-    
-    ScanMoveDecision smd = new ScanMoveDecision(8, 6, 10, 1.0d/8);
+
+    ScanMoveDecision smd = new ScanMoveDecision(8, 6, 10, 1.0d / 8);
 
     public RandomStrategy(IChromosome chrom, Context<IAgent> context,
 	    Agent controllingAgent) {
@@ -76,7 +76,7 @@ public class RandomStrategy extends ExplorationStrategy {
 	/* Choose random direction */
 	consecutiveMoveCount = 0;
 	smd.setValidSegments(collisionFreeSegments);
-//	smd.calcProbDist();
+	// smd.calcProbDist();
 	smd.normalize();
 	directionAngle = smd.getMovementAngle();
 	return directionAngle;

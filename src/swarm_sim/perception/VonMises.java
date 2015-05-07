@@ -10,7 +10,7 @@ public class VonMises {
 	this.k = k;
 	this.divider = 2 * Math.PI * Bessel.i0(k);
     }
-    
+
     public double getValue(double mean, double x) {
 	return Math.exp(k * Math.cos(x - mean)) / divider;
     }

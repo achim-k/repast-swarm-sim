@@ -3,18 +3,14 @@ package swarm_sim;
 public interface IAgent {
 
     public enum AgentType {
-	SwarmAgent,
-	Pheromone,
-	SimulationControl,
+	SwarmAgent, Pheromone, SimulationControl,
 
-	Base,
-	GeneticAlgorithm,
+	Base, GeneticAlgorithm,
 
 	/* Foraging */
 	Resource,
 
-	DataCollection, 
-	Configuration,
+	DataCollection, Configuration,
 
     }
 

@@ -10,11 +10,11 @@ import repast.simphony.random.RandomHelper;
 import repast.simphony.space.SpatialMath;
 import repast.simphony.space.continuous.NdPoint;
 import swarm_sim.Agent;
+import swarm_sim.Agent.AgentState;
 import swarm_sim.IAgent;
+import swarm_sim.IAgent.AgentType;
 import swarm_sim.SectorMap;
 import swarm_sim.Strategy;
-import swarm_sim.Agent.AgentState;
-import swarm_sim.IAgent.AgentType;
 import swarm_sim.communication.CommunicationType;
 import swarm_sim.communication.INetworkAgent;
 import swarm_sim.communication.Message;
@@ -97,7 +97,7 @@ public class GoalCommunication extends ForagingStrategy {
 		return currentState;
 	    if (currentTarget != null && currentTarget.validity == true)
 		return currentState;
-	    
+
 	    return AgentState.wander;
 	}
 	return currentState;
@@ -114,7 +114,9 @@ public class GoalCommunication extends ForagingStrategy {
 
 	if (msg.getType() == MessageType.ResourceLocation) {
 	    ResourceTarget resTarget = (ResourceTarget) msg.getData();
-	    if(currentTarget == null || (currentTarget.validity == false && !resTarget.sector.equals(currentTarget.sector))) {
+	    if (currentTarget == null
+		    || (currentTarget.validity == false && !resTarget.sector
+			    .equals(currentTarget.sector))) {
 		currentTarget = resTarget;
 		return AgentState.acquire;
 	    }
@@ -134,7 +136,8 @@ public class GoalCommunication extends ForagingStrategy {
     @Override
     protected void sendMessage(AgentState prevState, AgentState currentState,
 	    INetworkAgent agentInRange) {
-	if (currentTarget != null && currentTarget.validity == true
+	if (currentTarget != null
+		&& currentTarget.validity == true
 		&& (currentState == AgentState.acquire || currentState == AgentState.deliver)) {
 	    agentInRange.pushMessage(new Message(MessageType.ResourceLocation,
 		    controllingAgent, currentTarget));
@@ -228,7 +231,7 @@ public class GoalCommunication extends ForagingStrategy {
     public void reset() {
 	super.reset();
 	this.clear();
-	if(currentTarget != null)
+	if (currentTarget != null)
 	    currentTarget.validity = false;
     }
 

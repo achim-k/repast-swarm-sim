@@ -115,7 +115,7 @@ public class Scan {
     public void clear() {
 	inputs.clear();
 	isValid = false;
-	
+
 	if (hasFluidBorders) {
 	    shortestDistance = hardOuterDistanceBorder;
 	} else {
@@ -124,11 +124,11 @@ public class Scan {
 		shortestDistance = 1;
 	}
     }
-    
+
     public void setInnerBorderRadius(double innerBorderRadius) {
 	this.hardInnerDistanceBorder = innerBorderRadius;
     }
-    
+
     public void setOuterBorderRadius(double outerBorderRadius) {
 	this.hardOuterDistanceBorder = outerBorderRadius;
     }
@@ -144,7 +144,7 @@ public class Scan {
     public double getMergeWeight() {
 	return mergeWeight;
     }
-    
+
     public void setMergeWeight(double mergeWeight) {
 	this.mergeWeight = mergeWeight;
     }

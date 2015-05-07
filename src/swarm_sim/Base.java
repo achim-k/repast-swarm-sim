@@ -46,7 +46,7 @@ public class Base implements IAgent, IDisplayAgent, INetworkAgent {
     public Color getColor() {
 	return Color.GREEN;
     }
-    
+
     @Override
     public void pushMessage(Message msg) {
 	messageQueue.add(msg);
