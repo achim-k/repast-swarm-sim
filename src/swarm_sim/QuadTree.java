@@ -13,7 +13,7 @@ public class QuadTree {
 
     private Node root;
 
-    private double spaceWidth, spaceHeight, perceptionScope;
+    private double minQuadrantEdgeSize;
 
     // helper node data type
     public class Node {
@@ -109,10 +109,8 @@ public class QuadTree {
     public QuadTree(double spaceWidth, double spaceHeight,
 	    double perceptionScope) {
 	super();
-	this.spaceWidth = spaceWidth;
-	this.spaceHeight = spaceHeight;
-	this.perceptionScope = perceptionScope;
-
+	
+	this.minQuadrantEdgeSize = 2 * perceptionScope;
 	root = new Node(0, 0, spaceWidth, spaceHeight, false, 0);
     }
 
@@ -162,7 +160,7 @@ public class QuadTree {
 	if (n.isFilled)
 	    return n;
 
-	if (width <= perceptionScope || height <= perceptionScope) {
+	if (width <= minQuadrantEdgeSize && height <= minQuadrantEdgeSize) {
 	    return new Node(x, y, width, height, true, depth); /* lowest node */
 	}
 
@@ -190,27 +188,27 @@ public class QuadTree {
 
 	return n;
     }
-
-    private Node createUntilEndReached(Node parent, int depth, double x,
-	    double y, double width, double height) {
-	if (width <= perceptionScope || height <= perceptionScope) {
-	    return new Node(x, y, width, height, false, depth);
-	}
-
-	if (parent == null)
-	    parent = new Node(x, y, width, height, false, depth);
-
-	parent.NE = createUntilEndReached(parent.NE, depth + 1, x + width / 2d,
-		y + height / 2d, width / 2d, height / 2d);
-	parent.NW = createUntilEndReached(parent.NW, depth + 1, x, y + height
-		/ 2d, width / 2d, height / 2d);
-	parent.SE = createUntilEndReached(parent.SE, depth + 1, x + width / 2d,
-		y, width / 2d, height / 2d);
-	parent.SW = createUntilEndReached(parent.SW, depth + 1, x, y,
-		width / 2d, height / 2d);
-
-	return parent;
-    }
+//
+//    private Node createUntilEndReached(Node parent, int depth, double x,
+//	    double y, double width, double height) {
+//	if (width <= perceptionScope || height <= perceptionScope) {
+//	    return new Node(x, y, width, height, false, depth);
+//	}
+//
+//	if (parent == null)
+//	    parent = new Node(x, y, width, height, false, depth);
+//
+//	parent.NE = createUntilEndReached(parent.NE, depth + 1, x + width / 2d,
+//		y + height / 2d, width / 2d, height / 2d);
+//	parent.NW = createUntilEndReached(parent.NW, depth + 1, x, y + height
+//		/ 2d, width / 2d, height / 2d);
+//	parent.SE = createUntilEndReached(parent.SE, depth + 1, x + width / 2d,
+//		y, width / 2d, height / 2d);
+//	parent.SW = createUntilEndReached(parent.SW, depth + 1, x, y,
+//		width / 2d, height / 2d);
+//
+//	return parent;
+//    }
 
     private Node getSmallesUnfilledNode(Node n, Node parent, double posX,
 	    double posY) {
@@ -294,9 +292,9 @@ public class QuadTree {
      *************************************************************************/
     public static void main(String[] args) {
 
-	QuadTree st = new QuadTree(100, 100, 50);
+	QuadTree st = new QuadTree(100, 100, 20);
 
-	QuadTree st2 = new QuadTree(100, 100, 50);
+	QuadTree st2 = new QuadTree(100, 100, 20);
 
 	// st.root = st.createUntilEndReached(st.root, 0, 0, 100, 100);
 
@@ -305,7 +303,7 @@ public class QuadTree {
 	st2.setLocation(35, 40);
 	// st.setLocation(60, 60);
 	st.setLocation(40, 60);
-	st.setLocation(60, 60);
+//	st.setLocation(60, 60);
 	st.setLocation(40, 40);
 	// st.root = st.createUntilPosReached(st.root, 0, 0, 100, 100, 40, 50);
 

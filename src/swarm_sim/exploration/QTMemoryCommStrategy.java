@@ -25,7 +25,7 @@ import swarm_sim.perception.Scan.AttractionType;
 import swarm_sim.perception.Scan.GrowingDirection;
 import swarm_sim.perception.ScanMoveDecision;
 
-public class QuadTreeMemoryComplexStrategy extends ExplorationStrategy {
+public class QTMemoryCommStrategy extends ExplorationStrategy {
 
     QuadTree quadTree;
 
@@ -34,7 +34,7 @@ public class QuadTreeMemoryComplexStrategy extends ExplorationStrategy {
 
     ScanMoveDecision smd = new ScanMoveDecision(8, 6, 10, 0.05);
 
-    public QuadTreeMemoryComplexStrategy(IChromosome chrom,
+    public QTMemoryCommStrategy(IChromosome chrom,
 	    Context<IAgent> context, Agent controllingAgent) {
 	super(chrom, context, controllingAgent);
 
@@ -128,7 +128,7 @@ public class QuadTreeMemoryComplexStrategy extends ExplorationStrategy {
     @Override
     protected void reset() {
 	// TODO Auto-generated method stub
-
+//	map.setCurrentSectorUnfilled(); TODO
     }
 
 }

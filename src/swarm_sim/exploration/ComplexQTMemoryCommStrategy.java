@@ -13,6 +13,8 @@ import swarm_sim.Agent;
 import swarm_sim.Agent.AgentState;
 import swarm_sim.IAgent;
 import swarm_sim.IAgent.AgentType;
+import swarm_sim.QuadTree.Node;
+import swarm_sim.QuadTree;
 import swarm_sim.SectorMap;
 import swarm_sim.Strategy;
 import swarm_sim.communication.CommunicationType;
@@ -26,7 +28,7 @@ import swarm_sim.perception.Scan.AttractionType;
 import swarm_sim.perception.Scan.GrowingDirection;
 import swarm_sim.perception.ScanMoveDecision;
 
-public class ComplexMemoryCommStrategy extends ExplorationStrategy {
+public class ComplexQTMemoryCommStrategy extends ExplorationStrategy {
 
     private static final int INFINITY = 99999999;
 
@@ -35,7 +37,7 @@ public class ComplexMemoryCommStrategy extends ExplorationStrategy {
     private double prevDirection = RandomHelper.nextDoubleFromTo(-Math.PI,
 	    Math.PI);
 
-    private SectorMap map;
+    QuadTree quadTree;
 
     private Scan scanAgentRepell = new Scan(AttractionType.Repelling,
 	    GrowingDirection.Inwards, 2, false, 0, 0.8 * config.commScope, 1,
@@ -52,7 +54,7 @@ public class ComplexMemoryCommStrategy extends ExplorationStrategy {
 
     private ScanMoveDecision smd = new ScanMoveDecision(8, 6, 10, 0.05);
 
-    public ComplexMemoryCommStrategy(IChromosome chrom,
+    public ComplexQTMemoryCommStrategy(IChromosome chrom,
 	    Context<IAgent> context, Agent controllingAgent) {
 	super(chrom, context, controllingAgent);
 
@@ -64,7 +66,8 @@ public class ComplexMemoryCommStrategy extends ExplorationStrategy {
 	if (sectorsY > config.spaceHeight)
 	    sectorsY = config.spaceHeight;
 
-	map = new SectorMap(space.getDimensions(), sectorsX, sectorsY, 1);
+	this.quadTree = new QuadTree(config.spaceWidth, config.spaceHeight,
+		config.perceptionScope);
 
 	if (config.useGA) {
 	    GA ga = GA.getInstance();
@@ -154,7 +157,7 @@ public class ComplexMemoryCommStrategy extends ExplorationStrategy {
 	    consecutiveMoveCount = INFINITY;
 
 	} else if (msg.getType() == MessageType.SectorMap) {
-	    map.merge((SectorMap) msg.getData());
+	    quadTree.merge((QuadTree) msg.getData());
 	    consecutiveMoveCount = INFINITY;
 	}
 
@@ -170,7 +173,7 @@ public class ComplexMemoryCommStrategy extends ExplorationStrategy {
 	    agentInRange.pushMessage(new Message(MessageType.Direction,
 		    controllingAgent, prevDirection));
 	    agentInRange.pushMessage(new Message(MessageType.SectorMap,
-		    controllingAgent, map));
+		    controllingAgent, quadTree));
 	}
     }
 
@@ -216,12 +219,18 @@ public class ComplexMemoryCommStrategy extends ExplorationStrategy {
 	consecutiveMoveCount = INFINITY;
 	smd.clear();
 
-	map.setPosition(currentLocation);
-	List<Integer[]> closeUnfilledSectors = map.getCloseUnfilledSectors(5);
-	for (Integer[] d : closeUnfilledSectors) {
-	    double angle = SpatialMath.angleFromDisplacement(d[0], d[1]);
-	    double distance = Math.sqrt(d[0] * d[0] + d[1] * d[1]);
-	    scanUnknownSectors.addInput(angle, distance);
+	/* Look for close unexplored sectors */
+	quadTree.setLocation(currentLocation.getX(), currentLocation.getY());
+
+	Node n = quadTree.getSmallestUnfilledNode(currentLocation.getX(),
+		currentLocation.getY());
+
+	if (n != null) {
+	    NdPoint quadCenter = quadTree.getUnfilledNodeCenter(n,
+		    currentLocation);
+	    double angle = SpatialMath.calcAngleFor2DMovement(space,
+		    currentLocation, quadCenter);
+	    scanUnknownSectors.addInput(angle);
 	}
 
 	if (prevDirection >= -Math.PI)
@@ -231,7 +240,6 @@ public class ComplexMemoryCommStrategy extends ExplorationStrategy {
 
 	smd.calcProbDist(scanAgentAppeal, scanAgentRepell, scanAgentMimic,
 		    scanPrevDirection, scanUnknownSectors);
-	
 
 	smd.normalize();
 	prevDirection = smd.getMovementAngle();
@@ -251,7 +259,7 @@ public class ComplexMemoryCommStrategy extends ExplorationStrategy {
     @Override
     protected void reset() {
 	prevDirection = RandomHelper.nextDoubleFromTo(-Math.PI, Math.PI);
-	map.setCurrentSectorUnfilled();
+//	map.setCurrentSectorUnfilled(); TODO
 	smd.clear();
 	consecutiveMoveCount = INFINITY;
     }

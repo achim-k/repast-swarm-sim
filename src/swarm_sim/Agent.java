@@ -26,10 +26,11 @@ import swarm_sim.communication.INetworkAgent;
 import swarm_sim.communication.Message;
 import swarm_sim.exploration.ComplexCommStrategy;
 import swarm_sim.exploration.ComplexMemoryCommStrategy;
+import swarm_sim.exploration.ComplexQTMemoryCommStrategy;
 import swarm_sim.exploration.ExplorationStrategy;
 import swarm_sim.exploration.MemoryCommStrategy;
 import swarm_sim.exploration.MemoryComplexStrategy;
-import swarm_sim.exploration.QuadTreeMemoryComplexStrategy;
+import swarm_sim.exploration.QTMemoryCommStrategy;
 import swarm_sim.exploration.RandomStrategy;
 import swarm_sim.foraging.ForagingStrategy;
 import swarm_sim.foraging.GoalCommunication;
@@ -108,7 +109,10 @@ public class Agent implements IAgent, IDisplayAgent, INetworkAgent {
 	    this.explStrategy = new ComplexMemoryCommStrategy(chrom, context,
 		    this);
 	else if (config.explStrat.equalsIgnoreCase("QuadTree"))
-	    this.explStrategy = new QuadTreeMemoryComplexStrategy(chrom,
+	    this.explStrategy = new QTMemoryCommStrategy(chrom,
+		    context, this);
+	else if (config.explStrat.equalsIgnoreCase("ComplexQTMemoryCommunication"))
+	    this.explStrategy = new ComplexQTMemoryCommStrategy(chrom,
 		    context, this);
 
 	if (config.foragingStrat.equalsIgnoreCase("NoCommunication"))
