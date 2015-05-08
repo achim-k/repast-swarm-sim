@@ -90,8 +90,8 @@ public class ComplexQTMemoryCommStrategy extends ExplorationStrategy {
 	    scanAgentAppeal.setInnerBorderRadius(repellAppealBorder);
 	} else {
 	    //TODO: GA!
-	    double winningOutput[] = new double[] { 0.9, 0.92, 0.69, 0.04,
-		    0.99, 0.33 };
+	    double winningOutput[] = new double[] { 0.45, 0.07, 0.53, 0.26,
+		    0.57, 0.91 };
 
 	    scanAgentRepell.setMergeWeight(winningOutput[0]);
 	    scanAgentAppeal.setMergeWeight(winningOutput[1]);
