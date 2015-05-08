@@ -96,8 +96,8 @@ public class ComplexQTMemoryCommStrategy extends ExplorationStrategy {
 	    scanAgentRepell.setMergeWeight(winningOutput[0]);
 	    scanAgentAppeal.setMergeWeight(winningOutput[1]);
 	    scanAgentMimic.setMergeWeight(winningOutput[3]);
-	    scanUnknownSectors.setMergeWeight(winningOutput[4]);
-	    scanPrevDirection.setMergeWeight(winningOutput[5]);
+	    scanPrevDirection.setMergeWeight(winningOutput[4]);
+	    scanUnknownSectors.setMergeWeight(winningOutput[5]);
 
 	    double repellAppealBorder = config.commScope * winningOutput[2];
 	    scanAgentRepell.setOuterBorderRadius(repellAppealBorder);
