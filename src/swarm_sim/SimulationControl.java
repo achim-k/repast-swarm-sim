@@ -56,7 +56,16 @@ public class SimulationControl implements IAgent {
 	data.startTime = System.nanoTime();
 
 	agentDistancePairs.clear();
-
+	
+	if(config.commScope <= 0.1)
+	    networkAgents.clear(); /* No communication in this case */
+	
+	if(config.getExplStrat().equalsIgnoreCase("Random") || config.explStrat.equalsIgnoreCase("MemoryComplex")) {
+	    if(config.foragingStrat.equalsIgnoreCase("NoCommunication")) {
+		networkAgents.clear(); /* No communication in this case */
+	    }
+	}
+	
 	for (int i = 0; i < networkAgents.size(); i++) {
 	    IAgent source = networkAgents.get(i);
 	    for (int j = i + 1; j < networkAgents.size(); j++) {
