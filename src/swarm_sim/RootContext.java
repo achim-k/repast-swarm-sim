@@ -45,12 +45,19 @@ public class RootContext implements ContextBuilder<IAgent> {
 	data.reset();
 	context.add(data);
 
-	/* Do not run more than XXXX ticks */
-	config.maxTicks = 60000;
-	runEnv.endAt(config.maxTicks);
+	
 
 	/* Read params */
 	config.agentCount = params.getInteger("agent_count");
+	
+	/* Do not run more than XXXX ticks */
+	config.maxTicks = 10000/config.agentCount;
+	
+	if(config.maxTicks < 5000)
+	    config.maxTicks = 5000;
+	
+	runEnv.endAt(config.maxTicks);
+	
 	config.consecutiveMoves = params.getInteger("consecutive_move");
 	config.useGA = params.getBoolean("use_ga");
 	config.commFreq = params.getInteger("comm_frequency");
