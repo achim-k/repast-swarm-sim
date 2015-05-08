@@ -121,6 +121,7 @@ public class ScanMoveDecision {
     public static int angleToSegmentIndex(double angle, int segmentCount) {
 	return (int) ((angle + Math.PI) / (2 * Math.PI / segmentCount));
     }
+    
 
     public void normalize() {
 	double segmentProbSum = 0;
@@ -164,5 +165,9 @@ public class ScanMoveDecision {
 
     public boolean hasInputs() {
 	return hasInputs;
+    }
+    
+    public double getSegmentProbability(int segmentIndex) {
+	return segments[segmentIndex].probability;
     }
 }
