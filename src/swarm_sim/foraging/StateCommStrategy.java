@@ -46,11 +46,14 @@ public class StateCommStrategy extends ForagingStrategy {
 
     int perceivedAgentCount = 0;
 
-    ScanMoveDecision smd = new ScanMoveDecision(8, 6, 10, 0.05);
+    ScanMoveDecision smd;
 
     public StateCommStrategy(IChromosome chrom, Context<IAgent> context,
 	    Agent controllingAgent) {
 	super(chrom, context, controllingAgent);
+	
+	smd = new ScanMoveDecision(config.segmentCount, config.k,
+		config.distanceFactor, config.initProb);
     }
 
     @Override

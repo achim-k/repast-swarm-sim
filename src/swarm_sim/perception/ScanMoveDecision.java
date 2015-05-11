@@ -70,9 +70,19 @@ public class ScanMoveDecision {
 	hasInputs = true;
 	double distanceValue = 1 + (distanceFactor - 1) * input.distanceRatio;
 
-	int inputSegIndex = angleToSegmentIndex(input.angle, segmentCount);
+//	int inputSegIndex = angleToSegmentIndex(input.angle, segmentCount);
 
-	int startIndex = inputSegIndex - segmentCount / 4;
+	for (CircleSegment cs : segments) {
+	    if(!cs.isValid)
+		continue;
+	    
+	    double vonMisesValue = vonMises.getValue(input.angle,
+		    cs.centerAngle);
+	    cs.probability += vonMisesValue
+		    * distanceValue * mergeFactor;
+	}
+	
+	/* int startIndex = inputSegIndex - segmentCount / 4;
 	int endIndex = inputSegIndex + segmentCount / 4;
 	for (int index = startIndex; index <= endIndex; index++) {
 	    int correctedIndex = index % segmentCount;
@@ -87,6 +97,7 @@ public class ScanMoveDecision {
 	    segments[correctedIndex].probability += vonMisesValue
 		    * distanceValue * mergeFactor;
 	}
+	*/
     }
 
     public void printProbabilities(PrintWriter file) {

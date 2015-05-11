@@ -42,11 +42,14 @@ public class GoalCommunication extends ForagingStrategy {
     Scan scanCurrentTarget = new Scan(AttractionType.Attracting,
 	    GrowingDirection.Inwards, 1, true, 0, 1E8, 1, 10);
 
-    ScanMoveDecision smd = new ScanMoveDecision(8, 6, 10, 0.05);
+    ScanMoveDecision smd;
 
     public GoalCommunication(IChromosome chrom, Context<IAgent> context,
 	    Agent controllingAgent) {
 	super(chrom, context, controllingAgent);
+	
+	smd = new ScanMoveDecision(config.segmentCount, config.k,
+		config.distanceFactor, config.initProb);
 
 	int sectorsX = (int) (config.spaceWidth / config.perceptionScope);
 	int sectorsY = (int) (config.spaceHeight / config.perceptionScope);

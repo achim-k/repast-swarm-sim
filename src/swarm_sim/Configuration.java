@@ -13,7 +13,8 @@ public class Configuration implements IAgent {
     public int commFreq;
     public String explStrat;
     public String foragingStrat;
-
+    public double k, initProb, distanceFactor;
+    public int segmentCount;
     /* Other stuff */
     public int maxTicks;
     public double maxMoveDistance = 1.0;

@@ -23,7 +23,7 @@ public class RandomStrategy extends ExplorationStrategy {
     int consecutiveMoveCount = 0;
     double directionAngle = RandomHelper.nextDoubleFromTo(-Math.PI, Math.PI);
 
-    ScanMoveDecision smd = new ScanMoveDecision(8, 6, 10, 1.0d / 8);
+    ScanMoveDecision smd;
 
     public RandomStrategy(IChromosome chrom, Context<IAgent> context,
 	    Agent controllingAgent) {
@@ -34,6 +34,9 @@ public class RandomStrategy extends ExplorationStrategy {
     protected AgentState processMessage(AgentState prevState,
 	    AgentState currentState, Message msg, boolean isLast) {
 	// No Communication here
+	
+	smd = new ScanMoveDecision(config.segmentCount, config.k,
+		config.distanceFactor, config.initProb);
 
 	return currentState;
     }

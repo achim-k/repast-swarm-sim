@@ -44,11 +44,14 @@ public class ComplexCommStrategy extends ExplorationStrategy {
     private Scan scanPrevDirection = new Scan(AttractionType.Attracting,
 	    GrowingDirection.Inwards, 1, true, 0, 1000, 1, 1000);
 
-    private ScanMoveDecision smd = new ScanMoveDecision(8, 6, 10, 0.125);
+    private ScanMoveDecision smd;
 
     public ComplexCommStrategy(IChromosome chrom, Context<IAgent> context,
 	    Agent controllingAgent) {
 	super(chrom, context, controllingAgent);
+
+	smd = new ScanMoveDecision(config.segmentCount, config.k,
+		config.distanceFactor, config.initProb);
 
 	if (config.useGA) {
 	    GA ga = GA.getInstance();

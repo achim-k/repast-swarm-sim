@@ -32,11 +32,14 @@ public class QTMemoryCommStrategy extends ExplorationStrategy {
     Scan scanUnknownSectors = new Scan(AttractionType.Attracting,
 	    GrowingDirection.Inwards, 1, true, 0, 10000, 1, 1000);
 
-    ScanMoveDecision smd = new ScanMoveDecision(8, 6, 10, 0.05);
+    ScanMoveDecision smd;
 
     public QTMemoryCommStrategy(IChromosome chrom,
 	    Context<IAgent> context, Agent controllingAgent) {
 	super(chrom, context, controllingAgent);
+	
+	smd = new ScanMoveDecision(config.segmentCount, config.k,
+		config.distanceFactor, config.initProb);
 
 	this.quadTree = new QuadTree(config.spaceWidth, config.spaceHeight,
 		config.perceptionScope);
