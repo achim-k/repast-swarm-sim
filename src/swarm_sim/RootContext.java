@@ -49,7 +49,7 @@ public class RootContext implements ContextBuilder<IAgent> {
 	config.agentCount = params.getInteger("agent_count");
 
 	/* Do not run more than XXXX ticks */
-	config.maxTicks = 100000 / config.agentCount;
+	config.maxTicks = 50000 / config.agentCount;
 
 	if (config.maxTicks < 5000)
 	    config.maxTicks = 5000;
@@ -200,6 +200,8 @@ public class RootContext implements ContextBuilder<IAgent> {
 		System.out.println("Chromosomes:       	\t:"
 			+ ga.currentChromosome);
 	}
+	
+	System.out.println("Run #" + (++data.runCount));
 
 	return context;
     }
