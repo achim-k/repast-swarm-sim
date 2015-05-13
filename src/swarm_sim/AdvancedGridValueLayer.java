@@ -145,13 +145,13 @@ public class AdvancedGridValueLayer extends GridValueLayer {
 
 	for (int i = 0; i < dimsSize; i++) {
 	    int min = (int) Math.round(origin.getCoord(i) - radius);
-	    if (min < dims.getOrigin(i))
-		min = (int) dims.getOrigin(i);
+	    // if (min < dims.getOrigin(i))
+	    // min = (int) dims.getOrigin(i);
 	    mins[i] = min;
 
 	    int max = (int) Math.round(origin.getCoord(i) + radius) - 1;
-	    if (max >= dims.getOrigin(i) + dims.getDimension(i))
-		max = (int) (dims.getOrigin(i) + dims.getDimension(i)) - 1;
+	    // if (max >= dims.getOrigin(i) + dims.getDimension(i))
+	    // max = (int) (dims.getOrigin(i) + dims.getDimension(i)) - 1;
 	    maxs[i] = max;
 	}
 
@@ -159,9 +159,18 @@ public class AdvancedGridValueLayer extends GridValueLayer {
 	    for (int y = mins[1]; y <= maxs[1]; y++) {
 		double distance = Math.sqrt(Math.pow((x + .5 - origin.getX()),
 			2) + Math.pow((y + .5 - origin.getY()), 2));
-		if (distance <= radius)
+
+		if (x < dims.getOrigin(0) || x >= dims.getDimension(0)
+			|| y < dims.getOrigin(1) || y >= dims.getDimension(1)) {
+		    ret.add(new FieldDistancePair(x, y, FieldType.Obstacle, -1,
+			    distance));
+		    continue;
+		}
+
+		if (distance <= radius) {
 		    ret.add(new FieldDistancePair(x, y, getFieldType(x, y),
 			    get(x, y), distance));
+		}
 	    }
 	}
 

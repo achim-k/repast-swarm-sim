@@ -38,7 +38,7 @@ public class MemoryCommStrategy extends ExplorationStrategy {
     public MemoryCommStrategy(IChromosome chrom, Context<IAgent> context,
 	    Agent controllingAgent) {
 	super(chrom, context, controllingAgent);
-	
+
 	smd = new ScanMoveDecision(config.segmentCount, config.k,
 		config.distanceFactor, config.initProb);
 

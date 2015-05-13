@@ -47,7 +47,7 @@ public class GoalCommunication extends ForagingStrategy {
     public GoalCommunication(IChromosome chrom, Context<IAgent> context,
 	    Agent controllingAgent) {
 	super(chrom, context, controllingAgent);
-	
+
 	smd = new ScanMoveDecision(config.segmentCount, config.k,
 		config.distanceFactor, config.initProb);
 

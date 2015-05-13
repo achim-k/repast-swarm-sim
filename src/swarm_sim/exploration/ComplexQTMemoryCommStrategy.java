@@ -13,9 +13,8 @@ import swarm_sim.Agent;
 import swarm_sim.Agent.AgentState;
 import swarm_sim.IAgent;
 import swarm_sim.IAgent.AgentType;
-import swarm_sim.QuadTree.Node;
 import swarm_sim.QuadTree;
-import swarm_sim.SectorMap;
+import swarm_sim.QuadTree.Node;
 import swarm_sim.Strategy;
 import swarm_sim.communication.CommunicationType;
 import swarm_sim.communication.INetworkAgent;
@@ -57,7 +56,7 @@ public class ComplexQTMemoryCommStrategy extends ExplorationStrategy {
     public ComplexQTMemoryCommStrategy(IChromosome chrom,
 	    Context<IAgent> context, Agent controllingAgent) {
 	super(chrom, context, controllingAgent);
-	
+
 	smd = new ScanMoveDecision(config.segmentCount, config.k,
 		config.distanceFactor, config.initProb);
 
@@ -92,7 +91,7 @@ public class ComplexQTMemoryCommStrategy extends ExplorationStrategy {
 	    scanAgentRepell.setOuterBorderRadius(repellAppealBorder);
 	    scanAgentAppeal.setInnerBorderRadius(repellAppealBorder);
 	} else {
-	    //TODO: GA!
+	    // TODO: GA!
 	    double winningOutput[] = new double[] { 0.45, 0.07, 0.53, 0.26,
 		    0.57, 0.91 };
 
@@ -243,7 +242,7 @@ public class ComplexQTMemoryCommStrategy extends ExplorationStrategy {
 	smd.setValidSegments(collisionFreeSegments);
 
 	smd.calcProbDist(scanAgentAppeal, scanAgentRepell, scanAgentMimic,
-		    scanPrevDirection, scanUnknownSectors);
+		scanPrevDirection, scanUnknownSectors);
 
 	smd.normalize();
 	prevDirection = smd.getMovementAngle();
@@ -263,7 +262,7 @@ public class ComplexQTMemoryCommStrategy extends ExplorationStrategy {
     @Override
     protected void reset() {
 	prevDirection = RandomHelper.nextDoubleFromTo(-Math.PI, Math.PI);
-//	map.setCurrentSectorUnfilled(); TODO
+	// map.setCurrentSectorUnfilled(); TODO
 	smd.clear();
 	consecutiveMoveCount = INFINITY;
     }

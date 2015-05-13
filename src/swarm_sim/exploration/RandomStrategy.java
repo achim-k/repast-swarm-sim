@@ -34,7 +34,7 @@ public class RandomStrategy extends ExplorationStrategy {
     protected AgentState processMessage(AgentState prevState,
 	    AgentState currentState, Message msg, boolean isLast) {
 	// No Communication here
-	
+
 	smd = new ScanMoveDecision(config.segmentCount, config.k,
 		config.distanceFactor, config.initProb);
 

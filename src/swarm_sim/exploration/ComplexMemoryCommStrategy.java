@@ -230,8 +230,7 @@ public class ComplexMemoryCommStrategy extends ExplorationStrategy {
 	smd.setValidSegments(collisionFreeSegments);
 
 	smd.calcProbDist(scanAgentAppeal, scanAgentRepell, scanAgentMimic,
-		    scanPrevDirection, scanUnknownSectors);
-	
+		scanPrevDirection, scanUnknownSectors);
 
 	smd.normalize();
 	prevDirection = smd.getMovementAngle();

@@ -34,10 +34,10 @@ public class QTMemoryCommStrategy extends ExplorationStrategy {
 
     ScanMoveDecision smd;
 
-    public QTMemoryCommStrategy(IChromosome chrom,
-	    Context<IAgent> context, Agent controllingAgent) {
+    public QTMemoryCommStrategy(IChromosome chrom, Context<IAgent> context,
+	    Agent controllingAgent) {
 	super(chrom, context, controllingAgent);
-	
+
 	smd = new ScanMoveDecision(config.segmentCount, config.k,
 		config.distanceFactor, config.initProb);
 
@@ -131,7 +131,7 @@ public class QTMemoryCommStrategy extends ExplorationStrategy {
     @Override
     protected void reset() {
 	// TODO Auto-generated method stub
-//	map.setCurrentSectorUnfilled(); TODO
+	// map.setCurrentSectorUnfilled(); TODO
     }
 
 }

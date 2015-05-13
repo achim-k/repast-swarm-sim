@@ -45,24 +45,22 @@ public class RootContext implements ContextBuilder<IAgent> {
 	data.reset();
 	context.add(data);
 
-	
-
 	/* Read params */
 	config.agentCount = params.getInteger("agent_count");
-	
+
 	/* Do not run more than XXXX ticks */
-	config.maxTicks = 10000/config.agentCount;
-	
-	if(config.maxTicks < 5000)
+	config.maxTicks = 10000 / config.agentCount;
+
+	if (config.maxTicks < 5000)
 	    config.maxTicks = 5000;
-	
+
 	runEnv.endAt(config.maxTicks);
-	
+
 	config.k = params.getDouble("k");
 	config.segmentCount = params.getInteger("segment_count");
 	config.distanceFactor = params.getDouble("distance_factor");
 	config.initProb = params.getDouble("prob_init");
-	
+
 	config.consecutiveMoves = params.getInteger("consecutive_move");
 	config.useGA = params.getBoolean("use_ga");
 	config.commFreq = params.getInteger("comm_frequency");
@@ -190,11 +188,13 @@ public class RootContext implements ContextBuilder<IAgent> {
 	    System.out.println("Communic.-Frequency:   \t" + config.commFreq);
 	    System.out.println("Consecutive moves:     \t"
 		    + config.consecutiveMoves);
-	    System.out.println("N (segment count)      \t" + config.segmentCount);
+	    System.out.println("N (segment count)      \t"
+		    + config.segmentCount);
 	    System.out.println("k                      \t" + config.k);
-	    System.out.println("D (distance factor)    \t" + config.distanceFactor);
+	    System.out.println("D (distance factor)    \t"
+		    + config.distanceFactor);
 	    System.out.println("initial segment prob   \t" + config.initProb);
-	    
+
 	    System.out.println("Use Genetic Alg.:      \t" + config.useGA);
 	    if (config.useGA)
 		System.out.println("Chromosomes:       	\t:"

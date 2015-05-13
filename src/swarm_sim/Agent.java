@@ -109,11 +109,11 @@ public class Agent implements IAgent, IDisplayAgent, INetworkAgent {
 	    this.explStrategy = new ComplexMemoryCommStrategy(chrom, context,
 		    this);
 	else if (config.explStrat.equalsIgnoreCase("QuadTree"))
-	    this.explStrategy = new QTMemoryCommStrategy(chrom,
-		    context, this);
-	else if (config.explStrat.equalsIgnoreCase("ComplexQTMemoryCommunication"))
-	    this.explStrategy = new ComplexQTMemoryCommStrategy(chrom,
-		    context, this);
+	    this.explStrategy = new QTMemoryCommStrategy(chrom, context, this);
+	else if (config.explStrat
+		.equalsIgnoreCase("ComplexQTMemoryCommunication"))
+	    this.explStrategy = new ComplexQTMemoryCommStrategy(chrom, context,
+		    this);
 
 	if (config.foragingStrat.equalsIgnoreCase("NoCommunication"))
 	    this.faStrategy = new NoCommStrategy(chrom, context, this);
@@ -252,6 +252,7 @@ public class Agent implements IAgent, IDisplayAgent, INetworkAgent {
 				    field.y + .5));
 		    collisionAngleFilter.add(field.distance, angle);
 		}
+		continue;
 	    } else {
 		if (field.value == 0)
 		    data.fieldsExplored++;
