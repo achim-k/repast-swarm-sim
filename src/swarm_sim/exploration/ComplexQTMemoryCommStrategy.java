@@ -29,10 +29,6 @@ import swarm_sim.perception.ScanMoveDecision;
 
 public class ComplexQTMemoryCommStrategy extends ExplorationStrategy {
 
-	private static final int INFINITY = 99999999;
-
-	private int consecutiveMoveCount = INFINITY;
-
 	private double prevDirection = RandomHelper.nextDoubleFromTo(-Math.PI,
 			Math.PI);
 
@@ -151,18 +147,15 @@ public class ComplexQTMemoryCommStrategy extends ExplorationStrategy {
 					currentLoc, agentLoc);
 			scanAgentRepell.addInput(angle, distance);
 			scanAgentAppeal.addInput(angle, distance);
-			consecutiveMoveCount = INFINITY;
 
 		} else if (msg.getType() == MessageType.Direction) {
 			NdPoint currentLoc = space.getLocation(controllingAgent);
 			NdPoint agentLoc = space.getLocation(msg.getSender());
 			double distance = space.getDistance(currentLoc, agentLoc);
 			scanAgentMimic.addInput((double) msg.getData(), distance);
-			consecutiveMoveCount = INFINITY;
 
 		} else if (msg.getType() == MessageType.SectorMap) {
 			quadTree.merge((QuadTree) msg.getData());
-			consecutiveMoveCount = INFINITY;
 		}
 
 		return currentState;
@@ -193,7 +186,6 @@ public class ComplexQTMemoryCommStrategy extends ExplorationStrategy {
 			double angle = SpatialMath.calcAngleFor2DMovement(space,
 					currentLoc, agentLoc);
 			scanAgentRepell.addInput(angle, distance);
-			consecutiveMoveCount = INFINITY;
 		}
 
 		return AgentState.wander;
@@ -203,31 +195,13 @@ public class ComplexQTMemoryCommStrategy extends ExplorationStrategy {
 	protected double makeDirectionDecision(AgentState prevState,
 			AgentState currentState, List<AngleSegment> collisionFreeSegments) {
 		NdPoint currentLocation = space.getLocation(controllingAgent);
-
-		if (consecutiveMoveCount < config.consecutiveMoves) {
-			/* use same direction distribution, if possible */
-			if (collisionFreeSegments.size() == 1
-					&& collisionFreeSegments.get(0).start == -Math.PI) {
-				/* free to go in any direction */
-				consecutiveMoveCount++;
-				if (smd.hasInputs()) /*
-									 * Only use previous prob distribution if it
-									 * is not uniformly
-									 */
-					prevDirection = smd.getMovementAngle();
-
-				return prevDirection;
-			}
-		}
-
-		consecutiveMoveCount = INFINITY;
-		smd.clear();
-
+		
 		/* Look for close unexplored sectors */
 		quadTree.setLocation(currentLocation.getX(), currentLocation.getY());
-
+		
 		Node n = quadTree.getSmallestUnfilledNode(currentLocation.getX(),
-				currentLocation.getY());
+			currentLocation.getY());
+
 
 		if (n != null) {
 			NdPoint quadCenter = quadTree.getUnfilledNodeCenter(n,
@@ -257,7 +231,7 @@ public class ComplexQTMemoryCommStrategy extends ExplorationStrategy {
 		scanAgentMimic.clear();
 		scanPrevDirection.clear();
 		scanUnknownSectors.clear();
-		// smd.clear(); // is cleared in make move decision
+		smd.clear();
 	}
 
 	@Override
@@ -265,7 +239,6 @@ public class ComplexQTMemoryCommStrategy extends ExplorationStrategy {
 		prevDirection = RandomHelper.nextDoubleFromTo(-Math.PI, Math.PI);
 		// map.setCurrentSectorUnfilled(); TODO
 		smd.clear();
-		consecutiveMoveCount = INFINITY;
 	}
 
 }
