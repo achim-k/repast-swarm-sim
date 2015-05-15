@@ -74,11 +74,13 @@ public class ComplexCommStrategy extends ExplorationStrategy {
 
 	    // double winningGenes2[] = new double[] { 0.43, 0.06, 0.94, 0.03,
 	    // 0.71 }; → 1030 avg after 50
-	    double winningGenes[] = new double[] { 0.94, 0.36, 0.99, 0.00, 0.76 }; // →
+//	    double winningGenes[] = new double[] { 0.94, 0.36, 0.99, 0.00, 0.76 }; // →
 										   // 981
 										   // avg
 										   // after
 										   // 50
+	    double winningGenes[] = new double[] {	    0.9144661462973355,0.009199286207776658,0.7413437169753542,0.02745376616225159,0.9807642605312746 };
+	    
 	    GA ga = GA.getInstance();
 
 	    ga.RepellIndex = 0;

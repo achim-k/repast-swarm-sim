@@ -1,1 +1,37 @@
-<?xml version="1.0" ?><sweep runs="1"><parameter name="distance_factor" type="constant" constant_type="double" value="5"></parameter><parameter name="print_params" type="constant" constant_type="boolean" value="false"></parameter><parameter name="comm_frequency" type="constant" constant_type="int" value="5"></parameter><parameter name="perception_scope" type="constant" constant_type="double" value="1"></parameter><parameter name="foraging_strategy" type="constant" constant_type="java.lang.String" value="NoCommunication"></parameter><parameter name="k" type="constant" constant_type="double" value="5.0"></parameter><parameter name="agent_count" type="constant" constant_type="int" value="30"></parameter><parameter name="resource_count" type="constant" constant_type="int" value="0"></parameter><parameter name="consecutive_move" type="constant" constant_type="int" value="0"></parameter><parameter name="communication_scope" type="constant" constant_type="double" value="15"></parameter><parameter name="resource_nest_count" type="constant" constant_type="int" value="0"></parameter><parameter name="use_ga" type="constant" constant_type="boolean" value="false"></parameter><parameter name="space_dimensions" type="constant" constant_type="java.lang.String" value="100:100"></parameter><parameter name="prob_init" type="constant" constant_type="double" value="0.01"></parameter><parameter name="segment_count" type="constant" constant_type="int" value="8"></parameter><parameter name="expl_strategy" type="list" value_type="java.lang.String" values="Random MemoryComplex ComplexCommunication QuadTree ComplexQTMemoryCommunication"></parameter></sweep>
+<?xml version="1.0" ?>
+<sweep runs="30">
+	<parameter name="distance_factor" type="constant"
+		constant_type="double" value="5"></parameter>
+	<parameter name="print_params" type="constant" constant_type="boolean"
+		value="false"></parameter>
+	<parameter name="comm_frequency" type="constant"
+		constant_type="int" value="1"></parameter>
+	<parameter name="perception_scope" type="constant"
+		constant_type="double" value="1"></parameter>
+	<parameter name="foraging_strategy" type="constant"
+		constant_type="java.lang.String" value="NoCommunication"></parameter>
+	<parameter name="resource_count" type="constant"
+		constant_type="int" value="0"></parameter>
+	<parameter name="consecutive_move" type="constant"
+		constant_type="int" value="0"></parameter>
+	<parameter name="communication_scope" type="constant"
+		constant_type="double" value="15"></parameter>
+	<parameter name="resource_nest_count" type="constant"
+		constant_type="int" value="0"></parameter>
+	<parameter name="use_ga" type="constant" constant_type="boolean"
+		value="false"></parameter>
+	<parameter name="space_dimensions" type="constant"
+		constant_type="java.lang.String" value="100:100"></parameter>
+	<parameter name="prob_init" type="constant" constant_type="double"
+		value="0.01"></parameter>
+	<parameter name="expl_strategy" type="list" value_type="java.lang.String"
+		values="ComplexCommunication">
+		<parameter name="k" type="list" value_type="double" values="6">
+			<parameter name="agent_count" type="list" value_type="int"
+				values="32">
+				<parameter name="segment_count" type="list" value_type="int"
+					values="8"></parameter>
+			</parameter>
+		</parameter>
+	</parameter>
+</sweep>
