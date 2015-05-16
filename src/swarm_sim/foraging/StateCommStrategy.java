@@ -6,13 +6,11 @@ import java.util.List;
 import org.jgap.IChromosome;
 
 import repast.simphony.context.Context;
-import repast.simphony.random.RandomHelper;
 import repast.simphony.space.SpatialMath;
 import repast.simphony.space.continuous.NdPoint;
 import swarm_sim.Agent;
 import swarm_sim.Agent.AgentState;
 import swarm_sim.IAgent;
-import swarm_sim.IAgent.AgentType;
 import swarm_sim.Strategy;
 import swarm_sim.communication.CommunicationType;
 import swarm_sim.communication.INetworkAgent;
@@ -26,27 +24,10 @@ import swarm_sim.perception.ScanMoveDecision;
 
 public class StateCommStrategy extends ForagingStrategy {
 
-    int segmentCount = 8;
-    double directionAngle = RandomHelper.nextDoubleFromTo(-Math.PI, Math.PI);
-
-    ResourceTarget currentTarget;
-
-    Scan scanResources = new Scan(AttractionType.Attracting,
-	    GrowingDirection.Inwards, 1, true, 0, config.perceptionScope, 1,
-	    100);
-    Scan scanDeliverDirection = new Scan(AttractionType.Attracting,
-	    GrowingDirection.Inwards, 1, true, 0, 1E8, 1, 10);
-    Scan scanCurrentTarget = new Scan(AttractionType.Attracting,
-	    GrowingDirection.Inwards, 1, true, 0, 1E8, 1, 10);
     Scan scanAgentFollow = new Scan(AttractionType.Attracting,
-	    GrowingDirection.Inwards, 1, true, 0, config.commScope, 1, 1);
-    Scan scanAgentRepell = new Scan(AttractionType.Repelling,
-	    GrowingDirection.Inwards, 1.5, true, 0, 0.6 * config.commScope, 1,
-	    10000);
+	    GrowingDirection.Inwards, 1, true, 5, config.commScope, 1, 5);
 
     int perceivedAgentCount = 0;
-
-    ScanMoveDecision smd;
 
     public StateCommStrategy(IChromosome chrom, Context<IAgent> context,
 	    Agent controllingAgent) {
@@ -61,7 +42,6 @@ public class StateCommStrategy extends ForagingStrategy {
 	    AgentState currentState, Message msg, boolean isLast) {
 
 	if (isLast) {
-	    /* */
 	    if (currentState == AgentState.wander && scanAgentFollow.isValid()) {
 		return AgentState.acquire;
 	    }
@@ -72,164 +52,74 @@ public class StateCommStrategy extends ForagingStrategy {
 	    AgentState netAgentState = (AgentState) msg.getData();
 
 	    if (netAgentState == AgentState.acquire) {
-
-		if (currentState == AgentState.wander
-			|| (currentState == AgentState.acquire && currentTarget == null)) {
-		    NdPoint agentLoc = space.getLocation(msg.getSender());
-		    NdPoint currentLocation = space
-			    .getLocation(controllingAgent);
-		    double distance = space.getDistance(currentLocation,
-			    agentLoc);
-		    double angle = SpatialMath.calcAngleFor2DMovement(space,
-			    currentLocation, agentLoc);
-		    scanAgentFollow.addInput(angle, distance);
-
-		}
-
+		NdPoint agentLoc = space.getLocation(msg.getSender());
+		NdPoint currentLocation = space.getLocation(controllingAgent);
+		double distance = space.getDistance(currentLocation, agentLoc);
+		double angle = SpatialMath.calcAngleFor2DMovement(space,
+			currentLocation, agentLoc);
+		scanAgentFollow.addInput(angle, distance);
 	    }
 	}
 
-	if (currentState == AgentState.acquire) {
-	    NdPoint agentLoc = space.getLocation(msg.getSender());
-	    NdPoint currentLocation = space.getLocation(controllingAgent);
-	    double distance = space.getDistance(currentLocation, agentLoc);
-	    double angle = SpatialMath.calcAngleFor2DMovement(space,
-		    currentLocation, agentLoc);
-	    scanAgentRepell.addInput(angle, distance);
-	    perceivedAgentCount++;
-	}
 	return currentState;
     }
 
     @Override
     protected void sendMessage(AgentState prevState, AgentState currentState,
 	    INetworkAgent agentInRange) {
-	// return;
-	if (currentState == AgentState.acquire && currentTarget != null)
+	if (currentTarget != null && currentTarget.isValid) {
+	    // if (config.printConfig) {
+	    // // if(currentState == AgentState.acquire) {
+	    // agentInRange.pushMessage(new Message(MessageType.CurrentState,
+	    // controllingAgent, currentState));
+	    // } else
+	    // if (perceivedAgentCount < 2) {
 	    agentInRange.pushMessage(new Message(MessageType.CurrentState,
 		    controllingAgent, currentState));
-	// else if (currentState == AgentState.wander
-	// || currentState == AgentState.deliver)
-	// ;
-	// agentInRange.pushMessage(new Message(MessageType.CurrentState,
-	// controllingAgent, currentState));
+	    // }
+	}
     }
 
     @Override
-    protected AgentState processPerceivedAgent(AgentState prevState,
+    public AgentState processPerceivedAgent(AgentState prevState,
 	    AgentState currentState, IAgent agent, boolean isLast) {
-	NdPoint currentLocation = space.getLocation(controllingAgent);
+	perceivedAgentCount++;
 
-	if (currentState == AgentState.acquire) {
-	    if (agent.getAgentType() == AgentType.Resource) {
-		perceivedResourceCount++;
-		double distance = space.getDistance(currentLocation,
-			space.getLocation(agent));
-
-		if (distance <= config.maxMoveDistance / 2) {
-		    /* pick up that resource */
-		    context.remove(agent);
-		    currentState = AgentState.deliver;
-		    perceivedResourceCount--;
-		    return currentState;
-		}
-
-		double angle = SpatialMath.calcAngleFor2DMovement(space,
-			currentLocation, space.getLocation(agent));
-		scanResources.addInput(angle, distance);
-	    } else if (agent.getAgentType() == controllingAgent.getAgentType()) {
-		perceivedAgentCount++;
-		double distance = space.getDistance(currentLocation,
-			space.getLocation(agent));
-		double angle = SpatialMath.calcAngleFor2DMovement(space,
-			currentLocation, space.getLocation(agent));
-		scanAgentRepell.addInput(angle, distance);
-	    }
-	}
-
-	if (currentState == AgentState.deliver) {
-	    if (agent.getAgentType() == AgentType.Resource) {
-		perceivedResourceCount++;
-		if (currentTarget == null)
-		    currentTarget = new ResourceTarget(1, currentLocation, null);
-		else
-		    currentTarget.resourceCount++;
-	    } else if (agent.getAgentType() == AgentType.Base) {
-		double distance = space.getDistance(currentLocation,
-			space.getLocation(config.baseAgent));
-
-		if (distance <= config.maxMoveDistance / 2) {
-		    /* Deliver the resource */
-		    data.deliveredResources++;
-
-		    if (currentTarget != null) {
-			currentState = AgentState.acquire;
-		    } else
-			currentState = AgentState.wander;
-		}
-	    }
-	}
-	return currentState;
+	return super.processPerceivedAgent(prevState, currentState, agent,
+		isLast);
     }
 
     @Override
     public AgentState checkState(AgentState prevState, AgentState currentState) {
-	if (currentState == AgentState.acquire) {
-	    NdPoint currentLocation = space.getLocation(controllingAgent);
+	currentState = super.checkState(prevState, currentState);
 
-	    /* Unset currentTarget, when it has been reached */
-	    if (currentTarget != null
-		    && space.getDistance(currentLocation,
-			    currentTarget.location) <= config.maxMoveDistance / 2) {
-		currentTarget = null;
-	    }
-
-	    /*
-	     * If no resources have been perceived and no targets there and no
-	     * agent to follow → wander
-	     */
-	    if (perceivedResourceCount == 0 && currentTarget == null) {
-		if (scanAgentFollow.isValid()) {
-		    // double wanderProbability = 1/(perceivedAgentCount + 1);
-		    // if(Math.random() >= wanderProbability)
-		    // currentState = AgentState.wander;
-		} else
-		    currentState = AgentState.wander;
-	    }
-
+	if (currentState == AgentState.wander && scanAgentFollow.isValid()) {
+	    return AgentState.acquire;
 	}
+
 	return currentState;
     }
 
     @Override
-    protected double makeDirectionDecision(AgentState prevState,
+    public double makeDirectionDecision(AgentState prevState,
 	    AgentState currentState, List<AngleSegment> collisionFreeSegments) {
 
-	smd.setValidSegments(collisionFreeSegments);
-
 	if (currentState == AgentState.acquire) {
-	    if (currentTarget != null) {
-		scanCurrentTarget.addInput(SpatialMath.calcAngleFor2DMovement(
-			space, space.getLocation(controllingAgent),
-			currentTarget.location));
+	    if (scanResources.isValid()
+		    || (currentTarget != null && currentTarget.isValid)) {
+		return super.makeDirectionDecision(prevState, currentState,
+			collisionFreeSegments);
 	    }
-	    smd.calcProbDist(scanResources, scanCurrentTarget, scanAgentFollow,
-		    scanAgentRepell);
 
-	} else if (currentState == AgentState.deliver) {
-	    double moveAngleToBase = SpatialMath.calcAngleFor2DMovement(space,
-		    space.getLocation(controllingAgent),
-		    space.getLocation(config.baseAgent));
-	    scanDeliverDirection.addInput(moveAngleToBase);
-	    smd.calcProbDist(scanDeliverDirection, scanAgentRepell);
+	    smd.setValidSegments(collisionFreeSegments);
+	    smd.calcProbDist(scanAgentFollow);
+	    smd.normalize();
+	    directionAngle = smd.getMovementAngle();
+	    return directionAngle;
 	} else {
-	    System.err.println("state not existing: " + currentState);
+	    return super.makeDirectionDecision(prevState, currentState,
+		    collisionFreeSegments);
 	}
-
-	smd.normalize();
-	directionAngle = smd.getMovementAngle();
-
-	return directionAngle;
     }
 
     @Override
@@ -243,11 +133,6 @@ public class StateCommStrategy extends ForagingStrategy {
     public void clear() {
 	super.clear();
 	scanAgentFollow.clear();
-	scanResources.clear();
-	scanCurrentTarget.clear();
-	scanDeliverDirection.clear();
-	scanAgentRepell.clear();
-	smd.clear();
 	perceivedAgentCount = 0;
     }
 

@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <parameters>
 	<parameter name="expl_strategy" displayName="Exploration Strategy"
-		type="java.lang.String" defaultValue="ComplexQTMemoryCommunication"
+		type="java.lang.String" defaultValue="Random"
 		isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter"
 		values="Random MemoryComplex MemoryCommunication ComplexCommunication ComplexMemoryCommunication QuadTree ComplexQTMemoryCommunication " />
 	<parameter name="foraging_strategy" displayName="Foraging Strategy"
-		type="java.lang.String" defaultValue="GoalCommunication" isReadOnly="false"
+		type="java.lang.String" defaultValue="Pheromone" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter"
-		values="NoCommunication StateCommunication GoalCommunication " />
+		values="NoCommunication StateCommunication GoalCommunication Pheromone" />
 	<parameter name="agent_count" displayName="Number of Agents"
-		type="int" defaultValue="20" isReadOnly="false"
+		type="int" defaultValue="2" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
-	<parameter name="perception_scope" displayName="Perception scope [m]"
+	<parameter name="perception_scope" displayName="Perception scope [%]"
 		type="double" defaultValue="1.0" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter" />
-	<parameter name="communication_scope" displayName="Communication scope [m]"
+	<parameter name="communication_scope" displayName="Communication scope [%]"
 		type="double" defaultValue="15.0" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter" />
 	<parameter name="comm_frequency" displayName="Communication Frequency"
 		type="int" defaultValue="1" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
 	<parameter name="resource_count" displayName="Number of resources"
-		type="int" defaultValue="0" isReadOnly="false"
+		type="int" defaultValue="100" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
 	<parameter name="resource_nest_count" displayName="Number of resource nests"
 		type="int" defaultValue="6" isReadOnly="false"
@@ -43,8 +43,11 @@
 
 
 	<parameter name="consecutive_move" displayName="Consecutive moves"
-		type="int" defaultValue="0" isReadOnly="false"
+		type="int" defaultValue="20" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
+	<parameter name="decay_rate" displayName="Pheromone decay rate [%]"
+		type="double" defaultValue="0.5" isReadOnly="false"
+		converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter" />
 
 
 	<parameter name="use_ga" displayName="Use GA" type="boolean"

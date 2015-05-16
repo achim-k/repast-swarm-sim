@@ -11,7 +11,6 @@ import repast.simphony.space.continuous.NdPoint;
 import swarm_sim.Agent;
 import swarm_sim.Agent.AgentState;
 import swarm_sim.IAgent;
-import swarm_sim.IAgent.AgentType;
 import swarm_sim.QuadTree;
 import swarm_sim.QuadTree.Node;
 import swarm_sim.Strategy;
@@ -82,15 +81,6 @@ public class QTMemoryCommStrategy extends ExplorationStrategy {
 	    agentInRange.pushMessage(new Message(MessageType.SectorMap,
 		    controllingAgent, quadTree));
 	}
-    }
-
-    @Override
-    protected AgentState processPerceivedAgent(AgentState prevState,
-	    AgentState currentState, IAgent agent, boolean isLast) {
-	if (agent.getAgentType() == AgentType.Resource)
-	    return AgentState.acquire;
-
-	return AgentState.wander;
     }
 
     @Override

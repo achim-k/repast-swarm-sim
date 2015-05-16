@@ -35,6 +35,7 @@ import swarm_sim.exploration.RandomStrategy;
 import swarm_sim.foraging.ForagingStrategy;
 import swarm_sim.foraging.GoalCommunication;
 import swarm_sim.foraging.NoCommStrategy;
+import swarm_sim.foraging.PheromoneStrategy;
 import swarm_sim.foraging.StateCommStrategy;
 import swarm_sim.perception.AngleFilter;
 import swarm_sim.perception.AngleSegment;
@@ -73,6 +74,7 @@ public class Agent implements IAgent, IDisplayAgent, INetworkAgent {
     /* Exploration + Foraging strategies */
     ExplorationStrategy explStrategy;
     ForagingStrategy faStrategy;
+    boolean isForagingScenario;
 
     List<MessageTypeRegisterPair> faStrategyMessages, explStrategyMessages;
 
@@ -121,6 +123,8 @@ public class Agent implements IAgent, IDisplayAgent, INetworkAgent {
 	    this.faStrategy = new StateCommStrategy(chrom, context, this);
 	else if (config.foragingStrat.equalsIgnoreCase("GoalCommunication"))
 	    this.faStrategy = new GoalCommunication(chrom, context, this);
+	else if (config.foragingStrat.equalsIgnoreCase("Pheromone"))
+	    this.faStrategy = new PheromoneStrategy(chrom, context, this);
 
 	CommunicationType allowedCommunicationTypes[] = new CommunicationType[] {
 		CommunicationType.State, CommunicationType.MapOrTargets,
@@ -132,6 +136,8 @@ public class Agent implements IAgent, IDisplayAgent, INetworkAgent {
 		.getMessageTypesToRegister(allowedCommunicationTypes);
 	explStrategyMessages = explStrategy
 		.getMessageTypesToRegister(allowedCommunicationTypes);
+
+	isForagingScenario = config.resourceCount > 0;
 
     }
 
@@ -199,6 +205,9 @@ public class Agent implements IAgent, IDisplayAgent, INetworkAgent {
 		}
 	    }
 
+	    if (!isForagingScenario)
+		continue;
+
 	    for (MessageTypeRegisterPair mrp : faStrategyMessages) {
 		if (msg.getType() == mrp.msgType) {
 		    for (AgentState as : mrp.states) {
@@ -215,7 +224,8 @@ public class Agent implements IAgent, IDisplayAgent, INetworkAgent {
 	}
 
 	state = explStrategy.processMessage(prevState, state, null, true);
-	state = faStrategy.processMessage(prevState, state, null, true);
+	if (isForagingScenario)
+	    state = faStrategy.processMessage(prevState, state, null, true);
     }
 
     private void sendMessages() {
@@ -227,6 +237,10 @@ public class Agent implements IAgent, IDisplayAgent, INetworkAgent {
 	    for (IAgent netAgent : commNet.getAdjacent(this)) {
 		explStrategy.sendMessage(prevState, state,
 			(INetworkAgent) netAgent);
+
+		if (!isForagingScenario)
+		    continue;
+
 		faStrategy.sendMessage(prevState, state,
 			(INetworkAgent) netAgent);
 	    }
@@ -250,7 +264,7 @@ public class Agent implements IAgent, IDisplayAgent, INetworkAgent {
 		    double angle = SpatialMath.calcAngleFor2DMovement(space,
 			    currentLocation, new NdPoint(field.x + .5,
 				    field.y + .5));
-		    collisionAngleFilter.add(field.distance, angle);
+		    collisionAngleFilter.add(field.distance, angle, 0.5);
 		}
 		continue;
 	    } else {

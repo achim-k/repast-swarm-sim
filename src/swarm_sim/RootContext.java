@@ -87,6 +87,8 @@ public class RootContext implements ContextBuilder<IAgent> {
 
 	config.resourceNestCount = params.getInteger("resource_nest_count");
 	config.resourceCount = params.getInteger("resource_count");
+	
+	config.decayRate = params.getDouble("decay_rate");
 
 	/* Create continuous space */
 	ContinuousSpaceFactory spaceFactory = ContinuousSpaceFactoryFinder
@@ -200,7 +202,7 @@ public class RootContext implements ContextBuilder<IAgent> {
 		System.out.println("Chromosomes:       	\t:"
 			+ ga.currentChromosome);
 	}
-	
+
 	System.out.println("Run #" + (++data.runCount));
 
 	return context;

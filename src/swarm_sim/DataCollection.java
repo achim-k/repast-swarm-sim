@@ -27,7 +27,7 @@ public class DataCollection implements IAgent {
     public double execTimeScanEnv = 0, prevexecTimeScanEnv = 0;
     public double execTimeNetworkCalculation = 0,
 	    prevExecTimeNetworkCalculation = 0;
-    
+
     public int runCount = 0;
 
     public long startTime;

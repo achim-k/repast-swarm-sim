@@ -11,7 +11,6 @@ import repast.simphony.space.continuous.NdPoint;
 import swarm_sim.Agent;
 import swarm_sim.Agent.AgentState;
 import swarm_sim.IAgent;
-import swarm_sim.IAgent.AgentType;
 import swarm_sim.SectorMap;
 import swarm_sim.Strategy;
 import swarm_sim.communication.CommunicationType;
@@ -72,15 +71,6 @@ public class MemoryCommStrategy extends ExplorationStrategy {
 	    agentInRange.pushMessage(new Message(MessageType.SectorMap,
 		    controllingAgent, map));
 	}
-    }
-
-    @Override
-    protected AgentState processPerceivedAgent(AgentState prevState,
-	    AgentState currentState, IAgent agent, boolean isLast) {
-	if (agent.getAgentType() == AgentType.Resource)
-	    return AgentState.acquire;
-
-	return AgentState.wander;
     }
 
     @Override

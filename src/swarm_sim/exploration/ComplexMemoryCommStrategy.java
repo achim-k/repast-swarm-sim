@@ -12,7 +12,6 @@ import repast.simphony.space.continuous.NdPoint;
 import swarm_sim.Agent;
 import swarm_sim.Agent.AgentState;
 import swarm_sim.IAgent;
-import swarm_sim.IAgent.AgentType;
 import swarm_sim.SectorMap;
 import swarm_sim.Strategy;
 import swarm_sim.communication.CommunicationType;
@@ -172,24 +171,6 @@ public class ComplexMemoryCommStrategy extends ExplorationStrategy {
 	    agentInRange.pushMessage(new Message(MessageType.SectorMap,
 		    controllingAgent, map));
 	}
-    }
-
-    @Override
-    protected AgentState processPerceivedAgent(AgentState prevState,
-	    AgentState currentState, IAgent agent, boolean isLast) {
-	if (agent.getAgentType() == AgentType.Resource)
-	    return AgentState.acquire;
-	else if (agent.getAgentType() == controllingAgent.getAgentType()) {
-	    NdPoint currentLoc = space.getLocation(controllingAgent);
-	    NdPoint agentLoc = space.getLocation(agent);
-	    double distance = space.getDistance(currentLoc, agentLoc);
-	    double angle = SpatialMath.calcAngleFor2DMovement(space,
-		    currentLoc, agentLoc);
-	    scanAgentRepell.addInput(angle, distance);
-	    consecutiveMoveCount = INFINITY;
-	}
-
-	return AgentState.wander;
     }
 
     @Override

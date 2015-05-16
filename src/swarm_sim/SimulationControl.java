@@ -62,7 +62,8 @@ public class SimulationControl implements IAgent {
 
 	if (config.getExplStrat().equalsIgnoreCase("Random")
 		|| config.explStrat.equalsIgnoreCase("MemoryComplex")) {
-	    if (config.foragingStrat.equalsIgnoreCase("NoCommunication")) {
+	    if (config.foragingStrat.equalsIgnoreCase("NoCommunication")
+		    || config.foragingStrat.equalsIgnoreCase("Pheromone")) {
 		networkAgents.clear(); /* No communication in this case */
 	    }
 	}

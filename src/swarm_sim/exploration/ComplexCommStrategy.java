@@ -12,7 +12,6 @@ import repast.simphony.space.continuous.NdPoint;
 import swarm_sim.Agent;
 import swarm_sim.Agent.AgentState;
 import swarm_sim.IAgent;
-import swarm_sim.IAgent.AgentType;
 import swarm_sim.Strategy;
 import swarm_sim.communication.CommunicationType;
 import swarm_sim.communication.INetworkAgent;
@@ -74,13 +73,16 @@ public class ComplexCommStrategy extends ExplorationStrategy {
 
 	    // double winningGenes2[] = new double[] { 0.43, 0.06, 0.94, 0.03,
 	    // 0.71 }; → 1030 avg after 50
-//	    double winningGenes[] = new double[] { 0.94, 0.36, 0.99, 0.00, 0.76 }; // →
-										   // 981
-										   // avg
-										   // after
-										   // 50
-	    double winningGenes[] = new double[] {	    0.9144661462973355,0.009199286207776658,0.7413437169753542,0.02745376616225159,0.9807642605312746 };
-	    
+	    // double winningGenes[] = new double[] { 0.94, 0.36, 0.99, 0.00,
+	    // 0.76 }; // →
+	    // 981
+	    // avg
+	    // after
+	    // 50
+	    double winningGenes[] = new double[] { 0.9144661462973355,
+		    0.009199286207776658, 0.7413437169753542,
+		    0.02745376616225159, 0.9807642605312746 };
+
 	    GA ga = GA.getInstance();
 
 	    ga.RepellIndex = 0;
@@ -168,24 +170,6 @@ public class ComplexCommStrategy extends ExplorationStrategy {
 	    agentInRange.pushMessage(new Message(MessageType.Direction,
 		    controllingAgent, prevDirection));
 	}
-    }
-
-    @Override
-    protected AgentState processPerceivedAgent(AgentState prevState,
-	    AgentState currentState, IAgent agent, boolean isLast) {
-	if (agent.getAgentType() == AgentType.Resource)
-	    return AgentState.acquire;
-	else if (agent.getAgentType() == controllingAgent.getAgentType()) {
-	    NdPoint currentLoc = space.getLocation(controllingAgent);
-	    NdPoint agentLoc = space.getLocation(agent);
-	    double distance = space.getDistance(currentLoc, agentLoc);
-	    double angle = SpatialMath.calcAngleFor2DMovement(space,
-		    currentLoc, agentLoc);
-	    scanAgentRepell.addInput(angle, distance);
-	    consecutiveMoveCount = INFINITY;
-	}
-
-	return AgentState.wander;
     }
 
     @Override

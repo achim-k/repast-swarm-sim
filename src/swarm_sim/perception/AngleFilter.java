@@ -50,6 +50,14 @@ public class AngleFilter {
 	return angle;
     }
 
+    public static double angleDistance(double a, double b) {
+	if (a >= b) {
+	    return Math.abs(normAngle(a - b));
+	} else {
+	    return Math.abs(normAngle(b - a));
+	}
+    }
+
     public void add(double distance, double direction) {
 	double startAngle = 0, endAngle = 0;
 

@@ -10,7 +10,6 @@ import repast.simphony.random.RandomHelper;
 import swarm_sim.Agent;
 import swarm_sim.Agent.AgentState;
 import swarm_sim.IAgent;
-import swarm_sim.IAgent.AgentType;
 import swarm_sim.communication.CommunicationType;
 import swarm_sim.communication.INetworkAgent;
 import swarm_sim.communication.Message;
@@ -45,15 +44,6 @@ public class RandomStrategy extends ExplorationStrategy {
     protected void sendMessage(AgentState prevState, AgentState currentState,
 	    INetworkAgent agentInRange) {
 	// No Communication here
-    }
-
-    @Override
-    protected AgentState processPerceivedAgent(AgentState prevState,
-	    AgentState currentState, IAgent agent, boolean isLast) {
-	if (agent.getAgentType() == AgentType.Resource)
-	    return AgentState.acquire;
-
-	return AgentState.wander;
     }
 
     @Override
