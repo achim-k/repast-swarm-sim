@@ -139,6 +139,7 @@ public class ComplexCommStrategy extends ExplorationStrategy {
 	    scanAgentAppeal.addInput(angle, distance);
 	    consecutiveMoveCount = INFINITY;
 
+	    /* Do not add to repell, if the border of the search area is closer */
 	    double delta[] = space.getDisplacement(agentLoc, currentLoc);
 	    double p[] = new double[] { currentLoc.getX() + delta[0],
 		    currentLoc.getY() + delta[1] };
@@ -148,9 +149,7 @@ public class ComplexCommStrategy extends ExplorationStrategy {
 		scanAgentRepell.addInput(angle, distance);
 		consecutiveMoveCount = INFINITY;
 	    }
-	}
-
-	if (msg.getType() == MessageType.Direction) {
+	} else if (msg.getType() == MessageType.Direction) {
 	    NdPoint currentLoc = space.getLocation(controllingAgent);
 	    NdPoint agentLoc = space.getLocation(msg.getSender());
 	    double distance = space.getDistance(currentLoc, agentLoc);

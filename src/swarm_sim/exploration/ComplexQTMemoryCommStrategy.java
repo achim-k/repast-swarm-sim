@@ -144,8 +144,17 @@ public class ComplexQTMemoryCommStrategy extends ExplorationStrategy {
 	    double distance = space.getDistance(currentLoc, agentLoc);
 	    double angle = SpatialMath.calcAngleFor2DMovement(space,
 		    currentLoc, agentLoc);
-	    scanAgentRepell.addInput(angle, distance);
 	    scanAgentAppeal.addInput(angle, distance);
+	    
+	    /* Do not add to repell, if the border of the search area is closer */
+	    double delta[] = space.getDisplacement(agentLoc, currentLoc);
+	    double p[] = new double[] { currentLoc.getX() + delta[0],
+		    currentLoc.getY() + delta[1] };
+
+	    if (p[0] <= config.spaceWidth && p[0] >= 0 && p[1] >= 0
+		    && p[1] <= config.spaceHeight) {
+		scanAgentRepell.addInput(angle, distance);
+	    }
 
 	} else if (msg.getType() == MessageType.Direction) {
 	    NdPoint currentLoc = space.getLocation(controllingAgent);
