@@ -6,6 +6,7 @@ import java.util.List;
 import org.jgap.IChromosome;
 
 import repast.simphony.context.Context;
+import repast.simphony.random.RandomHelper;
 import repast.simphony.space.continuous.NdPoint;
 import swarm_sim.Agent;
 import swarm_sim.Agent.AgentState;
@@ -16,14 +17,27 @@ import swarm_sim.communication.CommunicationType;
 import swarm_sim.communication.INetworkAgent;
 import swarm_sim.communication.Message;
 import swarm_sim.perception.AngleSegment;
+import swarm_sim.perception.Scan;
+import swarm_sim.perception.ScanMoveDecision;
+import swarm_sim.perception.Scan.AttractionType;
+import swarm_sim.perception.Scan.GrowingDirection;
 
 public class MemoryComplexStrategy extends ExplorationStrategy {
 
+    private double prevDirection = RandomHelper.nextDoubleFromTo(-Math.PI,
+	    Math.PI);
+    private Scan scanLine = new Scan(AttractionType.Attracting,
+	    GrowingDirection.Inwards, 1, true, 0, 1000, 1, 1000);
     SectorMap map = new SectorMap(space.getDimensions(), 60, 60, 1);
+    
+    private ScanMoveDecision smd;
 
     public MemoryComplexStrategy(IChromosome chrom, Context<IAgent> context,
 	    Agent controllingAgent) {
 	super(chrom, context, controllingAgent);
+	
+	smd = new ScanMoveDecision(config.segmentCount, config.k,
+		config.distanceFactor, config.initProb);
     }
 
     @Override
@@ -43,12 +57,22 @@ public class MemoryComplexStrategy extends ExplorationStrategy {
 	    AgentState currentState, List<AngleSegment> collisionFreeSegments) {
 	NdPoint currentLocation = space.getLocation(controllingAgent);
 	map.setPosition(currentLocation);
-	return map.getNewMoveAngle();
+	
+	scanLine.addInput(map.getNewMoveAngle());
+	
+	smd.setValidSegments(collisionFreeSegments);
+	smd.calcProbDist(scanLine);
+	smd.normalize();
+
+	prevDirection = smd.getMovementAngle();
+
+	return prevDirection;
     }
 
     @Override
     protected void clear() {
-	// N/A here
+	smd.clear();
+	scanLine.clear();
     }
 
     @Override
@@ -63,21 +87,6 @@ public class MemoryComplexStrategy extends ExplorationStrategy {
 	List<MessageTypeRegisterPair> ret = new ArrayList<Strategy.MessageTypeRegisterPair>();
 	/* No communication here */
 	return ret;
-
-	// List<MessageTypeRegisterPair> ret = new
-	// ArrayList<Strategy.MessageTypeRegisterPair>();
-	// for (CommunicationType commType : allowedCommTypes) {
-	// switch (commType) {
-	// case MapOrTargets:
-	// AgentState states[] = new AgentState[] { AgentState.wander };
-	// ret.add(new MessageTypeRegisterPair(MessageType.SectorMap,
-	// states));
-	// break;
-	// default:
-	// break;
-	// }
-	// }
-	// return ret;
     }
 
 }
