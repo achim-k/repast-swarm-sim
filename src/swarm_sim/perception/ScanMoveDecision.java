@@ -55,6 +55,9 @@ public class ScanMoveDecision {
 	    if (scan.isValid())
 		mergeWeightSum += scan.getMergeWeight();
 	}
+	
+	if(mergeWeightSum <= 0)
+	    return;
 
 	for (Scan scan : scans) {
 	    double mergeWeight = scan.getMergeWeight();

@@ -37,7 +37,7 @@ public class ComplexCommStrategy extends ExplorationStrategy {
 	    1000);
     private Scan scanAgentAppeal = new Scan(AttractionType.Attracting,
 	    GrowingDirection.Outwards, 0.2, false, 0.8 * config.commScope,
-	    config.commScope, 1, 1);
+	    config.commScope, 1, 1000);
     private Scan scanAgentMimic = new Scan(AttractionType.Attracting,
 	    GrowingDirection.Inwards, 1, true, 0, config.commScope, 1, 1000);
     private Scan scanPrevDirection = new Scan(AttractionType.Attracting,
@@ -79,9 +79,14 @@ public class ComplexCommStrategy extends ExplorationStrategy {
 	    // avg
 	    // after
 	    // 50
-	    double winningGenes[] = new double[] { 0.9144661462973355,
-		    0.009199286207776658, 0.7413437169753542,
-		    0.02745376616225159, 0.9807642605312746 };
+//	    double winningGenes[] = new double[] { 0.9144661462973355,
+//		    0.009199286207776658, 0.7413437169753542,
+//		    0.02745376616225159, 0.9807642605312746 };
+	  
+//	    test
+	    double winningGenes[] = new double[] { 1,
+		    1, .8,
+		    1, 0.1 };
 
 	    GA ga = GA.getInstance();
 

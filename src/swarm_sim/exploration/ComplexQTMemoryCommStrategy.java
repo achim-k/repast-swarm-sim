@@ -38,9 +38,9 @@ public class ComplexQTMemoryCommStrategy extends ExplorationStrategy {
 	    1000);
     private Scan scanAgentAppeal = new Scan(AttractionType.Attracting,
 	    GrowingDirection.Outwards, 0.2, false, 0.8 * config.commScope,
-	    config.commScope, 1, 1);
+	    config.commScope, 1, 1000);
     private Scan scanAgentMimic = new Scan(AttractionType.Attracting,
-	    GrowingDirection.Inwards, 1, true, 0, config.commScope, 1, 5);
+	    GrowingDirection.Inwards, 1, true, 0, config.commScope, 1, 1000);
     private Scan scanPrevDirection = new Scan(AttractionType.Attracting,
 	    GrowingDirection.Inwards, 1, true, 0, 1000, 1, 1000);
     private Scan scanUnknownSectors = new Scan(AttractionType.Attracting,
