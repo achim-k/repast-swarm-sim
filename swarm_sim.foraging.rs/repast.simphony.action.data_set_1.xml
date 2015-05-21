@@ -104,6 +104,14 @@
         <methodName>getTotalExecTimeSendMessages</methodName>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
+    <entry>
+      <string>NumberOfEdges</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>NumberOfEdges</id>
+        <className>swarm_sim.DataCollection</className>
+        <methodName>getNumberOfEdges</methodName>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
   </methodDataSources>
   <countSources class="linked-hash-map"/>
   <customNADataSources class="linked-hash-map"/>

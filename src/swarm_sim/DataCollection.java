@@ -27,6 +27,7 @@ public class DataCollection implements IAgent {
     public double execTimeScanEnv = 0, prevexecTimeScanEnv = 0;
     public double execTimeNetworkCalculation = 0,
 	    prevExecTimeNetworkCalculation = 0;
+    public int numberOfEdges = 0;
 
     public int runCount = 0;
 
@@ -56,6 +57,8 @@ public class DataCollection implements IAgent {
 	execTimeMoveDecision = 0;
 	execTimeScanEnv = 0;
 	execTimeNetworkCalculation = 0;
+	numberOfEdges = 0;
+
 	startTime = System.nanoTime();
 
 	prevExecTimeProcessMessages = 0;
@@ -157,6 +160,10 @@ public class DataCollection implements IAgent {
 
     public double getTotalExecTime() {
 	return System.nanoTime() - startTime;
+    }
+
+    public int getNumberOfEdges() {
+	return numberOfEdges;
     }
 
     @Override

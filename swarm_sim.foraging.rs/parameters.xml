@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <parameters>
 	<parameter name="expl_strategy" displayName="Exploration Strategy"
-		type="java.lang.String" defaultValue="MemoryComplex"
+		type="java.lang.String" defaultValue="ComplexQTMemoryCommunication"
 		isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter"
 		values="Random MemoryComplex MemoryCommunication ComplexCommunication ComplexMemoryCommunication QuadTree ComplexQTMemoryCommunication " />
@@ -10,7 +10,7 @@
 		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter"
 		values="NoCommunication StateCommunication GoalCommunication Pheromone" />
 	<parameter name="agent_count" displayName="Number of Agents"
-		type="int" defaultValue="32" isReadOnly="false"
+		type="int" defaultValue="16" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
 	<parameter name="perception_scope" displayName="Perception scope [%]"
 		type="double" defaultValue="1.0" isReadOnly="false"

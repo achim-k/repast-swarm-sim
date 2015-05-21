@@ -16,6 +16,7 @@
     <string>TotalExecTimeProcessMessages</string>
     <string>TotalExecTimeScanEnv</string>
     <string>TotalExecTimeSendMessages</string>
+    <string>NumberOfEdges</string>
   </sourceIds>
   <fileName>output/endData.csv</fileName>
   <addTimeStamp>true</addTimeStamp>

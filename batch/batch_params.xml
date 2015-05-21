@@ -1,11 +1,9 @@
 <?xml version="1.0" ?>
-<sweep runs="25">
+<sweep runs="50">
 	<parameter name="distance_factor" type="constant"
 		constant_type="double" value="5"></parameter>
 	<parameter name="print_params" type="constant" constant_type="boolean"
 		value="false"></parameter>
-	<parameter name="expl_strategy" type="constant"
-		constant_type="java.lang.String" value="ComplexQTMemoryCommunication"></parameter>
 	<parameter name="decay_rate" type="constant" constant_type="double"
 		value="0.1"></parameter>
 	<parameter name="comm_frequency" type="constant"
@@ -14,6 +12,8 @@
 		constant_type="double" value="1"></parameter>
 	<parameter name="foraging_strategy" type="constant"
 		constant_type="java.lang.String" value="NoCommunication"></parameter>
+	<parameter name="k" type="constant" constant_type="double"
+		value="6"></parameter>
 	<parameter name="agent_count" type="constant" constant_type="int"
 		value="32"></parameter>
 	<parameter name="resource_count" type="constant"
@@ -30,9 +30,8 @@
 		constant_type="java.lang.String" value="100:100"></parameter>
 	<parameter name="prob_init" type="constant" constant_type="double"
 		value="0.01"></parameter>
-	<parameter name="k" type="list" value_type="double"
-		values="0.5 1 2 4 6 8 10 20 40 100">
-		<parameter name="segment_count" type="list" value_type="int"
-			values="4 8"></parameter>
-	</parameter>
+	<parameter name="segment_count" type="constant"
+		constant_type="int" value="8"></parameter>
+	<parameter name="expl_strategy" type="list" value_type="java.lang.String"
+		values="MemoryCommunication QuadTree"></parameter>
 </sweep>
