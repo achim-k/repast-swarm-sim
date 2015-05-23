@@ -86,10 +86,8 @@ public class ComplexQTMemoryCommStrategy extends ExplorationStrategy {
 	    scanAgentRepell.setOuterBorderRadius(repellAppealBorder);
 	    scanAgentAppeal.setInnerBorderRadius(repellAppealBorder);
 	} else {
-	    double winningOutput[] = new double[] { 1,
-		    0.1, 0.9,
-		    0.1, 0.23248373248966592,
-		    1 };
+	    double winningOutput[] = new double[] { 1, 0.1, 0.9, 0.1,
+		    0.23248373248966592, 1 };
 
 	    scanAgentRepell.setMergeWeight(winningOutput[0]);
 	    scanAgentAppeal.setMergeWeight(winningOutput[1]);
@@ -145,7 +143,7 @@ public class ComplexQTMemoryCommStrategy extends ExplorationStrategy {
 	    double angle = SpatialMath.calcAngleFor2DMovement(space,
 		    currentLoc, agentLoc);
 	    scanAgentAppeal.addInput(angle, distance);
-	    
+
 	    /* Do not add to repell, if the border of the search area is closer */
 	    double delta[] = space.getDisplacement(agentLoc, currentLoc);
 	    double p[] = new double[] { currentLoc.getX() + delta[0],

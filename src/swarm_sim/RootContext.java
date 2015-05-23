@@ -87,7 +87,7 @@ public class RootContext implements ContextBuilder<IAgent> {
 
 	config.resourceNestCount = params.getInteger("resource_nest_count");
 	config.resourceCount = params.getInteger("resource_count");
-	
+
 	config.decayRate = params.getDouble("decay_rate");
 
 	/* Create continuous space */

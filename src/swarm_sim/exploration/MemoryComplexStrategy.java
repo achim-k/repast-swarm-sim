@@ -18,9 +18,9 @@ import swarm_sim.communication.INetworkAgent;
 import swarm_sim.communication.Message;
 import swarm_sim.perception.AngleSegment;
 import swarm_sim.perception.Scan;
-import swarm_sim.perception.ScanMoveDecision;
 import swarm_sim.perception.Scan.AttractionType;
 import swarm_sim.perception.Scan.GrowingDirection;
+import swarm_sim.perception.ScanMoveDecision;
 
 public class MemoryComplexStrategy extends ExplorationStrategy {
 
@@ -29,13 +29,13 @@ public class MemoryComplexStrategy extends ExplorationStrategy {
     private Scan scanLine = new Scan(AttractionType.Attracting,
 	    GrowingDirection.Inwards, 1, true, 0, 1000, 1, 1000);
     SectorMap map = new SectorMap(space.getDimensions(), 60, 60, 1);
-    
+
     private ScanMoveDecision smd;
 
     public MemoryComplexStrategy(IChromosome chrom, Context<IAgent> context,
 	    Agent controllingAgent) {
 	super(chrom, context, controllingAgent);
-	
+
 	smd = new ScanMoveDecision(config.segmentCount, config.k,
 		config.distanceFactor, config.initProb);
     }
@@ -57,9 +57,9 @@ public class MemoryComplexStrategy extends ExplorationStrategy {
 	    AgentState currentState, List<AngleSegment> collisionFreeSegments) {
 	NdPoint currentLocation = space.getLocation(controllingAgent);
 	map.setPosition(currentLocation);
-	
+
 	scanLine.addInput(map.getNewMoveAngle());
-	
+
 	smd.setValidSegments(collisionFreeSegments);
 	smd.calcProbDist(scanLine);
 	smd.normalize();

@@ -209,7 +209,6 @@ public class Agent implements IAgent, IDisplayAgent, INetworkAgent {
 		msg = popMessage();
 		continue;
 	    }
-		
 
 	    for (MessageTypeRegisterPair mrp : faStrategyMessages) {
 		if (msg.getType() == mrp.msgType) {
@@ -223,7 +222,7 @@ public class Agent implements IAgent, IDisplayAgent, INetworkAgent {
 		    break;
 		}
 	    }
-	    
+
 	}
 
 	state = explStrategy.processMessage(prevState, state, null, true);

@@ -78,7 +78,7 @@ public class SimulationControl implements IAgent {
 			distance));
 	    }
 	}
-	
+
 	isInitiated = true;
     }
 
@@ -109,7 +109,7 @@ public class SimulationControl implements IAgent {
 			    space.getLocation(agentPair.target)))
 		commNet.addEdge(agentPair.source, agentPair.target);
 	}
-	
+
 	data.numberOfEdges += commNet.getDegree();
 
 	data.execTimeNetworkCalculation += System.nanoTime() - start;
