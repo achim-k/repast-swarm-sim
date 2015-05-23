@@ -41,10 +41,12 @@
 		type="double" defaultValue="0.01" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter" />
 
-
 	<parameter name="consecutive_move" displayName="Consecutive moves"
 		type="int" defaultValue="0" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
+	<parameter name="failure_probability" displayName="Failure Probability [0-1]"
+		type="double" defaultValue="0" isReadOnly="false"
+		converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter" />
 	<parameter name="decay_rate" displayName="Pheromone decay rate [%]"
 		type="double" defaultValue="0.5" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter" />

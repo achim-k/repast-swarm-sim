@@ -6,9 +6,9 @@ import java.util.List;
 import org.jgap.IChromosome;
 
 import repast.simphony.context.Context;
+import swarm_sim.AbstractAgent;
 import swarm_sim.Agent;
 import swarm_sim.Agent.AgentState;
-import swarm_sim.IAgent;
 import swarm_sim.Strategy;
 import swarm_sim.communication.CommunicationType;
 import swarm_sim.communication.INetworkAgent;
@@ -17,7 +17,7 @@ import swarm_sim.perception.AngleSegment;
 
 public class NoCommStrategy extends ForagingStrategy {
 
-    public NoCommStrategy(IChromosome chrom, Context<IAgent> context,
+    public NoCommStrategy(IChromosome chrom, Context<AbstractAgent> context,
 	    Agent controllingAgent) {
 	super(chrom, context, controllingAgent);
     }
@@ -49,7 +49,7 @@ public class NoCommStrategy extends ForagingStrategy {
 
     @Override
     public AgentState processPerceivedAgent(AgentState prevState,
-	    AgentState currentState, IAgent agent, boolean isLast) {
+	    AgentState currentState, AbstractAgent agent, boolean isLast) {
 	return super.processPerceivedAgent(prevState, currentState, agent,
 		isLast);
     }

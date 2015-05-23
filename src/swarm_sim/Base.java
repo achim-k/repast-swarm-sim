@@ -10,7 +10,7 @@ import saf.v3d.scene.VSpatial;
 import swarm_sim.communication.INetworkAgent;
 import swarm_sim.communication.Message;
 
-public class Base implements IAgent, IDisplayAgent, INetworkAgent {
+public class Base extends AbstractAgent implements IDisplayAgent, INetworkAgent {
 
     private List<Message> messageQueue = new ArrayList<>();
     private DataCollection data = DataCollection.getInstance();

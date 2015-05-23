@@ -9,9 +9,9 @@ import repast.simphony.context.Context;
 import repast.simphony.random.RandomHelper;
 import repast.simphony.space.SpatialMath;
 import repast.simphony.space.continuous.NdPoint;
+import swarm_sim.AbstractAgent;
 import swarm_sim.Agent;
 import swarm_sim.Agent.AgentState;
-import swarm_sim.IAgent;
 import swarm_sim.QuadTree;
 import swarm_sim.QuadTree.Node;
 import swarm_sim.Strategy;
@@ -49,7 +49,7 @@ public class ComplexQTMemoryCommStrategy extends ExplorationStrategy {
     private ScanMoveDecision smd;
 
     public ComplexQTMemoryCommStrategy(IChromosome chrom,
-	    Context<IAgent> context, Agent controllingAgent) {
+	    Context<AbstractAgent> context, Agent controllingAgent) {
 	super(chrom, context, controllingAgent);
 
 	smd = new ScanMoveDecision(config.segmentCount, config.k,

@@ -29,16 +29,16 @@ public abstract class Strategy {
     protected Configuration config;
     protected DataCollection data;
     protected IChromosome chrom;
-    protected ContinuousSpace<IAgent> space;
-    protected Context<IAgent> context;
+    protected ContinuousSpace<AbstractAgent> space;
+    protected Context<AbstractAgent> context;
     protected Agent controllingAgent;
 
-    public Strategy(IChromosome chrom, Context<IAgent> context,
+    public Strategy(IChromosome chrom, Context<AbstractAgent> context,
 	    Agent controllingAgent) {
 	super();
 	this.chrom = chrom;
 	this.context = context;
-	this.space = (ContinuousSpace<IAgent>) context.getProjection(
+	this.space = (ContinuousSpace<AbstractAgent>) context.getProjection(
 		ContinuousSpace.class, "space_continuous");
 	this.config = Configuration.getInstance();
 	this.data = DataCollection.getInstance();
@@ -55,7 +55,7 @@ public abstract class Strategy {
 	    AgentState currentState, INetworkAgent agentInRange);
 
     protected abstract AgentState processPerceivedAgent(AgentState prevState,
-	    AgentState currentState, IAgent agent, boolean isLast);
+	    AgentState currentState, AbstractAgent agent, boolean isLast);
 
     protected abstract double makeDirectionDecision(AgentState prevState,
 	    AgentState currentState, List<AngleSegment> collisionFreeSegments);

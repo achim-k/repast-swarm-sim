@@ -1,6 +1,6 @@
 package swarm_sim;
 
-public class Configuration implements IAgent {
+public class Configuration extends AbstractAgent {
 
     /* Params */
     public int agentCount;
@@ -24,6 +24,7 @@ public class Configuration implements IAgent {
     public int spaceWidth, spaceHeight;
     public boolean printConfig = true;
     public double decayRate;
+    public double failureProbability;
 
     private static Configuration instance = null;
 

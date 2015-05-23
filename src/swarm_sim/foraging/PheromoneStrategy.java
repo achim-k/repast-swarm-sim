@@ -8,10 +8,10 @@ import org.jgap.IChromosome;
 import repast.simphony.context.Context;
 import repast.simphony.space.SpatialMath;
 import repast.simphony.space.continuous.NdPoint;
+import swarm_sim.AbstractAgent;
+import swarm_sim.AbstractAgent.AgentType;
 import swarm_sim.Agent;
 import swarm_sim.Agent.AgentState;
-import swarm_sim.IAgent;
-import swarm_sim.IAgent.AgentType;
 import swarm_sim.Pheromone;
 import swarm_sim.Strategy;
 import swarm_sim.communication.CommunicationType;
@@ -32,7 +32,7 @@ public class PheromoneStrategy extends ForagingStrategy {
 	    GrowingDirection.Outwards, 1, true, 0, config.perceptionScope, 1,
 	    20);
 
-    public PheromoneStrategy(IChromosome chrom, Context<IAgent> context,
+    public PheromoneStrategy(IChromosome chrom, Context<AbstractAgent> context,
 	    Agent controllingAgent) {
 	super(chrom, context, controllingAgent);
     }
@@ -53,7 +53,7 @@ public class PheromoneStrategy extends ForagingStrategy {
 
     @Override
     public AgentState processPerceivedAgent(AgentState prevState,
-	    AgentState currentState, IAgent agent, boolean isLast) {
+	    AgentState currentState, AbstractAgent agent, boolean isLast) {
 	NdPoint currentLocation = space.getLocation(controllingAgent);
 	double baseAngle = SpatialMath.calcAngleFor2DMovement(space,
 		currentLocation, space.getLocation(config.baseAgent));

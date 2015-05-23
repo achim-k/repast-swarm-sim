@@ -9,9 +9,9 @@ import repast.simphony.context.Context;
 import repast.simphony.random.RandomHelper;
 import repast.simphony.space.SpatialMath;
 import repast.simphony.space.continuous.NdPoint;
+import swarm_sim.AbstractAgent;
 import swarm_sim.Agent;
 import swarm_sim.Agent.AgentState;
-import swarm_sim.IAgent;
 import swarm_sim.SectorMap;
 import swarm_sim.Strategy;
 import swarm_sim.communication.CommunicationType;
@@ -52,7 +52,7 @@ public class ComplexMemoryCommStrategy extends ExplorationStrategy {
     private ScanMoveDecision smd = new ScanMoveDecision(8, 6, 10, 0.05);
 
     public ComplexMemoryCommStrategy(IChromosome chrom,
-	    Context<IAgent> context, Agent controllingAgent) {
+	    Context<AbstractAgent> context, Agent controllingAgent) {
 	super(chrom, context, controllingAgent);
 
 	int sectorsX = (int) (config.spaceWidth / config.perceptionScope);

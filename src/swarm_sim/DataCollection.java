@@ -8,7 +8,7 @@ package swarm_sim;
  * @author achim
  * 
  */
-public class DataCollection implements IAgent {
+public class DataCollection extends AbstractAgent {
 
     private static DataCollection instance = null;
 
@@ -169,5 +169,10 @@ public class DataCollection implements IAgent {
     @Override
     public AgentType getAgentType() {
 	return AgentType.DataCollection;
+    }
+
+    @Override
+    public boolean hasFailed() {
+	return false;
     }
 }

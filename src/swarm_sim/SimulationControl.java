@@ -1,6 +1,7 @@
 package swarm_sim;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import repast.simphony.context.Context;
@@ -9,14 +10,15 @@ import repast.simphony.space.continuous.ContinuousSpace;
 import repast.simphony.space.graph.Network;
 import swarm_sim.learning.GA;
 
-public class SimulationControl implements IAgent {
+public class SimulationControl extends AbstractAgent {
 
     public class AgentDistancePairs {
-	public IAgent source, target;
+	public AbstractAgent source, target;
 	public double distance = 0;
 	public int lastTimeChecked = 0;
 
-	public AgentDistancePairs(IAgent source, IAgent target, double distance) {
+	public AgentDistancePairs(AbstractAgent source, AbstractAgent target,
+		double distance) {
 	    this.source = source;
 	    this.target = target;
 	    this.distance = distance;
@@ -24,23 +26,24 @@ public class SimulationControl implements IAgent {
 	}
     }
 
-    Context<IAgent> context;
-    Network<IAgent> commNet;
+    Context<AbstractAgent> context;
+    Network<AbstractAgent> commNet;
 
-    ContinuousSpace<IAgent> space;
+    ContinuousSpace<AbstractAgent> space;
     AdvancedGridValueLayer exploredArea;
 
     Configuration config;
     DataCollection data;
 
-    List<IAgent> networkAgents;
+    List<AbstractAgent> networkAgents;
     List<AgentDistancePairs> agentDistancePairs = new ArrayList<>();
     boolean isInitiated = false;
 
-    public SimulationControl(Context<IAgent> context, List<IAgent> networkAgents) {
+    public SimulationControl(Context<AbstractAgent> context,
+	    List<AbstractAgent> networkAgents) {
 	this.context = context;
 	this.commNet = context.getProjection(Network.class, "network_comm");
-	this.space = (ContinuousSpace<IAgent>) context.getProjection(
+	this.space = (ContinuousSpace<AbstractAgent>) context.getProjection(
 		ContinuousSpace.class, "space_continuous");
 	this.config = Configuration.getInstance();
 	this.exploredArea = (AdvancedGridValueLayer) context
@@ -69,9 +72,9 @@ public class SimulationControl implements IAgent {
 	}
 
 	for (int i = 0; i < networkAgents.size(); i++) {
-	    IAgent source = networkAgents.get(i);
+	    AbstractAgent source = networkAgents.get(i);
 	    for (int j = i + 1; j < networkAgents.size(); j++) {
-		IAgent target = networkAgents.get(j);
+		AbstractAgent target = networkAgents.get(j);
 		double distance = space.getDistance(space.getLocation(source),
 			space.getLocation(target));
 		agentDistancePairs.add(new AgentDistancePairs(source, target,
@@ -91,7 +94,12 @@ public class SimulationControl implements IAgent {
 		.getTickCount();
 
 	commNet.removeEdges();
-	for (AgentDistancePairs agentPair : agentDistancePairs) {
+
+	Iterator<AgentDistancePairs> iter = agentDistancePairs.iterator();
+
+	while (iter.hasNext()) {
+	    AgentDistancePairs agentPair = iter.next();
+
 	    boolean toBeChecked = (tick - agentPair.lastTimeChecked) * 2
 		    * config.maxMoveDistance >= Math.abs(agentPair.distance
 		    - config.commScope);
@@ -101,6 +109,10 @@ public class SimulationControl implements IAgent {
 			space.getLocation(agentPair.source),
 			space.getLocation(agentPair.target));
 		agentPair.lastTimeChecked = tick;
+
+		if (agentPair.source.hasFailed()
+			|| agentPair.target.hasFailed())
+		    iter.remove();
 	    }
 
 	    if (agentPair.distance <= config.commScope
@@ -141,6 +153,6 @@ public class SimulationControl implements IAgent {
 
     @Override
     public AgentType getAgentType() {
-	return IAgent.AgentType.SimulationControl;
+	return AbstractAgent.AgentType.SimulationControl;
     }
 }

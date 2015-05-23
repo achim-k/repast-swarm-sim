@@ -15,7 +15,6 @@ import repast.simphony.space.SpatialMath;
 import repast.simphony.space.continuous.ContinuousSpace;
 import repast.simphony.space.continuous.NdPoint;
 import repast.simphony.space.graph.Network;
-import repast.simphony.util.ContextUtils;
 import saf.v3d.ShapeFactory2D;
 import saf.v3d.scene.VSpatial;
 import swarm_sim.AdvancedGridValueLayer.FieldDistancePair;
@@ -40,10 +39,11 @@ import swarm_sim.foraging.StateCommStrategy;
 import swarm_sim.perception.AngleFilter;
 import swarm_sim.perception.AngleSegment;
 
-public class Agent implements IAgent, IDisplayAgent, INetworkAgent {
+public class Agent extends AbstractAgent implements IDisplayAgent,
+	INetworkAgent {
 
     public enum AgentState {
-	wander, acquire, deliver
+	wander, acquire, deliver, failure
     }
 
     static int agentCount = 0;
@@ -63,9 +63,9 @@ public class Agent implements IAgent, IDisplayAgent, INetworkAgent {
     Configuration config;
     DataCollection data;
 
-    Context<IAgent> context;
-    Network<IAgent> commNet;
-    ContinuousSpace<IAgent> space;
+    Context<AbstractAgent> context;
+    Network<AbstractAgent> commNet;
+    ContinuousSpace<AbstractAgent> space;
     AdvancedGridValueLayer exploredArea;
 
     /* Learning */
@@ -82,15 +82,15 @@ public class Agent implements IAgent, IDisplayAgent, INetworkAgent {
     protected List<Message> messageQueue = new ArrayList<>();
 
     @SuppressWarnings("unchecked")
-    public Agent(Context<IAgent> context, IChromosome chrom) {
+    public Agent(Context<AbstractAgent> context, IChromosome chrom) {
 	this.chrom = chrom;
 
 	/* Get context, network, value layer etc. */
-	this.context = ContextUtils.getContext(this);
-	this.space = (ContinuousSpace<IAgent>) context.getProjection(
+	this.context = context;
+	this.space = (ContinuousSpace<AbstractAgent>) context.getProjection(
 		ContinuousSpace.class, "space_continuous");
-	this.commNet = (Network<IAgent>) context.getProjection(Network.class,
-		"network_comm");
+	this.commNet = (Network<AbstractAgent>) context.getProjection(
+		Network.class, "network_comm");
 	this.exploredArea = (AdvancedGridValueLayer) context
 		.getValueLayer("layer_explored");
 	this.config = Configuration.getInstance();
@@ -142,8 +142,24 @@ public class Agent implements IAgent, IDisplayAgent, INetworkAgent {
     }
 
     public void step() {
+	if (state == AgentState.failure)
+	    return;
+
 	if (currentLocation == null)
 	    currentLocation = space.getLocation(this);
+
+	/* check if agent will fail */
+	double failRand = Math.random();
+	if (failRand < config.failureProbability) {
+	    if (state == AgentState.deliver) {
+		/* drop pheromone */
+		Pheromone p = new Pheromone();
+		context.add(p);
+		space.moveTo(p, currentLocation.getX(), currentLocation.getY());
+	    }
+	    state = AgentState.failure;
+	    return;
+	}
 
 	long start = System.nanoTime();
 	rcvMessages();
@@ -205,23 +221,22 @@ public class Agent implements IAgent, IDisplayAgent, INetworkAgent {
 		}
 	    }
 
-	    if (!isForagingScenario) {
-		msg = popMessage();
-		continue;
-	    }
-
-	    for (MessageTypeRegisterPair mrp : faStrategyMessages) {
-		if (msg.getType() == mrp.msgType) {
-		    for (AgentState as : mrp.states) {
-			if (state == as) {
-			    state = faStrategy.processMessage(prevState, state,
-				    msg, msg == null);
-			    break;
+	    if (isForagingScenario) {
+		for (MessageTypeRegisterPair mrp : faStrategyMessages) {
+		    if (msg.getType() == mrp.msgType) {
+			for (AgentState as : mrp.states) {
+			    if (state == as) {
+				state = faStrategy.processMessage(prevState,
+					state, msg, msg == null);
+				break;
+			    }
 			}
+			break;
 		    }
-		    break;
 		}
 	    }
+
+	    msg = popMessage();
 
 	}
 
@@ -236,7 +251,7 @@ public class Agent implements IAgent, IDisplayAgent, INetworkAgent {
 		% config.commFreq;
 
 	if (x == 0) {
-	    for (IAgent netAgent : commNet.getAdjacent(this)) {
+	    for (AbstractAgent netAgent : commNet.getAdjacent(this)) {
 		explStrategy.sendMessage(prevState, state,
 			(INetworkAgent) netAgent);
 
@@ -279,12 +294,12 @@ public class Agent implements IAgent, IDisplayAgent, INetworkAgent {
 	}
 
 	/* scan environment for surrounding agents, pheromones, resources, ... */
-	ContinuousWithin<IAgent> withinQuery = new ContinuousWithin<IAgent>(
+	ContinuousWithin<AbstractAgent> withinQuery = new ContinuousWithin<AbstractAgent>(
 		space, this, config.perceptionScope);
-	Iterator<IAgent> agentIter = withinQuery.query().iterator();
+	Iterator<AbstractAgent> agentIter = withinQuery.query().iterator();
 
 	while (agentIter.hasNext()) {
-	    IAgent agent = agentIter.next();
+	    AbstractAgent agent = agentIter.next();
 
 	    /* Other agent → avoid collisions */
 	    if (agent.getAgentType() == getAgentType()) {
@@ -341,6 +356,11 @@ public class Agent implements IAgent, IDisplayAgent, INetworkAgent {
     }
 
     @Override
+    public boolean hasFailed() {
+	return state == AgentState.failure;
+    }
+
+    @Override
     public Color getColor() {
 	Color retColor = Color.BLUE;
 	switch (state) {
@@ -352,6 +372,9 @@ public class Agent implements IAgent, IDisplayAgent, INetworkAgent {
 	    break;
 	case deliver:
 	    retColor = Color.RED;
+	    break;
+	case failure:
+	    retColor = Color.LIGHT_GRAY;
 	    break;
 	default:
 	    retColor = Color.BLUE;

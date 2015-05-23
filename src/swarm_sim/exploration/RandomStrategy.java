@@ -7,9 +7,9 @@ import org.jgap.IChromosome;
 
 import repast.simphony.context.Context;
 import repast.simphony.random.RandomHelper;
+import swarm_sim.AbstractAgent;
 import swarm_sim.Agent;
 import swarm_sim.Agent.AgentState;
-import swarm_sim.IAgent;
 import swarm_sim.communication.CommunicationType;
 import swarm_sim.communication.INetworkAgent;
 import swarm_sim.communication.Message;
@@ -24,7 +24,7 @@ public class RandomStrategy extends ExplorationStrategy {
 
     ScanMoveDecision smd;
 
-    public RandomStrategy(IChromosome chrom, Context<IAgent> context,
+    public RandomStrategy(IChromosome chrom, Context<AbstractAgent> context,
 	    Agent controllingAgent) {
 	super(chrom, context, controllingAgent);
     }

@@ -3,7 +3,7 @@ package swarm_sim;
 import repast.simphony.engine.schedule.ScheduledMethod;
 import repast.simphony.util.ContextUtils;
 
-public class Pheromone implements IAgent {
+public class Pheromone extends AbstractAgent {
 
     double health;
     Configuration config = Configuration.getInstance();

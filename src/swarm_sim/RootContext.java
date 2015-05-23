@@ -27,11 +27,11 @@ import swarm_sim.learning.GA;
  * @author achim
  * 
  */
-public class RootContext implements ContextBuilder<IAgent> {
+public class RootContext implements ContextBuilder<AbstractAgent> {
     protected AdvancedGridValueLayer exploredArea;
-    protected ContinuousSpace<IAgent> space;
+    protected ContinuousSpace<AbstractAgent> space;
 
-    public Context<IAgent> build(Context<IAgent> context) {
+    public Context<AbstractAgent> build(Context<AbstractAgent> context) {
 	/* Set context id */
 	context.setId("root");
 
@@ -88,6 +88,8 @@ public class RootContext implements ContextBuilder<IAgent> {
 	config.resourceNestCount = params.getInteger("resource_nest_count");
 	config.resourceCount = params.getInteger("resource_count");
 
+	config.failureProbability = params.getDouble("failure_probability");
+
 	config.decayRate = params.getDouble("decay_rate");
 
 	/* Create continuous space */
@@ -95,7 +97,7 @@ public class RootContext implements ContextBuilder<IAgent> {
 		.createContinuousSpaceFactory(null);
 
 	space = spaceFactory.createContinuousSpace("space_continuous", context,
-		new RandomCartesianAdder<IAgent>(),
+		new RandomCartesianAdder<AbstractAgent>(),
 		new repast.simphony.space.continuous.BouncyBorders(),
 		config.spaceWidth, config.spaceHeight);
 
@@ -105,7 +107,7 @@ public class RootContext implements ContextBuilder<IAgent> {
 	context.addValueLayer(exploredArea);
 	// readMapFromImage(exploredArea, "data/map.png");
 
-	PseudoRandomAdder<IAgent> adder = new PseudoRandomAdder<IAgent>(
+	PseudoRandomAdder<AbstractAgent> adder = new PseudoRandomAdder<AbstractAgent>(
 		exploredArea);
 	adder.setRandomAdderSaveClass(Base.class);
 
@@ -130,21 +132,21 @@ public class RootContext implements ContextBuilder<IAgent> {
 	 * Create comm network (holds only edges of agents which are within
 	 * communication range
 	 */
-	NetworkBuilder<IAgent> builder = new NetworkBuilder<>("network_comm",
-		context, true);
+	NetworkBuilder<AbstractAgent> builder = new NetworkBuilder<>(
+		"network_comm", context, true);
 	builder.buildNetwork();
 
 	ScheduleParameters agentScheduleParams = ScheduleParameters
 		.createRepeating(0, 1);
 
-	List<IAgent> networkAgents = new ArrayList<>();
+	List<AbstractAgent> networkAgents = new ArrayList<>();
 	// networkAgents.add(base);
 
 	GA ga = GA.getInstance();
 
 	/* add agents */
 	for (int i = 0; i < config.agentCount; i++) {
-	    IAgent agent;
+	    AbstractAgent agent;
 	    if (config.useGA)
 		agent = new Agent(context, ga.currentChromosome);
 	    else

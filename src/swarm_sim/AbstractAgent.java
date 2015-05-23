@@ -1,6 +1,6 @@
 package swarm_sim;
 
-public interface IAgent {
+public abstract class AbstractAgent {
 
     public enum AgentType {
 	SwarmAgent, Pheromone, SimulationControl,
@@ -14,5 +14,9 @@ public interface IAgent {
 
     }
 
-    AgentType getAgentType();
+    public abstract AgentType getAgentType();
+
+    public boolean hasFailed() {
+	return false;
+    };
 }
