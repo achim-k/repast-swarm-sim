@@ -24,11 +24,9 @@ import swarm_sim.communication.CommunicationType;
 import swarm_sim.communication.INetworkAgent;
 import swarm_sim.communication.Message;
 import swarm_sim.exploration.ComplexCommStrategy;
-import swarm_sim.exploration.ComplexMemoryCommStrategy;
+import swarm_sim.exploration.ComplexMemoryStrategy;
 import swarm_sim.exploration.ComplexQTMemoryCommStrategy;
 import swarm_sim.exploration.ExplorationStrategy;
-import swarm_sim.exploration.MemoryCommStrategy;
-import swarm_sim.exploration.ComplexMemoryStrategy;
 import swarm_sim.exploration.QTMemoryCommStrategy;
 import swarm_sim.exploration.RandomStrategy;
 import swarm_sim.foraging.ForagingStrategy;
@@ -100,11 +98,11 @@ public class Agent extends AbstractAgent implements IDisplayAgent,
 	/* Set exploration and foraging strategy */
 	if (config.explStrat.equalsIgnoreCase("R"))
 	    this.explStrategy = new RandomStrategy(chrom, context, this);
-	else if (config.explStrat.equalsIgnoreCase("CM_"))
+	else if (config.explStrat.equalsIgnoreCase("CM"))
 	    this.explStrategy = new ComplexMemoryStrategy(chrom, context, this);
-	else if (config.explStrat.equalsIgnoreCase("C_C"))
+	else if (config.explStrat.equalsIgnoreCase("CC"))
 	    this.explStrategy = new ComplexCommStrategy(chrom, context, this);
-	else if (config.explStrat.equalsIgnoreCase("_MC"))
+	else if (config.explStrat.equalsIgnoreCase("MC"))
 	    this.explStrategy = new QTMemoryCommStrategy(chrom, context, this);
 	else if (config.explStrat.equalsIgnoreCase("CMC"))
 	    this.explStrategy = new ComplexQTMemoryCommStrategy(chrom, context,

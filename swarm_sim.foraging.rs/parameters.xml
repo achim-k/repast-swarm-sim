@@ -4,7 +4,7 @@
 		type="java.lang.String" defaultValue="CMC"
 		isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter"
-		values="R CM_ _MC C_C CMC" />
+		values="R CM MC CC CMC" />
 	<parameter name="foraging_strategy" displayName="Foraging Strategy"
 		type="java.lang.String" defaultValue="NoCommunication" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter"

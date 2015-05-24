@@ -63,8 +63,8 @@ public class SimulationControl extends AbstractAgent {
 	if (config.commScope <= 0.1)
 	    networkAgents.clear(); /* No communication in this case */
 
-	if (config.getExplStrat().equalsIgnoreCase("Random")
-		|| config.explStrat.equalsIgnoreCase("MemoryComplex")) {
+	if (config.getExplStrat().equalsIgnoreCase("R")
+		|| config.explStrat.equalsIgnoreCase("CM")) {
 	    if (config.foragingStrat.equalsIgnoreCase("NoCommunication")
 		    || config.foragingStrat.equalsIgnoreCase("Pheromone")) {
 		networkAgents.clear(); /* No communication in this case */
