@@ -22,7 +22,7 @@ import swarm_sim.perception.Scan.AttractionType;
 import swarm_sim.perception.Scan.GrowingDirection;
 import swarm_sim.perception.ScanMoveDecision;
 
-public class MemoryComplexStrategy extends ExplorationStrategy {
+public class ComplexMemoryStrategy extends ExplorationStrategy {
 
     private double prevDirection = RandomHelper.nextDoubleFromTo(-Math.PI,
 	    Math.PI);
@@ -32,7 +32,7 @@ public class MemoryComplexStrategy extends ExplorationStrategy {
 
     private ScanMoveDecision smd;
 
-    public MemoryComplexStrategy(IChromosome chrom,
+    public ComplexMemoryStrategy(IChromosome chrom,
 	    Context<AbstractAgent> context, Agent controllingAgent) {
 	super(chrom, context, controllingAgent);
 

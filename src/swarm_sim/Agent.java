@@ -28,7 +28,7 @@ import swarm_sim.exploration.ComplexMemoryCommStrategy;
 import swarm_sim.exploration.ComplexQTMemoryCommStrategy;
 import swarm_sim.exploration.ExplorationStrategy;
 import swarm_sim.exploration.MemoryCommStrategy;
-import swarm_sim.exploration.MemoryComplexStrategy;
+import swarm_sim.exploration.ComplexMemoryStrategy;
 import swarm_sim.exploration.QTMemoryCommStrategy;
 import swarm_sim.exploration.RandomStrategy;
 import swarm_sim.foraging.ForagingStrategy;
@@ -98,24 +98,24 @@ public class Agent extends AbstractAgent implements IDisplayAgent,
 	this.agentId = ++agentCount;
 
 	/* Set exploration and foraging strategy */
-	if (config.explStrat.equalsIgnoreCase("Random"))
+	if (config.explStrat.equalsIgnoreCase("R"))
 	    this.explStrategy = new RandomStrategy(chrom, context, this);
-	else if (config.explStrat.equalsIgnoreCase("MemoryComplex"))
-	    this.explStrategy = new MemoryComplexStrategy(chrom, context, this);
-	else if (config.explStrat.equalsIgnoreCase("MemoryCommunication"))
-	    this.explStrategy = new MemoryCommStrategy(chrom, context, this);
-	else if (config.explStrat.equalsIgnoreCase("ComplexCommunication"))
+	else if (config.explStrat.equalsIgnoreCase("CM_"))
+	    this.explStrategy = new ComplexMemoryStrategy(chrom, context, this);
+	else if (config.explStrat.equalsIgnoreCase("C_C"))
 	    this.explStrategy = new ComplexCommStrategy(chrom, context, this);
-	else if (config.explStrat
-		.equalsIgnoreCase("ComplexMemoryCommunication"))
-	    this.explStrategy = new ComplexMemoryCommStrategy(chrom, context,
-		    this);
-	else if (config.explStrat.equalsIgnoreCase("QuadTree"))
+	else if (config.explStrat.equalsIgnoreCase("_MC"))
 	    this.explStrategy = new QTMemoryCommStrategy(chrom, context, this);
-	else if (config.explStrat
-		.equalsIgnoreCase("ComplexQTMemoryCommunication"))
+	else if (config.explStrat.equalsIgnoreCase("CMC"))
 	    this.explStrategy = new ComplexQTMemoryCommStrategy(chrom, context,
 		    this);
+	// else if (config.explStrat //Old version using grid map
+	// .equalsIgnoreCase("ComplexMemoryCommunication"))
+	// this.explStrategy = new ComplexMemoryCommStrategy(chrom, context,
+	// this);
+	// else if (config.explStrat.equalsIgnoreCase("MemoryCommunication"))
+	// //Old version using grid map
+	// this.explStrategy = new MemoryCommStrategy(chrom, context, this);
 
 	if (config.foragingStrat.equalsIgnoreCase("NoCommunication"))
 	    this.faStrategy = new NoCommStrategy(chrom, context, this);

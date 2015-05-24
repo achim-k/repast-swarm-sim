@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <parameters>
 	<parameter name="expl_strategy" displayName="Exploration Strategy"
-		type="java.lang.String" defaultValue="ComplexQTMemoryCommunication"
+		type="java.lang.String" defaultValue="CMC"
 		isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter"
-		values="Random MemoryComplex MemoryCommunication ComplexCommunication ComplexMemoryCommunication QuadTree ComplexQTMemoryCommunication " />
+		values="R CM_ _MC C_C CMC" />
 	<parameter name="foraging_strategy" displayName="Foraging Strategy"
 		type="java.lang.String" defaultValue="NoCommunication" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter"
@@ -50,7 +50,6 @@
 	<parameter name="decay_rate" displayName="Pheromone decay rate [%]"
 		type="double" defaultValue="0.5" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter" />
-
 
 	<parameter name="use_ga" displayName="Use GA" type="boolean"
 		defaultValue="false" isReadOnly="false"
