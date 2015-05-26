@@ -26,11 +26,8 @@ import swarm_sim.perception.ScanMoveDecision;
 
 public class ComplexCommStrategy extends ExplorationStrategy {
 
-    private static final int INFINITY = 99999999;
-
     private double prevDirection = RandomHelper.nextDoubleFromTo(-Math.PI,
 	    Math.PI);
-    private int consecutiveMoveCount = INFINITY;
 
     private Scan scanAgentRepell = new Scan(AttractionType.Repelling,
 	    GrowingDirection.Inwards, 2, false, 0, 0.7 * config.commScope, 1,
@@ -126,7 +123,6 @@ public class ComplexCommStrategy extends ExplorationStrategy {
 	    double angle = SpatialMath.calcAngleFor2DMovement(space,
 		    currentLoc, agentLoc);
 	    scanAgentAppeal.addInput(angle, distance);
-	    consecutiveMoveCount = INFINITY;
 
 	    /* Do not add to repell, if the border of the search area is closer */
 	    double delta[] = space.getDisplacement(agentLoc, currentLoc);
@@ -136,14 +132,12 @@ public class ComplexCommStrategy extends ExplorationStrategy {
 	    if (p[0] <= config.spaceWidth && p[0] >= 0 && p[1] >= 0
 		    && p[1] <= config.spaceHeight) {
 		scanAgentRepell.addInput(angle, distance);
-		consecutiveMoveCount = INFINITY;
 	    }
 	} else if (msg.getType() == MessageType.Direction) {
 	    NdPoint currentLoc = space.getLocation(controllingAgent);
 	    NdPoint agentLoc = space.getLocation(msg.getSender());
 	    double distance = space.getDistance(currentLoc, agentLoc);
 	    scanAgentMimic.addInput((double) msg.getData(), distance);
-	    consecutiveMoveCount = INFINITY;
 	}
 
 	return currentState;
@@ -164,26 +158,6 @@ public class ComplexCommStrategy extends ExplorationStrategy {
     protected double makeDirectionDecision(AgentState prevState,
 	    AgentState currentState, List<AngleSegment> collisionFreeSegments) {
 
-	if (consecutiveMoveCount < config.consecutiveMoves) {
-	    /* use same direction distribution, if possible */
-	    if (collisionFreeSegments.size() == 1
-		    && collisionFreeSegments.get(0).start == -Math.PI) {
-		/* free to go in any direction */
-		consecutiveMoveCount++;
-		if (smd.hasInputs()) /*
-				      * Only use previous prob distribution if
-				      * it is not uniformly
-				      */
-		    prevDirection = smd.getMovementAngle();
-
-		return prevDirection;
-	    }
-	}
-
-	/* not able to go into same direction, or consecutiveMoveCount too high */
-	consecutiveMoveCount = 0;
-	smd.clear();
-
 	scanPrevDirection.addInput(prevDirection);
 
 	smd.setValidSegments(collisionFreeSegments);
@@ -203,14 +177,13 @@ public class ComplexCommStrategy extends ExplorationStrategy {
 	scanAgentRepell.clear();
 	scanAgentMimic.clear();
 	scanPrevDirection.clear();
-	// smd is cleared in makemovedecision
+	smd.clear();
     }
 
     @Override
     protected void reset() {
 	prevDirection = RandomHelper.nextDoubleFromTo(-Math.PI, Math.PI);
 	smd.clear();
-	consecutiveMoveCount = INFINITY;
     }
 
 }
