@@ -115,13 +115,13 @@ public class Agent extends AbstractAgent implements IDisplayAgent,
 	// //Old version using grid map
 	// this.explStrategy = new MemoryCommStrategy(chrom, context, this);
 
-	if (config.foragingStrat.equalsIgnoreCase("NoCommunication"))
+	if (config.foragingStrat.equalsIgnoreCase("NC"))
 	    this.faStrategy = new NoCommStrategy(chrom, context, this);
-	else if (config.foragingStrat.equalsIgnoreCase("StateCommunication"))
+	else if (config.foragingStrat.equalsIgnoreCase("SC"))
 	    this.faStrategy = new StateCommStrategy(chrom, context, this);
-	else if (config.foragingStrat.equalsIgnoreCase("GoalCommunication"))
+	else if (config.foragingStrat.equalsIgnoreCase("GC"))
 	    this.faStrategy = new GoalCommunication(chrom, context, this);
-	else if (config.foragingStrat.equalsIgnoreCase("Pheromone"))
+	else if (config.foragingStrat.equalsIgnoreCase("PC"))
 	    this.faStrategy = new PheromoneStrategy(chrom, context, this);
 
 	CommunicationType allowedCommunicationTypes[] = new CommunicationType[] {

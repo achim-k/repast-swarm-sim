@@ -6,9 +6,9 @@
 		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter"
 		values="R CM MC CC CMC" />
 	<parameter name="foraging_strategy" displayName="Foraging Strategy"
-		type="java.lang.String" defaultValue="NoCommunication" isReadOnly="false"
+		type="java.lang.String" defaultValue="NC" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter"
-		values="NoCommunication StateCommunication GoalCommunication Pheromone" />
+		values="NC SC GC PC" />
 	<parameter name="agent_count" displayName="Number of Agents"
 		type="int" defaultValue="16" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
