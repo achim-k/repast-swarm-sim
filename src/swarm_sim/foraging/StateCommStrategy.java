@@ -25,7 +25,7 @@ import swarm_sim.perception.ScanMoveDecision;
 public class StateCommStrategy extends ForagingStrategy {
 
     Scan scanAgentFollow = new Scan(AttractionType.Attracting,
-	    GrowingDirection.Inwards, 1, true, 5, config.commScope, 1, 5);
+	    GrowingDirection.Inwards, 1, true, 5, config.commScope, 1, 500);
 
     int perceivedAgentCount = 0;
 

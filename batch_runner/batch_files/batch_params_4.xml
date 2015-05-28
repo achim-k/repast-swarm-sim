@@ -4,6 +4,8 @@
 		constant_type="double" value="5"></parameter>
 	<parameter name="print_params" type="constant" constant_type="boolean"
 		value="false"></parameter>
+	<parameter name="expl_strategy" type="constant"
+		constant_type="java.lang.String" value="R"></parameter>
 	<parameter name="decay_rate" type="constant" constant_type="double"
 		value="0.1"></parameter>
 	<parameter name="comm_frequency" type="constant"
@@ -11,11 +13,15 @@
 	<parameter name="perception_scope" type="constant"
 		constant_type="double" value="1"></parameter>
 	<parameter name="foraging_strategy" type="constant"
-		constant_type="java.lang.String" value="NoCommunication"></parameter>
+		constant_type="java.lang.String" value="PC"></parameter>
 	<parameter name="k" type="constant" constant_type="double"
 		value="6"></parameter>
+	<parameter name="agent_count" type="constant" constant_type="int"
+		value="32"></parameter>
 	<parameter name="resource_count" type="constant"
-		constant_type="int" value="0"></parameter>
+		constant_type="int" value="100"></parameter>
+	<parameter name="consecutive_move" type="constant"
+		constant_type="int" value="100"></parameter>
 	<parameter name="communication_scope" type="constant"
 		constant_type="double" value="15"></parameter>
 	<parameter name="resource_nest_count" type="constant"
@@ -30,12 +36,4 @@
 		value="0.01"></parameter>
 	<parameter name="segment_count" type="constant"
 		constant_type="int" value="8"></parameter>
-	<parameter name="expl_strategy" type="list" value_type="java.lang.String"
-		values="R CC">
-		<parameter name="agent_count" type="list" value_type="int"
-			values="1 2 4 8 16 32 64 128">
-			<parameter name="consecutive_move" type="number"
-				number_type="int" start="0" end="100" step="10"></parameter>
-		</parameter>
-	</parameter>
 </sweep>
