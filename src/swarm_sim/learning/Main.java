@@ -173,11 +173,11 @@ public class Main extends FitnessFunction {
 	    Main m = new Main();
 	    // m.init();
 
-	    args[1] = m.CC;
-	    m.run(args);
+//	    args[1] = m.CC;
+//	    m.run(args);
 
-	    // args[1] = m.CMC;
-	    // m.run(args);
+	     args[1] = m.CMC;
+	     m.run(args);
 
 	} catch (Exception e) {
 	    e.printStackTrace();
