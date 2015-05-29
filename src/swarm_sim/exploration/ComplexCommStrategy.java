@@ -67,7 +67,7 @@ public class ComplexCommStrategy extends ExplorationStrategy {
 	    scanAgentRepell.setOuterBorderRadius(repellAppealBorder);
 	    scanAgentAppeal.setInnerBorderRadius(repellAppealBorder);
 	} else {
-	    double winningGenes[] = new double[] { 0.40, 0.00, .93, 0.01, 0.93 };
+	    double winningGenes[] = new double[] { 0.62, 0.01, .96, 0.04, 0.96 };
 
 	    GA ga = GA.getInstance();
 

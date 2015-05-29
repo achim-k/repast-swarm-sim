@@ -13,13 +13,13 @@
 	<parameter name="perception_scope" type="constant"
 		constant_type="double" value="1"></parameter>
 	<parameter name="foraging_strategy" type="constant"
-		constant_type="java.lang.String" value="PC"></parameter>
+		constant_type="java.lang.String" value="NC"></parameter>
 	<parameter name="k" type="constant" constant_type="double"
 		value="6"></parameter>
 	<parameter name="agent_count" type="constant" constant_type="int"
 		value="32"></parameter>
 	<parameter name="resource_count" type="constant"
-		constant_type="int" value="100"></parameter>
+		constant_type="int" value="0"></parameter>
 	<parameter name="consecutive_move" type="constant"
 		constant_type="int" value="100"></parameter>
 	<parameter name="communication_scope" type="constant"
@@ -30,10 +30,10 @@
 		value="false"></parameter>
 	<parameter name="space_dimensions" type="constant"
 		constant_type="java.lang.String" value="100:100"></parameter>
-	<parameter name="failure_probability" type="constant"
-		constant_type="double" value="0.0"></parameter>
 	<parameter name="prob_init" type="constant" constant_type="double"
 		value="0.01"></parameter>
 	<parameter name="segment_count" type="constant"
 		constant_type="int" value="8"></parameter>
+	<parameter name="failure_probability" type="number"
+		number_type="double" start="0" end="0.004" step="0.0005"></parameter>
 </sweep>
