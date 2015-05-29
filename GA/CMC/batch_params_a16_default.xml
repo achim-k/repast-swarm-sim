@@ -5,7 +5,7 @@
 	<parameter name="print_params" type="constant" constant_type="boolean"
 		value="false"></parameter>
 	<parameter name="expl_strategy" type="constant"
-		constant_type="java.lang.String" value="CC"></parameter>
+		constant_type="java.lang.String" value="CMC"></parameter>
 	<parameter name="decay_rate" type="constant" constant_type="double"
 		value="0.1"></parameter>
 	<parameter name="comm_frequency" type="constant"
@@ -27,7 +27,7 @@
 	<parameter name="resource_nest_count" type="constant"
 		constant_type="int" value="6"></parameter>
 	<parameter name="use_ga" type="constant" constant_type="boolean"
-		value="false"></parameter>
+		value="true"></parameter>
 	<parameter name="space_dimensions" type="constant"
 		constant_type="java.lang.String" value="100:100"></parameter>
 	<parameter name="failure_probability" type="constant"

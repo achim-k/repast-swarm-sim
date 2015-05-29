@@ -27,7 +27,7 @@
 	<parameter name="resource_nest_count" type="constant"
 		constant_type="int" value="6"></parameter>
 	<parameter name="use_ga" type="constant" constant_type="boolean"
-		value="false"></parameter>
+		value="true"></parameter>
 	<parameter name="space_dimensions" type="constant"
 		constant_type="java.lang.String" value="100:100"></parameter>
 	<parameter name="failure_probability" type="constant"

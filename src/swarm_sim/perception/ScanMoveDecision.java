@@ -62,9 +62,10 @@ public class ScanMoveDecision {
 	for (Scan scan : scans) {
 	    double mergeWeight = scan.getMergeWeight();
 	    List<ScanInput> inputs = scan.getInputs();
-	    
+
 	    for (ScanInput scanInput : inputs) {
-		addScanInputProb(scanInput, mergeWeight / (mergeWeightSum * scan.getInputs().size()));
+		addScanInputProb(scanInput, mergeWeight
+			/ (mergeWeightSum * scan.getInputs().size()));
 	    }
 	}
     }
