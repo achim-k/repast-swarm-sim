@@ -151,8 +151,11 @@ public class SectorMap {
 	    if (s != null) {
 		targetX = s.x;
 		targetY = s.y;
-	    } else
+	    } else {
+		clear();
 		return RandomHelper.nextDoubleFromTo(-Math.PI, Math.PI);
+	    }
+		
 	}
 
 	return SpatialMath
@@ -183,6 +186,14 @@ public class SectorMap {
 	}
 
 	return neighbors;
+    }
+    
+    private void clear() {
+	for (int x = 0; x < sectorsX; x++) {
+	    for (int y = 0; y < sectorsY; y++) {
+		map[x][y].filled = false;
+	    }
+	}
     }
 
     public List<Integer[]> getCloseUnfilledSectors(int maxCount) {

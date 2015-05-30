@@ -38,6 +38,16 @@ public class ComplexMemoryStrategy extends ExplorationStrategy {
 
 	smd = new ScanMoveDecision(config.segmentCount, config.k,
 		config.distanceFactor, config.initProb);
+	
+	int sectorsX = (int) (0.625 * config.spaceWidth / config.perceptionScope);
+	int sectorsY = (int) (0.625 * config.spaceHeight / config.perceptionScope);
+
+	if (sectorsX > config.spaceWidth)
+	    sectorsX = config.spaceWidth;
+	if (sectorsY > config.spaceHeight)
+	    sectorsY = config.spaceHeight;
+
+	map = new SectorMap(space.getDimensions(), sectorsX, sectorsY, 1);
     }
 
     @Override
