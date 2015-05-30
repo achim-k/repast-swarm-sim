@@ -65,8 +65,8 @@ public class SimulationControl extends AbstractAgent {
 
 	if (config.getExplStrat().equalsIgnoreCase("R")
 		|| config.explStrat.equalsIgnoreCase("CM")) {
-	    if (config.foragingStrat.equalsIgnoreCase("NoCommunication")
-		    || config.foragingStrat.equalsIgnoreCase("Pheromone")) {
+	    if (config.foragingStrat.equalsIgnoreCase("NC")
+		    || config.foragingStrat.equalsIgnoreCase("PC")) {
 		networkAgents.clear(); /* No communication in this case */
 	    }
 	}

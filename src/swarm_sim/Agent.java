@@ -33,6 +33,7 @@ import swarm_sim.foraging.ForagingStrategy;
 import swarm_sim.foraging.GoalCommunication;
 import swarm_sim.foraging.NoCommStrategy;
 import swarm_sim.foraging.PheromoneStrategy;
+import swarm_sim.foraging.Resource;
 import swarm_sim.foraging.StateCommStrategy;
 import swarm_sim.perception.AngleFilter;
 import swarm_sim.perception.AngleSegment;
@@ -150,10 +151,10 @@ public class Agent extends AbstractAgent implements IDisplayAgent,
 	double failRand = Math.random();
 	if (failRand < config.failureProbability) {
 	    if (state == AgentState.deliver) {
-		/* drop pheromone */
-		Pheromone p = new Pheromone();
-		context.add(p);
-		space.moveTo(p, currentLocation.getX(), currentLocation.getY());
+		/* drop Resource */
+		Resource r = new Resource();
+		context.add(r);
+		space.moveTo(r, currentLocation.getX(), currentLocation.getY());
 	    }
 	    state = AgentState.failure;
 	    return;
@@ -300,7 +301,7 @@ public class Agent extends AbstractAgent implements IDisplayAgent,
 	    AbstractAgent agent = agentIter.next();
 
 	    /* Other agent → avoid collisions */
-	    if (agent.getAgentType() == getAgentType()) {
+	    if (agent.getAgentType() == getAgentType() && !agent.hasFailed()) {
 
 		double distance = space.getDistance(space.getLocation(this),
 			space.getLocation(agent));
