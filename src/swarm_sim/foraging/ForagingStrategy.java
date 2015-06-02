@@ -198,7 +198,12 @@ public abstract class ForagingStrategy extends Strategy {
 	}
 
 	smd.normalize();
-	directionAngle = smd.getMovementAngle();
+
+	if (config.takeHighestProb)
+	    directionAngle = smd.getMovementAngleWithHighestProbability();
+	else
+	    directionAngle = smd.getMovementAngle();
+
 	return directionAngle;
     }
 

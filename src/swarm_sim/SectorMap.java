@@ -155,7 +155,7 @@ public class SectorMap {
 		clear();
 		return RandomHelper.nextDoubleFromTo(-Math.PI, Math.PI);
 	    }
-		
+
 	}
 
 	return SpatialMath
@@ -187,7 +187,7 @@ public class SectorMap {
 
 	return neighbors;
     }
-    
+
     private void clear() {
 	for (int x = 0; x < sectorsX; x++) {
 	    for (int y = 0; y < sectorsY; y++) {

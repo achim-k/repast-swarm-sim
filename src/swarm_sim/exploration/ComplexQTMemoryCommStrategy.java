@@ -210,7 +210,12 @@ public class ComplexQTMemoryCommStrategy extends ExplorationStrategy {
 		scanPrevDirection, scanUnknownSectors);
 
 	smd.normalize();
-	prevDirection = smd.getMovementAngle();
+
+	if (config.takeHighestProb)
+	    prevDirection = smd.getMovementAngleWithHighestProbability();
+	else
+	    prevDirection = smd.getMovementAngle();
+
 	return prevDirection;
     }
 

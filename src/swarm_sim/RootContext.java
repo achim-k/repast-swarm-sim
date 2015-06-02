@@ -92,6 +92,8 @@ public class RootContext implements ContextBuilder<AbstractAgent> {
 
 	config.decayRate = params.getDouble("decay_rate");
 
+	config.takeHighestProb = params.getBoolean("highest_prob");
+
 	/* Create continuous space */
 	ContinuousSpaceFactory spaceFactory = ContinuousSpaceFactoryFinder
 		.createContinuousSpaceFactory(null);

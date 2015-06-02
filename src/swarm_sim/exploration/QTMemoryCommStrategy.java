@@ -106,7 +106,11 @@ public class QTMemoryCommStrategy extends ExplorationStrategy {
 	smd.calcProbDist(scanUnknownSectors);
 	smd.normalize();
 
-	double direction = smd.getMovementAngle();
+	double direction;
+	if (config.takeHighestProb)
+	    direction = smd.getMovementAngleWithHighestProbability();
+	else
+	    direction = smd.getMovementAngle();
 
 	return direction;
     }

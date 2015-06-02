@@ -166,7 +166,10 @@ public class ComplexCommStrategy extends ExplorationStrategy {
 	smd.normalize();
 	// smd.printProbabilities(null);
 
-	prevDirection = smd.getMovementAngle();
+	if (config.takeHighestProb)
+	    prevDirection = smd.getMovementAngleWithHighestProbability();
+	else
+	    prevDirection = smd.getMovementAngle();
 
 	return prevDirection;
     }

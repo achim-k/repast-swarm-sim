@@ -10,7 +10,7 @@
 		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter"
 		values="NC SC GC PC" />
 	<parameter name="agent_count" displayName="Number of Agents"
-		type="int" defaultValue="16" isReadOnly="false"
+		type="int" defaultValue="4" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
 	<parameter name="perception_scope" displayName="Perception scope [%]"
 		type="double" defaultValue="1.0" isReadOnly="false"
@@ -51,6 +51,9 @@
 		type="double" defaultValue="0.5" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter" />
 
+	<parameter name="highest_prob" displayName="Take highest prob value" type="boolean"
+		defaultValue="false" isReadOnly="false"
+		converter="repast.simphony.parameter.StringConverterFactory$BooleanConverter" />
 	<parameter name="use_ga" displayName="Use GA" type="boolean"
 		defaultValue="false" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$BooleanConverter" />

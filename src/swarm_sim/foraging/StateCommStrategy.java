@@ -114,7 +114,12 @@ public class StateCommStrategy extends ForagingStrategy {
 	    smd.setValidSegments(collisionFreeSegments);
 	    smd.calcProbDist(scanAgentFollow);
 	    smd.normalize();
-	    directionAngle = smd.getMovementAngle();
+
+	    if (config.takeHighestProb)
+		directionAngle = smd.getMovementAngleWithHighestProbability();
+	    else
+		directionAngle = smd.getMovementAngle();
+
 	    return directionAngle;
 	} else {
 	    return super.makeDirectionDecision(prevState, currentState,

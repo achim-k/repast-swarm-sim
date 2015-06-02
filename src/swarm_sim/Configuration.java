@@ -26,6 +26,8 @@ public class Configuration extends AbstractAgent {
     public double decayRate;
     public double failureProbability;
 
+    public boolean takeHighestProb;
+
     private static Configuration instance = null;
 
     private Configuration() {

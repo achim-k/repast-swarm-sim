@@ -129,6 +129,30 @@ public class ScanMoveDecision {
 	return -100;
     }
 
+    public double getMovementAngleWithHighestProbability() {
+	double maxProb = 0;
+	CircleSegment maxProbSegment = null;
+
+	for (CircleSegment cs : segments) {
+	    if (!cs.isValid)
+		continue;
+
+	    if (cs.probability > maxProb) {
+		maxProb = cs.probability;
+		maxProbSegment = cs;
+	    } else if (cs.probability == maxProb && Math.random() > 0.5) {
+		maxProb = cs.probability;
+		maxProbSegment = cs;
+	    }
+	}
+
+	if (maxProbSegment != null)
+	    return RandomHelper.nextDoubleFromTo(maxProbSegment.centerAngle
+		    - centerDelta, maxProbSegment.centerAngle + centerDelta);
+
+	return -100;
+    }
+
     public static int angleToSegmentIndex(double angle, int segmentCount) {
 	return (int) ((angle + Math.PI) / (2 * Math.PI / segmentCount));
     }

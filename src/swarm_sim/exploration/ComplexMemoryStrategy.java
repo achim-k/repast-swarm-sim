@@ -38,7 +38,7 @@ public class ComplexMemoryStrategy extends ExplorationStrategy {
 
 	smd = new ScanMoveDecision(config.segmentCount, config.k,
 		config.distanceFactor, config.initProb);
-	
+
 	int sectorsX = (int) (0.625 * config.spaceWidth / config.perceptionScope);
 	int sectorsY = (int) (0.625 * config.spaceHeight / config.perceptionScope);
 
@@ -74,7 +74,10 @@ public class ComplexMemoryStrategy extends ExplorationStrategy {
 	smd.calcProbDist(scanLine);
 	smd.normalize();
 
-	prevDirection = smd.getMovementAngle();
+	if (config.takeHighestProb)
+	    prevDirection = smd.getMovementAngleWithHighestProbability();
+	else
+	    prevDirection = smd.getMovementAngle();
 
 	return prevDirection;
     }
