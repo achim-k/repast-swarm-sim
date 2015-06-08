@@ -23,20 +23,22 @@ import swarm_sim.Strategy.MessageTypeRegisterPair;
 import swarm_sim.communication.CommunicationType;
 import swarm_sim.communication.INetworkAgent;
 import swarm_sim.communication.Message;
-import swarm_sim.exploration.ComplexCommStrategy;
-import swarm_sim.exploration.ComplexMemoryStrategy;
-import swarm_sim.exploration.ComplexQTMemoryCommStrategy;
+import swarm_sim.exploration.CCStrategy;
+import swarm_sim.exploration.CMStrategy;
+import swarm_sim.exploration.CMCStrategy;
 import swarm_sim.exploration.ExplorationStrategy;
-import swarm_sim.exploration.QTMemoryCommStrategy;
+import swarm_sim.exploration.MCStrategy;
 import swarm_sim.exploration.RandomStrategy;
 import swarm_sim.foraging.ForagingStrategy;
-import swarm_sim.foraging.GoalCommunication;
-import swarm_sim.foraging.NoCommStrategy;
-import swarm_sim.foraging.PheromoneStrategy;
+import swarm_sim.foraging.GCStrategy;
+import swarm_sim.foraging.NCStrategy;
+import swarm_sim.foraging.PCStrategy;
 import swarm_sim.foraging.Resource;
-import swarm_sim.foraging.StateCommStrategy;
+import swarm_sim.foraging.SCStrategy;
 import swarm_sim.perception.AngleFilter;
 import swarm_sim.perception.AngleSegment;
+import swarm_sim.perception.CollisionAvoidance;
+import swarm_sim.perception.PDDP;
 
 public class Agent extends AbstractAgent implements IDisplayAgent,
 	INetworkAgent {
@@ -80,6 +82,8 @@ public class Agent extends AbstractAgent implements IDisplayAgent,
     /* Communication */
     protected List<Message> messageQueue = new ArrayList<>();
 
+    public PDDP pddp;
+
     @SuppressWarnings("unchecked")
     public Agent(Context<AbstractAgent> context, IChromosome chrom) {
 	this.chrom = chrom;
@@ -96,34 +100,30 @@ public class Agent extends AbstractAgent implements IDisplayAgent,
 	this.data = DataCollection.getInstance();
 	this.agentId = ++agentCount;
 
+	pddp = new PDDP(config.segmentCount, config.k, config.distanceFactor,
+		config.initProb);
+
 	/* Set exploration and foraging strategy */
 	if (config.explStrat.equalsIgnoreCase("R"))
 	    this.explStrategy = new RandomStrategy(chrom, context, this);
 	else if (config.explStrat.equalsIgnoreCase("CM"))
-	    this.explStrategy = new ComplexMemoryStrategy(chrom, context, this);
+	    this.explStrategy = new CMStrategy(chrom, context, this);
 	else if (config.explStrat.equalsIgnoreCase("CC"))
-	    this.explStrategy = new ComplexCommStrategy(chrom, context, this);
+	    this.explStrategy = new CCStrategy(chrom, context, this);
 	else if (config.explStrat.equalsIgnoreCase("MC"))
-	    this.explStrategy = new QTMemoryCommStrategy(chrom, context, this);
+	    this.explStrategy = new MCStrategy(chrom, context, this);
 	else if (config.explStrat.equalsIgnoreCase("CMC"))
-	    this.explStrategy = new ComplexQTMemoryCommStrategy(chrom, context,
+	    this.explStrategy = new CMCStrategy(chrom, context,
 		    this);
-	// else if (config.explStrat //Old version using grid map
-	// .equalsIgnoreCase("ComplexMemoryCommunication"))
-	// this.explStrategy = new ComplexMemoryCommStrategy(chrom, context,
-	// this);
-	// else if (config.explStrat.equalsIgnoreCase("MemoryCommunication"))
-	// //Old version using grid map
-	// this.explStrategy = new MemoryCommStrategy(chrom, context, this);
 
 	if (config.foragingStrat.equalsIgnoreCase("NC"))
-	    this.faStrategy = new NoCommStrategy(chrom, context, this);
+	    this.faStrategy = new NCStrategy(chrom, context, this);
 	else if (config.foragingStrat.equalsIgnoreCase("SC"))
-	    this.faStrategy = new StateCommStrategy(chrom, context, this);
+	    this.faStrategy = new SCStrategy(chrom, context, this);
 	else if (config.foragingStrat.equalsIgnoreCase("GC"))
-	    this.faStrategy = new GoalCommunication(chrom, context, this);
+	    this.faStrategy = new GCStrategy(chrom, context, this);
 	else if (config.foragingStrat.equalsIgnoreCase("PC"))
-	    this.faStrategy = new PheromoneStrategy(chrom, context, this);
+	    this.faStrategy = new PCStrategy(chrom, context, this);
 
 	CommunicationType allowedCommunicationTypes[] = new CommunicationType[] {
 		CommunicationType.State, CommunicationType.MapOrTargets,
@@ -176,6 +176,7 @@ public class Agent extends AbstractAgent implements IDisplayAgent,
 	sendMessages();
 	data.execTimeSendMessages += System.nanoTime() - start;
 
+	pddp.clear();
 	faStrategy.clear();
 	explStrategy.clear();
 
@@ -274,22 +275,24 @@ public class Agent extends AbstractAgent implements IDisplayAgent,
 	 * explored
 	 */
 	for (FieldDistancePair field : surroundingFields) {
-	    if (field.fieldType == FieldType.Obstacle) {
-		if (field.distance <= config.maxMoveDistance + .5
-			&& field.distance > 0) {
-		    double angle = SpatialMath.calcAngleFor2DMovement(space,
-			    currentLocation, new NdPoint(field.x + .5,
-				    field.y + .5));
-		    collisionAngleFilter.add(field.distance, angle, 0.5);
-		}
-		continue;
+	    if (field.fieldType == FieldType.Obstacle
+		    || field.fieldType == FieldType.VirtualObstacle) {
+
+		CollisionAvoidance.setForbiddenSegmentsForObstacle(space,
+			currentLocation, pddp, field);
+
+		if (field.fieldType == FieldType.VirtualObstacle)
+		    continue;
+		else
+		    explStrategy.handleObstacle(prevState, state, field);
 	    } else {
 		if (field.value == 0)
 		    data.fieldsExplored++;
 		else
 		    data.fieldsRedundantlyExplored++;
 	    }
-	    exploredArea.set(field.value + 1, field.x, field.y);
+	    exploredArea.set(field.value + 1, (int) field.loc.getX(),
+		    (int) field.loc.getY());
 	}
 
 	/* scan environment for surrounding agents, pheromones, resources, ... */
@@ -302,14 +305,8 @@ public class Agent extends AbstractAgent implements IDisplayAgent,
 
 	    /* Other agent → avoid collisions */
 	    if (agent.getAgentType() == getAgentType() && !agent.hasFailed()) {
-
-		double distance = space.getDistance(space.getLocation(this),
-			space.getLocation(agent));
-		if (distance > 0 && distance <= config.maxMoveDistance + 1) {
-		    double angle = SpatialMath.calcAngleFor2DMovement(space,
-			    currentLocation, space.getLocation(agent));
-		    collisionAngleFilter.add(distance, angle);
-		}
+		CollisionAvoidance.setForbiddenSegmentsForAgent(space,
+			currentLocation, pddp, space.getLocation(agent));
 	    }
 
 	    if (state == AgentState.wander)
@@ -336,10 +333,10 @@ public class Agent extends AbstractAgent implements IDisplayAgent,
 
 	if (state == AgentState.wander) {
 	    directionAngle = explStrategy.makeDirectionDecision(prevState,
-		    state, collisionFreeSegments);
+		    state, pddp);
 	} else {
 	    directionAngle = faStrategy.makeDirectionDecision(prevState, state,
-		    collisionFreeSegments);
+		    pddp);
 	}
 
 	if (directionAngle >= -Math.PI) {

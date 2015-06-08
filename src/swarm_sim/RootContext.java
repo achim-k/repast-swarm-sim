@@ -107,7 +107,7 @@ public class RootContext implements ContextBuilder<AbstractAgent> {
 	exploredArea = new AdvancedGridValueLayer("layer_explored", 0.0, false,
 		config.spaceWidth, config.spaceHeight);
 	context.addValueLayer(exploredArea);
-	// readMapFromImage(exploredArea, "data/map.png");
+	readMapFromImage(exploredArea, "data/map_obstacles.png");
 
 	PseudoRandomAdder<AbstractAgent> adder = new PseudoRandomAdder<AbstractAgent>(
 		exploredArea);

@@ -4,13 +4,13 @@ import java.io.PrintWriter;
 import java.util.List;
 
 import repast.simphony.random.RandomHelper;
-import swarm_sim.perception.Scan.ScanInput;
+import swarm_sim.perception.PDDPInput.ScanInput;
 
-public class ScanMoveDecision {
+public class PDDP {
 
     private class CircleSegment {
 	public double centerAngle, probability;
-	public boolean isValid = false;
+	public boolean isValid = true;
 
 	public CircleSegment(double centerAngle, double probability) {
 	    super();
@@ -28,7 +28,7 @@ public class ScanMoveDecision {
     private double initProbability;
     private boolean hasInputs = false;
 
-    public ScanMoveDecision(int segmentCount, double vonMisesDegree,
+    public PDDP(int segmentCount, double vonMisesDegree,
 	    double distanceFactor, double initProb) {
 	super();
 	this.segmentCount = segmentCount;
@@ -47,11 +47,11 @@ public class ScanMoveDecision {
 	}
     }
 
-    public void calcProbDist(Scan... scans) {
+    public void calcProbDist(PDDPInput... input) {
 
 	double mergeWeightSum = 0;
 
-	for (Scan scan : scans) {
+	for (PDDPInput scan : input) {
 	    if (scan.isValid())
 		mergeWeightSum += scan.getMergeWeight();
 	}
@@ -59,7 +59,7 @@ public class ScanMoveDecision {
 	if (mergeWeightSum <= 0)
 	    return;
 
-	for (Scan scan : scans) {
+	for (PDDPInput scan : input) {
 	    double mergeWeight = scan.getMergeWeight();
 	    List<ScanInput> inputs = scan.getInputs();
 
@@ -85,19 +85,6 @@ public class ScanMoveDecision {
 	    cs.probability += vonMisesValue * distanceValue * mergeFactor;
 	}
 
-	/*
-	 * int startIndex = inputSegIndex - segmentCount / 4; int endIndex =
-	 * inputSegIndex + segmentCount / 4; for (int index = startIndex; index
-	 * <= endIndex; index++) { int correctedIndex = index % segmentCount; if
-	 * (correctedIndex < 0) correctedIndex += segmentCount;
-	 * 
-	 * if (!segments[correctedIndex].isValid) continue;
-	 * 
-	 * double vonMisesValue = vonMises.getValue(input.angle,
-	 * segments[correctedIndex].centerAngle);
-	 * segments[correctedIndex].probability += vonMisesValue distanceValue *
-	 * mergeFactor; }
-	 */
     }
 
     public void printProbabilities(PrintWriter file) {
@@ -156,6 +143,10 @@ public class ScanMoveDecision {
     public static int angleToSegmentIndex(double angle, int segmentCount) {
 	return (int) ((angle + Math.PI) / (2 * Math.PI / segmentCount));
     }
+    
+    public boolean angleValid(double angle) {
+	return segments[angleToSegmentIndex(angle, segmentCount)].isValid;
+    }
 
     public void normalize() {
 	double segmentProbSum = 0;
@@ -188,11 +179,29 @@ public class ScanMoveDecision {
 	    }
 	}
     }
+    
+    public void setInvalidSegments(double angleStart, double angleEnd) {
+	int startIndex = angleToSegmentIndex(angleStart, segmentCount);
+	int endIndex = angleToSegmentIndex(angleEnd, segmentCount);
+	
+	if(startIndex > endIndex) {
+	    for (int i = startIndex; i < segmentCount; i++) {
+		segments[i].isValid = false;
+	    }
+	    for (int i = 0; i <= endIndex; i++) {
+		segments[i].isValid = false;
+	    }
+	} else {
+	    for (int i = startIndex; i <= endIndex; i++) {
+		segments[i].isValid = false;
+	    }
+	}
+    }
 
     public void clear() {
 	hasInputs = false;
 	for (CircleSegment cs : segments) {
-	    cs.isValid = false;
+	    cs.isValid = true;
 	    cs.probability = initProbability;
 	}
     }

@@ -17,24 +17,21 @@ import swarm_sim.communication.INetworkAgent;
 import swarm_sim.communication.Message;
 import swarm_sim.communication.Message.MessageType;
 import swarm_sim.perception.AngleSegment;
-import swarm_sim.perception.Scan;
-import swarm_sim.perception.Scan.AttractionType;
-import swarm_sim.perception.Scan.GrowingDirection;
-import swarm_sim.perception.ScanMoveDecision;
+import swarm_sim.perception.PDDPInput;
+import swarm_sim.perception.PDDPInput.AttractionType;
+import swarm_sim.perception.PDDPInput.GrowingDirection;
+import swarm_sim.perception.PDDP;
 
-public class StateCommStrategy extends ForagingStrategy {
+public class SCStrategy extends ForagingStrategy {
 
-    Scan scanAgentFollow = new Scan(AttractionType.Attracting,
+    PDDPInput scanAgentFollow = new PDDPInput(AttractionType.Attracting,
 	    GrowingDirection.Inwards, 1, true, 5, config.commScope, 1, 500);
 
     int perceivedAgentCount = 0;
 
-    public StateCommStrategy(IChromosome chrom, Context<AbstractAgent> context,
+    public SCStrategy(IChromosome chrom, Context<AbstractAgent> context,
 	    Agent controllingAgent) {
 	super(chrom, context, controllingAgent);
-
-	smd = new ScanMoveDecision(config.segmentCount, config.k,
-		config.distanceFactor, config.initProb);
     }
 
     @Override
@@ -102,28 +99,27 @@ public class StateCommStrategy extends ForagingStrategy {
 
     @Override
     public double makeDirectionDecision(AgentState prevState,
-	    AgentState currentState, List<AngleSegment> collisionFreeSegments) {
+	    AgentState currentState, PDDP pddp) {
 
 	if (currentState == AgentState.acquire) {
 	    if (scanResources.isValid()
 		    || (currentTarget != null && currentTarget.isValid)) {
 		return super.makeDirectionDecision(prevState, currentState,
-			collisionFreeSegments);
+			pddp);
 	    }
 
-	    smd.setValidSegments(collisionFreeSegments);
-	    smd.calcProbDist(scanAgentFollow);
-	    smd.normalize();
+	    pddp.calcProbDist(scanAgentFollow);
+	    pddp.normalize();
 
 	    if (config.takeHighestProb)
-		directionAngle = smd.getMovementAngleWithHighestProbability();
+		directionAngle = pddp.getMovementAngleWithHighestProbability();
 	    else
-		directionAngle = smd.getMovementAngle();
+		directionAngle = pddp.getMovementAngle();
 
 	    return directionAngle;
 	} else {
 	    return super.makeDirectionDecision(prevState, currentState,
-		    collisionFreeSegments);
+		    pddp);
 	}
     }
 

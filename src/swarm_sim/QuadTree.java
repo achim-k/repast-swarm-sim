@@ -2,13 +2,6 @@ package swarm_sim;
 
 import repast.simphony.space.continuous.NdPoint;
 
-/*************************************************************************
- * Compilation: javac QuadTree.java Execution: java QuadTree M N
- * 
- * Quad tree.
- * 
- *************************************************************************/
-
 public class QuadTree {
 
     private Node root;
@@ -189,28 +182,6 @@ public class QuadTree {
 	return n;
     }
 
-    //
-    // private Node createUntilEndReached(Node parent, int depth, double x,
-    // double y, double width, double height) {
-    // if (width <= perceptionScope || height <= perceptionScope) {
-    // return new Node(x, y, width, height, false, depth);
-    // }
-    //
-    // if (parent == null)
-    // parent = new Node(x, y, width, height, false, depth);
-    //
-    // parent.NE = createUntilEndReached(parent.NE, depth + 1, x + width / 2d,
-    // y + height / 2d, width / 2d, height / 2d);
-    // parent.NW = createUntilEndReached(parent.NW, depth + 1, x, y + height
-    // / 2d, width / 2d, height / 2d);
-    // parent.SE = createUntilEndReached(parent.SE, depth + 1, x + width / 2d,
-    // y, width / 2d, height / 2d);
-    // parent.SW = createUntilEndReached(parent.SW, depth + 1, x, y,
-    // width / 2d, height / 2d);
-    //
-    // return parent;
-    // }
-
     private Node getSmallesUnfilledNode(Node n, Node parent, double posX,
 	    double posY) {
 	if (n == null || n.isFilled())
@@ -286,62 +257,6 @@ public class QuadTree {
 	print(n.NE);
 	print(n.SE);
 	print(n.SW);
-    }
-
-    /*************************************************************************
-     * test client
-     *************************************************************************/
-    public static void main(String[] args) {
-
-	QuadTree st = new QuadTree(100, 100, 20);
-
-	QuadTree st2 = new QuadTree(100, 100, 20);
-
-	// st.root = st.createUntilEndReached(st.root, 0, 0, 100, 100);
-
-	st.setLocation(60, 40);
-	st2.setLocation(40, 40);
-	st2.setLocation(35, 40);
-	// st.setLocation(60, 60);
-	st.setLocation(40, 60);
-	// st.setLocation(60, 60);
-	st.setLocation(40, 40);
-	// st.root = st.createUntilPosReached(st.root, 0, 0, 100, 100, 40, 50);
-
-	System.out.println("1");
-	st.print();
-	System.out.println(2);
-	st2.print();
-	// Node n = st.getNodeToPosition(st.root, new NdPoint(99, 99));
-
-	System.out.println(st.root.isFilled());
-
-	Node n = st2.getSmallesUnfilledNode(st2.root, null, 40, 99);
-	NdPoint nd = st2.getUnfilledNodeCenter(n, new NdPoint(60, 60));
-	System.out.println(nd);
-
-	st.merge(st2);
-
-	System.out.println("merged");
-	st.print();
-	//
-	// System.out.println(n.x + "," + n.y);
-	// System.out.println(n.width + "," + n.height);
-	//
-	// System.out.println(n.isFilled());
-
-	// insert N random points in the unit square
-
-	/*
-	 * // do some range searches for (int i = 0; i < M; i++) { Integer xmin
-	 * = (int) (100 * Math.random()); Integer ymin = (int) (100 *
-	 * Math.random()); Integer xmax = xmin + (int) (10 * Math.random());
-	 * Integer ymax = ymin + (int) (20 * Math.random()); Interval<Integer>
-	 * intX = new Interval<Integer>(xmin, xmax); Interval<Integer> intY =
-	 * new Interval<Integer>(ymin, ymax); Interval2D<Integer> rect = new
-	 * Interval2D<Integer>(intX, intY); System.out.println(rect + " : ");
-	 * st.query2D(rect); }
-	 */
     }
 
 }

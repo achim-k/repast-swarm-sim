@@ -12,7 +12,8 @@ import repast.simphony.space.continuous.NdPoint;
 import swarm_sim.AbstractAgent;
 import swarm_sim.Agent;
 import swarm_sim.Agent.AgentState;
-import swarm_sim.SectorMap;
+import swarm_sim.QuadTree;
+import swarm_sim.QuadTree.Node;
 import swarm_sim.Strategy;
 import swarm_sim.communication.CommunicationType;
 import swarm_sim.communication.INetworkAgent;
@@ -20,38 +21,32 @@ import swarm_sim.communication.Message;
 import swarm_sim.communication.Message.MessageType;
 import swarm_sim.learning.GA;
 import swarm_sim.perception.AngleSegment;
-import swarm_sim.perception.Scan;
-import swarm_sim.perception.Scan.AttractionType;
-import swarm_sim.perception.Scan.GrowingDirection;
-import swarm_sim.perception.ScanMoveDecision;
+import swarm_sim.perception.PDDPInput;
+import swarm_sim.perception.PDDPInput.AttractionType;
+import swarm_sim.perception.PDDPInput.GrowingDirection;
+import swarm_sim.perception.PDDP;
 
-public class ComplexMemoryCommStrategy extends ExplorationStrategy {
-
-    private static final int INFINITY = 99999999;
-
-    private int consecutiveMoveCount = INFINITY;
+public class CMCStrategy extends ExplorationStrategy {
 
     private double prevDirection = RandomHelper.nextDoubleFromTo(-Math.PI,
 	    Math.PI);
 
-    private SectorMap map;
+    QuadTree quadTree;
 
-    private Scan scanAgentRepell = new Scan(AttractionType.Repelling,
+    private PDDPInput scanAgentRepell = new PDDPInput(AttractionType.Repelling,
 	    GrowingDirection.Inwards, 2, false, 0, 0.8 * config.commScope, 1,
 	    1000);
-    private Scan scanAgentAppeal = new Scan(AttractionType.Attracting,
+    private PDDPInput scanAgentAppeal = new PDDPInput(AttractionType.Attracting,
 	    GrowingDirection.Outwards, 0.2, false, 0.8 * config.commScope,
-	    config.commScope, 1, 1);
-    private Scan scanAgentMimic = new Scan(AttractionType.Attracting,
-	    GrowingDirection.Inwards, 1, true, 0, config.commScope, 1, 5);
-    private Scan scanPrevDirection = new Scan(AttractionType.Attracting,
+	    config.commScope, 1, 1000);
+    private PDDPInput scanAgentMimic = new PDDPInput(AttractionType.Attracting,
+	    GrowingDirection.Inwards, 1, true, 0, config.commScope, 1, 1000);
+    private PDDPInput scanPrevDirection = new PDDPInput(AttractionType.Attracting,
 	    GrowingDirection.Inwards, 1, true, 0, 1000, 1, 1000);
-    private Scan scanUnknownSectors = new Scan(AttractionType.Attracting,
+    private PDDPInput scanUnknownSectors = new PDDPInput(AttractionType.Attracting,
 	    GrowingDirection.Inwards, 1, true, 0, 10000, 1, 1000);
 
-    private ScanMoveDecision smd = new ScanMoveDecision(8, 6, 10, 0.05);
-
-    public ComplexMemoryCommStrategy(IChromosome chrom,
+    public CMCStrategy(IChromosome chrom,
 	    Context<AbstractAgent> context, Agent controllingAgent) {
 	super(chrom, context, controllingAgent);
 
@@ -63,7 +58,8 @@ public class ComplexMemoryCommStrategy extends ExplorationStrategy {
 	if (sectorsY > config.spaceHeight)
 	    sectorsY = config.spaceHeight;
 
-	map = new SectorMap(space.getDimensions(), sectorsX, sectorsY, 1);
+	this.quadTree = new QuadTree(config.spaceWidth, config.spaceHeight,
+		config.perceptionScope);
 
 	if (config.useGA) {
 	    GA ga = GA.getInstance();
@@ -85,14 +81,16 @@ public class ComplexMemoryCommStrategy extends ExplorationStrategy {
 	    scanAgentRepell.setOuterBorderRadius(repellAppealBorder);
 	    scanAgentAppeal.setInnerBorderRadius(repellAppealBorder);
 	} else {
-	    double winningOutput[] = new double[] { 0.15, 0.92, 0.69, 0.04,
-		    0.99, 0.33 };
+	    // double winningOutput[] = new double[] { 0.05, 0.05, 0.99, 0.02,
+	    // 0.32, 0.98 };
+
+	    double winningOutput[] = new double[] { 0.6, 0, 0.21, 0.03, 0, 0.7 };
 
 	    scanAgentRepell.setMergeWeight(winningOutput[0]);
 	    scanAgentAppeal.setMergeWeight(winningOutput[1]);
 	    scanAgentMimic.setMergeWeight(winningOutput[3]);
-	    scanUnknownSectors.setMergeWeight(winningOutput[4]);
-	    scanPrevDirection.setMergeWeight(winningOutput[5]);
+	    scanPrevDirection.setMergeWeight(winningOutput[4]);
+	    scanUnknownSectors.setMergeWeight(winningOutput[5]);
 
 	    double repellAppealBorder = config.commScope * winningOutput[2];
 	    scanAgentRepell.setOuterBorderRadius(repellAppealBorder);
@@ -141,20 +139,26 @@ public class ComplexMemoryCommStrategy extends ExplorationStrategy {
 	    double distance = space.getDistance(currentLoc, agentLoc);
 	    double angle = SpatialMath.calcAngleFor2DMovement(space,
 		    currentLoc, agentLoc);
-	    scanAgentRepell.addInput(angle, distance);
 	    scanAgentAppeal.addInput(angle, distance);
-	    consecutiveMoveCount = INFINITY;
+
+	    /* Do not add to repell, if the border of the search area is closer */
+	    double delta[] = space.getDisplacement(agentLoc, currentLoc);
+	    double p[] = new double[] { currentLoc.getX() + delta[0],
+		    currentLoc.getY() + delta[1] };
+
+	    if (p[0] <= config.spaceWidth && p[0] >= 0 && p[1] >= 0
+		    && p[1] <= config.spaceHeight) {
+		scanAgentRepell.addInput(angle, distance);
+	    }
 
 	} else if (msg.getType() == MessageType.Direction) {
 	    NdPoint currentLoc = space.getLocation(controllingAgent);
 	    NdPoint agentLoc = space.getLocation(msg.getSender());
 	    double distance = space.getDistance(currentLoc, agentLoc);
 	    scanAgentMimic.addInput((double) msg.getData(), distance);
-	    consecutiveMoveCount = INFINITY;
 
 	} else if (msg.getType() == MessageType.SectorMap) {
-	    map.merge((SectorMap) msg.getData());
-	    consecutiveMoveCount = INFINITY;
+	    quadTree.merge((QuadTree) msg.getData());
 	}
 
 	return currentState;
@@ -169,52 +173,42 @@ public class ComplexMemoryCommStrategy extends ExplorationStrategy {
 	    agentInRange.pushMessage(new Message(MessageType.Direction,
 		    controllingAgent, prevDirection));
 	    agentInRange.pushMessage(new Message(MessageType.SectorMap,
-		    controllingAgent, map));
+		    controllingAgent, quadTree));
 	}
     }
 
     @Override
     protected double makeDirectionDecision(AgentState prevState,
-	    AgentState currentState, List<AngleSegment> collisionFreeSegments) {
+	    AgentState currentState, PDDP pddp) {
 	NdPoint currentLocation = space.getLocation(controllingAgent);
 
-	if (consecutiveMoveCount < config.consecutiveMoves) {
-	    /* use same direction distribution, if possible */
-	    if (collisionFreeSegments.size() == 1
-		    && collisionFreeSegments.get(0).start == -Math.PI) {
-		/* free to go in any direction */
-		consecutiveMoveCount++;
-		if (smd.hasInputs()) /*
-				      * Only use previous prob distribution if
-				      * it is not uniformly
-				      */
-		    prevDirection = smd.getMovementAngle();
+	/* Look for close unexplored sectors */
+	quadTree.setLocation(currentLocation.getX(), currentLocation.getY());
 
-		return prevDirection;
-	    }
-	}
+	Node n = quadTree.getSmallestUnfilledNode(currentLocation.getX(),
+		currentLocation.getY());
 
-	consecutiveMoveCount = INFINITY;
-	smd.clear();
-
-	map.setPosition(currentLocation);
-	List<Integer[]> closeUnfilledSectors = map.getCloseUnfilledSectors(5);
-	for (Integer[] d : closeUnfilledSectors) {
-	    double angle = SpatialMath.angleFromDisplacement(d[0], d[1]);
-	    double distance = Math.sqrt(d[0] * d[0] + d[1] * d[1]);
-	    scanUnknownSectors.addInput(angle, distance);
+	if (n != null) {
+	    NdPoint quadCenter = quadTree.getUnfilledNodeCenter(n,
+		    currentLocation);
+	    double angle = SpatialMath.calcAngleFor2DMovement(space,
+		    currentLocation, quadCenter);
+	    scanUnknownSectors.addInput(angle);
 	}
 
 	if (prevDirection >= -Math.PI)
 	    scanPrevDirection.addInput(prevDirection);
 
-	smd.setValidSegments(collisionFreeSegments);
-
-	smd.calcProbDist(scanAgentAppeal, scanAgentRepell, scanAgentMimic,
+	pddp.calcProbDist(scanAgentAppeal, scanAgentRepell, scanAgentMimic,
 		scanPrevDirection, scanUnknownSectors);
 
-	smd.normalize();
-	prevDirection = smd.getMovementAngle();
+	pddp.normalize();
+
+	if (config.takeHighestProb)
+	    prevDirection = pddp.getMovementAngleWithHighestProbability();
+	else
+	    prevDirection = pddp.getMovementAngle();
+
 	return prevDirection;
     }
 
@@ -225,15 +219,12 @@ public class ComplexMemoryCommStrategy extends ExplorationStrategy {
 	scanAgentMimic.clear();
 	scanPrevDirection.clear();
 	scanUnknownSectors.clear();
-	// smd.clear(); // is cleared in make move decision
     }
 
     @Override
     protected void reset() {
 	prevDirection = RandomHelper.nextDoubleFromTo(-Math.PI, Math.PI);
-	map.setCurrentSectorUnfilled();
-	smd.clear();
-	consecutiveMoveCount = INFINITY;
+	// map.setCurrentSectorUnfilled(); TODO
     }
 
 }

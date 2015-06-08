@@ -10,6 +10,7 @@ import repast.simphony.space.SpatialMath;
 import repast.simphony.space.continuous.NdPoint;
 import swarm_sim.AbstractAgent;
 import swarm_sim.Agent;
+import swarm_sim.AdvancedGridValueLayer.FieldDistancePair;
 import swarm_sim.Agent.AgentState;
 import swarm_sim.QuadTree;
 import swarm_sim.QuadTree.Node;
@@ -19,26 +20,21 @@ import swarm_sim.communication.INetworkAgent;
 import swarm_sim.communication.Message;
 import swarm_sim.communication.Message.MessageType;
 import swarm_sim.perception.AngleSegment;
-import swarm_sim.perception.Scan;
-import swarm_sim.perception.Scan.AttractionType;
-import swarm_sim.perception.Scan.GrowingDirection;
-import swarm_sim.perception.ScanMoveDecision;
+import swarm_sim.perception.PDDPInput;
+import swarm_sim.perception.PDDPInput.AttractionType;
+import swarm_sim.perception.PDDPInput.GrowingDirection;
+import swarm_sim.perception.PDDP;
 
-public class QTMemoryCommStrategy extends ExplorationStrategy {
+public class MCStrategy extends ExplorationStrategy {
 
     QuadTree quadTree;
 
-    Scan scanUnknownSectors = new Scan(AttractionType.Attracting,
+    PDDPInput scanUnknownSectors = new PDDPInput(AttractionType.Attracting,
 	    GrowingDirection.Inwards, 1, true, 0, 10000, 1, 1000);
 
-    ScanMoveDecision smd;
-
-    public QTMemoryCommStrategy(IChromosome chrom,
+    public MCStrategy(IChromosome chrom,
 	    Context<AbstractAgent> context, Agent controllingAgent) {
 	super(chrom, context, controllingAgent);
-
-	smd = new ScanMoveDecision(config.segmentCount, config.k,
-		config.distanceFactor, config.initProb);
 
 	this.quadTree = new QuadTree(config.spaceWidth, config.spaceHeight,
 		config.perceptionScope);
@@ -85,7 +81,7 @@ public class QTMemoryCommStrategy extends ExplorationStrategy {
 
     @Override
     protected double makeDirectionDecision(AgentState prevState,
-	    AgentState currentState, List<AngleSegment> collisionFreeSegments) {
+	    AgentState currentState, PDDP pddp) {
 	NdPoint currentLocation = space.getLocation(controllingAgent);
 
 	/* Look for close unexplored sectors */
@@ -102,23 +98,27 @@ public class QTMemoryCommStrategy extends ExplorationStrategy {
 	    scanUnknownSectors.addInput(angle);
 	}
 
-	smd.setValidSegments(collisionFreeSegments);
-	smd.calcProbDist(scanUnknownSectors);
-	smd.normalize();
+	pddp.calcProbDist(scanUnknownSectors);
+	pddp.normalize();
 
 	double direction;
 	if (config.takeHighestProb)
-	    direction = smd.getMovementAngleWithHighestProbability();
+	    direction = pddp.getMovementAngleWithHighestProbability();
 	else
-	    direction = smd.getMovementAngle();
+	    direction = pddp.getMovementAngle();
 
 	return direction;
+    }
+    
+    @Override
+    public void handleObstacle(AgentState prevState, AgentState currentState,
+            FieldDistancePair obs) {
+	quadTree.setLocation(obs.loc.getX(), obs.loc.getY());
     }
 
     @Override
     protected void clear() {
 	scanUnknownSectors.clear();
-	smd.clear();
 
     }
 

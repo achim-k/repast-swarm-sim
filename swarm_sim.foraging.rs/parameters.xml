@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <parameters>
 	<parameter name="expl_strategy" displayName="Exploration Strategy"
-		type="java.lang.String" defaultValue="CMC"
+		type="java.lang.String" defaultValue="CC"
 		isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter"
 		values="R CM MC CC CMC" />
@@ -13,7 +13,7 @@
 		type="int" defaultValue="4" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
 	<parameter name="perception_scope" displayName="Perception scope [%]"
-		type="double" defaultValue="1.0" isReadOnly="false"
+		type="double" defaultValue="1.2" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter" />
 	<parameter name="communication_scope" displayName="Communication scope [%]"
 		type="double" defaultValue="15.0" isReadOnly="false"

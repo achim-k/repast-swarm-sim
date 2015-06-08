@@ -3,7 +3,7 @@ package swarm_sim.perception;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Scan {
+public class PDDPInput {
 
     public class ScanInput {
 	public double angle, distance, distanceRatio;
@@ -35,7 +35,7 @@ public class Scan {
 
     private List<ScanInput> inputs = new ArrayList<>();
 
-    public Scan(AttractionType attrType, GrowingDirection growDirection,
+    public PDDPInput(AttractionType attrType, GrowingDirection growDirection,
 	    double mergeWeight, boolean hasFluidSoftBorders,
 	    double hardInnerDistanceBorder, double hardOuterDistanceBorder,
 	    int inputValidLowerBound, int inputValidUpperBound) {
@@ -87,7 +87,7 @@ public class Scan {
     }
 
     public List<ScanInput> getInputs() {
-	List<ScanInput> ret = new ArrayList<Scan.ScanInput>();
+	List<ScanInput> ret = new ArrayList<PDDPInput.ScanInput>();
 
 	if (!isValid)
 	    return ret;

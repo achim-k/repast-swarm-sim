@@ -10,15 +10,16 @@ import repast.simphony.space.SpatialMath;
 import repast.simphony.space.continuous.NdPoint;
 import swarm_sim.AbstractAgent;
 import swarm_sim.AbstractAgent.AgentType;
+import swarm_sim.AdvancedGridValueLayer.FieldDistancePair;
 import swarm_sim.Agent;
 import swarm_sim.Agent.AgentState;
 import swarm_sim.SectorMap;
 import swarm_sim.Strategy;
 import swarm_sim.perception.AngleSegment;
-import swarm_sim.perception.Scan;
-import swarm_sim.perception.Scan.AttractionType;
-import swarm_sim.perception.Scan.GrowingDirection;
-import swarm_sim.perception.ScanMoveDecision;
+import swarm_sim.perception.PDDPInput;
+import swarm_sim.perception.PDDPInput.AttractionType;
+import swarm_sim.perception.PDDPInput.GrowingDirection;
+import swarm_sim.perception.PDDP;
 
 public abstract class ForagingStrategy extends Strategy {
 
@@ -28,15 +29,13 @@ public abstract class ForagingStrategy extends Strategy {
     protected double directionAngle = RandomHelper.nextDoubleFromTo(-Math.PI,
 	    Math.PI);
 
-    protected Scan scanResources = new Scan(AttractionType.Attracting,
+    protected PDDPInput scanResources = new PDDPInput(AttractionType.Attracting,
 	    GrowingDirection.Inwards, 1, true, 0, config.perceptionScope, 1,
 	    100);
-    protected Scan scanDeliverDirection = new Scan(AttractionType.Attracting,
+    protected PDDPInput scanDeliverDirection = new PDDPInput(AttractionType.Attracting,
 	    GrowingDirection.Inwards, 1, true, 0, 1E8, 1, 10);
-    protected Scan scanCurrentTarget = new Scan(AttractionType.Attracting,
+    protected PDDPInput scanCurrentTarget = new PDDPInput(AttractionType.Attracting,
 	    GrowingDirection.Inwards, 1, true, 0, 1E8, 1, 10);
-
-    protected ScanMoveDecision smd;
 
     public class ResourceTarget {
 	public int resourceCount;
@@ -77,9 +76,6 @@ public abstract class ForagingStrategy extends Strategy {
     public ForagingStrategy(IChromosome chrom, Context<AbstractAgent> context,
 	    Agent controllingAgent) {
 	super(chrom, context, controllingAgent);
-
-	smd = new ScanMoveDecision(config.segmentCount, config.k,
-		config.distanceFactor, config.initProb);
 
 	int sectorsX = (int) (config.spaceWidth / config.perceptionScope);
 	int sectorsY = (int) (config.spaceHeight / config.perceptionScope);
@@ -172,10 +168,8 @@ public abstract class ForagingStrategy extends Strategy {
 
     @Override
     public double makeDirectionDecision(AgentState prevState,
-	    AgentState currentState, List<AngleSegment> collisionFreeSegments) {
-
-	smd.setValidSegments(collisionFreeSegments);
-
+	    AgentState currentState, PDDP pddp) {
+	
 	if (currentState == AgentState.acquire) {
 	    if (!scanResources.isValid() && currentTarget != null
 		    && currentTarget.isValid) {
@@ -185,24 +179,24 @@ public abstract class ForagingStrategy extends Strategy {
 			.getDirectionToSector(currentTarget.sector);
 		scanCurrentTarget.addInput(direction);
 	    }
-	    smd.calcProbDist(scanResources, scanCurrentTarget);
+	    pddp.calcProbDist(scanResources, scanCurrentTarget);
 
 	} else if (currentState == AgentState.deliver) {
 	    double moveAngleToBase = SpatialMath.calcAngleFor2DMovement(space,
 		    space.getLocation(controllingAgent),
 		    space.getLocation(config.baseAgent));
 	    scanDeliverDirection.addInput(moveAngleToBase);
-	    smd.calcProbDist(scanDeliverDirection);
+	    pddp.calcProbDist(scanDeliverDirection);
 	} else {
 	    System.err.println("state not existing: " + currentState);
 	}
 
-	smd.normalize();
+	pddp.normalize();
 
 	if (config.takeHighestProb)
-	    directionAngle = smd.getMovementAngleWithHighestProbability();
+	    directionAngle = pddp.getMovementAngleWithHighestProbability();
 	else
-	    directionAngle = smd.getMovementAngle();
+	    directionAngle = pddp.getMovementAngle();
 
 	return directionAngle;
     }
@@ -213,7 +207,12 @@ public abstract class ForagingStrategy extends Strategy {
 	scanResources.clear();
 	scanDeliverDirection.clear();
 	scanCurrentTarget.clear();
-	smd.clear();
+    }
+    
+    @Override
+    public void handleObstacle(AgentState prevState,
+            AgentState currentState, FieldDistancePair obs) {
+      
     }
 
     @Override

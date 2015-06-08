@@ -5,6 +5,7 @@ import org.jgap.IChromosome;
 import repast.simphony.context.Context;
 import swarm_sim.AbstractAgent;
 import swarm_sim.AbstractAgent.AgentType;
+import swarm_sim.AdvancedGridValueLayer.FieldDistancePair;
 import swarm_sim.Agent;
 import swarm_sim.Agent.AgentState;
 import swarm_sim.Strategy;
@@ -24,6 +25,12 @@ public abstract class ExplorationStrategy extends Strategy {
 	    return AgentState.acquire;
 
 	return AgentState.wander;
+    }
+    
+    @Override
+    public void handleObstacle(AgentState prevState,
+            AgentState currentState, FieldDistancePair obs) {
+      
     }
 
 }

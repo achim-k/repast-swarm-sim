@@ -17,27 +17,22 @@ import swarm_sim.communication.CommunicationType;
 import swarm_sim.communication.INetworkAgent;
 import swarm_sim.communication.Message;
 import swarm_sim.perception.AngleSegment;
-import swarm_sim.perception.Scan;
-import swarm_sim.perception.Scan.AttractionType;
-import swarm_sim.perception.Scan.GrowingDirection;
-import swarm_sim.perception.ScanMoveDecision;
+import swarm_sim.perception.PDDPInput;
+import swarm_sim.perception.PDDPInput.AttractionType;
+import swarm_sim.perception.PDDPInput.GrowingDirection;
+import swarm_sim.perception.PDDP;
 
-public class ComplexMemoryStrategy extends ExplorationStrategy {
+public class CMStrategy extends ExplorationStrategy {
 
     private double prevDirection = RandomHelper.nextDoubleFromTo(-Math.PI,
 	    Math.PI);
-    private Scan scanLine = new Scan(AttractionType.Attracting,
+    private PDDPInput scanLine = new PDDPInput(AttractionType.Attracting,
 	    GrowingDirection.Inwards, 1, true, 0, 1000, 1, 1000);
     SectorMap map = new SectorMap(space.getDimensions(), 60, 60, 1);
 
-    private ScanMoveDecision smd;
-
-    public ComplexMemoryStrategy(IChromosome chrom,
+    public CMStrategy(IChromosome chrom,
 	    Context<AbstractAgent> context, Agent controllingAgent) {
 	super(chrom, context, controllingAgent);
-
-	smd = new ScanMoveDecision(config.segmentCount, config.k,
-		config.distanceFactor, config.initProb);
 
 	int sectorsX = (int) (0.625 * config.spaceWidth / config.perceptionScope);
 	int sectorsY = (int) (0.625 * config.spaceHeight / config.perceptionScope);
@@ -64,27 +59,25 @@ public class ComplexMemoryStrategy extends ExplorationStrategy {
 
     @Override
     protected double makeDirectionDecision(AgentState prevState,
-	    AgentState currentState, List<AngleSegment> collisionFreeSegments) {
+	    AgentState currentState, PDDP pddp) {
 	NdPoint currentLocation = space.getLocation(controllingAgent);
 	map.setPosition(currentLocation);
 
 	scanLine.addInput(map.getNewMoveAngle());
 
-	smd.setValidSegments(collisionFreeSegments);
-	smd.calcProbDist(scanLine);
-	smd.normalize();
+	pddp.calcProbDist(scanLine);
+	pddp.normalize();
 
 	if (config.takeHighestProb)
-	    prevDirection = smd.getMovementAngleWithHighestProbability();
+	    prevDirection = pddp.getMovementAngleWithHighestProbability();
 	else
-	    prevDirection = smd.getMovementAngle();
+	    prevDirection = pddp.getMovementAngle();
 
 	return prevDirection;
     }
 
     @Override
     protected void clear() {
-	smd.clear();
 	scanLine.clear();
     }
 

@@ -19,20 +19,21 @@ import swarm_sim.communication.INetworkAgent;
 import swarm_sim.communication.Message;
 import swarm_sim.perception.AngleFilter;
 import swarm_sim.perception.AngleSegment;
-import swarm_sim.perception.Scan;
-import swarm_sim.perception.Scan.AttractionType;
-import swarm_sim.perception.Scan.GrowingDirection;
+import swarm_sim.perception.PDDP;
+import swarm_sim.perception.PDDPInput;
+import swarm_sim.perception.PDDPInput.AttractionType;
+import swarm_sim.perception.PDDPInput.GrowingDirection;
 
-public class PheromoneStrategy extends ForagingStrategy {
+public class PCStrategy extends ForagingStrategy {
 
     int pheromoneDropMoveCount = 0;
     int perceivedPheromones = 0;
 
-    Scan scanPheromones = new Scan(AttractionType.Attracting,
+    PDDPInput scanPheromones = new PDDPInput(AttractionType.Attracting,
 	    GrowingDirection.Outwards, 1, true, 0, config.perceptionScope, 1,
 	    20);
 
-    public PheromoneStrategy(IChromosome chrom, Context<AbstractAgent> context,
+    public PCStrategy(IChromosome chrom, Context<AbstractAgent> context,
 	    Agent controllingAgent) {
 	super(chrom, context, controllingAgent);
     }
@@ -100,22 +101,21 @@ public class PheromoneStrategy extends ForagingStrategy {
 
     @Override
     public double makeDirectionDecision(AgentState prevState,
-	    AgentState currentState, List<AngleSegment> collisionFreeSegments) {
+	    AgentState currentState, PDDP pddp) {
 	if (currentState == AgentState.acquire) {
 	    if (scanResources.isValid()
 		    || (currentTarget != null && currentTarget.isValid)) {
 		return super.makeDirectionDecision(prevState, currentState,
-			collisionFreeSegments);
+			pddp);
 	    }
 
-	    smd.setValidSegments(collisionFreeSegments);
-	    smd.calcProbDist(scanPheromones);
-	    smd.normalize();
-	    directionAngle = smd.getMovementAngle();
+	    pddp.calcProbDist(scanPheromones);
+	    pddp.normalize();
+	    directionAngle = pddp.getMovementAngle();
 	    return directionAngle;
 	} else {
 	    return super.makeDirectionDecision(prevState, currentState,
-		    collisionFreeSegments);
+		    pddp);
 	}
     }
 

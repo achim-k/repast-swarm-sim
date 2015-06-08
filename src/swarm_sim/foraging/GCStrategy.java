@@ -16,10 +16,11 @@ import swarm_sim.communication.INetworkAgent;
 import swarm_sim.communication.Message;
 import swarm_sim.communication.Message.MessageType;
 import swarm_sim.perception.AngleSegment;
+import swarm_sim.perception.PDDP;
 
-public class GoalCommunication extends ForagingStrategy {
+public class GCStrategy extends ForagingStrategy {
 
-    public GoalCommunication(IChromosome chrom, Context<AbstractAgent> context,
+    public GCStrategy(IChromosome chrom, Context<AbstractAgent> context,
 	    Agent controllingAgent) {
 	super(chrom, context, controllingAgent);
     }
@@ -100,9 +101,9 @@ public class GoalCommunication extends ForagingStrategy {
 
     @Override
     public double makeDirectionDecision(AgentState prevState,
-	    AgentState currentState, List<AngleSegment> collisionFreeSegments) {
+	    AgentState currentState, PDDP pddp) {
 	return super.makeDirectionDecision(prevState, currentState,
-		collisionFreeSegments);
+		pddp);
     }
 
     public boolean isTrustWorthy(INetworkAgent agent, ResourceTarget resTarget) {

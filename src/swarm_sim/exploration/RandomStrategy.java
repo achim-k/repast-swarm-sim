@@ -14,15 +14,13 @@ import swarm_sim.communication.CommunicationType;
 import swarm_sim.communication.INetworkAgent;
 import swarm_sim.communication.Message;
 import swarm_sim.perception.AngleSegment;
-import swarm_sim.perception.ScanMoveDecision;
+import swarm_sim.perception.PDDP;
 
 public class RandomStrategy extends ExplorationStrategy {
 
     int segmentCount = 8;
     int consecutiveMoveCount = 0;
-    double directionAngle = RandomHelper.nextDoubleFromTo(-Math.PI, Math.PI);
-
-    ScanMoveDecision smd;
+    double prevDirection = RandomHelper.nextDoubleFromTo(-Math.PI, Math.PI);
 
     public RandomStrategy(IChromosome chrom, Context<AbstractAgent> context,
 	    Agent controllingAgent) {
@@ -33,10 +31,6 @@ public class RandomStrategy extends ExplorationStrategy {
     protected AgentState processMessage(AgentState prevState,
 	    AgentState currentState, Message msg, boolean isLast) {
 	// No Communication here
-
-	smd = new ScanMoveDecision(config.segmentCount, config.k,
-		config.distanceFactor, config.initProb);
-
 	return currentState;
     }
 
@@ -48,31 +42,23 @@ public class RandomStrategy extends ExplorationStrategy {
 
     @Override
     protected double makeDirectionDecision(AgentState prevState,
-	    AgentState currentState, List<AngleSegment> collisionFreeSegments) {
+	    AgentState currentState, PDDP pddp) {
 
-	if (consecutiveMoveCount < config.consecutiveMoves) {
+	if (consecutiveMoveCount < config.consecutiveMoves && prevDirection > -10) {
 	    // Continue to go in same direction, if possible
-	    boolean moveAllowed = false;
-	    for (AngleSegment as : collisionFreeSegments) {
-		if (as.start <= directionAngle && as.end >= directionAngle) {
-		    moveAllowed = true;
-		    break;
-		}
-	    }
-
+	    boolean moveAllowed = pddp.angleValid(prevDirection);
 	    if (moveAllowed) {
 		consecutiveMoveCount++;
-		return directionAngle;
+		return prevDirection;
 	    }
 	}
 
 	/* Choose random direction */
 	consecutiveMoveCount = 0;
-	smd.setValidSegments(collisionFreeSegments);
 	// smd.calcProbDist();
-	smd.normalize();
-	directionAngle = smd.getMovementAngle();
-	return directionAngle;
+	pddp.normalize();
+	prevDirection = pddp.getMovementAngle();
+	return prevDirection;
     }
 
     @Override
@@ -82,7 +68,6 @@ public class RandomStrategy extends ExplorationStrategy {
 
     @Override
     protected void clear() {
-	smd.clear();
     }
 
     @Override

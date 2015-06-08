@@ -14,10 +14,11 @@ import swarm_sim.communication.CommunicationType;
 import swarm_sim.communication.INetworkAgent;
 import swarm_sim.communication.Message;
 import swarm_sim.perception.AngleSegment;
+import swarm_sim.perception.PDDP;
 
-public class NoCommStrategy extends ForagingStrategy {
+public class NCStrategy extends ForagingStrategy {
 
-    public NoCommStrategy(IChromosome chrom, Context<AbstractAgent> context,
+    public NCStrategy(IChromosome chrom, Context<AbstractAgent> context,
 	    Agent controllingAgent) {
 	super(chrom, context, controllingAgent);
     }
@@ -56,9 +57,9 @@ public class NoCommStrategy extends ForagingStrategy {
 
     @Override
     public double makeDirectionDecision(AgentState prevState,
-	    AgentState currentState, List<AngleSegment> collisionFreeSegments) {
+	    AgentState currentState, PDDP pddp) {
 	return super.makeDirectionDecision(prevState, currentState,
-		collisionFreeSegments);
+		pddp);
     }
 
     @Override

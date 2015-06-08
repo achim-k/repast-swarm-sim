@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import repast.simphony.space.SpatialException;
+import repast.simphony.space.SpatialMath;
 import repast.simphony.space.continuous.NdPoint;
 import repast.simphony.valueLayer.GridFunction;
 import repast.simphony.valueLayer.GridValueLayer;
@@ -20,18 +21,17 @@ public class AdvancedGridValueLayer extends GridValueLayer {
     private int obstacleCount = 0;
 
     public enum FieldType {
-	Default, Obstacle
+	Default, Obstacle, VirtualObstacle
     }
 
     public class FieldDistancePair {
 	public double distance, value;
 	public FieldType fieldType;
-	public int x, y;
+	public NdPoint loc;
 
-	public FieldDistancePair(int x, int y, FieldType fieldType,
+	public FieldDistancePair(NdPoint loc, FieldType fieldType,
 		double value, double distance) {
-	    this.x = x;
-	    this.y = y;
+	    this.loc = loc;
 	    this.fieldType = fieldType;
 	    this.value = value;
 	    this.distance = distance;
@@ -157,18 +157,21 @@ public class AdvancedGridValueLayer extends GridValueLayer {
 
 	for (int x = mins[0]; x <= maxs[0]; x++) {
 	    for (int y = mins[1]; y <= maxs[1]; y++) {
-		double distance = Math.sqrt(Math.pow((x + .5 - origin.getX()),
-			2) + Math.pow((y + .5 - origin.getY()), 2));
+		NdPoint fieldLoc = new NdPoint(x + .5, y + .5);
+
+		double distance = Math.sqrt(Math.pow(
+			(fieldLoc.getX() - origin.getX()), 2)
+			+ Math.pow((fieldLoc.getY() - origin.getY()), 2));
 
 		if (x < dims.getOrigin(0) || x >= dims.getDimension(0)
 			|| y < dims.getOrigin(1) || y >= dims.getDimension(1)) {
-		    ret.add(new FieldDistancePair(x, y, FieldType.Obstacle, -1,
-			    distance));
+		    ret.add(new FieldDistancePair(fieldLoc,
+			    FieldType.VirtualObstacle, -1, distance));
 		    continue;
 		}
 
-		if (distance <= radius) {
-		    ret.add(new FieldDistancePair(x, y, getFieldType(x, y),
+		if (distance <= radius || getFieldType(x,y) == FieldType.Obstacle) {
+		    ret.add(new FieldDistancePair(fieldLoc, getFieldType(x, y),
 			    get(x, y), distance));
 		}
 	    }

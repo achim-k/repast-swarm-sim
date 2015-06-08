@@ -6,12 +6,14 @@ import org.jgap.IChromosome;
 
 import repast.simphony.context.Context;
 import repast.simphony.space.continuous.ContinuousSpace;
+import swarm_sim.AdvancedGridValueLayer.FieldDistancePair;
 import swarm_sim.Agent.AgentState;
 import swarm_sim.communication.CommunicationType;
 import swarm_sim.communication.INetworkAgent;
 import swarm_sim.communication.Message;
 import swarm_sim.communication.Message.MessageType;
 import swarm_sim.perception.AngleSegment;
+import swarm_sim.perception.PDDP;
 
 public abstract class Strategy {
 
@@ -58,7 +60,10 @@ public abstract class Strategy {
 	    AgentState currentState, AbstractAgent agent, boolean isLast);
 
     protected abstract double makeDirectionDecision(AgentState prevState,
-	    AgentState currentState, List<AngleSegment> collisionFreeSegments);
+	    AgentState currentState, PDDP pddp);
+    
+    protected abstract void handleObstacle(AgentState prevState,
+	    AgentState currentState, FieldDistancePair obs);
 
     protected abstract void clear(); // After each step
 
