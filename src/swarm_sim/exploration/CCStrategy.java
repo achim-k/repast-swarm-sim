@@ -18,7 +18,6 @@ import swarm_sim.communication.INetworkAgent;
 import swarm_sim.communication.Message;
 import swarm_sim.communication.Message.MessageType;
 import swarm_sim.learning.GA;
-import swarm_sim.perception.AngleSegment;
 import swarm_sim.perception.PDDP;
 import swarm_sim.perception.PDDPInput;
 import swarm_sim.perception.PDDPInput.AttractionType;

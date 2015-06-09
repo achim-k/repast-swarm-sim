@@ -13,7 +13,6 @@ import swarm_sim.Strategy;
 import swarm_sim.communication.CommunicationType;
 import swarm_sim.communication.INetworkAgent;
 import swarm_sim.communication.Message;
-import swarm_sim.perception.AngleSegment;
 import swarm_sim.perception.PDDP;
 
 public class NCStrategy extends ForagingStrategy {

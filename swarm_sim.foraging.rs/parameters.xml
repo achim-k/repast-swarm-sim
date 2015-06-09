@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <parameters>
+	<parameter name="map" displayName="map"
+		type="java.lang.String" defaultValue="data/map_obstacles.png"
+		isReadOnly="false"
+		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter"
+		values="data/map.png data/map_obstacles.png data/map_obstacles_light.png" />
 	<parameter name="expl_strategy" displayName="Exploration Strategy"
-		type="java.lang.String" defaultValue="CC"
+		type="java.lang.String" defaultValue="CMC"
 		isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter"
 		values="R CM MC CC CMC" />
@@ -10,7 +15,7 @@
 		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter"
 		values="NC SC GC PC" />
 	<parameter name="agent_count" displayName="Number of Agents"
-		type="int" defaultValue="4" isReadOnly="false"
+		type="int" defaultValue="1" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
 	<parameter name="perception_scope" displayName="Perception scope [%]"
 		type="double" defaultValue="1.2" isReadOnly="false"
@@ -29,20 +34,20 @@
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
 
 	<parameter name="distance_factor" displayName="Distance Factor D"
-		type="double" defaultValue="5.0" isReadOnly="false"
+		type="double" defaultValue="2.0" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter" />
 	<parameter name="segment_count" displayName="segment count N"
-		type="int" defaultValue="8" isReadOnly="false"
+		type="int" defaultValue="20" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
 	<parameter name="k" displayName="k" type="double"
-		defaultValue="5.0" isReadOnly="false"
+		defaultValue="1.0" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter" />
 	<parameter name="prob_init" displayName="initial segment probability"
 		type="double" defaultValue="0.01" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter" />
 
 	<parameter name="consecutive_move" displayName="Consecutive moves"
-		type="int" defaultValue="0" isReadOnly="false"
+		type="int" defaultValue="100" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
 	<parameter name="failure_probability" displayName="Failure Probability [0-1]"
 		type="double" defaultValue="0" isReadOnly="false"
@@ -52,7 +57,7 @@
 		converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter" />
 
 	<parameter name="highest_prob" displayName="Take highest prob value" type="boolean"
-		defaultValue="false" isReadOnly="false"
+		defaultValue="true" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$BooleanConverter" />
 	<parameter name="use_ga" displayName="Use GA" type="boolean"
 		defaultValue="false" isReadOnly="false"

@@ -11,7 +11,6 @@ import repast.simphony.context.Context;
 import repast.simphony.engine.environment.RunEnvironment;
 import repast.simphony.query.space.continuous.ContinuousWithin;
 import repast.simphony.random.RandomHelper;
-import repast.simphony.space.SpatialMath;
 import repast.simphony.space.continuous.ContinuousSpace;
 import repast.simphony.space.continuous.NdPoint;
 import repast.simphony.space.graph.Network;
@@ -24,8 +23,8 @@ import swarm_sim.communication.CommunicationType;
 import swarm_sim.communication.INetworkAgent;
 import swarm_sim.communication.Message;
 import swarm_sim.exploration.CCStrategy;
-import swarm_sim.exploration.CMStrategy;
 import swarm_sim.exploration.CMCStrategy;
+import swarm_sim.exploration.CMStrategy;
 import swarm_sim.exploration.ExplorationStrategy;
 import swarm_sim.exploration.MCStrategy;
 import swarm_sim.exploration.RandomStrategy;
@@ -35,8 +34,6 @@ import swarm_sim.foraging.NCStrategy;
 import swarm_sim.foraging.PCStrategy;
 import swarm_sim.foraging.Resource;
 import swarm_sim.foraging.SCStrategy;
-import swarm_sim.perception.AngleFilter;
-import swarm_sim.perception.AngleSegment;
 import swarm_sim.perception.CollisionAvoidance;
 import swarm_sim.perception.PDDP;
 
@@ -58,7 +55,6 @@ public class Agent extends AbstractAgent implements IDisplayAgent,
     NdPoint currentLocation;
     double directionAngle = RandomHelper.nextDoubleFromTo(-Math.PI, Math.PI);
     List<FieldDistancePair> surroundingFields = new ArrayList<>();
-    AngleFilter collisionAngleFilter = new AngleFilter(1);
 
     /* General */
     Configuration config;
@@ -265,8 +261,6 @@ public class Agent extends AbstractAgent implements IDisplayAgent,
     }
 
     public void scanEnv() {
-	collisionAngleFilter.clear();
-
 	surroundingFields = exploredArea.getFieldsRadial(currentLocation,
 		config.perceptionScope);
 
@@ -327,10 +321,6 @@ public class Agent extends AbstractAgent implements IDisplayAgent,
     }
 
     public void move() {
-	AngleSegment moveCircle = new AngleSegment(-Math.PI, Math.PI);
-	List<AngleSegment> collisionFreeSegments = moveCircle
-		.filterSegment(collisionAngleFilter.getFilterSegments());
-
 	if (state == AgentState.wander) {
 	    directionAngle = explStrategy.makeDirectionDecision(prevState,
 		    state, pddp);

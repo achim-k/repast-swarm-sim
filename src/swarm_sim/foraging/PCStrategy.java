@@ -17,8 +17,6 @@ import swarm_sim.Strategy;
 import swarm_sim.communication.CommunicationType;
 import swarm_sim.communication.INetworkAgent;
 import swarm_sim.communication.Message;
-import swarm_sim.perception.AngleFilter;
-import swarm_sim.perception.AngleSegment;
 import swarm_sim.perception.PDDP;
 import swarm_sim.perception.PDDPInput;
 import swarm_sim.perception.PDDPInput.AttractionType;
@@ -67,11 +65,12 @@ public class PCStrategy extends ForagingStrategy {
 		double pAngle = SpatialMath.calcAngleFor2DMovement(space,
 			currentLocation, pLoc);
 
-		if (prevState == AgentState.wander
-			|| AngleFilter.angleDistance(pAngle, baseAngle) > Math.PI) {
+		/* TODO: Angle distance */
+//		if (prevState == AgentState.wander
+//			|| AngleFilter.angleDistance(pAngle, baseAngle) > Math.PI) {
 		    scanPheromones.addInput(pAngle,
 			    space.getDistance(currentLocation, pLoc));
-		}
+//		}
 		return AgentState.acquire;
 	    }
 	    return currentState;

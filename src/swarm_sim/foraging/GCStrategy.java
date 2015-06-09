@@ -15,7 +15,6 @@ import swarm_sim.communication.CommunicationType;
 import swarm_sim.communication.INetworkAgent;
 import swarm_sim.communication.Message;
 import swarm_sim.communication.Message.MessageType;
-import swarm_sim.perception.AngleSegment;
 import swarm_sim.perception.PDDP;
 
 public class GCStrategy extends ForagingStrategy {

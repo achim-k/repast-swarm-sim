@@ -1,7 +1,5 @@
 package swarm_sim.foraging;
 
-import java.util.List;
-
 import org.jgap.IChromosome;
 
 import repast.simphony.context.Context;
@@ -15,11 +13,10 @@ import swarm_sim.Agent;
 import swarm_sim.Agent.AgentState;
 import swarm_sim.SectorMap;
 import swarm_sim.Strategy;
-import swarm_sim.perception.AngleSegment;
+import swarm_sim.perception.PDDP;
 import swarm_sim.perception.PDDPInput;
 import swarm_sim.perception.PDDPInput.AttractionType;
 import swarm_sim.perception.PDDPInput.GrowingDirection;
-import swarm_sim.perception.PDDP;
 
 public abstract class ForagingStrategy extends Strategy {
 
@@ -173,19 +170,20 @@ public abstract class ForagingStrategy extends Strategy {
 	if (currentState == AgentState.acquire) {
 	    if (!scanResources.isValid() && currentTarget != null
 		    && currentTarget.isValid) {
-		SectorMap currentSector = map.getCurrentSector(space
-			.getLocation(controllingAgent));
-		double direction = currentSector
-			.getDirectionToSector(currentTarget.sector);
-		scanCurrentTarget.addInput(direction);
+//		SectorMap currentSector = map.getCurrentSector(space
+//			.getLocation(controllingAgent));
+//		double direction = currentSector
+//			.getDirectionToSector(currentTarget.sector);
+		scanCurrentTarget.addInput(motionToGoal(map.getSectorCenter(currentTarget.sector), pddp));
 	    }
 	    pddp.calcProbDist(scanResources, scanCurrentTarget);
 
 	} else if (currentState == AgentState.deliver) {
-	    double moveAngleToBase = SpatialMath.calcAngleFor2DMovement(space,
-		    space.getLocation(controllingAgent),
-		    space.getLocation(config.baseAgent));
-	    scanDeliverDirection.addInput(moveAngleToBase);
+//	    double moveAngleToBase = SpatialMath.calcAngleFor2DMovement(space,
+//		    space.getLocation(controllingAgent),
+//		    space.getLocation(config.baseAgent));
+//	    
+	    scanDeliverDirection.addInput(motionToGoal(space.getLocation(config.baseAgent), pddp));
 	    pddp.calcProbDist(scanDeliverDirection);
 	} else {
 	    System.err.println("state not existing: " + currentState);

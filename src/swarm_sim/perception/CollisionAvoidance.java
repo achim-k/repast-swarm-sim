@@ -22,9 +22,17 @@ public class CollisionAvoidance {
 	if(filterAngle > 1.57)
 	    filterAngle = 1.57;
 	
-	double angleStart = AngleFilter.normAngle(angle - filterAngle);
-	double angleEnd =  AngleFilter.normAngle(angle + filterAngle);
+	double angleStart = normAngle(angle - filterAngle);
+	double angleEnd =  normAngle(angle + filterAngle);
 	smd.setInvalidSegments(angleStart, angleEnd);
+    }
+    
+    public static double normAngle(double angle) {
+	if (angle > Math.PI)
+	    return -Math.PI + angle - Math.PI;
+	if (angle < -Math.PI)
+	    return Math.PI - (-Math.PI - angle);
+	return angle;
     }
     
     

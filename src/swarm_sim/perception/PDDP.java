@@ -147,6 +147,16 @@ public class PDDP {
     public boolean angleValid(double angle) {
 	return segments[angleToSegmentIndex(angle, segmentCount)].isValid;
     }
+    
+    public boolean segmentValid(int index) {
+	return segments[index].isValid;
+    }
+    
+    public double randomSegmentDirection(int index) {
+	CircleSegment maxProbSegment = segments[index];
+	return RandomHelper.nextDoubleFromTo(maxProbSegment.centerAngle
+		    - centerDelta, maxProbSegment.centerAngle + centerDelta);
+    }
 
     public void normalize() {
 	double segmentProbSum = 0;
@@ -159,24 +169,6 @@ public class PDDP {
 	for (CircleSegment cs : segments) {
 	    if (cs.isValid)
 		cs.probability /= segmentProbSum;
-	}
-    }
-
-    public void setValidSegments(List<AngleSegment> freeToGoSegments) {
-	for (AngleSegment as : freeToGoSegments) {
-	    int startIndex = angleToSegmentIndex(as.start, segmentCount);
-	    int endIndex = angleToSegmentIndex(as.end, segmentCount);
-
-	    for (int i = startIndex; i <= endIndex && i < segmentCount; i++) {
-		segments[i].isValid = true;
-	    }
-	}
-
-	/* set probability to 0 for invalid segments */
-	for (CircleSegment cs : segments) {
-	    if (!cs.isValid) {
-		cs.probability = 0;
-	    }
 	}
     }
     
@@ -213,4 +205,5 @@ public class PDDP {
     public double getSegmentProbability(int segmentIndex) {
 	return segments[segmentIndex].probability;
     }
+
 }

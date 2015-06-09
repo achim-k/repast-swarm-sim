@@ -16,11 +16,10 @@ import swarm_sim.communication.CommunicationType;
 import swarm_sim.communication.INetworkAgent;
 import swarm_sim.communication.Message;
 import swarm_sim.communication.Message.MessageType;
-import swarm_sim.perception.AngleSegment;
+import swarm_sim.perception.PDDP;
 import swarm_sim.perception.PDDPInput;
 import swarm_sim.perception.PDDPInput.AttractionType;
 import swarm_sim.perception.PDDPInput.GrowingDirection;
-import swarm_sim.perception.PDDP;
 
 public class SCStrategy extends ForagingStrategy {
 

@@ -11,6 +11,7 @@ import repast.simphony.space.SpatialMath;
 import repast.simphony.space.continuous.NdPoint;
 import swarm_sim.AbstractAgent;
 import swarm_sim.Agent;
+import swarm_sim.AdvancedGridValueLayer.FieldDistancePair;
 import swarm_sim.Agent.AgentState;
 import swarm_sim.QuadTree;
 import swarm_sim.QuadTree.Node;
@@ -20,34 +21,36 @@ import swarm_sim.communication.INetworkAgent;
 import swarm_sim.communication.Message;
 import swarm_sim.communication.Message.MessageType;
 import swarm_sim.learning.GA;
-import swarm_sim.perception.AngleSegment;
+import swarm_sim.perception.PDDP;
 import swarm_sim.perception.PDDPInput;
 import swarm_sim.perception.PDDPInput.AttractionType;
 import swarm_sim.perception.PDDPInput.GrowingDirection;
-import swarm_sim.perception.PDDP;
 
 public class CMCStrategy extends ExplorationStrategy {
 
     private double prevDirection = RandomHelper.nextDoubleFromTo(-Math.PI,
 	    Math.PI);
 
-    QuadTree quadTree;
+    private QuadTree quadTree;
+    private Node nodeTarget;
 
     private PDDPInput scanAgentRepell = new PDDPInput(AttractionType.Repelling,
 	    GrowingDirection.Inwards, 2, false, 0, 0.8 * config.commScope, 1,
 	    1000);
-    private PDDPInput scanAgentAppeal = new PDDPInput(AttractionType.Attracting,
-	    GrowingDirection.Outwards, 0.2, false, 0.8 * config.commScope,
-	    config.commScope, 1, 1000);
+    private PDDPInput scanAgentAppeal = new PDDPInput(
+	    AttractionType.Attracting, GrowingDirection.Outwards, 0.2, false,
+	    0.8 * config.commScope, config.commScope, 1, 1000);
     private PDDPInput scanAgentMimic = new PDDPInput(AttractionType.Attracting,
 	    GrowingDirection.Inwards, 1, true, 0, config.commScope, 1, 1000);
-    private PDDPInput scanPrevDirection = new PDDPInput(AttractionType.Attracting,
-	    GrowingDirection.Inwards, 1, true, 0, 1000, 1, 1000);
-    private PDDPInput scanUnknownSectors = new PDDPInput(AttractionType.Attracting,
-	    GrowingDirection.Inwards, 1, true, 0, 10000, 1, 1000);
+    private PDDPInput scanPrevDirection = new PDDPInput(
+	    AttractionType.Attracting, GrowingDirection.Inwards, 1, true, 0,
+	    1000, 1, 1000);
+    private PDDPInput scanUnknownSectors = new PDDPInput(
+	    AttractionType.Attracting, GrowingDirection.Inwards, 1, true, 0,
+	    10000, 1, 1000);
 
-    public CMCStrategy(IChromosome chrom,
-	    Context<AbstractAgent> context, Agent controllingAgent) {
+    public CMCStrategy(IChromosome chrom, Context<AbstractAgent> context,
+	    Agent controllingAgent) {
 	super(chrom, context, controllingAgent);
 
 	int sectorsX = (int) (config.spaceWidth / config.perceptionScope);
@@ -84,7 +87,7 @@ public class CMCStrategy extends ExplorationStrategy {
 	    // double winningOutput[] = new double[] { 0.05, 0.05, 0.99, 0.02,
 	    // 0.32, 0.98 };
 
-	    double winningOutput[] = new double[] { 0.6, 0, 0.21, 0.03, 0, 0.7 };
+	    double winningOutput[] = new double[] { 0.6, 0, 1, 0.03, 0, 0.7 };
 
 	    scanAgentRepell.setMergeWeight(winningOutput[0]);
 	    scanAgentAppeal.setMergeWeight(winningOutput[1]);
@@ -185,15 +188,21 @@ public class CMCStrategy extends ExplorationStrategy {
 	/* Look for close unexplored sectors */
 	quadTree.setLocation(currentLocation.getX(), currentLocation.getY());
 
-	Node n = quadTree.getSmallestUnfilledNode(currentLocation.getX(),
-		currentLocation.getY());
+	Node n = quadTree.getSmallestUnfilledNode(
+		    currentLocation.getX(), currentLocation.getY());
+	
+	if (nodeTarget == null || nodeTarget.contains(n) || nodeTarget.isFilled() || quadTree.nodeFilled(nodeTarget)) {
+	    nodeTarget = n;
+	}
 
-	if (n != null) {
-	    NdPoint quadCenter = quadTree.getUnfilledNodeCenter(n,
-		    currentLocation);
-	    double angle = SpatialMath.calcAngleFor2DMovement(space,
-		    currentLocation, quadCenter);
-	    scanUnknownSectors.addInput(angle);
+	if (nodeTarget != null) {
+	    NdPoint quadCenter = quadTree.getUnfilledNodeCenter(nodeTarget);
+	    scanUnknownSectors.addInput(motionToGoal(quadCenter, pddp));
+
+	    //
+	    // double angle = SpatialMath.calcAngleFor2DMovement(space,
+	    // currentLocation, quadCenter);
+	    // scanUnknownSectors.addInput(angle);
 	}
 
 	if (prevDirection >= -Math.PI)
@@ -201,7 +210,6 @@ public class CMCStrategy extends ExplorationStrategy {
 
 	pddp.calcProbDist(scanAgentAppeal, scanAgentRepell, scanAgentMimic,
 		scanPrevDirection, scanUnknownSectors);
-
 	pddp.normalize();
 
 	if (config.takeHighestProb)
@@ -210,6 +218,12 @@ public class CMCStrategy extends ExplorationStrategy {
 	    prevDirection = pddp.getMovementAngle();
 
 	return prevDirection;
+    }
+    
+    @Override
+    public void handleObstacle(AgentState prevState, AgentState currentState,
+            FieldDistancePair obs) {
+	quadTree.setLocation(obs.loc.getX(), obs.loc.getY());
     }
 
     @Override

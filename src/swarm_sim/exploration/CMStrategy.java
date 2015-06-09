@@ -10,17 +10,17 @@ import repast.simphony.random.RandomHelper;
 import repast.simphony.space.continuous.NdPoint;
 import swarm_sim.AbstractAgent;
 import swarm_sim.Agent;
+import swarm_sim.AdvancedGridValueLayer.FieldDistancePair;
 import swarm_sim.Agent.AgentState;
 import swarm_sim.SectorMap;
 import swarm_sim.Strategy;
 import swarm_sim.communication.CommunicationType;
 import swarm_sim.communication.INetworkAgent;
 import swarm_sim.communication.Message;
-import swarm_sim.perception.AngleSegment;
+import swarm_sim.perception.PDDP;
 import swarm_sim.perception.PDDPInput;
 import swarm_sim.perception.PDDPInput.AttractionType;
 import swarm_sim.perception.PDDPInput.GrowingDirection;
-import swarm_sim.perception.PDDP;
 
 public class CMStrategy extends ExplorationStrategy {
 
@@ -62,8 +62,8 @@ public class CMStrategy extends ExplorationStrategy {
 	    AgentState currentState, PDDP pddp) {
 	NdPoint currentLocation = space.getLocation(controllingAgent);
 	map.setPosition(currentLocation);
-
-	scanLine.addInput(map.getNewMoveAngle());
+	map.getNewMoveAngle();
+	scanLine.addInput(motionToGoal(map.getSectorCenter(map.getTargetSector()), pddp));
 
 	pddp.calcProbDist(scanLine);
 	pddp.normalize();
@@ -81,6 +81,12 @@ public class CMStrategy extends ExplorationStrategy {
 	scanLine.clear();
     }
 
+    @Override
+    public void handleObstacle(AgentState prevState, AgentState currentState,
+            FieldDistancePair obs) {
+	map.setPosition(obs.loc);
+    }
+    
     @Override
     protected void reset() {
 	// set current sector unfilled, so agent will return here some time

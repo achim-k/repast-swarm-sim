@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import repast.simphony.space.SpatialException;
-import repast.simphony.space.SpatialMath;
 import repast.simphony.space.continuous.NdPoint;
 import repast.simphony.valueLayer.GridFunction;
 import repast.simphony.valueLayer.GridValueLayer;

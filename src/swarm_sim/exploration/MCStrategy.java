@@ -9,8 +9,8 @@ import repast.simphony.context.Context;
 import repast.simphony.space.SpatialMath;
 import repast.simphony.space.continuous.NdPoint;
 import swarm_sim.AbstractAgent;
-import swarm_sim.Agent;
 import swarm_sim.AdvancedGridValueLayer.FieldDistancePair;
+import swarm_sim.Agent;
 import swarm_sim.Agent.AgentState;
 import swarm_sim.QuadTree;
 import swarm_sim.QuadTree.Node;
@@ -19,15 +19,15 @@ import swarm_sim.communication.CommunicationType;
 import swarm_sim.communication.INetworkAgent;
 import swarm_sim.communication.Message;
 import swarm_sim.communication.Message.MessageType;
-import swarm_sim.perception.AngleSegment;
+import swarm_sim.perception.PDDP;
 import swarm_sim.perception.PDDPInput;
 import swarm_sim.perception.PDDPInput.AttractionType;
 import swarm_sim.perception.PDDPInput.GrowingDirection;
-import swarm_sim.perception.PDDP;
 
 public class MCStrategy extends ExplorationStrategy {
 
     QuadTree quadTree;
+    private Node nodeTarget;
 
     PDDPInput scanUnknownSectors = new PDDPInput(AttractionType.Attracting,
 	    GrowingDirection.Inwards, 1, true, 0, 10000, 1, 1000);
@@ -87,17 +87,24 @@ public class MCStrategy extends ExplorationStrategy {
 	/* Look for close unexplored sectors */
 	quadTree.setLocation(currentLocation.getX(), currentLocation.getY());
 
-	Node n = quadTree.getSmallestUnfilledNode(currentLocation.getX(),
-		currentLocation.getY());
 
-	if (n != null) {
-	    NdPoint quadCenter = quadTree.getUnfilledNodeCenter(n,
-		    currentLocation);
-	    double angle = SpatialMath.calcAngleFor2DMovement(space,
-		    currentLocation, quadCenter);
-	    scanUnknownSectors.addInput(angle);
+	Node n = quadTree.getSmallestUnfilledNode(
+		    currentLocation.getX(), currentLocation.getY());
+	
+	if (nodeTarget == null || nodeTarget.contains(n) || nodeTarget.isFilled() || quadTree.nodeFilled(nodeTarget)) {
+	    nodeTarget = n;
 	}
 
+	if (nodeTarget != null) {
+	    NdPoint quadCenter = quadTree.getUnfilledNodeCenter(nodeTarget);
+	    scanUnknownSectors.addInput(motionToGoal(quadCenter, pddp));
+
+	    //
+	    // double angle = SpatialMath.calcAngleFor2DMovement(space,
+	    // currentLocation, quadCenter);
+	    // scanUnknownSectors.addInput(angle);
+	}
+	
 	pddp.calcProbDist(scanUnknownSectors);
 	pddp.normalize();
 

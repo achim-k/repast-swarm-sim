@@ -1,6 +1,7 @@
 package swarm_sim;
 
 import repast.simphony.space.continuous.NdPoint;
+import swarm_sim.QuadTree.Node;
 
 public class QuadTree {
 
@@ -53,6 +54,14 @@ public class QuadTree {
 	    return isFilled;
 	}
 
+	public boolean contains(Node n) {
+	    boolean depth = (this.depth <= n.depth);
+	    boolean x = (this.x <= n.x && this.x + this.width > n.x);
+	    boolean y = (this.y <= n.y && this.y + this.height > n.y);
+
+	    return depth && x && y;
+	}
+
 	public void setFilled() {
 	    isFilled = true;
 	    NW = NE = SE = SW = null;
@@ -103,7 +112,7 @@ public class QuadTree {
 	    double perceptionScope) {
 	super();
 
-	this.minQuadrantEdgeSize = 2 * perceptionScope;
+	this.minQuadrantEdgeSize = 1.75 * perceptionScope;
 	root = new Node(0, 0, spaceWidth, spaceHeight, false, 0);
     }
 
@@ -113,10 +122,16 @@ public class QuadTree {
     }
 
     public Node getSmallestUnfilledNode(double posX, double posY) {
-	return getSmallesUnfilledNode(root, null, posX, posY);
+	Node n = getSmallesUnfilledNode(root, null, posX, posY);
+	if (n == null) {
+	    root.isFilled = false;
+	    setLocation(posX, posY);
+	    n = getSmallesUnfilledNode(root, null, posX, posY);
+	}
+	return n;
     }
 
-    public NdPoint getUnfilledNodeCenter(Node parent, NdPoint location) {
+    public NdPoint getUnfilledNodeCenter(Node parent) {
 	if (parent.NW == null || !parent.NW.isFilled())
 	    return new NdPoint(parent.x + parent.width / 4, parent.y + 3
 		    * parent.height / 4);
@@ -257,6 +272,12 @@ public class QuadTree {
 	print(n.NE);
 	print(n.SE);
 	print(n.SW);
+    }
+
+    public boolean nodeFilled(Node nodeTarget) {
+	Node n = getSmallestUnfilledNode(nodeTarget.x + nodeTarget.width / 2,
+		nodeTarget.y + nodeTarget.height / 2);
+	return (n.depth < nodeTarget.depth);
     }
 
 }
