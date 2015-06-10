@@ -6,6 +6,7 @@ import java.util.List;
 import org.jgap.IChromosome;
 
 import repast.simphony.context.Context;
+import repast.simphony.random.RandomHelper;
 import repast.simphony.space.SpatialMath;
 import repast.simphony.space.continuous.NdPoint;
 import swarm_sim.AbstractAgent;
@@ -38,6 +39,13 @@ public class MCStrategy extends ExplorationStrategy {
 
 	this.quadTree = new QuadTree(config.spaceWidth, config.spaceHeight,
 		config.perceptionScope);
+	
+	/* Choose a random target quadrant */
+	double rndX = RandomHelper.nextDoubleFromTo(0, config.spaceWidth);
+	double rndY = RandomHelper.nextDoubleFromTo(0, config.spaceHeight);
+
+	quadTree.setLocation(rndX, rndY);
+	nodeTarget = quadTree.getSmallestUnfilledNode(rndX, rndY);
     }
 
     @Override

@@ -64,6 +64,13 @@ public class CMCStrategy extends ExplorationStrategy {
 	this.quadTree = new QuadTree(config.spaceWidth, config.spaceHeight,
 		config.perceptionScope);
 
+	/* Choose a random target quadrant */
+	double rndX = RandomHelper.nextDoubleFromTo(0, config.spaceWidth);
+	double rndY = RandomHelper.nextDoubleFromTo(0, config.spaceHeight);
+
+	quadTree.setLocation(rndX, rndY);
+	nodeTarget = quadTree.getSmallestUnfilledNode(rndX, rndY);
+
 	if (config.useGA) {
 	    GA ga = GA.getInstance();
 
@@ -188,10 +195,11 @@ public class CMCStrategy extends ExplorationStrategy {
 	/* Look for close unexplored sectors */
 	quadTree.setLocation(currentLocation.getX(), currentLocation.getY());
 
-	Node n = quadTree.getSmallestUnfilledNode(
-		    currentLocation.getX(), currentLocation.getY());
-	
-	if (nodeTarget == null || nodeTarget.contains(n) || nodeTarget.isFilled() || quadTree.nodeFilled(nodeTarget)) {
+	Node n = quadTree.getSmallestUnfilledNode(currentLocation.getX(),
+		currentLocation.getY());
+
+	if (nodeTarget == null || nodeTarget.contains(n)
+		|| nodeTarget.isFilled() || quadTree.nodeFilled(nodeTarget)) {
 	    nodeTarget = n;
 	}
 
@@ -219,10 +227,10 @@ public class CMCStrategy extends ExplorationStrategy {
 
 	return prevDirection;
     }
-    
+
     @Override
     public void handleObstacle(AgentState prevState, AgentState currentState,
-            FieldDistancePair obs) {
+	    FieldDistancePair obs) {
 	quadTree.setLocation(obs.loc.getX(), obs.loc.getY());
     }
 

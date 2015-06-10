@@ -186,13 +186,13 @@ public class AdvancedGridValueLayer extends GridValueLayer {
 	double diffY = target.getY() - origin.getY();
 	double distance = Math.sqrt(diffX * diffX + diffY * diffY);
 	/* normalize */
-	diffX /= distance;
-	diffY /= distance;
+	diffX /= 1.5*distance;
+	diffY /= 1.5*distance;
 
 	double x = origin.getX();
 	double y = origin.getY();
-	while (Math.abs(x - target.getX()) > 1
-		|| Math.abs(y - target.getY()) > 1) {
+	while (Math.abs(x - target.getX()) > .5
+		|| Math.abs(y - target.getY()) > .5) {
 	    if (getFieldType(x, y) == FieldType.Obstacle) {
 		return true;
 	    }
