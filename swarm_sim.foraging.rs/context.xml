@@ -2,4 +2,5 @@
   	<projection type="continuous space" id="space_continuous"/>
   	<projection type="network" id="network_comm"/>
   	<projection type="value layer" id="layer_explored"/>
+  	<projection type="value layer" id="layer_pheromones"/>
 </context>

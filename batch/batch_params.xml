@@ -1,29 +1,35 @@
 <?xml version="1.0" ?>
-<sweep runs="50">
+<sweep runs="25">
 	<parameter name="distance_factor" type="constant"
 		constant_type="double" value="5"></parameter>
 	<parameter name="print_params" type="constant" constant_type="boolean"
 		value="false"></parameter>
-	<parameter name="decay_rate" type="constant" constant_type="double"
-		value="0.1"></parameter>
+	<parameter name="highest_prob" type="constant" constant_type="boolean"
+		value="true"></parameter>
+	<parameter name="expl_strategy" type="constant"
+		constant_type="java.lang.String" value="R"></parameter>
 	<parameter name="comm_frequency" type="constant"
 		constant_type="int" value="1"></parameter>
 	<parameter name="perception_scope" type="constant"
 		constant_type="double" value="1"></parameter>
-	<parameter name="foraging_strategy" type="constant"
-		constant_type="java.lang.String" value="NC"></parameter>
+	<parameter name="diffusion_rate" type="constant"
+		constant_type="double" value="0.1"></parameter>
 	<parameter name="k" type="constant" constant_type="double"
 		value="1"></parameter>
 	<parameter name="agent_count" type="constant" constant_type="int"
-		value="32"></parameter>
+		value="16"></parameter>
 	<parameter name="resource_count" type="constant"
-		constant_type="int" value="0"></parameter>
+		constant_type="int" value="100"></parameter>
 	<parameter name="consecutive_move" type="constant"
 		constant_type="int" value="100"></parameter>
+	<parameter name="evaporation_rate" type="constant"
+		constant_type="double" value="0.95"></parameter>
 	<parameter name="communication_scope" type="constant"
 		constant_type="double" value="15"></parameter>
+	<parameter name="map" type="constant" constant_type="java.lang.String"
+		value="data/map_obstacles.png"></parameter>
 	<parameter name="resource_nest_count" type="constant"
-		constant_type="int" value="7"></parameter>
+		constant_type="int" value="6"></parameter>
 	<parameter name="use_ga" type="constant" constant_type="boolean"
 		value="false"></parameter>
 	<parameter name="space_dimensions" type="constant"
@@ -33,7 +39,7 @@
 	<parameter name="prob_init" type="constant" constant_type="double"
 		value="0.01"></parameter>
 	<parameter name="segment_count" type="constant"
-		constant_type="int" value="16"></parameter>
-	<parameter name="expl_strategy" type="list" value_type="java.lang.String"
-		values="R CC MC CM CMC"></parameter>
+		constant_type="int" value="20"></parameter>
+	<parameter name="foraging_strategy" type="list" value_type="java.lang.String"
+		values="NC PC"></parameter>
 </sweep>

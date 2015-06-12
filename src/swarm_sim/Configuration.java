@@ -23,7 +23,8 @@ public class Configuration extends AbstractAgent {
     public int[] movebins = new int[8];
     public int spaceWidth, spaceHeight;
     public boolean printConfig = true;
-    public double decayRate;
+    public double diffusion_rate = 0;
+    public double evaporation_rate = 0;
     public double failureProbability;
 
     public boolean takeHighestProb;

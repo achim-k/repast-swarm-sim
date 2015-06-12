@@ -94,7 +94,7 @@ public class CMCStrategy extends ExplorationStrategy {
 	    // double winningOutput[] = new double[] { 0.05, 0.05, 0.99, 0.02,
 	    // 0.32, 0.98 };
 
-	    double winningOutput[] = new double[] { 0.6, 0, 1, 0.03, 0, 0.7 };
+	    double winningOutput[] = new double[] { 0.95, 0.31, 0.50, 0.20, 0.43, 0.83 }; // for max prob, no obstacles
 
 	    scanAgentRepell.setMergeWeight(winningOutput[0]);
 	    scanAgentAppeal.setMergeWeight(winningOutput[1]);

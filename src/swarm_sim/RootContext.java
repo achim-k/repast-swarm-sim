@@ -90,7 +90,8 @@ public class RootContext implements ContextBuilder<AbstractAgent> {
 
 	config.failureProbability = params.getDouble("failure_probability");
 
-	config.decayRate = params.getDouble("decay_rate");
+	config.diffusion_rate = params.getDouble("diffusion_rate");
+	config.evaporation_rate = params.getDouble("evaporation_rate");
 
 	config.takeHighestProb = params.getBoolean("highest_prob");
 
@@ -107,8 +108,13 @@ public class RootContext implements ContextBuilder<AbstractAgent> {
 	exploredArea = new AdvancedGridValueLayer("layer_explored", 0.0, false,
 		config.spaceWidth, config.spaceHeight);
 	context.addValueLayer(exploredArea);
-	
 	readMapFromImage(exploredArea, params.getString("map"));
+
+	/* Value layer to store pheromones default: 0.0 */
+	AdvancedGridValueLayer pheromoneLayer = new AdvancedGridValueLayer(
+		"layer_pheromones", 0.0, false, config.spaceWidth,
+		config.spaceHeight);
+	context.addValueLayer(pheromoneLayer);
 
 	PseudoRandomAdder<AbstractAgent> adder = new PseudoRandomAdder<AbstractAgent>(
 		exploredArea);
@@ -170,6 +176,11 @@ public class RootContext implements ContextBuilder<AbstractAgent> {
 		config.commFreq, ScheduleParameters.FIRST_PRIORITY),
 		simControl, "recalculateNetworkEdges");
 	context.add(simControl);
+
+	if (config.foragingStrat.equalsIgnoreCase("PC")) {
+	    schedule.schedule(ScheduleParameters.createRepeating(0, 10),
+		    simControl, "diffusePheromones");
+	}
 
 	/* schedule action which is called at end of simulation */
 	schedule.schedule(ScheduleParameters

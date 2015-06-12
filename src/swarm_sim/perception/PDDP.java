@@ -143,6 +143,7 @@ public class PDDP {
     public static int angleToSegmentIndex(double angle, int segmentCount) {
 	return (int) ((angle + Math.PI) / (2 * Math.PI / segmentCount));
     }
+
     
     public boolean angleValid(double angle) {
 	return segments[angleToSegmentIndex(angle, segmentCount)].isValid;

@@ -8,6 +8,7 @@ import repast.simphony.context.Context;
 import repast.simphony.engine.environment.RunEnvironment;
 import repast.simphony.space.continuous.ContinuousSpace;
 import repast.simphony.space.graph.Network;
+import repast.simphony.valueLayer.ValueLayerDiffuser;
 import swarm_sim.learning.GA;
 
 public class SimulationControl extends AbstractAgent {
@@ -31,6 +32,9 @@ public class SimulationControl extends AbstractAgent {
 
     ContinuousSpace<AbstractAgent> space;
     AdvancedGridValueLayer exploredArea;
+    AdvancedGridValueLayer pheromoneLayer;
+    ValueLayerDiffuser diffuser;
+    
 
     Configuration config;
     DataCollection data;
@@ -50,6 +54,11 @@ public class SimulationControl extends AbstractAgent {
 		.getValueLayer("layer_explored");
 	this.data = DataCollection.getInstance();
 	this.networkAgents = networkAgents;
+	
+	this.pheromoneLayer = (AdvancedGridValueLayer) context
+		.getValueLayer("layer_pheromones");
+	
+	diffuser = new ValueLayerDiffuser(pheromoneLayer, config.evaporation_rate, config.diffusion_rate);
     }
 
     /**
@@ -149,6 +158,10 @@ public class SimulationControl extends AbstractAgent {
 	    ga.currentFitness = 10000.0 / (int) RunEnvironment.getInstance()
 		    .getCurrentSchedule().getTickCount();
 	}
+    }
+    
+    public void diffusePheromones() {
+	diffuser.diffuse();
     }
 
     @Override

@@ -35,7 +35,14 @@ public class CollisionAvoidance {
 	return angle;
     }
     
-    
+    public static double angleDistance(double a, double b) {
+	if (a >= b) {
+	    return Math.abs(normAngle(a - b));
+	} else {
+	    return Math.abs(normAngle(b - a));
+	}
+    }
+     
     public static void setForbiddenSegmentsForObstacle(
 	    ContinuousSpace<AbstractAgent> space, NdPoint currLoc,
 	    PDDP smd, FieldDistancePair obs) {

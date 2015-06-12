@@ -9,14 +9,15 @@ import repast.simphony.context.Context;
 import repast.simphony.space.SpatialMath;
 import repast.simphony.space.continuous.NdPoint;
 import swarm_sim.AbstractAgent;
-import swarm_sim.AbstractAgent.AgentType;
+import swarm_sim.AdvancedGridValueLayer.FieldDistancePair;
 import swarm_sim.Agent;
 import swarm_sim.Agent.AgentState;
-import swarm_sim.Pheromone;
+import swarm_sim.AdvancedGridValueLayer;
 import swarm_sim.Strategy;
 import swarm_sim.communication.CommunicationType;
 import swarm_sim.communication.INetworkAgent;
 import swarm_sim.communication.Message;
+import swarm_sim.perception.CollisionAvoidance;
 import swarm_sim.perception.PDDP;
 import swarm_sim.perception.PDDPInput;
 import swarm_sim.perception.PDDPInput.AttractionType;
@@ -24,16 +25,21 @@ import swarm_sim.perception.PDDPInput.GrowingDirection;
 
 public class PCStrategy extends ForagingStrategy {
 
-    int pheromoneDropMoveCount = 0;
-    int perceivedPheromones = 0;
+    double pheromoneValue = 100;
+    NdPoint lastDroppedPoint;
+
+    AdvancedGridValueLayer pheromoneLayer;
 
     PDDPInput scanPheromones = new PDDPInput(AttractionType.Attracting,
-	    GrowingDirection.Outwards, 1, true, 0, config.perceptionScope, 1,
-	    20);
+	    GrowingDirection.Inwards, 1, true, 0, 1E8, 1,
+	    1000);
 
     public PCStrategy(IChromosome chrom, Context<AbstractAgent> context,
 	    Agent controllingAgent) {
 	super(chrom, context, controllingAgent);
+
+	pheromoneLayer = (AdvancedGridValueLayer) context
+		.getValueLayer("layer_pheromones");
     }
 
     @Override
@@ -50,33 +56,31 @@ public class PCStrategy extends ForagingStrategy {
 	return currentState;
     }
 
-    @Override
-    public AgentState processPerceivedAgent(AgentState prevState,
-	    AgentState currentState, AbstractAgent agent, boolean isLast) {
+    public AgentState scanForPheromones(AgentState prevState,
+	    AgentState currentState) {
 	NdPoint currentLocation = space.getLocation(controllingAgent);
-	double baseAngle = SpatialMath.calcAngleFor2DMovement(space,
-		currentLocation, space.getLocation(config.baseAgent));
 
-	if (agent.getAgentType() == AgentType.Pheromone) {
-	    perceivedPheromones++;
-	    if (currentState == AgentState.acquire
-		    && (currentTarget == null || !currentTarget.isValid)) {
-		NdPoint pLoc = space.getLocation(agent);
-		double pAngle = SpatialMath.calcAngleFor2DMovement(space,
-			currentLocation, pLoc);
+	List<FieldDistancePair> fields = pheromoneLayer.getFieldsRadial(
+		currentLocation, config.perceptionScope);
+	
+//	double angleToBase = SpatialMath.calcAngleFor2DMovement(space,
+//		    currentLocation, space.getLocation(config.baseAgent));
 
-		/* TODO: Angle distance */
-//		if (prevState == AgentState.wander
-//			|| AngleFilter.angleDistance(pAngle, baseAngle) > Math.PI) {
-		    scanPheromones.addInput(pAngle,
-			    space.getDistance(currentLocation, pLoc));
-//		}
-		return AgentState.acquire;
-	    }
+	for (FieldDistancePair field : fields) {
+	    if (field.value < 1)
+		continue;
+
+	    double angle = SpatialMath.calcAngleFor2DMovement(space,
+		    currentLocation, field.loc);
+	    
+	    if(Math.abs(CollisionAvoidance.angleDistance(angle, directionAngle)) < Math.PI/2)
+		scanPheromones.addInput(angle, 1/field.value);
+	}
+
+	if (scanPheromones.isValid())
+	    return AgentState.acquire;
+	else
 	    return currentState;
-	} else
-	    return super.processPerceivedAgent(prevState, currentState, agent,
-		    isLast);
     }
 
     @Override
@@ -84,17 +88,18 @@ public class PCStrategy extends ForagingStrategy {
 	currentState = super.checkState(prevState, currentState);
 
 	if (currentState == AgentState.deliver) {
-	    if (++pheromoneDropMoveCount >= config.maxMoveDistance) {
-		NdPoint currLoc = space.getLocation(controllingAgent);
-		pheromoneDropMoveCount = 0;
-		Pheromone p = new Pheromone();
-		context.add(p);
-		space.moveTo(p, currLoc.getX(), currLoc.getY());
-	    }
-	} else {
+	    dropPheromone();
+	    pheromoneValue *= 0.97;
+	} else if (currentState == AgentState.wander) {
+	    scanForPheromones(prevState, currentState);
 	    if (scanPheromones.isValid())
 		return AgentState.acquire;
 	}
+
+	if (prevState == AgentState.deliver
+		&& currentState == AgentState.acquire)
+	    pheromoneValue = 100;
+
 	return currentState;
     }
 
@@ -110,11 +115,14 @@ public class PCStrategy extends ForagingStrategy {
 
 	    pddp.calcProbDist(scanPheromones);
 	    pddp.normalize();
-	    directionAngle = pddp.getMovementAngle();
+	    
+	    if(config.takeHighestProb)
+		directionAngle = pddp.getMovementAngleWithHighestProbability();
+	    else
+		directionAngle = pddp.getMovementAngle();
 	    return directionAngle;
 	} else {
-	    return super.makeDirectionDecision(prevState, currentState,
-		    pddp);
+	    return super.makeDirectionDecision(prevState, currentState, pddp);
 	}
     }
 
@@ -126,14 +134,29 @@ public class PCStrategy extends ForagingStrategy {
     @Override
     public void reset() {
 	super.reset();
-	pheromoneDropMoveCount = 0;
+	pheromoneValue = 100;
     }
 
     @Override
     public void clear() {
 	super.clear();
-	perceivedPheromones = 0;
 	scanPheromones.clear();
     }
 
+    public void dropPheromone() {
+	NdPoint currLoc = space.getLocation(controllingAgent);
+	
+	if(lastDroppedPoint == null)
+	    lastDroppedPoint = currLoc;
+
+	if (!(currLoc.getCoordInt(0) == lastDroppedPoint.getCoordInt(0) && currLoc
+		.getCoordInt(1) == lastDroppedPoint.getCoordInt(1))) {
+	    double fieldVal = pheromoneLayer
+		    .get(currLoc.getX(), currLoc.getY());
+	    pheromoneLayer.set(fieldVal + pheromoneValue, (int) currLoc.getX(),
+		    (int) currLoc.getY());
+	}
+
+	lastDroppedPoint = currLoc;
+    }
 }

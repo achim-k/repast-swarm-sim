@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <parameters>
 	<parameter name="map" displayName="map"
-		type="java.lang.String" defaultValue="data/map_obstacles.png"
+		type="java.lang.String" defaultValue="data/map.png"
 		isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter"
 		values="data/map.png data/map_obstacles.png data/map_obstacles_light.png" />
 	<parameter name="expl_strategy" displayName="Exploration Strategy"
-		type="java.lang.String" defaultValue="CMC"
+		type="java.lang.String" defaultValue="R"
 		isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter"
 		values="R CM MC CC CMC" />
 	<parameter name="foraging_strategy" displayName="Foraging Strategy"
-		type="java.lang.String" defaultValue="NC" isReadOnly="false"
+		type="java.lang.String" defaultValue="PC" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter"
 		values="NC SC GC PC" />
 	<parameter name="agent_count" displayName="Number of Agents"
-		type="int" defaultValue="1" isReadOnly="false"
+		type="int" defaultValue="10" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
 	<parameter name="perception_scope" displayName="Perception scope [%]"
 		type="double" defaultValue="1.2" isReadOnly="false"
@@ -27,7 +27,7 @@
 		type="int" defaultValue="1" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
 	<parameter name="resource_count" displayName="Number of resources"
-		type="int" defaultValue="0" isReadOnly="false"
+		type="int" defaultValue="100" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$IntConverter" />
 	<parameter name="resource_nest_count" displayName="Number of resource nests"
 		type="int" defaultValue="6" isReadOnly="false"
@@ -52,8 +52,11 @@
 	<parameter name="failure_probability" displayName="Failure Probability [0-1]"
 		type="double" defaultValue="0" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter" />
-	<parameter name="decay_rate" displayName="Pheromone decay rate [%]"
-		type="double" defaultValue="0.5" isReadOnly="false"
+	<parameter name="diffusion_rate" displayName="Pheromone diffusion rate"
+		type="double" defaultValue="0.1" isReadOnly="false"
+		converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter" />
+	<parameter name="evaporation_rate" displayName="Pheromone evaporation rate"
+		type="double" defaultValue="0.95" isReadOnly="false"
 		converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter" />
 
 	<parameter name="highest_prob" displayName="Take highest prob value" type="boolean"

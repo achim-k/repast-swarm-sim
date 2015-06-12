@@ -315,7 +315,11 @@ public class Agent extends AbstractAgent implements IDisplayAgent,
 		state = faStrategy.processPerceivedAgent(prevState, state,
 			agent, !agentIter.hasNext());
 	}
-
+	
+	if(state == AgentState.wander && config.foragingStrat.equalsIgnoreCase("PC")) {
+	    state = ((PCStrategy)faStrategy).scanForPheromones(prevState, state);
+	}
+	    
 	if (state != AgentState.wander)
 	    state = faStrategy.checkState(prevState, state);
     }
