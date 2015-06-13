@@ -62,6 +62,10 @@ public class CCStrategy extends ExplorationStrategy {
 	    scanAgentAppeal.setInnerBorderRadius(repellAppealBorder);
 	} else {
 	    double winningGenes[] = new double[] { 0.62, 0.01, .96, 0.04, 0.96 };
+	    
+	    if(config.takeHighestProb) {
+		winningGenes = new double[] { 0.44, 0.40, .97, 0.10, 0.40 };
+	    }
 
 	    GA ga = GA.getInstance();
 
